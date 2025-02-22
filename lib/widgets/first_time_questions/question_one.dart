@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 
 class QuestionOne extends StatefulWidget {
   final List<String> selectedChoices;
@@ -21,15 +22,16 @@ class QuestionOne extends StatefulWidget {
 }
 
 class _QuestionOneState extends State<QuestionOne> {
-  final TextEditingController _otherController = TextEditingController();
+  late TextEditingController _otherController;
   final String questionText = "What fields would you like to find your internship in?";
-  
-  final List<String> options = ["Management", "Business", "IT", "Engineering", "Economics"];
+  final List<String> options = [
+    "Management", "Business", "IT", "Engineering", "Economics", "Education", "Healthcare"
+  ];
 
   @override
   void initState() {
     super.initState();
-    _otherController.text = widget.otherText;
+    _otherController = TextEditingController.fromValue(TextEditingValue(text: widget.otherText));
     Future.microtask(() {
       widget.onQuestionTextUpdated(questionText);
     });
@@ -43,91 +45,98 @@ class _QuestionOneState extends State<QuestionOne> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...options.map((option) => _buildCheckbox(option)),
-        _buildOtherField(),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: double.infinity,
+          height: constraints.maxHeight,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ...options.map((option) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: _buildCheckbox(option, constraints.maxWidth * 0.8),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: _buildOtherField(constraints.maxWidth * 0.8),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCheckbox(String text) {
+  Widget _buildCheckbox(String text, double buttonWidth) {
     bool isSelected = widget.selectedChoices.contains(text);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Column(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  if (isSelected) {
-                    widget.selectedChoices.remove(text);
-                  } else {
-                    widget.selectedChoices.add(text);
-                  }
-                  widget.onChoicesUpdated(widget.selectedChoices);
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isSelected ? Colors.green : Colors.white,
-                foregroundColor: isSelected ? Colors.white : Colors.black,
-                side: const BorderSide(color: Colors.black),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                text,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+    return SizedBox(
+      width: buttonWidth,
+      child: NeumorphicButton(
+        onPressed: () {
+          setState(() {
+            List<String> updatedChoices = List.from(widget.selectedChoices);
+            isSelected ? updatedChoices.remove(text) : updatedChoices.add(text);
+            widget.onChoicesUpdated(updatedChoices);
+          });
+        },
+        style: NeumorphicStyle(
+          color: isSelected ? Colors.green : Colors.white,
+          depth: 5,
+          intensity: 0.5,
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 10),
-        ]
-      )
+        ),
+      ),
     );
   }
 
-  Widget _buildOtherField() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: SizedBox(
-        width: double.infinity,
-        height: 50,
+  Widget _buildOtherField(double maxWidth) {
+    return SizedBox(
+      width: maxWidth,
+      child: Neumorphic(
+        style: NeumorphicStyle(
+          depth: 5,
+          intensity: 0.5,
+          shape: NeumorphicShape.flat,
+          boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+        ),
         child: TextField(
           controller: _otherController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            filled: true,
-            fillColor: Colors.grey[200],
-            hintText: "Other, specify",
-            contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-          ),
           onChanged: (value) {
             setState(() {
-              widget.selectedChoices.removeWhere((choice) => choice.startsWith("Other: "));
+              List<String> updatedChoices = List.from(widget.selectedChoices);
+              updatedChoices.removeWhere((choice) => choice.startsWith("Other: "));
               if (value.isNotEmpty && value != "Other, specify") {
-                widget.selectedChoices.add("Other: $value");
+                updatedChoices.add("Other: $value");
               }
-              widget.onChoicesUpdated(widget.selectedChoices);
+              widget.onChoicesUpdated(updatedChoices);
               widget.onOtherTextUpdated(value);
             });
           },
           onTap: () {
             if (_otherController.text == "Other, specify") {
-              setState(() {
-                _otherController.clear();
-              });
+              _otherController.clear();
             }
           },
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: "Other, specify",
+            contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
+          ),
         ),
       ),
     );
