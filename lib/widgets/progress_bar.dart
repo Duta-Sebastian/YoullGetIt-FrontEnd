@@ -1,29 +1,59 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 
 class ProgressBar extends StatelessWidget {
   final int currentQuestionIndex;
   final int totalQuestions;
 
-  const ProgressBar({super.key, 
+  const ProgressBar({
+    super.key,
     required this.currentQuestionIndex,
     required this.totalQuestions,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 20,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.grey[300],
+    return Neumorphic(
+      style: NeumorphicStyle(
+        depth: 4, 
+        intensity: 0.8,
+        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(10)),
+        color: Colors.grey[300], 
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: LinearProgressIndicator(
-          value: (currentQuestionIndex + 1) / totalQuestions,
-          backgroundColor: Colors.transparent,
-          valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(89, 164, 144, 1))
+      child: SizedBox(
+        height: 20,
+        width: double.infinity,
+        child: Stack(
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                double progressWidth = (currentQuestionIndex + 1) / totalQuestions * constraints.maxWidth;
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: progressWidth,
+                        height: 20,
+                        color: const Color.fromRGBO(89, 164, 144, 1),
+                      ),
+                      Positioned(
+                        top: 2,
+                        left: 10,
+                        child: Container(
+                          width: progressWidth - progressWidth*.10,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(120, 200, 180, 1),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

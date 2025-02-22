@@ -23,9 +23,8 @@ class QuestionWrapper extends StatefulWidget {
 class _QuestionWrapperState extends State<QuestionWrapper> {
   List<String> selectedChoices = [];
   String otherText = "Other, specify";
-  String questionText = "";
 
-  void _goToNextQuestion(BuildContext context) {
+  void _goToNextQuestion() {
     if (selectedChoices.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -33,10 +32,13 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
           duration: Duration(seconds: 2),
         ),
       );
-    } else if (widget.currentQuestionIndex < widget.totalQuestions - 1) {
+      return;
+    }
+
+    if (widget.currentQuestionIndex < widget.totalQuestions - 1) {
       widget.onQuestionIndexChanged(widget.currentQuestionIndex + 1);
     } else {
-      print("All questions completed!");
+      print(selectedChoices);
     }
   }
 
@@ -48,7 +50,7 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
 
   void _updateSelectedChoices(List<String> choices) {
     setState(() {
-      selectedChoices = choices;
+      selectedChoices = List.from(choices);
     });
   }
 
@@ -68,13 +70,14 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
         onOtherTextUpdated: _updateOtherText,
         onQuestionTextUpdated: widget.onQuestionTextUpdated,
       ),
-      const QuestionTwo(),
+      QuestionTwo(
+        onQuestionTextUpdated: widget.onQuestionTextUpdated,
+      ),
     ];
 
     return Column(
       children: [
-        questions[widget.currentQuestionIndex],
-
+        Expanded(child: questions[widget.currentQuestionIndex]),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: Row(
@@ -90,11 +93,9 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
                   ),
                   child: const Text("Previous"),
                 ),
-
               if (widget.currentQuestionIndex == 0) const Spacer(),
-
               ElevatedButton(
-                onPressed: () => _goToNextQuestion(context),
+                onPressed: _goToNextQuestion,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
