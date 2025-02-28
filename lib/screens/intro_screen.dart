@@ -6,10 +6,10 @@ class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
   @override
-  _IntroScreenState createState() => _IntroScreenState();
+  IntroScreenState createState() => IntroScreenState();
 }
 
-class _IntroScreenState extends State<IntroScreen> {
+class IntroScreenState extends State<IntroScreen> {
   late Function _goToTab;
 
   final Color _primaryColor = const Color(0xffffcc5c);

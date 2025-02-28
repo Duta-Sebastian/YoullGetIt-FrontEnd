@@ -7,10 +7,10 @@ class InternshipSelectorScreen extends StatefulWidget {
   const InternshipSelectorScreen({super.key});
 
   @override
-  _InternshipSelectorScreenState createState() => _InternshipSelectorScreenState();
+  InternshipSelectorScreenState createState() => InternshipSelectorScreenState();
 }
 
-class _InternshipSelectorScreenState extends State<InternshipSelectorScreen> {
+class InternshipSelectorScreenState extends State<InternshipSelectorScreen> {
   int currentQuestionIndex = 0;
   final int totalQuestions = 2;
   String questionText = "";
