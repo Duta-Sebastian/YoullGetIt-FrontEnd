@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'question_one.dart';
-import 'question_two.dart';
+import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';
+import 'package:youllgetit_flutter/data/question_repository.dart';
 
 class QuestionWrapper extends StatefulWidget {
   final int currentQuestionIndex;
@@ -9,38 +10,49 @@ class QuestionWrapper extends StatefulWidget {
   final Function(String) onQuestionTextUpdated;
 
   const QuestionWrapper({
-    super.key,
+    Key? key,
     required this.currentQuestionIndex,
     required this.totalQuestions,
     required this.onQuestionIndexChanged,
     required this.onQuestionTextUpdated,
-  });
+  }) : super(key: key);
 
   @override
-  _QuestionWrapperState createState() => _QuestionWrapperState();
+  QuestionWrapperState createState() => QuestionWrapperState();
 }
 
-class _QuestionWrapperState extends State<QuestionWrapper> {
-  List<String> selectedChoices = [];
-  String otherText = "Other, specify";
+class QuestionWrapperState extends State<QuestionWrapper> {
+  Map<String, List<String>> answersMap = {};
 
   void _goToNextQuestion() {
-    if (selectedChoices.isEmpty) {
+    final currentQuestionId = QuestionRepository.questions[widget.currentQuestionIndex].id;
+    print("Current question ID: $currentQuestionId");
+    
+    // Check if there are no answers for the current question
+    if (answersMap[currentQuestionId] == null || answersMap[currentQuestionId]!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Please select an option"),
+          content: Text("Please select at least one option"),
           duration: Duration(seconds: 2),
         ),
       );
       return;
     }
 
+    // Explicitly reset the "Other" field for the next question
     if (widget.currentQuestionIndex < widget.totalQuestions - 1) {
+      final nextQuestionId = QuestionRepository.questions[widget.currentQuestionIndex + 1].id;
+      setState(() {
+        // Reset the answers for the next question, specifically clearing the "Other" field
+        answersMap[nextQuestionId] = [];
+      });
+
       widget.onQuestionIndexChanged(widget.currentQuestionIndex + 1);
     } else {
-      print(selectedChoices);
+      print('Final selections: $answersMap');
     }
   }
+
 
   void _goToPreviousQuestion() {
     if (widget.currentQuestionIndex > 0) {
@@ -49,61 +61,66 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
   }
 
   void _updateSelectedChoices(List<String> choices) {
+    final questionId = QuestionRepository.questions[widget.currentQuestionIndex].id;
     setState(() {
-      selectedChoices = List.from(choices);
+      answersMap[questionId] = List.from(choices);
     });
   }
 
   void _updateOtherText(String text) {
+    final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    final questionId = currentQuestion.id;
+
     setState(() {
-      otherText = text;
+      if (text.isNotEmpty) {
+        // If "Other" text is provided, update the current question's answer list
+        answersMap[questionId] = [
+          ...?answersMap[questionId]?.where((answer) => !currentQuestion.options!.contains(answer)),
+          text
+        ];
+      } else {
+        // If "Other" text is empty, remove any "Other" answers from the current question
+        answersMap[questionId]?.removeWhere(
+          (answer) => !(currentQuestion.options ?? []).contains(answer),
+        );
+      }
+      // Debugging output to ensure that the map is correctly updated
+      print('Updated answersMap: $answersMap');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> questions = [
-      QuestionOne(
-        selectedChoices: selectedChoices,
-        otherText: otherText,
-        onChoicesUpdated: _updateSelectedChoices,
-        onOtherTextUpdated: _updateOtherText,
-        onQuestionTextUpdated: widget.onQuestionTextUpdated,
-      ),
-      QuestionTwo(
-        onQuestionTextUpdated: widget.onQuestionTextUpdated,
-      ),
-    ];
+    final Question currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onQuestionTextUpdated(currentQuestion.text);
+    });
 
     return Column(
       children: [
-        Expanded(child: questions[widget.currentQuestionIndex]),
+        Expanded(
+          child: GenericQuestionWidget(
+            question: currentQuestion,
+            selectedChoices: answersMap[currentQuestion.id] ?? [],
+            onChoicesUpdated: _updateSelectedChoices,
+            onTextUpdated: _updateOtherText,
+          ),
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               if (widget.currentQuestionIndex > 0)
                 ElevatedButton(
                   onPressed: _goToPreviousQuestion,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey[300],
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  ),
                   child: const Text("Previous"),
                 ),
-              if (widget.currentQuestionIndex == 0) const Spacer(),
               ElevatedButton(
                 onPressed: _goToNextQuestion,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                ),
                 child: Text(
                   widget.currentQuestionIndex == widget.totalQuestions - 1 ? "Finish" : "Next",
-                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ],
