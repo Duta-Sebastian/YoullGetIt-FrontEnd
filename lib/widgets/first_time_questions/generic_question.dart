@@ -27,27 +27,55 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
   void initState() {
     super.initState();
     _otherController = TextEditingController();
+    _initializeController();
+  }
+
+  void _initializeController() {
+    // Check if the current question has an "other" text answer
+    final otherAnswers = widget.selectedChoices
+        .where((choice) => !widget.question.options!.contains(choice))
+        .toList();
+
+    if (otherAnswers.isNotEmpty) {
+      _otherController.text = otherAnswers.last; // Use the last text input
+      otherText = otherAnswers.last;
+    }
   }
 
   @override
   void didUpdateWidget(covariant GenericQuestionWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.selectedChoices != oldWidget.selectedChoices) {
-      print('Selected choices updated: ${widget.selectedChoices}');
-      
-      // Clear and reset "Other" field if new question or choices
-      _otherController.clear();  // Clear the previous text
-      otherText = null;  // Reset the state variable
+    // If the question changes, reset the controller
+    if (widget.question.id != oldWidget.question.id) {
+      _otherController.clear();
+      otherText = null;
+      _initializeController(); // Reinitialize for the new question
+    }
 
-      for (var choice in widget.selectedChoices) {
-        if (!widget.question.options!.contains(choice)) {
-          _otherController.text = choice;
-          otherText = choice;
-          break;
-        }
+    // If the same question but selected choices change, update the controller
+    else if (!_areListsEqual(widget.selectedChoices, oldWidget.selectedChoices)) {
+      _otherController.clear();
+      otherText = null;
+
+      final otherAnswers = widget.selectedChoices
+          .where((choice) => !widget.question.options!.contains(choice))
+          .toList();
+
+      if (otherAnswers.isNotEmpty) {
+        _otherController.text = otherAnswers.last; // Use the last text input
+        otherText = otherAnswers.last;
       }
     }
+  }
+
+  bool _areListsEqual(List<String>? list1, List<String>? list2) {
+    if (list1 == null || list2 == null) return list1 == list2;
+    if (list1.length != list2.length) return false;
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) return false;
+    }
+    return true;
   }
 
   @override
@@ -57,13 +85,15 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
   }
 
   void _toggleChoice(String option) {
-    List<String> updatedChoices = List.from(widget.selectedChoices);
-    if (updatedChoices.contains(option)) {
-      updatedChoices.remove(option);
-    } else {
-      updatedChoices.add(option);
-    }
-    widget.onChoicesUpdated(updatedChoices);
+    setState(() {
+      List<String> updatedChoices = List.from(widget.selectedChoices);
+      if (updatedChoices.contains(option)) {
+        updatedChoices.remove(option);
+      } else {
+        updatedChoices.add(option);
+      }
+      widget.onChoicesUpdated(updatedChoices);
+    });
   }
 
   void _handleOtherTextChange(String text) {
@@ -172,6 +202,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
               ),
             ),
             child: TextField(
+              controller: _otherController,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(
                 hintText: 'Type your answer here',
@@ -181,7 +212,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                   horizontal: 10.0,
                 ),
               ),
-              onChanged: widget.onTextUpdated,
+              onChanged: _handleOtherTextChange,
             ),
           ),
         );
@@ -237,8 +268,10 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: answerWidget,
+          child: Center(
+            child: SingleChildScrollView(
+              child: answerWidget,
+            ),
           ),
         ),
       ],
