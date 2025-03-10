@@ -10,61 +10,131 @@ class QuestionWrapper extends StatefulWidget {
   final Function(String) onQuestionTextUpdated;
 
   const QuestionWrapper({
-    Key? key,
+    super.key,
     required this.currentQuestionIndex,
     required this.totalQuestions,
     required this.onQuestionIndexChanged,
     required this.onQuestionTextUpdated,
-  }) : super(key: key);
+  });
 
   @override
   QuestionWrapperState createState() => QuestionWrapperState();
 }
 
 class QuestionWrapperState extends State<QuestionWrapper> {
+  List<String> _navigationStack = [];
+  int _navigationStackIndex = 0;
   Map<String, List<String>> answersMap = {};
 
+  @override
+  void initState() {
+    super.initState();
+    final firstQuestion = QuestionRepository.questions.first;
+    _navigationStack = [firstQuestion.id];
+    _navigationStackIndex = 0;
+  }
+
+  List<String> _computeRouteForRoot(Question root) {
+    List<String> route = [];
+    final selectedBranches = answersMap[root.id] ?? [];
+    for (final branch in selectedBranches) {
+      if (root.nextQuestionMap != null && root.nextQuestionMap!.containsKey(branch)) {
+        String? currentId = root.nextQuestionMap![branch];
+        while (currentId != null) {
+          final question = QuestionRepository.questions.firstWhere((q) => q.id == currentId);
+          if (question.rootQuestionId == root.id) {
+            route.add(question.id);
+            currentId = question.nextQuestionId;
+          } else {
+            break;
+          }
+        }
+      }
+    }
+    if (root.nextQuestionId != null) {
+      if (route.isEmpty || route.last != root.nextQuestionId) {
+        route.add(root.nextQuestionId!);
+      }
+    }
+    return route;
+  }
+
+  void _recomputeNavigationStackFromRoot(String rootId) {
+    int rootIndex = _navigationStack.indexOf(rootId);
+    if (rootIndex == -1) return;
+    final rootQuestion = QuestionRepository.questions.firstWhere((q) => q.id == rootId);
+    final newRoute = _computeRouteForRoot(rootQuestion);
+    setState(() {
+      _navigationStack = _navigationStack.sublist(0, rootIndex + 1) + newRoute;
+      if (_navigationStackIndex > _navigationStack.length - 1) {
+        _navigationStackIndex = _navigationStack.length - 1;
+      }
+    });
+  }
+
   void _goToNextQuestion() {
-    final currentQuestionId = QuestionRepository.questions[widget.currentQuestionIndex].id;
-    print("Current question ID: $currentQuestionId");
-    
-    // Check if there are no answers for the current question
-    if (answersMap[currentQuestionId] == null || answersMap[currentQuestionId]!.isEmpty) {
+    final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+
+    if ((answersMap[currentQuestion.id] ?? []).isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please select at least one option"),
-          duration: Duration(seconds: 2),
-        ),
+        const SnackBar(content: Text("Please select at least one option"))
       );
       return;
     }
 
-    // Explicitly reset the "Other" field for the next question
-    if (widget.currentQuestionIndex < widget.totalQuestions - 1) {
-      final nextQuestionId = QuestionRepository.questions[widget.currentQuestionIndex + 1].id;
-      setState(() {
-        // Reset the answers for the next question, specifically clearing the "Other" field
-        answersMap[nextQuestionId] = [];
-      });
+    if (currentQuestion.isRoot) {
+      _recomputeNavigationStackFromRoot(currentQuestion.id);
+    }
 
-      widget.onQuestionIndexChanged(widget.currentQuestionIndex + 1);
-    } else {
-      print('Final selections: $answersMap');
+    if (_navigationStackIndex < _navigationStack.length - 1) {
+      _navigationStackIndex++;
+      final nextQuestionId = _navigationStack[_navigationStackIndex];
+      final newIndex = QuestionRepository.questions.indexWhere((q) => q.id == nextQuestionId);
+      if (newIndex != -1) {
+        setState(() {
+          widget.onQuestionIndexChanged(newIndex);
+        });
+      }
+    }
+
+    if (widget.currentQuestionIndex == QuestionRepository.questions.length - 1) {
+      print(answersMap);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("You've completed the questions!"))
+      );
     }
   }
 
-
   void _goToPreviousQuestion() {
-    if (widget.currentQuestionIndex > 0) {
-      widget.onQuestionIndexChanged(widget.currentQuestionIndex - 1);
+    if (_navigationStackIndex > 0) {
+      _navigationStackIndex--;
+      final prevQuestionId = _navigationStack[_navigationStackIndex];
+      final prevIndex = QuestionRepository.questions.indexWhere((q) => q.id == prevQuestionId);
+      if (prevIndex != -1) {
+        setState(() {
+          widget.onQuestionIndexChanged(prevIndex);
+        });
+      }
     }
   }
 
   void _updateSelectedChoices(List<String> choices) {
-    final questionId = QuestionRepository.questions[widget.currentQuestionIndex].id;
-    setState(() {
-      answersMap[questionId] = List.from(choices);
-    });
+    final qId = QuestionRepository.questions[widget.currentQuestionIndex].id;
+    if (QuestionRepository.questions[widget.currentQuestionIndex].isRoot) {
+      final prevBranches = answersMap[qId] ?? [];
+      final removedBranches = prevBranches.where((b) => !choices.contains(b));
+      for (final branch in removedBranches) {
+        _removeBranchAnswers(qId, branch);
+      }
+      setState(() {
+        answersMap[qId] = List.from(choices);
+      });
+      _recomputeNavigationStackFromRoot(qId);
+    } else {
+      setState(() {
+        answersMap[qId] = List.from(choices);
+      });
+    }
   }
 
   void _updateOtherText(String text) {
@@ -72,29 +142,49 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     final questionId = currentQuestion.id;
 
     setState(() {
+      // Remove any previous text input that is not part of the predefined options
+      answersMap[questionId]?.removeWhere(
+        (answer) => !(currentQuestion.options ?? []).contains(answer),
+      );
+
+      // Add the new text input if it's not empty
       if (text.isNotEmpty) {
-        // If "Other" text is provided, update the current question's answer list
         answersMap[questionId] = [
-          ...?answersMap[questionId]?.where((answer) => !currentQuestion.options!.contains(answer)),
-          text
+          ...?answersMap[questionId],
+          text,
         ];
-      } else {
-        // If "Other" text is empty, remove any "Other" answers from the current question
-        answersMap[questionId]?.removeWhere(
-          (answer) => !(currentQuestion.options ?? []).contains(answer),
-        );
       }
-      // Debugging output to ensure that the map is correctly updated
-      print('Updated answersMap: $answersMap');
     });
+  }
+
+  void _removeBranchAnswers(String rootId, String branch) {
+    final branchQuestionIds = _getBranchQuestionIds(rootId, branch);
+    for (final id in branchQuestionIds) {
+      answersMap.remove(id);
+    }
+  }
+
+  List<String> _getBranchQuestionIds(String rootId, String branch) {
+    final branchQuestions = <String>[];
+    final root = QuestionRepository.questions.firstWhere((q) => q.id == rootId);
+    String? currentId = root.nextQuestionMap?[branch];
+    
+    while (currentId != null) {
+      branchQuestions.add(currentId);
+      final nextQuestion = QuestionRepository.questions.firstWhere((q) => q.id == currentId);
+      currentId = nextQuestion.nextQuestionId;
+    }
+    return branchQuestions;
   }
 
   @override
   Widget build(BuildContext context) {
-    final Question currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
-
+    final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.onQuestionTextUpdated(currentQuestion.text);
+      if (currentQuestion.isRoot) {
+        _recomputeNavigationStackFromRoot(currentQuestion.id);
+      }
     });
 
     return Column(
@@ -112,15 +202,19 @@ class QuestionWrapperState extends State<QuestionWrapper> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (widget.currentQuestionIndex > 0)
+              if (_navigationStackIndex > 0)
                 ElevatedButton(
                   onPressed: _goToPreviousQuestion,
                   child: const Text("Previous"),
                 ),
+              // Add a Spacer to push the "Next" button to the right
+              if (_navigationStackIndex == 0) Spacer(),
               ElevatedButton(
                 onPressed: _goToNextQuestion,
                 child: Text(
-                  widget.currentQuestionIndex == widget.totalQuestions - 1 ? "Finish" : "Next",
+                  widget.currentQuestionIndex == QuestionRepository.questions.length - 1
+                    ? "Finish" 
+                    : "Next",
                 ),
               ),
             ],

@@ -12,7 +12,7 @@ class InternshipSelectorScreen extends StatefulWidget {
 
 class InternshipSelectorScreenState extends State<InternshipSelectorScreen> {
   int currentQuestionIndex = 0;
-  final int totalQuestions = 2;
+  final int totalQuestions = 5;
   String questionText = "";
 
   void _updateQuestionIndex(int newIndex) {
