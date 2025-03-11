@@ -43,7 +43,7 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0, end: pi).animate(_controller);

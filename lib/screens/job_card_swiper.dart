@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:youllgetit_flutter/widgets/job_card.dart';  // Import the package
 
-class CardSwiperApp extends StatelessWidget {
-  CardSwiperApp({super.key});
+class JobCardSwiper extends StatelessWidget {
+  JobCardSwiper({super.key});
 
   final List<JobCardData> jobs = [
     JobCardData(
