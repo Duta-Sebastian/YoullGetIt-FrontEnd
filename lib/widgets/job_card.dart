@@ -95,19 +95,19 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
           Text(widget.jobData.location, style: _infoStyle),
           const SizedBox(height: 16),
           _buildInfoRow([
-            _buildChip(widget.jobData.duration, Colors.green),
-            _buildChip(widget.jobData.education, Colors.pink),
+            _buildChip(widget.jobData.duration, Color.fromRGBO(154, 255, 148, 1), Color.fromRGBO(51, 95, 48, 1)),
+            _buildChip(widget.jobData.education, Color.fromRGBO(255, 190, 249, 1), Color.fromRGBO(108, 62, 103, 1)),
           ]),
           const SizedBox(height: 8),
           _buildInfoRow([
-            _buildChip(widget.jobData.jobType, Colors.lightBlue),
-            _buildChip(widget.jobData.salary, Colors.amber),
-            _buildChip(widget.jobData.languages, Colors.lightBlue.shade100),
+            _buildChip(widget.jobData.jobType, Color.fromRGBO(171, 196, 234, 1), Color.fromRGBO(54, 81, 121, 1)),
+            _buildChip(widget.jobData.salary, Color.fromRGBO(255, 242, 138, 1), Color.fromRGBO(137, 126, 31, 1)),
+            _buildChip(widget.jobData.languages, Color.fromRGBO(190, 243, 255, 1), Color.fromRGBO(18, 76, 89, 1)),
           ]),
           const SizedBox(height: 24),
           const Text("Prior Experience", style: _headerStyle),
           const SizedBox(height: 8),
-          _buildChip(widget.jobData.experience, Colors.green),
+          _buildChip(widget.jobData.experience, Color.fromRGBO(255, 226, 192, 1), Color.fromRGBO(134, 82, 19, 1)),
         ],
       ),
     );
@@ -154,17 +154,17 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildChip(String label, Color color) {
+  Widget _buildChip(String label, Color chipColor, Color textColor) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color,
+        color: chipColor,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: color.computeLuminance() > 0.5 ? Colors.black : Colors.white,
+          color: textColor,
           fontWeight: FontWeight.w500,
         ),
       ),

@@ -47,7 +47,7 @@ class JobCardSwiper extends StatelessWidget {
               cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
                 return JobCard(jobData: jobs[index]);
               },
-              numberOfCardsDisplayed: 1,
+              numberOfCardsDisplayed: 2,
               backCardOffset: const Offset(0, 40),
               padding: const EdgeInsets.all(24.0),
               allowedSwipeDirection: AllowedSwipeDirection.only(
@@ -55,6 +55,12 @@ class JobCardSwiper extends StatelessWidget {
                 left: true,
               ),
               onSwipe: (previousIndex, currentIndex, direction) {
+
+                if (direction == CardSwiperDirection.left) {
+                  print('Swiped left');
+                } else if (direction == CardSwiperDirection.right) {
+                  print('Swiped right');
+                }
                 // Handle swipe events here if needed
                 return true; // Return true to allow the swipe
               },
