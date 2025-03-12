@@ -21,7 +21,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffC4DFCB),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           "You'll Get It",
@@ -39,96 +39,47 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Container buildMyNavBar(BuildContext context) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+  ClipRRect buildMyNavBar(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(Icons.home_filled, Icons.home_outlined, 0),
+            _buildNavItem(Icons.work_rounded, Icons.work_outline_outlined, 1),
+            _buildNavItem(Icons.widgets_rounded, Icons.widgets_outlined, 2),
+            _buildNavItem(Icons.person, Icons.person_outline, 3),
+          ],
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 0;
-              });
-            },
-            icon: pageIndex == 0
-                ? const Icon(
-                    Icons.home_filled,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.home_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 1;
-              });
-            },
-            icon: pageIndex == 1
-                ? const Icon(
-                    Icons.work_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.work_outline_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 2;
-              });
-            },
-            icon: pageIndex == 2
-                ? const Icon(
-                    Icons.widgets_rounded,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.widgets_outlined,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
-              setState(() {
-                pageIndex = 3;
-              });
-            },
-            icon: pageIndex == 3
-                ? const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 35,
-                  )
-                : const Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-          ),
-        ],
+    );
+  }
+
+  Widget _buildNavItem(IconData selectedIcon, IconData unselectedIcon, int index) {
+    return IconButton(
+      enableFeedback: false,
+      onPressed: () {
+        setState(() {
+          pageIndex = index;
+        });
+      },
+      icon: Icon(
+        pageIndex == index ? selectedIcon : unselectedIcon,
+        color: Colors.white,
+        size: 35,
       ),
     );
   }

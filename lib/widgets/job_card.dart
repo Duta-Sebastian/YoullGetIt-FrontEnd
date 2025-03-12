@@ -1,40 +1,18 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
-class JobCardData {
-  final String title;
-  final String company;
-  final String location;
-  final String duration;
-  final String education;
-  final String jobType;
-  final String salary;
-  final String languages;
-  final String experience;
-
-  JobCardData({
-    required this.title,
-    required this.company,
-    required this.location,
-    required this.duration,
-    required this.education,
-    required this.jobType,
-    required this.salary,
-    required this.languages,
-    required this.experience,
-  });
-}
+import 'package:youllgetit_flutter/models/job_card_model.dart';
 
 class JobCard extends StatefulWidget {
-  final JobCardData jobData;
+  final JobCardModel jobData;
+  final double percentThresholdx;
 
-  const JobCard({super.key, required this.jobData});
+  const JobCard({super.key, required this.jobData, required this.percentThresholdx});
 
   @override
-  _JobCardState createState() => _JobCardState();
+  JobCardState createState() => JobCardState();
 }
 
-class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
+class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   bool _isFront = true;
@@ -60,6 +38,19 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     });
   }
 
+  void _resetFlipState() {
+    if (!_isFront) {
+      _controller.reverse();
+      _isFront = true;
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant JobCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _resetFlipState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -75,7 +66,7 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             transform: transform,
             child: _animation.value <= pi / 2 ? _buildFront() : Transform(
                   alignment: Alignment.center,
-                  transform: Matrix4.rotationY(pi), // Fix mirrored text
+                  transform: Matrix4.rotationY(pi),
                   child: _buildBack(),
                 ),
           );
@@ -115,17 +106,56 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 
   Widget _buildBack() {
     return _buildCard(
-      child: Center(
-        child: Text(
-          "More details coming soon...",
-          style: TextStyle(color: Colors.white, fontSize: 16),
-          textAlign: TextAlign.center,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("Skills", style: _headerStyle),
+          const SizedBox(height: 12),
+          _buildWrappedChips(
+            widget.jobData.skills,
+            Color.fromRGBO(190, 243, 255, 1),
+            Color.fromRGBO(13, 107, 128, 1),
+          ),
+          const SizedBox(height: 24),
+          const Text("Nice-to-Haves", style: _headerStyle),
+          const SizedBox(height: 12),
+          _buildWrappedChips(
+            widget.jobData.niceToHave,
+            Color.fromRGBO(129, 220, 196, 1),
+            Color.fromRGBO(7, 84, 63, 1),
+          ),
+        ],
       ),
     );
   }
 
+  Color _calculateGlowColor(double threshold) {
+    // Base glow colors
+    const Color positiveGlowBase = Color.fromRGBO(0, 255, 0, 1);
+    const Color negativeGlowBase = Color.fromRGBO(255, 0, 0, 1);
+    
+    const Color neutralColor = Color.fromRGBO(0, 0, 0, 0);
+    
+    double absThreshold = threshold.abs();
+    double normalizedIntensity = min(1.0, absThreshold / 100);
+    
+    double curvedIntensity = normalizedIntensity * normalizedIntensity * 0.4;
+    
+    Color baseColor = threshold > 0 ? positiveGlowBase : negativeGlowBase;
+    
+    return Color.lerp(neutralColor, baseColor, curvedIntensity) ?? neutralColor;
+  }
+
   Widget _buildCard({required Widget child}) {
+    double threshold = widget.percentThresholdx;
+    
+    bool shouldApplyEffect = threshold != 0;
+    Color glowColor = _calculateGlowColor(threshold);
+    double borderWidth = shouldApplyEffect ? 2.0 : 0.0;
+    
+    double blurRadius = shouldApplyEffect ? 8.0 + (threshold.abs() / 100 * 8) : 0;
+    double spreadRadius = shouldApplyEffect ? 1.0 + (threshold.abs() / 100 * 2) : 0;
+
     return Container(
       decoration: BoxDecoration(
         color: const Color.fromRGBO(31, 45, 42, 1),
@@ -136,7 +166,16 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
+          if (shouldApplyEffect)
+            BoxShadow(
+              color: glowColor,
+              blurRadius: blurRadius,
+              spreadRadius: spreadRadius,
+            ),
         ],
+        border: shouldApplyEffect 
+            ? Border.all(color: glowColor, width: borderWidth)
+            : null,
       ),
       padding: const EdgeInsets.all(16.0),
       child: child,
@@ -151,6 +190,14 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
           children[i],
         ],
       ],
+    );
+  }
+
+  Widget _buildWrappedChips(List<String> items, Color chipColor, Color textColor) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: items.map((item) => _buildChip(item, chipColor, textColor)).toList(),
     );
   }
 
@@ -175,4 +222,4 @@ class _JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 const _titleStyle = TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold);
 const _subtitleStyle = TextStyle(color: Colors.white, fontSize: 22);
 const _infoStyle = TextStyle(color: Colors.white, fontSize: 14);
-const _headerStyle = TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500);
+const _headerStyle = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
