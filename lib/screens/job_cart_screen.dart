@@ -5,7 +5,7 @@ import 'package:youllgetit_flutter/widgets/checklist_card.dart';
 import 'package:youllgetit_flutter/widgets/job_option_item.dart';
 
 class JobCartScreen extends StatefulWidget {
-  const JobCartScreen({Key? key}) : super(key: key);
+  const JobCartScreen({super.key});
 
   @override
   State<JobCartScreen> createState() => _JobCartScreenState();

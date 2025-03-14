@@ -1,47 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
+import 'package:youllgetit_flutter/providers/job_provider.dart';
+
+// Define a provider to track loading state
+final appInitializationProvider = StateProvider<bool>((ref) => false);
 
 void main() {
+  // Preserve the splash screen until initialization is complete
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  // Create a ProviderContainer for initializing data before the app starts
+  final container = ProviderContainer();
+  
+  // Fetch jobs and update initialization state
+  container.read(jobProvider.notifier).fetchJobs(10).then((_) {
+    // Mark initialization as complete
+    container.read(appInitializationProvider.notifier).state = true;
+    
+    // Optional: You can print the job list to verify it's loaded
+    print('Jobs loaded: ${container.read(jobProvider).length}');
+    
+    // Remove splash screen after jobs are loaded or after 2 seconds, whichever comes first
+    FlutterNativeSplash.remove();
+  });
+
+  // Set a maximum time for the splash screen
   Future.delayed(const Duration(seconds: 2), () {
     FlutterNativeSplash.remove();
   });
 
-  runApp(const MyApp());
+  // Run the app with the initialized container
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'You\'ll Get It',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        fontFamily: 'Inter',        
+        fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
