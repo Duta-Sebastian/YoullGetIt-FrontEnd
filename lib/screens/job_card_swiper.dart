@@ -4,7 +4,7 @@ import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/widgets/job_card.dart';
 
 class JobCardSwiper extends StatefulWidget {
-  JobCardSwiper({super.key});
+  const JobCardSwiper({super.key});
 
   @override
   JobCardSwiperState createState() => JobCardSwiperState();

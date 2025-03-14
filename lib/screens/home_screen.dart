@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
+import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,7 +14,7 @@ class HomePageState extends State<HomePage> {
 
   final pages = [
     JobCardSwiper(),
-    const Page2(),
+    JobCartScreen(),
     const Page3(),
     const Page4(),
   ];
@@ -80,27 +81,6 @@ class HomePageState extends State<HomePage> {
         pageIndex == index ? selectedIcon : unselectedIcon,
         color: Colors.white,
         size: 35,
-      ),
-    );
-  }
-}
-
-class Page2 extends StatelessWidget {
-  const Page2({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xffC4DFCB),
-      child: Center(
-        child: Text(
-          "Page Number 2",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
       ),
     );
   }

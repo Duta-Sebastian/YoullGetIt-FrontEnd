@@ -153,8 +153,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     Color glowColor = _calculateGlowColor(threshold);
     double borderWidth = shouldApplyEffect ? 2.0 : 0.0;
     
-    double blurRadius = shouldApplyEffect ? 8.0 + (threshold.abs() / 100 * 8) : 0;
-    double spreadRadius = shouldApplyEffect ? 1.0 + (threshold.abs() / 100 * 2) : 0;
+    // double blurRadius = shouldApplyEffect ? 8.0 + (threshold.abs() / 100 * 8) : 0;
+    double spreadRadius = shouldApplyEffect ? 0.5 + (threshold.abs() / 100 * 1.1) : 0;
 
     return Container(
       decoration: BoxDecoration(
@@ -162,14 +162,14 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: const Color.fromRGBO(0, 0, 0, 0.2),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
           if (shouldApplyEffect)
             BoxShadow(
               color: glowColor,
-              blurRadius: blurRadius,
+              // blurRadius: blurRadius,
               spreadRadius: spreadRadius,
             ),
         ],
