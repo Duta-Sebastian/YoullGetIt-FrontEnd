@@ -1,17 +1,20 @@
-// job_cart_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/providers/database_provider.dart';
+import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
 import 'package:youllgetit_flutter/widgets/checklist_card.dart';
 import 'package:youllgetit_flutter/widgets/job_option_item.dart';
 
-class JobCartScreen extends StatefulWidget {
+class JobCartScreen extends ConsumerStatefulWidget {
   const JobCartScreen({super.key});
 
   @override
-  State<JobCartScreen> createState() => _JobCartScreenState();
+  JobCartScreenState createState() => JobCartScreenState();
 }
 
-class _JobCartScreenState extends State<JobCartScreen> {
+class JobCartScreenState extends ConsumerState<JobCartScreen> {
+  int? jobCount;
   final List<JobOption> jobOptions = [
     JobOption(title: "Chassis Engineer", company: "RedBull", isSelected: false),
     JobOption(title: "Aerodynamics Engineer", company: "AeroDelft", isSelected: false),
@@ -23,7 +26,35 @@ class _JobCartScreenState extends State<JobCartScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadJobCount();
+  }
+
+    Future<void> _loadJobCount() async {
+    final database = ref.read(databaseProvider).value;
+    if (database != null) {
+      
+      final count = await SecureDatabaseManager.getJobCount(database);
+      final jobs = await SecureDatabaseManager.retrieveAllJobs(database);
+      print(jobs[0].title);
+      if (mounted) {
+        setState(() {
+          jobCount = count;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (jobCount == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -44,7 +75,7 @@ class _JobCartScreenState extends State<JobCartScreen> {
                         ),
                       ),
                       Text(
-                        '${jobOptions.length} potential opportunities',
+                        '$jobCount pottential jobs',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.blue,

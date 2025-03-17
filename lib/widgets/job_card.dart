@@ -131,8 +131,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 
   Color _calculateGlowColor(double threshold) {
     // Base glow colors
-    const Color positiveGlowBase = Color.fromRGBO(0, 255, 0, 1);
-    const Color negativeGlowBase = Color.fromRGBO(255, 0, 0, 1);
+    const Color positiveGlowBase = Color.fromRGBO(129, 220, 196, 1);
+    const Color negativeGlowBase = Color.fromRGBO(153, 34, 36, 1);
     
     const Color neutralColor = Color.fromRGBO(0, 0, 0, 0);
     

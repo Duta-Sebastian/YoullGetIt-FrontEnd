@@ -8,6 +8,7 @@ class JobApi {
 
     List<JobCardModel> jobs = [
       JobCardModel(
+        id: 0,
         title: 'Chassis Engineer',
         company: 'RedBull',
         location: 'Amsterdam, The Netherlands',
@@ -21,6 +22,7 @@ class JobApi {
         niceToHave: ['Python', 'Matlab'],
       ),
       JobCardModel(
+        id: 1,
         title: 'Automotive Engineer',
         company: 'Mercedes',
         location: 'Berlin, Germany',
@@ -34,6 +36,7 @@ class JobApi {
         niceToHave: ['No', 'Matlab'],
       ),
       JobCardModel(
+        id: 2,
         title: 'Automotive Engineer1',
         company: 'Mercedes',
         location: 'Berlin, Germany',
@@ -47,6 +50,7 @@ class JobApi {
         niceToHave: ['No', 'Matlab'],
       ),
       JobCardModel(
+        id: 3,
         title: 'Automotive Engineer2',
         company: 'Mercedes',
         location: 'Berlin, Germany',
@@ -59,7 +63,8 @@ class JobApi {
         skills: ['CAD', 'FEA', 'CFD'],
         niceToHave: ['No', 'Matlab'],
       ),
-        JobCardModel(
+      JobCardModel(
+        id: 4,
         title: 'Mechanical Engineer',
         company: 'Ferrari',
         location: 'Milan, Italy',
@@ -73,6 +78,7 @@ class JobApi {
         niceToHave: ['Python', 'Matlab'],
       ),
       JobCardModel(
+        id: 5,
         title: 'Software Engineer',
         company: 'Tesla',
         location: 'Palo Alto, USA',
@@ -86,6 +92,7 @@ class JobApi {
         niceToHave: ['ROS', 'AI'],
       ),
       JobCardModel(
+        id: 6,
         title: 'Electrical Engineer',
         company: 'Porsche',
         location: 'Stuttgart, Germany',
@@ -99,6 +106,7 @@ class JobApi {
         niceToHave: ['Python', 'FPGA'],
       ),
       JobCardModel(
+        id: 7,
         title: 'AI Researcher',
         company: 'Google DeepMind',
         location: 'London, UK',
@@ -112,6 +120,7 @@ class JobApi {
         niceToHave: ['PyTorch', 'TensorFlow'],
       ),
       JobCardModel(
+        id: 8,
         title: 'Aerodynamics Engineer',
         company: 'McLaren',
         location: 'Woking, UK',
@@ -125,6 +134,7 @@ class JobApi {
         niceToHave: ['Python', 'Matlab'],
       ),
       JobCardModel(
+        id: 9,
         title: 'Robotics Engineer',
         company: 'Boston Dynamics',
         location: 'Boston, USA',
@@ -138,6 +148,7 @@ class JobApi {
         niceToHave: ['Deep Learning', 'AI'],
       ),
       JobCardModel(
+        id: 10,
         title: 'Cybersecurity Engineer',
         company: 'Palantir',
         location: 'New York, USA',
@@ -151,6 +162,7 @@ class JobApi {
         niceToHave: ['Rust', 'Malware Analysis'],
       ),
       JobCardModel(
+        id: 11,
         title: 'Blockchain Developer',
         company: 'Ethereum Foundation',
         location: 'Remote',
@@ -164,6 +176,7 @@ class JobApi {
         niceToHave: ['Rust', 'Cryptography'],
       ),
       JobCardModel(
+        id: 12,
         title: 'Game Developer',
         company: 'Ubisoft',
         location: 'Montreal, Canada',
@@ -177,6 +190,7 @@ class JobApi {
         niceToHave: ['Blender', 'C++'],
       ),
       JobCardModel(
+        id: 13,
         title: 'Data Scientist',
         company: 'Netflix',
         location: 'Los Gatos, USA',
@@ -190,6 +204,7 @@ class JobApi {
         niceToHave: ['Hadoop', 'TensorFlow'],
       ),
       JobCardModel(
+        id: 14,
         title: 'Cloud Engineer',
         company: 'AWS',
         location: 'Seattle, USA',
@@ -203,6 +218,7 @@ class JobApi {
         niceToHave: ['Python', 'DevOps'],
       ),
       JobCardModel(
+        id: 15,
         title: 'DevOps Engineer',
         company: 'Microsoft',
         location: 'Redmond, USA',
@@ -216,6 +232,7 @@ class JobApi {
         niceToHave: ['Terraform', 'AWS'],
       ),
       JobCardModel(
+        id: 16,
         title: 'NLP Researcher',
         company: 'OpenAI',
         location: 'San Francisco, USA',
@@ -229,6 +246,7 @@ class JobApi {
         niceToHave: ['GPT', 'Llama'],
       ),
       JobCardModel(
+        id: 17,
         title: 'Hardware Engineer',
         company: 'Intel',
         location: 'San Jose, USA',
@@ -242,6 +260,7 @@ class JobApi {
         niceToHave: ['Embedded C', 'Rust'],
       ),
       JobCardModel(
+        id: 18,
         title: 'Game AI Engineer',
         company: 'Rockstar Games',
         location: 'Edinburgh, UK',
@@ -255,6 +274,7 @@ class JobApi {
         niceToHave: ['Unreal Engine', 'Python'],
       ),
       JobCardModel(
+        id: 19,
         title: 'Bioinformatics Engineer',
         company: 'Moderna',
         location: 'Cambridge, USA',
@@ -268,6 +288,7 @@ class JobApi {
         niceToHave: ['TensorFlow', 'BioPython'],
       ),
       JobCardModel(
+        id: 20,
         title: 'Embedded Systems Engineer',
         company: 'NVIDIA',
         location: 'Santa Clara, USA',
