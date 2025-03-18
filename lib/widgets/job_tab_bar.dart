@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class JobTabBar extends StatelessWidget {
-  const JobTabBar({Key? key}) : super(key: key);
+  final ValueChanged<int> onTabSelected;
+  final int selectedIndex;
+
+  const JobTabBar({
+    super.key,
+    required this.onTabSelected,
+    required this.selectedIndex
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,56 +19,39 @@ class JobTabBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Liked',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Divider(
-                    height: 2,
-                    thickness: 2,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: const Center(
-                child: Text(
-                  'To Apply',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: InkWell(
-              onTap: () {},
-              child: const Center(
-                child: Text(
-                  'Applied',
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          _buildTab(0, 'Liked'),
+          _buildTab(1, 'To Apply'),
+          _buildTab(2, 'Applied'),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTab(int index, String label) {
+    final bool isSelected = index == selectedIndex;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => onTabSelected(index),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.black : Colors.grey,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+            const SizedBox(height: 2),
+            if (isSelected)
+              const Divider(
+                height: 2,
+                thickness: 2,
+                color: Colors.black,
+              ),
+          ],
+        ),
       ),
     );
   }

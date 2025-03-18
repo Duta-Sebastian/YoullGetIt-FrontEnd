@@ -68,7 +68,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                 ref.read(jobProvider.notifier).fetchJobs(5);
               }
                 if (direction == CardSwiperDirection.right) {
-                SecureDatabaseManager.insertJobCard(database!, jobList[currentIndex]).then((i) => 
+                SecureDatabaseManager.insertJobCard(database!, jobList[previousIndex]).then((i) => 
                   {print('Job card inserted')});
                 }
               jobNumber++;

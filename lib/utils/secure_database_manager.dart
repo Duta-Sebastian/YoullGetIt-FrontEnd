@@ -62,4 +62,12 @@ class SecureDatabaseManager {
     var result = await db.rawQuery("SELECT COUNT(*) FROM jobs");
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
+  static Future<int> deleteAllJobs(Database database) {
+    return database.delete('jobs');
+  }
+
+  static Future<int> deleteJob(Database database, int id) {
+    return database.delete('jobs', where: 'id = ?', whereArgs: [id]);
+  }
 }

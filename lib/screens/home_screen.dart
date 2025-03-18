@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
+import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -86,8 +89,27 @@ class HomePageState extends State<HomePage> {
   }
 }
 
-class Page3 extends StatelessWidget {
+class Page3 extends ConsumerStatefulWidget {
   const Page3({Key? key}) : super(key: key);
+
+  @override
+  Page3State createState() => Page3State();
+}
+
+class Page3State extends ConsumerState<Page3> {
+
+  @override
+  void initState() {
+    super.initState();
+    _deleteJobs();
+  }
+
+    Future<void> _deleteJobs() async {
+    final database = ref.read(databaseProvider).value;
+    if (database != null) {
+      await SecureDatabaseManager.deleteAllJobs(database);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

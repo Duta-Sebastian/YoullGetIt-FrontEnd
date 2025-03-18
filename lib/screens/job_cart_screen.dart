@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite/sqlite_api.dart';
+import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
+import 'package:youllgetit_flutter/widgets/job_list.dart';
 import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
 import 'package:youllgetit_flutter/widgets/checklist_card.dart';
-import 'package:youllgetit_flutter/widgets/job_option_item.dart';
 
 class JobCartScreen extends ConsumerStatefulWidget {
   const JobCartScreen({super.key});
@@ -15,32 +17,41 @@ class JobCartScreen extends ConsumerStatefulWidget {
 
 class JobCartScreenState extends ConsumerState<JobCartScreen> {
   int? jobCount;
-  final List<JobOption> jobOptions = [
-    JobOption(title: "Chassis Engineer", company: "RedBull", isSelected: false),
-    JobOption(title: "Aerodynamics Engineer", company: "AeroDelft", isSelected: false),
-    JobOption(title: "CAD Engineer", company: "Vopak", isSelected: false),
-    JobOption(title: "Flight Testing Engineer", company: "Airbus", isSelected: false),
-    JobOption(title: "CAD Engineer", company: "Vopak", isSelected: false),
-    JobOption(title: "Aerodynamics Engineer", company: "AeroDelft", isSelected: false),
-    JobOption(title: "CAD Engineer", company: "Vopak", isSelected: false),
-  ];
-
+  List<JobCardModel> jobCart = [];
+  final Map<int, bool> selectedJobs = {};
+  Database? database;
+  int _selectedIndex = 0;
+  
   @override
   void initState() {
     super.initState();
+    _loadDatabase();
     _loadJobCount();
   }
 
-    Future<void> _loadJobCount() async {
-    final database = ref.read(databaseProvider).value;
+  void _onTabSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  Future<void> _loadDatabase() async {
+    database = ref.read(databaseProvider).value;
+  }
+
+  Future<void> _loadJobCount() async {
     if (database != null) {
-      
-      final count = await SecureDatabaseManager.getJobCount(database);
-      final jobs = await SecureDatabaseManager.retrieveAllJobs(database);
-      print(jobs[0].title);
+      final count = await SecureDatabaseManager.getJobCount(database!);
+      final jobs = await SecureDatabaseManager.retrieveAllJobs(database!);
       if (mounted) {
         setState(() {
           jobCount = count;
+          jobCart = jobs;
+          // Initialize selection state
+          selectedJobs.clear();
+          for (var job in jobs) {
+            selectedJobs[job.id] = false;
+          }
         });
       }
     }
@@ -48,7 +59,7 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (jobCount == null) {
+    if (jobCount == null || database == null) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -59,7 +70,6 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header with title and count
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Row(
@@ -75,7 +85,7 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
                         ),
                       ),
                       Text(
-                        '$jobCount pottential jobs',
+                        '$jobCount potential jobs',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.blue,
@@ -91,47 +101,31 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
                 ],
               ),
             ),
-            
-            // Tab Bar
-            const JobTabBar(),
-            
-            // Divider
-            const Divider(height: 1),
-            
-            // Checklist Card
-            const ChecklistCard(),
-            
-            // Job Options List
-            Expanded(
-              child: ListView.builder(
-                itemCount: jobOptions.length,
-                itemBuilder: (context, index) {
-                  return JobOptionItem(
-                    jobOption: jobOptions[index],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        jobOptions[index].isSelected = value ?? false;
-                      });
-                    },
-                  );
-                },
-              ),
+            JobTabBar(
+              onTabSelected: _onTabSelected,
+              selectedIndex: _selectedIndex
             ),
+            const Divider(height: 1),
+            const ChecklistCard(),
+            Expanded(
+              child: _selectedIndex == 0
+              ? JobList(
+                jobs: jobCart,
+                onJobTapped: (job) {
+                  print(job.title);
+                },
+                onJobRemoved: (job) {
+                  Future(() async {
+                    await SecureDatabaseManager.deleteJob(database!, job.id);
+                    _loadJobCount();
+                  }); 
+                }
+              )
+              : SizedBox(),
+            )
           ],
         ),
       ),
     );
   }
-}
-
-class JobOption {
-  final String title;
-  final String company;
-  bool isSelected;
-
-  JobOption({
-    required this.title,
-    required this.company,
-    required this.isSelected,
-  });
 }
