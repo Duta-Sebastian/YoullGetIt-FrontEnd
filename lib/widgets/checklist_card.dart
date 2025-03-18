@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChecklistCard extends StatelessWidget {
-  const ChecklistCard({Key? key}) : super(key: key);
+  const ChecklistCard({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';  // Import Riverpod
 import 'package:youllgetit_flutter/providers/database_provider.dart';
-import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';  // Import your job provider
 
@@ -30,7 +30,8 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
         ),
       );
     }
-    final database = databaseAsync.value;
+    final database = databaseAsync.value!;
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -68,8 +69,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                 ref.read(jobProvider.notifier).fetchJobs(5);
               }
                 if (direction == CardSwiperDirection.right) {
-                SecureDatabaseManager.insertJobCard(database!, jobList[previousIndex]).then((i) => 
-                  {print('Job card inserted')});
+                  DatabaseManager.insertJobCard(database, jobList[previousIndex]);
                 }
               jobNumber++;
               return true;

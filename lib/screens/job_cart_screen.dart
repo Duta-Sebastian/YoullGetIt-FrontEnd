@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
-import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_list.dart';
 import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
 import 'package:youllgetit_flutter/widgets/checklist_card.dart';
@@ -41,8 +41,8 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
 
   Future<void> _loadJobCount() async {
     if (database != null) {
-      final count = await SecureDatabaseManager.getJobCount(database!);
-      final jobs = await SecureDatabaseManager.retrieveAllJobs(database!);
+      final count = await DatabaseManager.getJobCount(database!);
+      final jobs = await DatabaseManager.retrieveAllJobs(database!);
       if (mounted) {
         setState(() {
           jobCount = count;
@@ -93,11 +93,6 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  CircleAvatar(
-                    backgroundColor: Colors.brown.shade300,
-                    child: const Icon(Icons.handshake, color: Colors.white),
-                  ),
                 ],
               ),
             ),
@@ -106,17 +101,18 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
               selectedIndex: _selectedIndex
             ),
             const Divider(height: 1),
-            const ChecklistCard(),
+            _selectedIndex == 0 ? ChecklistCard() : const SizedBox(),
             Expanded(
               child: _selectedIndex == 0
               ? JobList(
                 jobs: jobCart,
                 onJobTapped: (job) {
+                  
                   print(job.title);
                 },
                 onJobRemoved: (job) {
                   Future(() async {
-                    await SecureDatabaseManager.deleteJob(database!, job.id);
+                    await DatabaseManager.deleteJob(database!, job.id);
                     _loadJobCount();
                   }); 
                 }

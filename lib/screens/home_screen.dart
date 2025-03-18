@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
-import 'package:youllgetit_flutter/utils/secure_database_manager.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -107,7 +107,7 @@ class Page3State extends ConsumerState<Page3> {
     Future<void> _deleteJobs() async {
     final database = ref.read(databaseProvider).value;
     if (database != null) {
-      await SecureDatabaseManager.deleteAllJobs(database);
+      await DatabaseManager.deleteAllJobs(database);
     }
   }
 
