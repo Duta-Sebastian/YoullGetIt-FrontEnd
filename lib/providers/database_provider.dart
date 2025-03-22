@@ -13,7 +13,8 @@ final databaseProvider = FutureProvider<Database>((ref) async {
           r'CREATE TABLE jobs ( '
           'id INTEGER PRIMARY KEY, '
           'job_data TEXT, '
-          'date_added DATE)'
+          'date_added DATE, '
+          'status TEXT CHECK(status IN ("liked", "to_apply", "applied")))'
         );
       },
     );

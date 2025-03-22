@@ -41,8 +41,8 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
 
   Future<void> _loadJobCount() async {
     if (database != null) {
-      final count = await DatabaseManager.getJobCount(database!);
-      final jobs = await DatabaseManager.retrieveAllJobs(database!);
+      final count = await DatabaseManager.getLikedJobCount(database!);
+      final jobs = await DatabaseManager.retrieveAllLikedJobs(database!);
       if (mounted) {
         setState(() {
           jobCount = count;

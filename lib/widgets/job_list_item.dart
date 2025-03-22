@@ -104,7 +104,7 @@ class JobListItem extends StatelessWidget {
               ),
             ),
             
-          // Remove button for long-pressed item
+
           if (isLongPressed)
             Positioned(
               right: 26,
