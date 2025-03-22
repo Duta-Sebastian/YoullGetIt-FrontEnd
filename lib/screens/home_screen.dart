@@ -62,28 +62,39 @@ class HomePageState extends State<HomePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Icons.home_filled, Icons.home_outlined, 0),
-            _buildNavItem(Icons.work_rounded, Icons.work_outline_outlined, 1),
-            _buildNavItem(Icons.widgets_rounded, Icons.widgets_outlined, 2),
-            _buildNavItem(Icons.person, Icons.person_outline, 3),
+            _buildNavItem(Icons.loop, 0),
+            _buildNavItem(Icons.bookmark, 1),
+            _buildNavItem(Icons.widgets_rounded, 2),
+            _buildNavItem(Icons.person, 3),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData selectedIcon, IconData unselectedIcon, int index) {
-    return IconButton(
-      enableFeedback: false,
-      onPressed: () {
-        setState(() {
-          pageIndex = index;
-        });
-      },
-      icon: Icon(
-        pageIndex == index ? selectedIcon : unselectedIcon,
-        color: Colors.white,
-        size: 35,
+  Widget _buildNavItem(IconData icon, int index) {
+    final bool isSelected = pageIndex == index;
+    
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      child: IconButton(
+        enableFeedback: false,
+        onPressed: () {
+          setState(() {
+            pageIndex = index;
+          });
+        },
+        icon: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: isSelected ? 46 : 32,
+          ),
+        ),
+        padding: EdgeInsets.all(isSelected ? 8 : 12),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
     );
   }
