@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_list.dart';
 import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
 import 'package:youllgetit_flutter/widgets/checklist_card.dart';
 
-class JobCartScreen extends ConsumerStatefulWidget {
+class JobCartScreen extends StatefulWidget {
   const JobCartScreen({super.key});
 
   @override
   JobCartScreenState createState() => JobCartScreenState();
 }
 
-class JobCartScreenState extends ConsumerState<JobCartScreen> {
+class JobCartScreenState extends State<JobCartScreen> {
   int? jobCount;
   List<JobCardModel> jobCart = [];
   final Map<int, bool> selectedJobs = {};
@@ -34,7 +34,7 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
 
   Future<void> _loadJobCount() async {
     final count = await DatabaseManager.getLikedJobCount();
-    final jobs = await DatabaseManager.retrieveAllLikedJobs();
+    final jobs = await DatabaseManager.retrieveAllJobs();
     if (mounted) {
       setState(() {
         jobCount = count;
@@ -42,7 +42,7 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
         selectedJobs.clear();
         for (var job in jobs) {
           bool isSelected = false;
-          if (job.status == 'to_apply') {
+          if (job.status == JobStatus.toApply) {
             isSelected = true;
           }
           selectedJobs[job.jobCard.id] = isSelected;
@@ -65,10 +65,10 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
       
       if (selected) {
         selectedJobs[job.id] = true;
-        DatabaseManager.updateJobStatus(job.id, 'to_apply');
+        DatabaseManager.updateJobStatus(job.id, JobStatus.toApply);
       } else {
         selectedJobs[job.id] = false;
-        DatabaseManager.updateJobStatus(job.id, 'liked');
+        DatabaseManager.updateJobStatus(job.id, JobStatus.liked);
       }
     });
   }

@@ -27,7 +27,7 @@ class ChecklistCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.7),
+              color: Colors.white.withAlpha((0.5 * 255).toInt()),
               shape: BoxShape.circle,
             ),
             child: const Icon(
