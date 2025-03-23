@@ -21,6 +21,8 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
   final Map<int, bool> selectedJobs = {};
   Database? database;
   int _selectedIndex = 0;
+  Set<int> selectedJobIds = {};
+  int? longPressedJobId;
   
   @override
   void initState() {
@@ -55,9 +57,59 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
             }
             selectedJobs[job.jobCard.id] = isSelected;
           }
+          selectedJobIds = selectedJobs.keys.where((key) => selectedJobs[key]!).toSet();
         });
       }
     }
+  }
+  
+  void _resetLongPress() {
+    if (longPressedJobId != null) {
+      setState(() {
+        longPressedJobId = null;
+      });
+    }
+  }
+
+  void _handleSelectionChanged(JobCardModel job, bool selected) {
+    setState(() {
+      longPressedJobId = null;
+      
+      if (selected) {
+        selectedJobIds.add(job.id);
+        selectedJobs[job.id] = true;
+        if (database != null) {
+          DatabaseManager.updateJobStatus(database!, job.id, 'to_apply');
+        }
+      } else {
+        selectedJobIds.remove(job.id);
+        selectedJobs[job.id] = false;
+        if (database != null) {
+          DatabaseManager.updateJobStatus(database!, job.id, 'liked');
+        }
+      }
+    });
+  }
+
+  void _handleLongPress(int jobId) {
+    setState(() {
+      longPressedJobId = jobId;
+    });
+  }
+
+  void _handleRemove(JobCardModel job) {
+    Future(() async {
+      if (database != null) {
+        await DatabaseManager.deleteJob(database!, job.id);
+        _loadJobCount();
+      }
+    });
+    
+    setState(() {
+      longPressedJobId = null;
+      selectedJobIds.remove(job.id);
+      selectedJobs.remove(job.id);
+    });
   }
 
   @override
@@ -104,25 +156,24 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
               selectedIndex: _selectedIndex
             ),
             const Divider(height: 1),
-            _selectedIndex == 0 ? ChecklistCard() : const SizedBox(),
+            _selectedIndex == 0 ? const ChecklistCard() : const SizedBox(),
             Expanded(
               child: _selectedIndex == 0
-              ? JobList(
-                jobs: jobCart,
-                onJobTapped: (job) {
-                  
-                  print(job.title);
-                },
-                onJobRemoved: (job) {
-                  Future(() async {
-                    await DatabaseManager.deleteJob(database!, job.id);
-                    _loadJobCount();
-                  }); 
-                },
-                database: database!,
-                selectedJobs: selectedJobs,
-              )
-              : SizedBox(),
+              ? GestureDetector(
+                  onTap: _resetLongPress,
+                  behavior: HitTestBehavior.translucent,
+                  child: JobList(
+                    jobs: jobCart,
+                    selectedJobs: selectedJobs,
+                    onJobTapped: (job) {},
+                    onJobRemoved: _handleRemove,
+                    database: database!,
+                    longPressedJobId: longPressedJobId,
+                    onLongPress: _handleLongPress,
+                    onSelectionChanged: _handleSelectionChanged,
+                  ),
+                )
+              : const SizedBox(),
             )
           ],
         ),
