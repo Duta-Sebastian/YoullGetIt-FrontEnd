@@ -46,11 +46,14 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
       if (mounted) {
         setState(() {
           jobCount = count;
-          jobCart = jobs;
-          // Initialize selection state
+          jobCart = jobs.map((e) => e.jobCard).toList();
           selectedJobs.clear();
           for (var job in jobs) {
-            selectedJobs[job.id] = false;
+            bool isSelected = false;
+            if (job.status == 'to_apply') {
+              isSelected = true;
+            }
+            selectedJobs[job.jobCard.id] = isSelected;
           }
         });
       }
@@ -115,7 +118,9 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
                     await DatabaseManager.deleteJob(database!, job.id);
                     _loadJobCount();
                   }); 
-                }
+                },
+                database: database!,
+                selectedJobs: selectedJobs,
               )
               : SizedBox(),
             )

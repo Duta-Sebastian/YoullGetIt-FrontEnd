@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 
 class DatabaseManager {
-  static Future<List<JobCardModel>> retrieveAllLikedJobs(Database db) async {
-    final List<Map<String, dynamic>> maps = await db.query('jobs', where: 'status == ?',
-                                                           whereArgs: ['liked'],orderBy: 'date_added DESC');
+  static Future<List<JobCardStatusModel>> retrieveAllLikedJobs(Database db) async {
+    final List<Map<String, dynamic>> maps = await db.query('jobs',orderBy: 'date_added DESC');
     return List.generate(maps.length, (index) {
       final jsonData = jsonDecode(maps[index]['job_data']);
-      return JobCardModel.fromJson(jsonData);
+      return JobCardStatusModel(
+        jobCard: JobCardModel.fromJson(jsonData),
+        status: maps[index]['status']
+      );
     });
   }
 
@@ -25,7 +28,7 @@ class DatabaseManager {
   }
 
   static Future<int> getLikedJobCount(Database db) async {
-    var result = await db.rawQuery("SELECT COUNT(*) FROM jobs WHERE status = 'liked'");
+    var result = await db.rawQuery("SELECT COUNT(*) FROM jobs");
     return Sqflite.firstIntValue(result) ?? 0;
   }
 
@@ -35,5 +38,9 @@ class DatabaseManager {
 
   static Future<int> deleteJob(Database db, int id) async {
     return db.delete('jobs', where: 'id = ?', whereArgs: [id]);
+  }
+
+  static Future<int> updateJobStatus(Database db, int id, String status) async {
+    return db.update('jobs', {'status': status}, where: 'id = ?', whereArgs: [id]);
   }
 }
