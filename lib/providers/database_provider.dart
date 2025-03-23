@@ -4,7 +4,6 @@ import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
 final databaseProvider = FutureProvider<Database>((ref) async {
   final key = await SecureStorageManager.getEncryptionKey();
-  deleteDatabase('db');
   final db = await openDatabase(
       'db',
       version: 1,

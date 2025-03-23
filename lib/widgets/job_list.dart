@@ -24,9 +24,10 @@ class JobList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: jobs.length,
       itemBuilder: _buildJobListItem,
+      separatorBuilder: (context, index) => const SizedBox(height: 1.5),
     );
   }
 

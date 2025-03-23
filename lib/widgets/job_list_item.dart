@@ -45,13 +45,14 @@ class JobListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: isSelected ? Colors.green : Colors.grey.shade200,
+          color: isSelected ? Colors.green : Colors.black,
           width: isSelected ? 2 : 1,
         ),
       ),
-      elevation: 0,
+      elevation: 3,
+      shadowColor: Colors.black,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 12.0, bottom: 60.0, left: 16.0, right: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -89,8 +90,8 @@ class JobListItem extends StatelessWidget {
 
   Widget _buildSelectionIcon() {
     return Positioned(
-      right: 24,
-      bottom: 16,
+      right: 40,
+      bottom: 30,
       child: GestureDetector(
         onTap: () => onChanged(!isSelected),
         child: Icon(
