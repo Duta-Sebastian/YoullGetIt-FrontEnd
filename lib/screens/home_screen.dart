@@ -118,7 +118,7 @@ class Page3State extends ConsumerState<Page3> {
     Future<void> _deleteJobs() async {
     final database = ref.read(databaseProvider).value;
     if (database != null) {
-      await DatabaseManager.deleteAllJobs(database);
+      await DatabaseManager.deleteAllJobs();
     }
   }
 

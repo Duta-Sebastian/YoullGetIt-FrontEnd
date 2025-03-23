@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
 // Define a provider to track loading state
@@ -18,7 +19,8 @@ void main() async{
   // Create a ProviderContainer for initializing data before the app starts
   final container = ProviderContainer();
 
-  container.read(databaseProvider.future);
+  final database = await container.read(databaseProvider.future);
+  DatabaseManager.init(database);
   
   if(!firstTime){
     // Fetch jobs and update initialization state

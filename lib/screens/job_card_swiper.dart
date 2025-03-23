@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';  // Import Riverpod
-import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';  // Import your job provider
@@ -21,8 +20,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
   Widget build(BuildContext context,) {
     int jobNumber = 0;
     final jobList = ref.watch(jobProvider);  // Watch the job provider
-    final databaseAsync = ref.watch(databaseProvider);
-    if (jobList.isEmpty || databaseAsync.isLoading || databaseAsync.value == null) {
+    if (jobList.isEmpty) {
       return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
@@ -30,7 +28,6 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
         ),
       );
     }
-    final database = databaseAsync.value!;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -69,7 +66,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                 ref.read(jobProvider.notifier).fetchJobs(5);
               }
                 if (direction == CardSwiperDirection.right) {
-                  DatabaseManager.insertJobCard(database, jobList[previousIndex]);
+                  DatabaseManager.insertJobCard(jobList[previousIndex]);
                 }
               jobNumber++;
               return true;

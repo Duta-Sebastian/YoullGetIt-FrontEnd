@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
-import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/job_list.dart';
 import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
@@ -19,15 +17,12 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
   int? jobCount;
   List<JobCardModel> jobCart = [];
   final Map<int, bool> selectedJobs = {};
-  Database? database;
   int _selectedIndex = 0;
-  Set<int> selectedJobIds = {};
   int? longPressedJobId;
   
   @override
   void initState() {
     super.initState();
-    _loadDatabase();
     _loadJobCount();
   }
 
@@ -37,29 +32,22 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
     });
   }
 
-  Future<void> _loadDatabase() async {
-    database = ref.read(databaseProvider).value;
-  }
-
   Future<void> _loadJobCount() async {
-    if (database != null) {
-      final count = await DatabaseManager.getLikedJobCount(database!);
-      final jobs = await DatabaseManager.retrieveAllLikedJobs(database!);
-      if (mounted) {
-        setState(() {
-          jobCount = count;
-          jobCart = jobs.map((e) => e.jobCard).toList();
-          selectedJobs.clear();
-          for (var job in jobs) {
-            bool isSelected = false;
-            if (job.status == 'to_apply') {
-              isSelected = true;
-            }
-            selectedJobs[job.jobCard.id] = isSelected;
+    final count = await DatabaseManager.getLikedJobCount();
+    final jobs = await DatabaseManager.retrieveAllLikedJobs();
+    if (mounted) {
+      setState(() {
+        jobCount = count;
+        jobCart = jobs.map((e) => e.jobCard).toList();
+        selectedJobs.clear();
+        for (var job in jobs) {
+          bool isSelected = false;
+          if (job.status == 'to_apply') {
+            isSelected = true;
           }
-          selectedJobIds = selectedJobs.keys.where((key) => selectedJobs[key]!).toSet();
-        });
-      }
+          selectedJobs[job.jobCard.id] = isSelected;
+        }
+      });
     }
   }
   
@@ -76,17 +64,11 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
       longPressedJobId = null;
       
       if (selected) {
-        selectedJobIds.add(job.id);
         selectedJobs[job.id] = true;
-        if (database != null) {
-          DatabaseManager.updateJobStatus(database!, job.id, 'to_apply');
-        }
+        DatabaseManager.updateJobStatus(job.id, 'to_apply');
       } else {
-        selectedJobIds.remove(job.id);
         selectedJobs[job.id] = false;
-        if (database != null) {
-          DatabaseManager.updateJobStatus(database!, job.id, 'liked');
-        }
+        DatabaseManager.updateJobStatus(job.id, 'liked');
       }
     });
   }
@@ -99,22 +81,19 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
 
   void _handleRemove(JobCardModel job) {
     Future(() async {
-      if (database != null) {
-        await DatabaseManager.deleteJob(database!, job.id);
-        _loadJobCount();
-      }
+      await DatabaseManager.deleteJob(job.id);
+      _loadJobCount();
     });
     
     setState(() {
       longPressedJobId = null;
-      selectedJobIds.remove(job.id);
       selectedJobs.remove(job.id);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (jobCount == null || database == null) {
+    if (jobCount == null) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -167,7 +146,6 @@ class JobCartScreenState extends ConsumerState<JobCartScreen> {
                     selectedJobs: selectedJobs,
                     onJobTapped: (job) {},
                     onJobRemoved: _handleRemove,
-                    database: database!,
                     longPressedJobId: longPressedJobId,
                     onLongPress: _handleLongPress,
                     onSelectionChanged: _handleSelectionChanged,

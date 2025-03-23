@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/widgets/job_list_item.dart';
 
@@ -11,11 +10,9 @@ class JobList extends StatelessWidget {
   final Function(JobCardModel)? onJobTapped;
   final Function(int)? onLongPress;
   final int? longPressedJobId;
-  final Database database;
 
   const JobList({
     super.key,
-    required this.database,
     required this.jobs,
     required this.selectedJobs,
     this.onJobRemoved,
