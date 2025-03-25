@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
+import 'package:youllgetit_flutter/screens/profile_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/navbar.dart';
 
@@ -20,7 +21,7 @@ class HomePageState extends State<HomePage> {
     JobCardSwiper(),
     JobCartScreen(),
     const Page3(),
-    const Page4(),
+    ProfileScreen(),
   ];
 
   @override
@@ -82,27 +83,6 @@ class Page3State extends ConsumerState<Page3> {
       child: Center(
         child: Text(
           "Page Number 3",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  const Page4({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xffC4DFCB),
-      child: Center(
-        child: Text(
-          "Page Number 4",
           style: TextStyle(
             color: Colors.green[900],
             fontSize: 45,
