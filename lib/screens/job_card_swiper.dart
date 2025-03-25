@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';  // Import Riverpod
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/widgets/job_card.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';  // Import your job provider
 
 class JobCardSwiper extends ConsumerStatefulWidget {  // Use StatefulConsumerWidget to listen to the provider

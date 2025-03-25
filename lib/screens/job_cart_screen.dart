@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/widgets/job_list.dart';
-import 'package:youllgetit_flutter/widgets/job_tab_bar.dart';
-import 'package:youllgetit_flutter/widgets/checklist_card.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_list.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_tab_bar.dart';
+import 'package:youllgetit_flutter/widgets/jobs/checklist_card.dart';
 
 class JobCartScreen extends StatefulWidget {
   const JobCartScreen({super.key});
@@ -151,7 +151,10 @@ class JobCartScreenState extends State<JobCartScreen> {
                     onSelectionChanged: _handleSelectionChanged,
                   ),
                 )
-              : const SizedBox(),
+              : _selectedIndex == 1
+              ? const Center(child: Text('Applied Jobs')) : SizedBox(
+                height: 0,
+              ),
             )
           ],
         ),

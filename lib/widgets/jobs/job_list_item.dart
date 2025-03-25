@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
-import 'package:youllgetit_flutter/widgets/job_card.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 
 class JobListItem extends StatelessWidget {
   final JobCardModel job;
@@ -145,6 +145,8 @@ class JobListItem extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final screenHeight = MediaQuery.of(context).size.height;
         return Dialog(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -152,7 +154,11 @@ class JobListItem extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              JobCard(jobData: job, percentThresholdx: 0),
+              SizedBox(
+                width: screenWidth,
+                height: screenHeight * 0.6,
+                child: JobCard(jobData: job, percentThresholdx: 0),
+              ),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),

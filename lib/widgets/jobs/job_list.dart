@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
-import 'package:youllgetit_flutter/widgets/job_list_item.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_list_item.dart';
 
 class JobList extends StatelessWidget {
   final List<JobCardModel> jobs;

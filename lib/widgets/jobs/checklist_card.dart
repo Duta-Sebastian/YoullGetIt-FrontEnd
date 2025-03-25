@@ -41,5 +41,3 @@ class ChecklistCard extends StatelessWidget {
     );
   }
 }
-
-// widgets/job_option_item.dart
