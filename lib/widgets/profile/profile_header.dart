@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/widgets/settings_page.dart';
+import 'package:youllgetit_flutter/widgets/settings/settings_page.dart';
 
 class ProfileHeader extends StatelessWidget {
-  const ProfileHeader({super.key});
+  final VoidCallback onUsernameChanged;
+  final String username;
+
+  const ProfileHeader({
+    super.key,
+    required this.username,
+    required this.onUsernameChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,9 @@ class ProfileHeader extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const SettingsPage(),
+                    builder: (context) => SettingsPage(
+                      onUsernameChanged: onUsernameChanged,
+                    ),
                   ),
                 );
               },
@@ -30,7 +39,7 @@ class ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hi, \nMaria',
+                  'Hi, \n$username',
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,

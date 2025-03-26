@@ -17,7 +17,7 @@ class CVUploadButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: 200,
-        height: 150, // Reduced height
+        height: 150,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.white, 

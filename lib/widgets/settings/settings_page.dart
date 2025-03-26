@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  final VoidCallback onUsernameChanged;
+  const SettingsPage({
+    super.key,
+    required this.onUsernameChanged
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +91,20 @@ class SettingsPage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
+                _buildSettingsItem(
+                  context, 
+                  icon: Icons.person,
+                  title: 'User settings',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => UserSettings(
+                          onUsernameChanged: onUsernameChanged,
+                        ),
+                      )
+                    );
+                  },
+                ),
                 _buildSettingsItem(
                   context, 
                   icon: Icons.language, 
