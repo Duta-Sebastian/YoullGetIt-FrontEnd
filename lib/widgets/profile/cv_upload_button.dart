@@ -48,16 +48,16 @@ class CVUploadButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  fileName != null ? Icons.check_circle : Icons.upload_file,
-                  color: fileName != null ? Colors.green : Colors.grey[600],
+                  Icons.upload_file,
+                  color: Colors.grey[600],
                   size: 24,
                 ),
                 SizedBox(width: 8),
                 Text(
-                  fileName ?? 'Upload CV',
+                  'Upload CV',
                   style: TextStyle(
-                    color: fileName != null ? Colors.green[700] : Colors.grey[600],
-                    fontWeight: fileName != null ? FontWeight.bold : FontWeight.normal,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ],

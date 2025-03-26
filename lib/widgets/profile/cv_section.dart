@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:youllgetit_flutter/models/cv_model.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_upload_button.dart';
 
 class CVUploadSection extends StatefulWidget {
@@ -16,7 +19,7 @@ class CVUploadSection extends StatefulWidget {
 class CVUploadSectionState extends State<CVUploadSection> {
   File? _cvFile;
   bool _isUploaded = false;
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -25,30 +28,31 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Future<void> _retrieveSavedCV() async {
-    setState(() {
-      _isLoading = true;
-    });
-
     try {
-      final directory = await getApplicationDocumentsDirectory();
-      final cvFile = File('${directory.path}/saved_cv.pdf');
+      final cvModel = await DatabaseManager.getCv();
+      
+      if (cvModel != null) {
+        final directory = await getApplicationDocumentsDirectory();
+        final cvFile = File('${directory.path}/saved_cv.pdf');
+        await cvFile.writeAsBytes(cvModel.cvData);
 
-      if (await cvFile.exists()) {
         if (mounted) {
           setState(() {
             _cvFile = cvFile;
             _isUploaded = true;
+            _isLoading = false;
           });
         }
-      }
-    } catch (e) {
-      _showSnackBar('Failed to retrieve saved CV: $e');
-    } finally {
-      if (mounted) {
+      } else {
         setState(() {
           _isLoading = false;
         });
       }
+    } catch (e) {
+      _showSnackBar('Failed to retrieve saved CV: $e');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -64,14 +68,18 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Future<void> _savePDF(File sourceFile) async {
-    setState(() {
-      _isLoading = true;
-    });
-
     try {
+      final Uint8List cvBytes = await sourceFile.readAsBytes();
+
+      final cvModel = CvModel(
+        cvData: cvBytes,
+        lastChanged: DateTime.now(),
+      );
+
+      await DatabaseManager.updateCV(cvModel);
+
       final directory = await getApplicationDocumentsDirectory();
       final String filePath = '${directory.path}/saved_cv.pdf';
-
       await sourceFile.copy(filePath);
 
       if (mounted) {
@@ -84,24 +92,12 @@ class CVUploadSectionState extends State<CVUploadSection> {
       _showSnackBar('CV saved successfully');
     } catch (e) {
       _showSnackBar('Failed to save CV: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
   Future<void> _removeCV() async {
-    if (_cvFile == null) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-
     try {
-      await _cvFile?.delete();
+      await DatabaseManager.deleteCV();
 
       if (mounted) {
         setState(() {
@@ -109,14 +105,10 @@ class CVUploadSectionState extends State<CVUploadSection> {
           _isUploaded = false;
         });
       }
+
+      _showSnackBar('CV removed successfully');
     } catch (e) {
       _showSnackBar('Failed to remove CV: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
@@ -130,11 +122,11 @@ class CVUploadSectionState extends State<CVUploadSection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : (!_isUploaded || _cvFile == null)
-              ? _buildUploadSection()
-              : _buildUploadedView(),
+      child: _isLoading 
+        ? const Center(child: CircularProgressIndicator()) 
+        : _cvFile == null || !_isUploaded
+          ? _buildUploadSection()
+          : _buildUploadedView(),
     );
   }
 
@@ -145,13 +137,16 @@ class CVUploadSectionState extends State<CVUploadSection> {
         Text(
           'Upload your CV',
           style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(127, 127, 127, 1)),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color.fromRGBO(127, 127, 127, 1)
+          ),
         ),
         Text(
           'and get more accurate recommendations',
-          style: TextStyle(color: Color.fromRGBO(187, 185, 185, 1)),
+          style: TextStyle(
+            color: Color.fromRGBO(187, 185, 185, 1)
+          ),
         ),
         SizedBox(height: 16),
         CVUploadButton(
@@ -188,8 +183,8 @@ class CVUploadSectionState extends State<CVUploadSection> {
               border: Border.all(color: Colors.black, width: 1),
             ),
             child: _cvFile!.path.toLowerCase().endsWith('.pdf')
-                ? SfPdfViewer.file(_cvFile!)
-                : Text('Document preview not supported'),
+              ? SfPdfViewer.file(_cvFile!)
+              : Text('Document preview not supported'),
           ),
         ),
         Align(

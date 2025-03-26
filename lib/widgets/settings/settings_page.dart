@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -11,6 +12,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -51,6 +53,7 @@ class SettingsPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                // Auth
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ElevatedButton(
@@ -110,7 +113,11 @@ class SettingsPage extends StatelessWidget {
                   icon: Icons.language, 
                   title: 'Language',
                   onTap: () {
-                    // TODO: Implement language selection
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LanguageSettings(),
+                      )
+                    );
                   },
                 ),
                 _buildSettingsItem(

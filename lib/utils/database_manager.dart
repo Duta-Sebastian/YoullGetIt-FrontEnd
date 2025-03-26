@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:sqflite_sqlcipher/sqflite.dart';
+import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
@@ -62,7 +64,6 @@ class DatabaseManager {
         lastChanged: DateTime.parse(results.first['last_changed'] as String)
       );
     });
-    print(oldUser);
     if (oldUser == null){
       return _database.insert('user', {
         'username': currentUser.username,
@@ -85,5 +86,46 @@ class DatabaseManager {
       }
       return results.first['username'] as String;
     });
+  }
+
+  static Future<int> updateCV(CvModel cv) async {
+    CvModel? oldCV = await _database.query('cv').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return CvModel(
+        cvData: results.first['cv_data'] as Uint8List,
+        lastChanged: DateTime.parse(results.first['last_changed'] as String)
+      );
+    });
+    if (oldCV == null){
+      return _database.insert('cv', {
+        'cv_data': cv.cvData,
+        'last_changed': cv.lastChanged.toUtc().toIso8601String()
+      });
+    }
+    else if (cv.lastChanged.isAfter(oldCV.lastChanged)){
+      return _database.update('cv', {
+        'cv_data': cv.cvData,
+        'last_changed': cv.lastChanged.toUtc().toIso8601String()
+      });
+    }
+    return 0;
+  }
+
+  static Future<CvModel?> getCv() async {
+    return await _database.query('cv').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return CvModel(
+        cvData: results.first['cv_data'] as Uint8List,
+        lastChanged: DateTime.parse(results.first['last_changed'] as String)
+      );
+    });
+  }
+
+  static Future<int> deleteCV() async {
+    return await _database.delete('cv');
   }
 }

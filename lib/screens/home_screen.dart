@@ -55,7 +55,7 @@ class HomePageState extends State<HomePage> {
 }
 
 class Page3 extends ConsumerStatefulWidget {
-  const Page3({Key? key}) : super(key: key);
+  const Page3({super.key});
 
   @override
   Page3State createState() => Page3State();

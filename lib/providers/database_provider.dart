@@ -28,8 +28,9 @@ final databaseProvider = FutureProvider<Database>((ref) async {
 
       await db.execute('''
         CREATE TABLE cv (
-          id INTEGER PRIMARY KEY,
-          cv_data BLOB
+          cv_data BLOB,
+          last_changed DATETIME,
+          PRIMARY KEY (cv_data, last_changed)
         )
       ''');
     },
