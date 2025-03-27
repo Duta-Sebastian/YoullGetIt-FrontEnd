@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
+import 'package:youllgetit_flutter/screens/profile_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/navbar.dart';
 
@@ -20,25 +21,13 @@ class HomePageState extends State<HomePage> {
     JobCardSwiper(),
     JobCartScreen(),
     const Page3(),
-    const Page4(),
+    ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text(
-      //     "You'll Get It",
-      //     style: TextStyle(
-      //       color: Theme.of(context).primaryColor,
-      //       fontSize: 25,
-      //       fontWeight: FontWeight.w600,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white,
-      // ),
       body: pages[pageIndex],
       bottomNavigationBar: BottomNavBar(
         currentPageIndex: pageIndex,
@@ -54,7 +43,7 @@ class HomePageState extends State<HomePage> {
 }
 
 class Page3 extends ConsumerStatefulWidget {
-  const Page3({Key? key}) : super(key: key);
+  const Page3({super.key});
 
   @override
   Page3State createState() => Page3State();
@@ -82,27 +71,6 @@ class Page3State extends ConsumerState<Page3> {
       child: Center(
         child: Text(
           "Page Number 3",
-          style: TextStyle(
-            color: Colors.green[900],
-            fontSize: 45,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Page4 extends StatelessWidget {
-  const Page4({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xffC4DFCB),
-      child: Center(
-        child: Text(
-          "Page Number 4",
           style: TextStyle(
             color: Colors.green[900],
             fontSize: 45,
