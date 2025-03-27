@@ -1,24 +1,25 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 
 class JobListItem extends StatelessWidget {
   final JobCardModel job;
-  final bool isSelected;
+  final JobStatus jobStatus;
   final bool isLongPressed;
   final bool isBlurred;
-  final ValueChanged<bool> onChanged;
+  final Function(JobStatus) onStatusChanged;
   final VoidCallback onLongPress;
   final VoidCallback onRemove;
 
   const JobListItem({
     super.key,
     required this.job,
-    required this.isSelected,
+    required this.jobStatus,
     required this.isLongPressed,
     required this.isBlurred,
-    required this.onChanged,
+    required this.onStatusChanged,
     required this.onLongPress,
     required this.onRemove,
   });
@@ -31,7 +32,7 @@ class JobListItem extends StatelessWidget {
       child: Stack(
         children: [
           _buildJobCard(),
-          _buildSelectionIcon(),
+          _buildStatusIcons(),
           if (isBlurred) _buildBlurOverlay(),
           if (isLongPressed) _buildRemoveButton(),
         ],
@@ -45,8 +46,8 @@ class JobListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
         side: BorderSide(
-          color: isSelected ? Colors.green : Colors.black,
-          width: isSelected ? 2 : 1,
+          color: _getBorderColor(),
+          width: 1,
         ),
       ),
       elevation: 3,
@@ -88,17 +89,70 @@ class JobListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectionIcon() {
+  Color _getBorderColor() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return Colors.black;
+      case JobStatus.toApply:
+        return Colors.blue;
+      case JobStatus.applied:
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Widget _buildStatusIcons() {
     return Positioned(
       right: 40,
       bottom: 30,
-      child: GestureDetector(
-        onTap: () => onChanged(!isSelected),
-        child: Icon(
-          Icons.check,
-          color: isSelected ? Colors.green : Colors.grey,
-          size: 20,
-        ),
+      child: Row(
+        children: [
+          if (jobStatus != JobStatus.liked) 
+            GestureDetector(
+              onTap: () {
+                switch (jobStatus) {
+                  case JobStatus.toApply:
+                    onStatusChanged(JobStatus.liked);
+                    break;
+                  case JobStatus.applied:
+                    onStatusChanged(JobStatus.toApply);
+                    break;
+                  default:
+                    break;
+                }
+              },
+              child: Icon(
+                Icons.close,
+                color: Colors.red,
+                size: 20,
+              ),
+            ),
+          
+          if (jobStatus != JobStatus.applied)
+            SizedBox(width: 10),
+          
+          if (jobStatus != JobStatus.applied)
+            GestureDetector(
+              onTap: () {
+                switch (jobStatus) {
+                  case JobStatus.liked:
+                    onStatusChanged(JobStatus.toApply);
+                    break;
+                  case JobStatus.toApply:
+                    onStatusChanged(JobStatus.applied);
+                    break;
+                  default:
+                    break;
+                }
+              },
+              child: Icon(
+                Icons.check,
+                color: jobStatus == JobStatus.liked ? Colors.grey : Colors.green,
+                size: 20,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -177,4 +231,4 @@ class JobListItem extends StatelessWidget {
       },
     );
   }
-}
+}	

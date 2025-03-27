@@ -15,15 +15,15 @@ class JobCartScreen extends StatefulWidget {
 
 class JobCartScreenState extends State<JobCartScreen> {
   int? jobCount;
-  List<JobCardModel> jobCart = [];
-  final Map<int, bool> selectedJobs = {};
+  List<JobCardModel> allJobs = [];
+  final Map<int, JobStatus> jobStatuses = {};
   int _selectedIndex = 0;
   int? longPressedJobId;
   
   @override
   void initState() {
     super.initState();
-    _loadJobCount();
+    _loadJobs();
   }
 
   void _onTabSelected(int index) {
@@ -32,21 +32,29 @@ class JobCartScreenState extends State<JobCartScreen> {
     });
   }
 
-  Future<void> _loadJobCount() async {
-    final count = await DatabaseManager.getLikedJobCount();
+  String getTabTitle(int index) {
+    switch (index) {
+      case 0:
+        return 'potential opportunities';
+      case 1:
+        return 'applications remaining';
+      case 2:
+        return 'applications completed';
+      default:
+        return '';
+    }
+  }
+
+  Future<void> _loadJobs() async {
     final jobs = await DatabaseManager.retrieveAllJobs();
     if (mounted) {
       setState(() {
-        jobCount = count;
-        jobCart = jobs.map((e) => e.jobCard).toList();
-        selectedJobs.clear();
+        allJobs = jobs.map((e) => e.jobCard).toList();
+        jobStatuses.clear();
         for (var job in jobs) {
-          bool isSelected = false;
-          if (job.status == JobStatus.toApply) {
-            isSelected = true;
-          }
-          selectedJobs[job.jobCard.id] = isSelected;
+          jobStatuses[job.jobCard.id] = job.status;
         }
+        jobCount = allJobs.length;
       });
     }
   }
@@ -59,17 +67,12 @@ class JobCartScreenState extends State<JobCartScreen> {
     }
   }
 
-  void _handleSelectionChanged(JobCardModel job, bool selected) {
+  void _handleStatusChanged(JobCardModel job, JobStatus newStatus) {
     setState(() {
       longPressedJobId = null;
       
-      if (selected) {
-        selectedJobs[job.id] = true;
-        DatabaseManager.updateJobStatus(job.id, JobStatus.toApply);
-      } else {
-        selectedJobs[job.id] = false;
-        DatabaseManager.updateJobStatus(job.id, JobStatus.liked);
-      }
+      jobStatuses[job.id] = newStatus;
+      DatabaseManager.updateJobStatus(job.id, newStatus);
     });
   }
 
@@ -82,13 +85,26 @@ class JobCartScreenState extends State<JobCartScreen> {
   void _handleRemove(JobCardModel job) {
     Future(() async {
       await DatabaseManager.deleteJob(job.id);
-      _loadJobCount();
+      _loadJobs();
     });
     
     setState(() {
       longPressedJobId = null;
-      selectedJobs.remove(job.id);
+      jobStatuses.remove(job.id);
     });
+  }
+
+  List<JobCardModel> _getFilteredJobs() {
+    switch (_selectedIndex) {
+      case 0:
+        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.liked).toList();
+      case 1:
+        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.toApply).toList();
+      case 2:
+        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.applied).toList();
+      default:
+        return [];
+    }
   }
 
   @override
@@ -100,7 +116,11 @@ class JobCartScreenState extends State<JobCartScreen> {
         ),
       );
     }
+
+    final filteredJobs = _getFilteredJobs();
+
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
@@ -119,7 +139,7 @@ class JobCartScreenState extends State<JobCartScreen> {
                         ),
                       ),
                       Text(
-                        '$jobCount potential jobs',
+                        '${filteredJobs.length} ${getTabTitle(_selectedIndex)}',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.blue,
@@ -137,23 +157,19 @@ class JobCartScreenState extends State<JobCartScreen> {
             const Divider(height: 1),
             _selectedIndex == 0 ? const ChecklistCard() : const SizedBox(),
             Expanded(
-              child: _selectedIndex == 0
-              ? GestureDetector(
-                  onTap: _resetLongPress,
-                  behavior: HitTestBehavior.translucent,
-                  child: JobList(
-                    jobs: jobCart,
-                    selectedJobs: selectedJobs,
-                    onJobTapped: (job) {},
-                    onJobRemoved: _handleRemove,
-                    longPressedJobId: longPressedJobId,
-                    onLongPress: _handleLongPress,
-                    onSelectionChanged: _handleSelectionChanged,
+              child: GestureDetector(
+                onTap: _resetLongPress,
+                behavior: HitTestBehavior.translucent,
+                child: JobList(
+                  jobs: filteredJobs,
+                  jobStatuses: Map.fromEntries(
+                    filteredJobs.map((job) => MapEntry(job.id, jobStatuses[job.id]!))
                   ),
-                )
-              : _selectedIndex == 1
-              ? const Center(child: Text('Applied Jobs')) : SizedBox(
-                height: 0,
+                  onJobRemoved: _handleRemove,
+                  longPressedJobId: longPressedJobId,
+                  onLongPress: _handleLongPress,
+                  onStatusChanged: _handleStatusChanged,
+                ),
               ),
             )
           ],

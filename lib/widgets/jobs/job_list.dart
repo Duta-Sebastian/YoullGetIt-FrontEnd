@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_list_item.dart';
 
 class JobList extends StatelessWidget {
   final List<JobCardModel> jobs;
-  final Map<int, bool> selectedJobs;
+  final Map<int, JobStatus> jobStatuses;
   final Function(JobCardModel)? onJobRemoved;
-  final Function(JobCardModel, bool)? onSelectionChanged;
+  final Function(JobCardModel, JobStatus)? onStatusChanged;
   final Function(JobCardModel)? onJobTapped;
   final Function(int)? onLongPress;
   final int? longPressedJobId;
@@ -14,9 +15,9 @@ class JobList extends StatelessWidget {
   const JobList({
     super.key,
     required this.jobs,
-    required this.selectedJobs,
+    required this.jobStatuses,
     this.onJobRemoved,
-    this.onSelectionChanged,
+    this.onStatusChanged,
     this.onJobTapped,
     this.onLongPress,
     this.longPressedJobId,
@@ -33,7 +34,7 @@ class JobList extends StatelessWidget {
 
   Widget _buildJobListItem(BuildContext context, int index) {
     final job = jobs[index];
-    final bool isSelected = selectedJobs[job.id] ?? false;
+    final jobStatus = jobStatuses[job.id] ?? JobStatus.liked;
     final bool isLongPressed = job.id == longPressedJobId;
     final bool isBlurred = longPressedJobId != null && !isLongPressed;
     
@@ -41,12 +42,12 @@ class JobList extends StatelessWidget {
       absorbing: isBlurred,
       child: JobListItem(
         job: job,
-        isSelected: isSelected,
+        jobStatus: jobStatus,
         isLongPressed: isLongPressed,
         isBlurred: isBlurred,
-        onChanged: (selected) {
-          if (onSelectionChanged != null) {
-            onSelectionChanged!(job, selected);
+        onStatusChanged: (newStatus) {
+          if (onStatusChanged != null) {
+            onStatusChanged!(job, newStatus);
           }
           if (onJobTapped != null) {
             onJobTapped!(job);
