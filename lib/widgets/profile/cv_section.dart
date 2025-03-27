@@ -180,7 +180,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
           width: double.infinity,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 1),
+              border: Border.all(color: Colors.black, width: 0.5),
             ),
             child: _cvFile!.path.toLowerCase().endsWith('.pdf')
               ? SfPdfViewer.file(_cvFile!)
