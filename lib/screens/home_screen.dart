@@ -28,18 +28,6 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: Text(
-      //     "You'll Get It",
-      //     style: TextStyle(
-      //       color: Theme.of(context).primaryColor,
-      //       fontSize: 25,
-      //       fontWeight: FontWeight.w600,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white,
-      // ),
       body: pages[pageIndex],
       bottomNavigationBar: BottomNavBar(
         currentPageIndex: pageIndex,
