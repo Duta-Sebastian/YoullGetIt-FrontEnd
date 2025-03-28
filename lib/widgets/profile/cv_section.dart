@@ -158,10 +158,12 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Widget _buildUploadedView() {
+    final width = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Wrap(
+          alignment: WrapAlignment.spaceAround,
           children: [
             SizedBox(width: 8),
             Text(
@@ -171,20 +173,23 @@ class CVUploadSectionState extends State<CVUploadSection> {
                 fontWeight: FontWeight.w500,
                 color: Color.fromRGBO(127, 127, 127, 1),
               ),
+              softWrap: true,
             ),
           ],
         ),
         SizedBox(height: 16),
-        SizedBox(
-          height: 400,
-          width: double.infinity,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 0.5),
+        Center(
+          child: SizedBox(
+            height: 400,
+            width: width * 0.75,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 0.5),
+              ),
+              child: _cvFile!.path.toLowerCase().endsWith('.pdf')
+                ? SfPdfViewer.file(_cvFile!)
+                : Text('Document preview not supported'),
             ),
-            child: _cvFile!.path.toLowerCase().endsWith('.pdf')
-              ? SfPdfViewer.file(_cvFile!)
-              : Text('Document preview not supported'),
           ),
         ),
         Align(
