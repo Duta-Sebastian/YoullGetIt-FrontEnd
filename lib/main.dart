@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
-import 'package:youllgetit_flutter/widgets/auth/auth_main.dart';
 
 // Define a provider to track loading state
 final appInitializationProvider = StateProvider<bool>((ref) => false);
@@ -19,6 +19,8 @@ void main() async{
   var firstTime = await isFirstTimeOpening();
   // Create a ProviderContainer for initializing data before the app starts
   final container = ProviderContainer();
+
+  await container.read(authProvider.notifier).initialize();
 
   final database = await container.read(databaseProvider.future);
   DatabaseManager.init(database);
