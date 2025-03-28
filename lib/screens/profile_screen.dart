@@ -79,13 +79,15 @@ class ProfileScreenState extends State<ProfileScreen> {
                       onUsernameChanged: refreshProfile,
                     ),
                     Divider(),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          CVUploadSection(),
-                          SizedBox(height: 24),
-                        ]
-                      ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            CVUploadSection(),
+                            SizedBox(height: 24),
+                          ]
+                        ),
+                      )
                     )
                   ],
                 ),
