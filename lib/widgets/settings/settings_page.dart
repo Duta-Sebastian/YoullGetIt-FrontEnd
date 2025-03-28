@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/providers/auth_provider.dart'; // Import the new auth provider
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
@@ -19,7 +18,6 @@ class SettingsPage extends ConsumerStatefulWidget {
 class SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

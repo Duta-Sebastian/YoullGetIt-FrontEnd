@@ -28,9 +28,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> initialize() async {
     try {
       final credentials = await auth0.credentialsManager.credentials();
-      print(credentials);
       state = AuthState(
-        isLoggedIn: credentials != null,
+        isLoggedIn: true,
         credentials: credentials,
       );
     } catch (e) {
