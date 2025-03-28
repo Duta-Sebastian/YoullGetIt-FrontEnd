@@ -21,6 +21,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -111,6 +112,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
       title: Text(title),
       trailing: Icon(Icons.chevron_right),
       onTap: onTap,
+      splashColor: Colors.transparent,
     );
   }
 }

@@ -47,16 +47,13 @@ class AuthSection extends ConsumerWidget {
               ],
             ),
           ),
-          // Auth Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ElevatedButton(
               onPressed: () {
                 if (authState.isLoggedIn) {
-                  // Logout
                   ref.read(authProvider.notifier).logout();
                 } else {
-                  // Login
                   ref.read(authProvider.notifier).login();
                 }
               },
