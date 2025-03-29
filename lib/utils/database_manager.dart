@@ -14,6 +14,10 @@ class DatabaseManager {
     _database = db;
   }
 
+  static void close() async {
+    await _database.close();
+  }
+
   static Future<List<JobCardStatusModel>> retrieveAllJobs() async {
     final List<Map<String, dynamic>> maps = await _database.query('jobs',orderBy: 'date_added DESC');
     return List.generate(maps.length, (index) {
@@ -99,16 +103,18 @@ class DatabaseManager {
       );
     });
     if (oldCV == null){
-      return _database.insert('cv', {
+      _database.insert('cv', {
         'cv_data': cv.cvData,
         'last_changed': cv.lastChanged.toUtc().toIso8601String()
       });
+      return 1;
     }
     else if (cv.lastChanged.isAfter(oldCV.lastChanged)){
-      return _database.update('cv', {
+      _database.update('cv', {
         'cv_data': cv.cvData,
         'last_changed': cv.lastChanged.toUtc().toIso8601String()
       });
+      return 2;
     }
     return 0;
   }
