@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/services/sync_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
 class SyncService {
   static const String SYNC_TASK = "syncTask";
@@ -144,15 +142,8 @@ void callbackDispatcher() {
           debugPrint('SyncService: Missing access token in background task');
           return Future.value(false);
         }
-
-        final key = await SecureStorageManager.getEncryptionKey();
-        final database = await openDatabase(
-            'db',
-            version: 1,
-            password: key,
-          );
           
-        DatabaseManager.init(database);
+        DatabaseManager.init();
         
         await Future<void>(() async {
           int pullResult = await SyncApi.syncPull(accessToken, DbTables.cv);
