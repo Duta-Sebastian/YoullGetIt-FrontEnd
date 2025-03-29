@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:youllgetit_flutter/models/db_tables.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/services/sync_api.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
+import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
 class SyncService {
   static const String SYNC_TASK = "syncTask";
@@ -21,7 +25,7 @@ class SyncService {
   Future<void> initialize(ProviderContainer container) async {
     if (_isInitialized) return;
     
-    _container = container;
+    _container = container;   
     
     Workmanager().initialize(
       callbackDispatcher,
@@ -33,10 +37,12 @@ class SyncService {
 
   Future<void> startSync() async {
     final authState = _container.read(authProvider);
+
     if (authState.isLoggedIn && authState.credentials != null) {
       debugPrint('SyncService: User already logged in, scheduling sync at startup');
       await scheduleSync();
     }
+  
     _listenToAuthChanges(_container);
   }
   
@@ -139,15 +145,26 @@ void callbackDispatcher() {
           return Future.value(false);
         }
 
-        debugPrint('SyncProcessor: Sync task started with access token: $accessToken');
+        final key = await SecureStorageManager.getEncryptionKey();
+        final database = await openDatabase(
+            'db',
+            version: 1,
+            password: key,
+          );
+          
+        DatabaseManager.init(database);
         
-        var result = await SyncApi.syncPull(accessToken);
-        debugPrint('SyncProcessor: Sync pull result: $result');
+        await Future<void>(() async {
+          int pullResult = await SyncApi.syncPull(accessToken, DbTables.cv);
+          debugPrint('SyncProcessor: Sync pull result: $pullResult');
+          
+          if (pullResult != 0) {
+            int pushResult = await SyncApi.syncPush(accessToken, DbTables.cv);
+            debugPrint('SyncProcessor: Sync push result: $pushResult');
+          }
+        });
 
-        result = await SyncApi.syncPush(accessToken);
-        debugPrint('SyncProcessor: Sync push result: $result');
-
-        await Future.delayed(Duration(milliseconds: 500));
+        DatabaseManager.close();
         
         debugPrint('SyncProcessor: Sync completed successfully');
         return Future.value(true);

@@ -15,16 +15,23 @@ final appInitializationProvider = StateProvider<bool>((ref) => false);
 
 Future<void> initializeApp(ProviderContainer container) async {
   try {
-    await container.read(authProvider.notifier).initialize();
-    
+    // First, initialize the database
     final database = await container.read(databaseProvider.future);
     DatabaseManager.init(database);
-
+    debugPrint('Database initialized successfully');
+    
+    // Then, initialize auth which may need the database
+    await container.read(authProvider.notifier).initialize();
+    debugPrint('Auth initialized successfully');
+    
+    // Initialize sync service after database and auth
     final syncService = container.read(syncServiceProvider);
     await syncService.initialize(container);
+    await syncService.startSync();
+    debugPrint('Sync service initialized successfully');
     
+    // Finally, run the other tasks in parallel
     await Future.wait([
-      _manageSyncBasedOnAuthState(container),
       _checkFirstTimeAndFetchJobs(container),
     ]);
   } catch (e) {
@@ -32,30 +39,6 @@ Future<void> initializeApp(ProviderContainer container) async {
   } finally {
     FlutterNativeSplash.remove();
   }
-}
-
-Future<void> _manageSyncBasedOnAuthState(ProviderContainer container) async {
-  final authState = container.read(authProvider);
-  final syncService = container.read(syncServiceProvider);
-  
-  if (authState.isLoggedIn) {
-    await syncService.scheduleSync();
-  } else {
-    await syncService.cancelSync();
-  }
-  
-  container.listen<AuthState>(
-    authProvider, 
-    (previous, next) async {
-      if (previous?.isLoggedIn != next.isLoggedIn) {
-        if (next.isLoggedIn) {
-          await syncService.scheduleSync();
-        } else {
-          await syncService.cancelSync();
-        }
-      }
-    },
-  );
 }
 
 Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
@@ -74,10 +57,6 @@ void main() async {
   final container = ProviderContainer();
 
   await initializeApp(container);
-
-  Future.delayed(const Duration(seconds: 2), () {
-      FlutterNativeSplash.remove();
-  });
 
   runApp(
     UncontrolledProviderScope(
