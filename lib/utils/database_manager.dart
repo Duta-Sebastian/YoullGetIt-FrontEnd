@@ -6,15 +6,48 @@ import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/models/username_model.dart';
+import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
 class DatabaseManager {
   static late Database _database;
   
-  static void init(Database db) {
+  static Future<void> init() async  {
+    final key = await SecureStorageManager.getEncryptionKey();
+    final db = await openDatabase(
+      'db',
+      version: 1,
+      password: key,
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE jobs (
+            id INTEGER PRIMARY KEY,
+            job_data TEXT,
+            date_added DATETIME,
+            status TEXT CHECK(status IN ('liked', 'toApply', 'applied', 'unknown'))
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE user (
+            username TEXT,
+            last_changed DATETIME,
+            PRIMARY KEY (username, last_changed)
+          )
+        ''');
+
+        await db.execute('''
+          CREATE TABLE cv (
+            cv_data BLOB,
+            last_changed DATETIME,
+            PRIMARY KEY (cv_data, last_changed)
+          )
+        ''');
+      },
+    );
     _database = db;
   }
 
-  static void close() async {
+  static Future<void> close() async {
     await _database.close();
   }
 

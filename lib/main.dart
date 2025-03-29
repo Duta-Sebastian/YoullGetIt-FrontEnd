@@ -8,29 +8,23 @@ import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
-import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';  
 
 final appInitializationProvider = StateProvider<bool>((ref) => false);
 
 Future<void> initializeApp(ProviderContainer container) async {
   try {
-    // First, initialize the database
-    final database = await container.read(databaseProvider.future);
-    DatabaseManager.init(database);
+    await container.read(databaseProvider.future);
     debugPrint('Database initialized successfully');
     
-    // Then, initialize auth which may need the database
     await container.read(authProvider.notifier).initialize();
     debugPrint('Auth initialized successfully');
     
-    // Initialize sync service after database and auth
     final syncService = container.read(syncServiceProvider);
     await syncService.initialize(container);
     await syncService.startSync();
     debugPrint('Sync service initialized successfully');
     
-    // Finally, run the other tasks in parallel
     await Future.wait([
       _checkFirstTimeAndFetchJobs(container),
     ]);
