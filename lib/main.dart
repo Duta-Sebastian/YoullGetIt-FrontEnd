@@ -8,6 +8,7 @@ import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';  
 
 final appInitializationProvider = StateProvider<bool>((ref) => false);
@@ -15,6 +16,7 @@ final appInitializationProvider = StateProvider<bool>((ref) => false);
 Future<void> initializeApp(ProviderContainer container) async {
   try {
     await container.read(databaseProvider.future);
+    await NotificationManager.instance.initialize();
     debugPrint('Database initialized successfully');
     
     await container.read(authProvider.notifier).initialize();

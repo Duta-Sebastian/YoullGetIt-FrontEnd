@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_upload_button.dart';
 
@@ -17,97 +18,31 @@ class CVUploadSection extends StatefulWidget {
   CVUploadSectionState createState() => CVUploadSectionState();
 }
 
-class CVUploadSectionState extends State<CVUploadSection> with WidgetsBindingObserver {
+class CVUploadSectionState extends State<CVUploadSection> {
   File? _cvFile;
   bool _isUploaded = false;
   bool _isLoading = true;
+  StreamSubscription? _cvUpdateSubscription;
 
   @override
   void initState() {
     super.initState();
-    // Register observer to detect when app comes to foreground
-    WidgetsBinding.instance.addObserver(this);
+    
+    // Subscribe to CV update notifications
+    _cvUpdateSubscription = NotificationManager.instance.onCvUpdated.listen((_) {
+      debugPrint('CVUploadSection: Received CV update notification');
+      _retrieveSavedCV();
+    });
+    
+    // Initial load
     _retrieveSavedCV();
   }
 
   @override
   void dispose() {
-    // Remove observer when widget is disposed
-    WidgetsBinding.instance.removeObserver(this);
+    // Cancel subscription when widget is disposed
+    _cvUpdateSubscription?.cancel();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Check for CV updates when app comes to foreground
-    if (state == AppLifecycleState.resumed) {
-      _checkBackgroundUpdate();
-    }
-  }
-
-  Future<void> _checkBackgroundUpdate() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final wasUpdated = prefs.getBool('cv_updated_in_background') ?? false;
-      
-      if (wasUpdated) {
-        debugPrint('CV was updated in background, refreshing UI');
-        
-        // Reset the flag
-        await prefs.setBool('cv_updated_in_background', false);
-        
-        // Get the temp file path
-        final tempFilePath = prefs.getString('cv_temp_file_path');
-        if (tempFilePath != null) {
-          final tempFile = File(tempFilePath);
-          if (await tempFile.exists()) {
-            // Release current file if it exists
-            if (_cvFile != null) {
-              setState(() {
-                _cvFile = null;
-                _isLoading = true;
-              });
-              
-              // Wait briefly to ensure resources are released
-              await Future.delayed(Duration(milliseconds: 100));
-            }
-            
-            // Get the destination path
-            final directory = await getApplicationDocumentsDirectory();
-            final cvFile = File('${directory.path}/saved_cv.pdf');
-            
-            // Replace the existing file
-            if (await cvFile.exists()) {
-              await cvFile.delete();
-            }
-            await tempFile.copy(cvFile.path);
-            
-            // Delete the temp file
-            await tempFile.delete();
-            await prefs.remove('cv_temp_file_path');
-            
-            if (mounted) {
-              setState(() {
-                _cvFile = cvFile;
-                _isUploaded = true;
-                _isLoading = false;
-              });
-              
-              debugPrint('CV file updated from temp file: ${cvFile.path}');
-            }
-          } else {
-            debugPrint('Temp file does not exist: $tempFilePath');
-            _retrieveSavedCV();
-          }
-        } else {
-          debugPrint('No temp file path found, loading from database');
-          _retrieveSavedCV();
-        }
-      }
-    } catch (e) {
-      debugPrint('Error checking for background updates: $e');
-      _retrieveSavedCV();
-    }
   }
 
   Future<void> _retrieveSavedCV() async {
@@ -118,7 +53,7 @@ class CVUploadSectionState extends State<CVUploadSection> with WidgetsBindingObs
       
       final cvModel = await DatabaseManager.getCv();
       
-      if (cvModel != null) {
+      if (cvModel != null && cvModel.cvData.isNotEmpty) {
         // Release current file if it exists
         if (_cvFile != null) {
           setState(() {
