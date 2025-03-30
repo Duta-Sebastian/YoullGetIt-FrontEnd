@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_section.dart';
 import 'package:youllgetit_flutter/widgets/profile/profile_header.dart';
@@ -14,16 +17,34 @@ class ProfileScreenState extends State<ProfileScreen> {
   String? _username;
   bool _isLoading = true;
   String? _errorMessage;
+  StreamSubscription? _userUpdateSubscription;
 
   @override
   void initState() {
     super.initState();
     _fetchUsername();
+
+    _userUpdateSubscription = NotificationManager.instance.onUserUpdated.listen((_) {
+      debugPrint('ProfileScreen: Received user update notification, refreshing profile');
+      refreshProfile();
+    });
+  }
+
+  @override
+  void dispose() {
+    _userUpdateSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _fetchUsername() async {
     try {
-      final username = await DatabaseManager.getUsername();
+      final username = await DatabaseManager.getUser().then((user) {
+        if (user == null) {
+          return null;
+        }
+        return user.username;
+      });
+
       if (!mounted) {
         return;
       }
@@ -31,7 +52,8 @@ class ProfileScreenState extends State<ProfileScreen> {
         _username = username;
         _isLoading = false;
       });
-    } catch (e) {
+    } 
+    catch (e) {
       if (!mounted) {
         return;
       }
@@ -45,6 +67,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   void refreshProfile() {
     setState(() {
       _isLoading = true;
+      _errorMessage = null;
     });
     _fetchUsername();
   }

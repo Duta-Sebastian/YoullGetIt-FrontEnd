@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
+import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncApi {
@@ -15,95 +14,107 @@ class SyncApi {
   static const API_PUSH_URL = '$API_BASE_URL/push';
 
   static Future<int> syncPull (String accessToken, DbTables dbTable) async {
-    debugPrint("SyncProcessor: Sync pull URL: ${API_PULL_URL}?table=${dbTable.name}");
-    final response = await http.get(Uri.parse("${API_PULL_URL}?table=${dbTable.name}"),
+    final response = await http.get(Uri.parse("$API_PULL_URL?table=${dbTable.name}"),
       headers: {HttpHeaders.authorizationHeader: "Bearer $accessToken"},
     );
 
-    debugPrint("Response status code: ${response.statusCode}");
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      debugPrint("SyncProcessor: Sync pull ( ${dbTable.name} ) with status code: ${response.statusCode}");
+      return 0;
+    }
 
-    if (response.statusCode != 200) {
-      debugPrint("SyncProcessor: Sync pull failed with status code: ${response.statusCode}");
-      return 0; // No data to sync
+    if (response.statusCode == 204) {
+      return 1;
     }
 
     if (response.body.isEmpty) {
-      debugPrint("SyncProcessor: Sync pull response body is empty");
-      return 0; // No data to sync
+      debugPrint("SyncProcessor: Sync pull ( ${dbTable.name} ) response body is empty");
+      return 0;
     }
     try {
       switch (dbTable) {
         case DbTables.cv:
-            var pulledCv = CvModel.fromJson(json.decode(response.body));
-            DatabaseManager.updateCV(pulledCv);
-            final directory = await getApplicationDocumentsDirectory();
-            final tempFile = File('${directory.path}/temp_cv_${DateTime.now().millisecondsSinceEpoch}.pdf');
-            await tempFile.writeAsBytes(pulledCv.cvData);
-            
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('cv_temp_file_path', tempFile.path);
-            await prefs.setBool('cv_updated_in_background', true);
-
-            debugPrint("CV synced and temp PDF saved at: ${tempFile.path}");
-            return 1;
+            final decodedJson = json.decode(response.body) as List<dynamic>;
+            if (decodedJson.isNotEmpty) {
+              decodedJson[0]['cv_data'] = base64Decode(decodedJson[0]['cv_data']);
+            }
+            var pulledCv = CvModel.fromJson(decodedJson);
+            var result = DatabaseManager.updateCV(pulledCv);
+            return await result;
+        case DbTables.auth_user:
+            var user = UserModel.fromJson(json.decode(response.body));
+            if (user.lastChanged == null) {
+              debugPrint("SyncProcessor: No user data to pull");
+              return 1;
+            }
+            var result = DatabaseManager.updateUser(user);
+            debugPrint("SyncProcessor: User data pulled successfully");
+            return await result;
         default:
           debugPrint("SyncProcessor: Unsupported table for sync: ${dbTable.name}");
-          return 0; // No data to sync
+          return 0;
       }
     }
     catch (e) {
-      debugPrint("SyncProcessor: Error parsing sync pull response: $e");
-      return 0; // No data to sync
+      debugPrint("SyncProcessor: Error parsing sync pull ( ${dbTable.name} ) response: $e");
+      return 0;
     }
   }
 
   static Future<int> syncPush(String accessToken, DbTables dbTable) async {
     try {
-      // Only prepare and send data for supported tables
+      String requestBody;
       switch (dbTable) {
         case DbTables.cv:
-          // Get the CV from the database
           final cvModel = await DatabaseManager.getCv();
           
-          // If no CV data is available, return early
           if (cvModel == null) {
             debugPrint("SyncProcessor: No CV data to push");
-            return 0; // No data to sync
+            return 0;
           }
-          debugPrint("SyncProcessor: Sync push URL: ${cvModel.lastChanged.toIso8601String()}");
           
-          final requestBody = json.encode([{
+          requestBody = json.encode([{
             "cv_data": base64Encode(cvModel.cvData),
             "last_changed": cvModel.lastChanged.toIso8601String()
           }]);
-          
-          // Send the POST request
-          final response = await http.post(
-            Uri.parse("$API_PUSH_URL?table=${dbTable.name}"),
-            headers: {
-              HttpHeaders.authorizationHeader: "Bearer $accessToken",
-              HttpHeaders.contentTypeHeader: "application/json",
-            },
-            body: requestBody,
-          );
-          
-          debugPrint("Response status code: ${response.statusCode}");
-          
-          if (response.statusCode != 200) {
-            debugPrint("SyncProcessor: Sync push failed with status code: ${response.body}");
-            return 0; // Error in sync
+        case DbTables.auth_user:
+          final userModel = await DatabaseManager.getUser();
+
+          if (userModel == null) {
+            debugPrint("SyncProcessor: No user data to push");
+            return 0;
           }
+
+          requestBody = json.encode([{
+            "username": userModel.username,
+            "last_changed": userModel.lastChanged!.toIso8601String()
+          }]);
+        case DbTables.job_cart:
+          return 0;
+        }
+      
+
+      final response = await http.post(
+      Uri.parse("$API_PUSH_URL?table=${dbTable.name}"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $accessToken",
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+        body: requestBody,
+      );
           
-          debugPrint("SyncProcessor: CV successfully pushed to server");
-          return 1; // Success
-          
-        default:
-          debugPrint("SyncProcessor: Unsupported table for sync push: ${dbTable.name}");
-          return 0; // No data to sync
+      
+      if (response.statusCode != 200) {
+        debugPrint("SyncProcessor: Sync push ( ${dbTable.name} ) failed with status code: ${response.body}");
+        return 0; 
       }
-    } catch (e) {
+      
+      debugPrint("SyncProcessor: Sync push ( ${dbTable.name} ) successful with status code: ${response.statusCode}");
+      return 1;
+    } 
+    catch (e) {
       debugPrint("SyncProcessor: Error in sync push: $e");
-      return 0; // Error in sync
+      return 0;
     }
   }
 }

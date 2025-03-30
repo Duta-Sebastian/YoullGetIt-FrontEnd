@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/services/sync_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
@@ -135,33 +136,53 @@ class SyncService {
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     try {
-      if (taskName == SyncService.SYNC_TASK) {
-        final accessToken = inputData?['accessToken'] as String?;
-        
-        if (accessToken == null || accessToken.isEmpty) {
-          debugPrint('SyncService: Missing access token in background task');
-          return Future.value(false);
-        }
+      switch (taskName) {
+        case SyncService.SYNC_TASK:
+          debugPrint('SyncService: Background task triggered - $taskName');
           
-        DatabaseManager.init();
-        
-        await Future<void>(() async {
-          int pullResult = await SyncApi.syncPull(accessToken, DbTables.cv);
-          debugPrint('SyncProcessor: Sync pull result: $pullResult');
+          final accessToken = inputData?['accessToken'] as String?;
           
-          if (pullResult != 0) {
-            int pushResult = await SyncApi.syncPush(accessToken, DbTables.cv);
-            debugPrint('SyncProcessor: Sync push result: $pushResult');
+          if (accessToken == null || accessToken.isEmpty) {
+            debugPrint('SyncService: Missing access token in background task');
+            return Future.value(false);
           }
-        });
+          debugPrint('SyncService: Access token: $accessToken');
+          DatabaseManager.init();
 
-        DatabaseManager.close();
-        
-        debugPrint('SyncProcessor: Sync completed successfully');
-        return Future.value(true);
+          List<Future<void>> syncTasks = [];
+
+          for (DbTables table in DbTables.values) {
+            syncTasks.add(Future<void>(() async {
+              int pullResult = await SyncApi.syncPull(accessToken, table);
+              debugPrint('SyncProcessor: Sync pull result for $table: $pullResult');
+              
+              if (pullResult != 0) {
+                switch (table) {
+                  case DbTables.cv:
+                    NotificationManager.sendCvUpdatedSignal();
+                    break;
+                  case DbTables.auth_user:
+                    NotificationManager.sendUserUpdatedSignal();
+                    break;
+                  default:
+                    debugPrint('SyncProcessor: Unsupported table for sync: ${table.name}');
+                }
+                int pushResult = await SyncApi.syncPush(accessToken, table);
+                debugPrint('SyncProcessor: Sync push result: $pushResult');
+              }
+            }));
+          }
+
+          await Future.wait(syncTasks);
+          //DatabaseManager.close();
+          
+          debugPrint('SyncProcessor: Sync completed successfully');
+          return Future.value(true);
+          
+        default:
+          debugPrint('SyncService: Unknown background task - $taskName');
+          return Future.value(false);
       }
-      
-      return Future.value(true);
     } catch (e) {
       debugPrint('SyncService: Background task failed - $e');
       return Future.value(false);

@@ -14,8 +14,8 @@ class CvModel {
 
     Map<String, dynamic> json = jsonArray[0];
     return CvModel(
-      cvData: List<int>.from(json['cvData']),
-      lastChanged: DateTime.parse(json['lastChanged']),
+      cvData: List<int>.from(json['cv_data']),
+      lastChanged: DateTime.parse(json['last_changed']),
     );
   }
 }

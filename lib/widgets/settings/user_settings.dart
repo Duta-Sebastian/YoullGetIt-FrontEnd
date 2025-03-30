@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/username_model.dart';
+import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class UserSettings extends StatefulWidget {
@@ -25,7 +25,7 @@ class _UserSettingsState extends State<UserSettings> {
   void _saveUsername() {
     String newUsername = _usernameController.text.trim();
     if (newUsername.isNotEmpty) {
-      DatabaseManager.updateUsername(UsernameModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
+      DatabaseManager.updateUser(UserModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
           .then((_) {
         widget.onUsernameChanged();
         ScaffoldMessenger.of(context).showSnackBar(
