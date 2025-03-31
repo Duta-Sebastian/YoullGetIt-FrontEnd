@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_list.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_tab_bar.dart';
@@ -16,14 +19,27 @@ class JobCartScreen extends StatefulWidget {
 class JobCartScreenState extends State<JobCartScreen> {
   int? jobCount;
   List<JobCardModel> allJobs = [];
-  final Map<int, JobStatus> jobStatuses = {};
+  final Map<String, JobStatus> jobStatuses = {};
   int _selectedIndex = 0;
-  int? longPressedJobId;
+  String? longPressedJobId;
+  StreamSubscription? _jobCartUpdateSubscription;
   
   @override
   void initState() {
     super.initState();
     _loadJobs();
+
+    _jobCartUpdateSubscription = NotificationManager.instance.onJobCartUpdated.listen((_) {
+      debugPrint('JobCartScreen: Received job cart update notification, refreshing data');
+      _loadJobs();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the subscription when the widget is disposed
+    _jobCartUpdateSubscription?.cancel();
+    super.dispose();
   }
 
   void _onTabSelected(int index) {
@@ -76,7 +92,7 @@ class JobCartScreenState extends State<JobCartScreen> {
     });
   }
 
-  void _handleLongPress(int jobId) {
+  void _handleLongPress(String jobId) {
     setState(() {
       longPressedJobId = jobId;
     });

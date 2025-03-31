@@ -5,12 +5,12 @@ import 'package:youllgetit_flutter/widgets/jobs/job_list_item.dart';
 
 class JobList extends StatelessWidget {
   final List<JobCardModel> jobs;
-  final Map<int, JobStatus> jobStatuses;
+  final Map<String, JobStatus> jobStatuses;
   final Function(JobCardModel)? onJobRemoved;
   final Function(JobCardModel, JobStatus)? onStatusChanged;
   final Function(JobCardModel)? onJobTapped;
-  final Function(int)? onLongPress;
-  final int? longPressedJobId;
+  final Function(String)? onLongPress;
+  final String? longPressedJobId;
 
   const JobList({
     super.key,
