@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
+import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
@@ -50,9 +51,11 @@ class SyncApi {
             var result = DatabaseManager.updateUser(user);
             debugPrint("SyncProcessor: User data pulled successfully");
             return await result;
-        default:
-          debugPrint("SyncProcessor: Unsupported table for sync: ${dbTable.name}");
-          return 0;
+        case DbTables.job_cart:
+            var jobCart = JobCardStatusModel.listFromJson(json.decode(response.body));
+            debugPrint('SyncLogger: Sync pull ( ${dbTable.name} ) response: ${jobCart.toString()}');
+            var result = DatabaseManager.syncPullJobs(jobCart);
+            return await result;
       }
     }
     catch (e) {
@@ -90,7 +93,13 @@ class SyncApi {
             "last_changed": userModel.lastChanged!.toIso8601String()
           }]);
         case DbTables.job_cart:
-          return 0;
+          final jobCart = await DatabaseManager.retrieveAllJobs();
+
+          if (jobCart.isEmpty) {
+            debugPrint('SyncProcessor: No job data to push');
+            return 0;
+          }
+          requestBody = JobCardStatusModel.encodeJobCartToJson(jobCart);
         }
       
 

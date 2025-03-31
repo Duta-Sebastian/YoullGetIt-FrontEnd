@@ -20,10 +20,11 @@ class DatabaseManager {
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE jobs (
-            id INTEGER PRIMARY KEY,
+            id TEXT PRIMARY KEY,
             job_data TEXT,
-            date_added DATETIME,
-            status TEXT CHECK(status IN ('liked', 'toApply', 'applied', 'unknown'))
+            status TEXT CHECK (status IN ('liked', 'toApply', 'applied', 'unknown')),
+            last_changed DATETIME,
+            is_deleted INTEGER DEFAULT 0
           )
         ''');
 
@@ -52,10 +53,12 @@ class DatabaseManager {
   }
 
   static Future<List<JobCardStatusModel>> retrieveAllJobs() async {
-    final List<Map<String, dynamic>> maps = await _database.query('jobs',orderBy: 'date_added DESC');
+    final List<Map<String, dynamic>> maps = await _database.query(
+      'jobs', where: "is_deleted = ?", whereArgs: [0], orderBy: 'last_changed DESC');
     return List.generate(maps.length, (index) {
       final jsonData = jsonDecode(maps[index]['job_data']);
       return JobCardStatusModel(
+        jobId: maps[index]['id'],
         jobCard: JobCardModel.fromJson(jsonData),
         status: JobStatusExtension.fromString(maps[index]['status'])
       );
@@ -67,28 +70,26 @@ class DatabaseManager {
     return await _database.insert('jobs', {
       'id': jobCard.id,
       'job_data': jsonString,
-      'date_added': DateTime.now().toUtc().toIso8601String(),
+      'last_changed': DateTime.now().toUtc().toIso8601String(),
       'status': "liked"
       },
       conflictAlgorithm: ConflictAlgorithm.replace
     );
   }
-
-  static Future<int> getLikedJobCount() async {
-    var result = await _database.rawQuery("SELECT COUNT(*) FROM jobs");
-    return Sqflite.firstIntValue(result) ?? 0;
-  }
-
+  
   static Future<int> deleteAllJobs() async {
     return await _database.delete('jobs');
   }
 
-  static Future<int> deleteJob(int id) async {
-    return await _database.delete('jobs', where: 'id = ?', whereArgs: [id]);
+  static Future<int> deleteJob(String id) async {
+    return await _database.update('jobs', {'is_deleted': 1}, where: 'id = ?', whereArgs: [id]);
   }
 
-  static Future<int> updateJobStatus(int id, JobStatus status) async {
-    return await _database.update('jobs', {'status': status.name}, where: 'id = ?', whereArgs: [id]);
+  static Future<int> updateJobStatus(String id, JobStatus status) async {
+    return await _database.update('jobs',
+      {'status': status.name, 'last_chaned': DateTime.now().toUtc().toIso8601String()},
+      where: 'id = ?',
+      whereArgs: [id]);
   }
 
   static Future<int> updateUser(UserModel currentUser) async {
@@ -176,5 +177,64 @@ class DatabaseManager {
       'cv_data': Uint8List(0),
       'last_changed': DateTime.now().toUtc().toIso8601String()
     });
+  }
+
+  static Future<int> syncPullJobs(List<JobCardStatusModel> jobCart) async {
+    if (jobCart.isEmpty) {
+      return 0;
+    }
+    
+    int syncedCount = 0;
+    
+    final List<String> jobIds = jobCart.map((job) => job.jobCard.id).toList();
+    
+    final List<Map<String, dynamic>> existingJobs = await _database.query(
+      'jobs',
+      where: 'id IN (${List.filled(jobIds.length, '?').join(', ')})',
+      whereArgs: jobIds,
+    );
+    
+    final Map<String, Map<String, dynamic>> existingJobsMap = {
+      for (var job in existingJobs) job['id'] as String: job
+    };
+    await _database.transaction((txn) async {
+      for (var jobCardStatus in jobCart) {
+        final String jobId = jobCardStatus.jobCard.id;
+        if (!existingJobsMap.containsKey(jobId)) {
+          final jsonString = jsonEncode(jobCardStatus.jobCard.toJson());
+          await txn.insert('jobs', {
+            'id': jobId,
+            'job_data': jsonString,
+            'status': jobCardStatus.status.name,
+            'last_changed': jobCardStatus.lastChanged?.toUtc().toIso8601String() ?? 
+                          DateTime.now().toUtc().toIso8601String(),
+            'is_deleted': jobCardStatus.isDeleted,
+          });
+          syncedCount++;
+        } else {
+          final existingJob = existingJobsMap[jobId]!;
+          final existingLastChanged = existingJob['last_changed'] != null 
+              ? DateTime.parse(existingJob['last_changed'] as String).toUtc() 
+              : null;
+          if (jobCardStatus.lastChanged != null && 
+              (existingLastChanged == null || 
+              jobCardStatus.lastChanged!.isAfter(existingLastChanged))) {
+            await txn.update(
+              'jobs',
+              {
+                'status': jobCardStatus.status.name,
+                'last_changed': jobCardStatus.lastChanged!.toUtc().toIso8601String(),
+                'is_deleted': jobCardStatus.isDeleted ? 1 : 0,
+              },
+              where: 'id = ?',
+              whereArgs: [jobId],
+            );
+            syncedCount++;
+          }
+        }
+      }
+    });
+    
+    return syncedCount;
   }
 }

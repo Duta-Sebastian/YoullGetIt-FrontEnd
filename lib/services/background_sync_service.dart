@@ -20,6 +20,7 @@ class SyncService {
   
   late ProviderContainer _container;
   bool _isInitialized = false;
+  bool _isSyncScheduled = false;
   
   Future<void> initialize(ProviderContainer container) async {
     if (_isInitialized) return;
@@ -51,8 +52,10 @@ class SyncService {
       (previous, next) async {
         if (previous?.isLoggedIn != next.isLoggedIn) {
           if (next.isLoggedIn && next.credentials != null) {
+            debugPrint('SyncLogger: User logged in, scheduling sync');
             await scheduleSync();
           } else {
+            debugPrint('SyncLogger: User logged out, canceling sync');
             await cancelSync();
           }
         }
@@ -61,6 +64,11 @@ class SyncService {
   }
   
   Future<bool> scheduleSync() async {
+    if (_isSyncScheduled) {
+      debugPrint('SyncService: Sync already scheduled, skipping');
+      return true;
+    }
+    
     final authState = _container.read(authProvider);
     
     if (!authState.isLoggedIn || authState.credentials == null) {
@@ -84,9 +92,10 @@ class SyncService {
         existingWorkPolicy: ExistingWorkPolicy.replace,
       );
       
+      _isSyncScheduled = true;
       debugPrint('SyncService: Periodic sync scheduled');
       
-      performManualSync();
+      await performManualSync();
       
       return true;
     } catch (e) {
@@ -125,6 +134,7 @@ class SyncService {
   Future<void> cancelSync() async {
     try {
       await Workmanager().cancelByUniqueName(SYNC_PERIODIC_TASK);
+      _isSyncScheduled = false;
       debugPrint('SyncService: Sync canceled');
     } catch (e) {
       debugPrint('SyncService: Failed to cancel sync - $e');
@@ -139,7 +149,7 @@ void callbackDispatcher() {
       switch (taskName) {
         case SyncService.SYNC_TASK:
           debugPrint('SyncService: Background task triggered - $taskName');
-          
+          NotificationManager.initializeForBackground();
           final accessToken = inputData?['accessToken'] as String?;
           
           if (accessToken == null || accessToken.isEmpty) {
@@ -147,7 +157,7 @@ void callbackDispatcher() {
             return Future.value(false);
           }
           debugPrint('SyncService: Access token: $accessToken');
-          DatabaseManager.init();
+          await DatabaseManager.init();
 
           List<Future<void>> syncTasks = [];
 
@@ -159,13 +169,14 @@ void callbackDispatcher() {
               if (pullResult != 0) {
                 switch (table) {
                   case DbTables.cv:
-                    NotificationManager.sendCvUpdatedSignal();
+                    await NotificationManager.sendCvUpdatedSignal();
                     break;
                   case DbTables.auth_user:
-                    NotificationManager.sendUserUpdatedSignal();
+                    await NotificationManager.sendUserUpdatedSignal();
                     break;
-                  default:
-                    debugPrint('SyncProcessor: Unsupported table for sync: ${table.name}');
+                  case DbTables.job_cart:
+                    await NotificationManager.sendJobCartUpdatedSignal();
+                    break;
                 }
                 int pushResult = await SyncApi.syncPush(accessToken, table);
                 debugPrint('SyncProcessor: Sync push result: $pushResult');
@@ -174,7 +185,6 @@ void callbackDispatcher() {
           }
 
           await Future.wait(syncTasks);
-          //DatabaseManager.close();
           
           debugPrint('SyncProcessor: Sync completed successfully');
           return Future.value(true);
