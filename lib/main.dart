@@ -16,20 +16,30 @@ final appInitializationProvider = StateProvider<bool>((ref) => false);
 Future<void> initializeApp(ProviderContainer container) async {
   try {
     await container.read(databaseProvider.future);
-    await NotificationManager.instance.initialize();
     debugPrint('Database initialized successfully');
-    
+
     await container.read(authProvider.notifier).initialize();
     debugPrint('Auth initialized successfully');
-    
-    final syncService = container.read(syncServiceProvider);
-    await syncService.initialize(container);
-    await syncService.startSync();
-    debugPrint('Sync service initialized successfully');
-    
-    await Future.wait([
-      _checkFirstTimeAndFetchJobs(container),
+
+    final parallelInitializationTasks = <Future>[];
+
+    parallelInitializationTasks.addAll([
+      NotificationManager.instance.initialize().then((_) {
+        debugPrint('NotificationManager initialized successfully');
+      }),
+
+      () async {
+        final syncService = container.read(syncServiceProvider);
+        await syncService.initialize(container);
+        await syncService.startSync();
+        debugPrint('Sync service initialized successfully');
+      }(),
+
+      _checkFirstTimeAndFetchJobs(container)
     ]);
+
+    await Future.wait(parallelInitializationTasks);
+    debugPrint('Initialization tasks completed successfully');
   } catch (e) {
     debugPrint('Initialization error: $e');
   } finally {
