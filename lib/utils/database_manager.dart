@@ -60,7 +60,8 @@ class DatabaseManager {
       return JobCardStatusModel(
         jobId: maps[index]['id'],
         jobCard: JobCardModel.fromJson(jsonData),
-        status: JobStatusExtension.fromString(maps[index]['status'])
+        status: JobStatusExtension.fromString(maps[index]['status']),
+        lastChanged: DateTime.parse(maps[index]['last_changed']).toUtc(),
       );
     });
   }
