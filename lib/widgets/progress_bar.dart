@@ -1,4 +1,5 @@
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:youllgetit_flutter/data/question_repository.dart';
 
 class ProgressBar extends StatelessWidget {
   final int currentQuestionIndex;
@@ -12,6 +13,15 @@ class ProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalRootQuestions = _countRootQuestions();
+    
+    final currentRootIndex = _getCurrentRootIndex();
+    
+    // Calculate progress ratio
+    final progressRatio = totalRootQuestions > 0 
+        ? (currentRootIndex) / totalRootQuestions 
+        : 0.0;
+
     return Neumorphic(
       style: NeumorphicStyle(
         depth: 4, 
@@ -26,7 +36,7 @@ class ProgressBar extends StatelessWidget {
           children: [
             LayoutBuilder(
               builder: (context, constraints) {
-                double progressWidth = (currentQuestionIndex + 1) / totalQuestions * constraints.maxWidth;
+                double progressWidth = progressRatio * constraints.maxWidth;
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Stack(
@@ -40,7 +50,7 @@ class ProgressBar extends StatelessWidget {
                         top: 2,
                         left: 10,
                         child: Container(
-                          width: progressWidth - progressWidth*.10,
+                          width: progressWidth > 10 ? progressWidth - progressWidth * 0.10 : 0,
                           height: 4,
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(120, 200, 180, 1),
@@ -57,5 +67,31 @@ class ProgressBar extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  int _countRootQuestions() {
+    final rootQuestions = QuestionRepository.questions
+        .where((q) => RegExp(r'^q\d+$').hasMatch(q.id))
+        .toList();
+    
+    return rootQuestions.length;
+  }
+  
+  int _getCurrentRootIndex() {
+    if (currentQuestionIndex >= QuestionRepository.questions.length) {
+      return 0;
+    }
+    
+    final currentQuestion = QuestionRepository.questions[currentQuestionIndex];
+    
+    final rootId = currentQuestion.rootQuestionId ?? currentQuestion.id;
+    final match = RegExp(r'^q(\d+)').firstMatch(rootId);
+    
+    if (match != null) {
+      final rootNumber = int.tryParse(match.group(1) ?? '0') ?? 0;
+      return rootNumber;
+    }
+    
+    return 0;
   }
 }

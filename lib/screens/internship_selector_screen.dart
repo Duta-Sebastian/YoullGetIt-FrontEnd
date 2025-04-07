@@ -1,70 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/screens/review_answers_screen.dart';
+import 'package:youllgetit_flutter/widgets/character_speech_bubble.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/questions_wrapper.dart';
-import '../widgets/progress_bar.dart';
-import '../widgets/character_speech_bubble.dart';
+import 'package:youllgetit_flutter/widgets/progress_bar.dart';
 
-class InternshipSelectorScreen extends StatefulWidget {
-  const InternshipSelectorScreen({super.key});
+class QuestionnaireScreen extends StatefulWidget {
+  const QuestionnaireScreen({super.key});
 
   @override
-  InternshipSelectorScreenState createState() => InternshipSelectorScreenState();
+  QuestionnaireScreenState createState() => QuestionnaireScreenState();
 }
 
-class InternshipSelectorScreenState extends State<InternshipSelectorScreen> {
-  int currentQuestionIndex = 0;
-  final int totalQuestions = 5;
-  String questionText = "";
-
+class QuestionnaireScreenState extends State<QuestionnaireScreen> {
+  int _currentQuestionIndex = 0;
+  String _currentQuestionText = '';
+  
   void _updateQuestionIndex(int newIndex) {
     setState(() {
-      currentQuestionIndex = newIndex;
+      _currentQuestionIndex = newIndex;
+    });
+  }
+  
+  void _updateQuestionText(String text) {
+    setState(() {
+      _currentQuestionText = text;
     });
   }
 
-  void _updateQuestionText(String text) {
-    setState(() {
-      questionText = text;
-    });
+  void _onFinish(Map<String, List<String>> answers) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ReviewAnswersScreen(answers: answers))
+    );
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          'Questions',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 16),
+        ProgressBar(
+          currentQuestionIndex: _currentQuestionIndex,
+          totalQuestions: QuestionRepository.questions.length,
+        ),
+        const SizedBox(height: 24),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Let\'s get started!',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
-        ),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              ProgressBar(
-                currentQuestionIndex: currentQuestionIndex,
-                totalQuestions: totalQuestions,
-              ),
-              const SizedBox(height: 20),
-              CharacterSpeechBubble(
-                text: questionText,
-              ),
-              const SizedBox(height: 20),
+              _buildHeader(),
+              
+              CharacterSpeechBubble(text: _currentQuestionText),
+              const SizedBox(height: 24),
+              
               Expanded(
                 child: QuestionWrapper(
-                  currentQuestionIndex: currentQuestionIndex,
-                  totalQuestions: totalQuestions,
+                  currentQuestionIndex: _currentQuestionIndex,
+                  totalQuestions: QuestionRepository.questions.length,
                   onQuestionIndexChanged: _updateQuestionIndex,
                   onQuestionTextUpdated: _updateQuestionText,
+                  onFinish: _onFinish,
                 ),
               ),
             ],

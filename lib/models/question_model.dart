@@ -2,6 +2,8 @@ enum AnswerType {
   checkbox,
   text,
   chips,
+  radio,
+  languages,
 }
 
 class Question {

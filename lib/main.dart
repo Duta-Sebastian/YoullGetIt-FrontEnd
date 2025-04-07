@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:youllgetit_flutter/screens/internship_selector_screen.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
-import 'package:youllgetit_flutter/widgets/my_home_page';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: true ? const InternshipSelectorScreen() : const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const QuestionnaireScreen()
     );
   }
 }
