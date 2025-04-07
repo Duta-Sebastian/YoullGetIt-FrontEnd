@@ -22,22 +22,24 @@ class _UserSettingsState extends State<UserSettings> {
     super.dispose();
   }
 
-  void _saveUsername() {
-    String newUsername = _usernameController.text.trim();
-    if (newUsername.isNotEmpty) {
-      DatabaseManager.updateUser(UserModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
-          .then((_) {
+void _saveUsername() {
+  String newUsername = _usernameController.text.trim();
+  if (newUsername.isNotEmpty) {
+    DatabaseManager.updateUser(UserModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
+        .then((_) {
+      if (mounted) {
         widget.onUsernameChanged();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Username updated')),
         );
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username cannot be empty')),
-      );
-    }
+      }
+    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Username cannot be empty')),
+    );
   }
+}
 
   void _confirmDeleteData() {
     showDialog(

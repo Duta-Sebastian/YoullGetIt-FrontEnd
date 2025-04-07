@@ -156,7 +156,6 @@ void callbackDispatcher() {
             debugPrint('SyncService: Missing access token in background task');
             return Future.value(false);
           }
-          debugPrint('SyncService: Access token: $accessToken');
           await DatabaseManager.init();
 
           List<Future<void>> syncTasks = [];
