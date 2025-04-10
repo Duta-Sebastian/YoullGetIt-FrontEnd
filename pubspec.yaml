@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   build_runner: ^2.4.15
+  auth0_flutter: ^1.9.0
   cupertino_icons: ^1.0.8
   custom_lint: ^0.7.5
   dotted_border: ^2.1.0

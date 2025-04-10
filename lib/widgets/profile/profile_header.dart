@@ -32,6 +32,8 @@ class ProfileHeader extends StatelessWidget {
                   ),
                 );
               },
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
             ),
           ),
           Column(
