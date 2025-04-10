@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/username_model.dart';
+import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class UserSettings extends StatefulWidget {
@@ -22,22 +22,24 @@ class _UserSettingsState extends State<UserSettings> {
     super.dispose();
   }
 
-  void _saveUsername() {
-    String newUsername = _usernameController.text.trim();
-    if (newUsername.isNotEmpty) {
-      DatabaseManager.updateUsername(UsernameModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
-          .then((_) {
+void _saveUsername() {
+  String newUsername = _usernameController.text.trim();
+  if (newUsername.isNotEmpty) {
+    DatabaseManager.updateUser(UserModel(username: newUsername, lastChanged: DateTime.now().toUtc()))
+        .then((_) {
+      if (mounted) {
         widget.onUsernameChanged();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Username updated')),
         );
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Username cannot be empty')),
-      );
-    }
+      }
+    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Username cannot be empty')),
+    );
   }
+}
 
   void _confirmDeleteData() {
     showDialog(

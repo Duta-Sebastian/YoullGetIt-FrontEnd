@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
 import 'package:youllgetit_flutter/screens/profile_screen.dart';
@@ -58,10 +57,7 @@ class Page3State extends ConsumerState<Page3> {
   }
 
     Future<void> _deleteJobs() async {
-    final database = ref.read(databaseProvider).value;
-    if (database != null) {
-      await DatabaseManager.deleteAllJobs();
-    }
+    await DatabaseManager.deleteAllJobs();
   }
 
   @override

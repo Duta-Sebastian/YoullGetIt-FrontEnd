@@ -1,5 +1,5 @@
 class JobCardModel {
-  final int id;
+  final String id;
   final String title;
   final String company;
   final String location;

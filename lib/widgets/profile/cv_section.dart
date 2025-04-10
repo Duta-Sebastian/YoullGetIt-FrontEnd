@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_upload_button.dart';
 
@@ -20,20 +22,50 @@ class CVUploadSectionState extends State<CVUploadSection> {
   File? _cvFile;
   bool _isUploaded = false;
   bool _isLoading = true;
+  StreamSubscription? _cvUpdateSubscription;
 
   @override
   void initState() {
     super.initState();
+    
+    // Subscribe to CV update notifications
+    _cvUpdateSubscription = NotificationManager.instance.onCvUpdated.listen((_) {
+      debugPrint('CVUploadSection: Received CV update notification');
+      _retrieveSavedCV();
+    });
+    
+    // Initial load
     _retrieveSavedCV();
+  }
+
+  @override
+  void dispose() {
+    // Cancel subscription when widget is disposed
+    _cvUpdateSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _retrieveSavedCV() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
+      
       final cvModel = await DatabaseManager.getCv();
       
-      if (cvModel != null) {
+      if (cvModel != null && cvModel.cvData.isNotEmpty) {
+        // Release current file if it exists
+        if (_cvFile != null) {
+          setState(() {
+            _cvFile = null;
+          });
+          await Future.delayed(Duration(milliseconds: 100));
+        }
+        
         final directory = await getApplicationDocumentsDirectory();
         final cvFile = File('${directory.path}/saved_cv.pdf');
+        
+        // Create or overwrite the file
         await cvFile.writeAsBytes(cvModel.cvData);
 
         if (mounted) {
@@ -44,61 +76,98 @@ class CVUploadSectionState extends State<CVUploadSection> {
           });
         }
       } else {
+        if (mounted) {
+          setState(() {
+            _cvFile = null;
+            _isUploaded = false;
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint('Error retrieving saved CV: $e');
+      if (mounted) {
+        _showSnackBar('Failed to retrieve saved CV: $e');
         setState(() {
           _isLoading = false;
         });
       }
+    }
+  }
+
+  Future<void> _pickCV() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        await _savePDF(File(result.files.single.path!));
+      }
     } catch (e) {
-      _showSnackBar('Failed to retrieve saved CV: $e');
+      debugPrint('Error picking CV: $e');
+      _showSnackBar('Failed to pick CV: $e');
+    }
+  }
+
+  Future<void> _savePDF(File sourceFile) async {
+    try {
+      // Read the PDF file
+      final Uint8List cvBytes = await sourceFile.readAsBytes();
+
+      // Create CV model
+      final cvModel = CvModel(
+        cvData: cvBytes,
+        lastChanged: DateTime.now(),
+      );
+
+      // Update database
+      await DatabaseManager.updateCV(cvModel);
+
+      // Release current file if it exists
+      if (_cvFile != null) {
+        setState(() {
+          _cvFile = null;
+          _isLoading = true;
+        });
+        await Future.delayed(Duration(milliseconds: 100));
+      }
+
+      // Save to file system
+      final directory = await getApplicationDocumentsDirectory();
+      final String filePath = '${directory.path}/saved_cv.pdf';
+      final cvFile = File(filePath);
+      
+      if (await cvFile.exists()) {
+        await cvFile.delete();
+      }
+      await sourceFile.copy(filePath);
+
+      if (mounted) {
+        setState(() {
+          _cvFile = cvFile;
+          _isUploaded = true;
+          _isLoading = false;
+        });
+      }
+
+      _showSnackBar('CV saved successfully');
+    } catch (e) {
+      debugPrint('Error saving PDF: $e');
+      _showSnackBar('Failed to save CV: $e');
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  Future<void> _pickCV() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-
-    if (result != null) {
-      await _savePDF(File(result.files.single.path!));
-    }
-  }
-
-  Future<void> _savePDF(File sourceFile) async {
-    try {
-      final Uint8List cvBytes = await sourceFile.readAsBytes();
-
-      final cvModel = CvModel(
-        cvData: cvBytes,
-        lastChanged: DateTime.now(),
-      );
-
-      await DatabaseManager.updateCV(cvModel);
-
-      final directory = await getApplicationDocumentsDirectory();
-      final String filePath = '${directory.path}/saved_cv.pdf';
-      await sourceFile.copy(filePath);
-
-      if (mounted) {
-        setState(() {
-          _cvFile = File(filePath);
-          _isUploaded = true;
-        });
-      }
-
-      _showSnackBar('CV saved successfully');
-    } catch (e) {
-      _showSnackBar('Failed to save CV: $e');
-    }
-  }
-
   Future<void> _removeCV() async {
     try {
+      // Delete from database
       await DatabaseManager.deleteCV();
 
+      // Release current file reference
       if (mounted) {
         setState(() {
           _cvFile = null;
@@ -108,6 +177,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
 
       _showSnackBar('CV removed successfully');
     } catch (e) {
+      debugPrint('Error removing CV: $e');
       _showSnackBar('Failed to remove CV: $e');
     }
   }
@@ -186,7 +256,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, width: 0.5),
               ),
-              child: _cvFile!.path.toLowerCase().endsWith('.pdf')
+              child: _cvFile != null && _cvFile!.path.toLowerCase().endsWith('.pdf')
                 ? SfPdfViewer.file(_cvFile!)
                 : Text('Document preview not supported'),
             ),
