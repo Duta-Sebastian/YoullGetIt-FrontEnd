@@ -10,7 +10,7 @@ import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncApi {
-  static const API_BASE_URL = 'https://youllgetit.eu/api/sync';
+  static const API_BASE_URL = 'https://api1.youllgetit.eu/api/sync';
   static const API_PULL_URL = '$API_BASE_URL/pull';
   static const API_PUSH_URL = '$API_BASE_URL/push';
 
