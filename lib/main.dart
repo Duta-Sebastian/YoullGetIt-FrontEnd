@@ -66,7 +66,7 @@ void main() async {
 
   await initializeApp(container);
 
-  runApp(const MyApp());
+  runApp(MyApp(isFirstTime: isFirstTime));
 }
 
 class MyApp extends ConsumerWidget {

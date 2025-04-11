@@ -389,6 +389,7 @@ packages:
       sha256: "8321a6d11a8d13977fa780c89de8d257cce3d841eecfb7a4cadffcc4f12d82dc"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "2.4.6"
   flutter_plugin_android_lifecycle:
     dependency: transitive
@@ -454,6 +455,17 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+=======
+    version: "2.4.5"
+  flutter_neumorphic_plus:
+    dependency: "direct main"
+    description:
+      name: flutter_neumorphic_plus
+      sha256: "8fa0a1ff1c025e2d61850798d244e61c37cd4717bd340eadf4c9baa00b24353f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.0"
+>>>>>>> 5f2868b68ec3edfed33ee96b326daeb15de89344
   flutter_test:
     dependency: "direct dev"
     description: flutter
