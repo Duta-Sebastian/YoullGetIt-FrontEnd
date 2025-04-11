@@ -6,14 +6,14 @@ import 'package:youllgetit_flutter/screens/profile_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/navbar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomeScreenState extends State<HomeScreen> {
   int pageIndex = 0;
 
   final pages = [

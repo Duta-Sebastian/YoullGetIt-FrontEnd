@@ -114,7 +114,7 @@ class ReviewAnswersScreen extends StatelessWidget {
                           ),
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ),
               ),

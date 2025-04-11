@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';

@@ -6,10 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
+import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
-import 'package:youllgetit_flutter/utils/first_time_checker.dart';  
+import 'package:youllgetit_flutter/utils/first_time_checker.dart';
+import 'package:youllgetit_flutter/utils/unique_id.dart';  
 
 final appInitializationProvider = StateProvider<bool>((ref) => false);
 
@@ -48,9 +50,12 @@ Future<void> initializeApp(ProviderContainer container) async {
 }
 
 Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
-  final firstTime = await isFirstTimeOpening();
+  final isFirstTime = await isFirstTimeOpening();
 
-  if (!firstTime) {
+  if (isFirstTime){
+    generateAndStoreUniqueId();
+  }
+  else {
     await container.read(jobProvider.notifier).fetchJobs(10);
     container.read(appInitializationProvider.notifier).state = true;
   }
@@ -60,17 +65,21 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  bool isFirstTime = await isFirstTimeOpening();
-
   final container = ProviderContainer();
 
   await initializeApp(container);
 
-  runApp(MyApp(isFirstTime: isFirstTime));
+  runApp(MyApp(
+    isFirstTimeOpening: await isFirstTimeOpening(),
+  ));
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  final bool isFirstTimeOpening;
+  const MyApp({
+    super.key,
+    required this.isFirstTimeOpening,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -81,7 +90,7 @@ class MyApp extends ConsumerWidget {
         fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home:  isFirstTimeOpening ? EntryScreen() : HomeScreen(),
     );
   }
 }
