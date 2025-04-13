@@ -12,14 +12,14 @@ import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
-class StandaloneCVScreen extends ConsumerStatefulWidget {
-  const StandaloneCVScreen({super.key});
+class EntryUploadCvScreen extends ConsumerStatefulWidget {
+  const EntryUploadCvScreen({super.key});
 
   @override
-  ConsumerState<StandaloneCVScreen> createState() => _StandaloneCVScreenState();
+  ConsumerState<EntryUploadCvScreen> createState() => _StandaloneCVScreenState();
 }
 
-class _StandaloneCVScreenState extends ConsumerState<StandaloneCVScreen> {
+class _StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
   File? _tempCvFile;
   bool _isLoading = false;
 
@@ -150,6 +150,7 @@ class _StandaloneCVScreenState extends ConsumerState<StandaloneCVScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Add Your CV',

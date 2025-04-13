@@ -69,9 +69,14 @@ void main() async {
 
   await initializeApp(container);
 
-  runApp(MyApp(
-    isFirstTimeOpening: await isFirstTimeOpening(),
-  ));
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: MyApp(
+        isFirstTimeOpening: await isFirstTimeOpening(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {

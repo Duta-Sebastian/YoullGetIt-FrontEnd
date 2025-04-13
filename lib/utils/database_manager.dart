@@ -88,7 +88,7 @@ class DatabaseManager {
 
   static Future<int> updateJobStatus(String id, JobStatus status) async {
     return await _database.update('jobs',
-      {'status': status.name, 'last_chaned': DateTime.now().toUtc().toIso8601String()},
+      {'status': status.name, 'last_changed': DateTime.now().toUtc().toIso8601String()},
       where: 'id = ?',
       whereArgs: [id]);
   }

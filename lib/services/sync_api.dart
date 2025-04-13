@@ -18,7 +18,6 @@ class SyncApi {
     final response = await http.get(Uri.parse("$API_PULL_URL?table=${dbTable.name}"),
       headers: {HttpHeaders.authorizationHeader: "Bearer $accessToken"},
     );
-
     if (response.statusCode != 200 && response.statusCode != 204) {
       debugPrint("SyncProcessor: Sync pull ( ${dbTable.name} ) with status code: ${response.statusCode}");
       return 0;
@@ -100,9 +99,8 @@ class SyncApi {
             return 0;
           }
           requestBody = JobCardStatusModel.encodeJobCartToJson(jobCart);
-        }
+      }
       
-
       final response = await http.post(
       Uri.parse("$API_PUSH_URL?table=${dbTable.name}"),
         headers: {
