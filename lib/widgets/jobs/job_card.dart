@@ -52,24 +52,41 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _flipCard,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
+          // Using a slightly higher perspective value to fix the black line
           final transform = Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
+            ..setEntry(3, 2, 0.002) // Adjusted from 0.001 to 0.002
             ..rotateY(_animation.value);
-          return Transform(
-            alignment: Alignment.center,
-            transform: transform,
-            child: _animation.value <= pi / 2 ? _buildFront() : Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(pi),
-                  child: _buildBack(),
-                ),
-          );
+            
+          if (_animation.value <= pi / 2) {
+            // Front side
+            return Transform(
+              alignment: Alignment.center,
+              transform: transform,
+              child: _buildFront(),
+            );
+          } else {
+            // Back side - ensure we're not seeing any glitches
+            return Transform(
+              alignment: Alignment.center,
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.002) // Consistent perspective
+                ..rotateY(pi)
+                ..rotateY(_animation.value),
+              child: _buildBack(),
+            );
+          }
         },
       ),
     );
@@ -77,56 +94,195 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 
   Widget _buildFront() {
     return _buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.jobData.title, style: _titleStyle),
-          Text(widget.jobData.company, style: _subtitleStyle),
-          const SizedBox(height: 5),
-          Text(widget.jobData.location, style: _infoStyle),
-          const SizedBox(height: 16),
-          _buildInfoRow([
-            _buildChip(widget.jobData.duration, Color.fromRGBO(154, 255, 148, 1), Color.fromRGBO(51, 95, 48, 1)),
-            _buildChip(widget.jobData.education, Color.fromRGBO(255, 190, 249, 1), Color.fromRGBO(108, 62, 103, 1)),
-          ]),
-          const SizedBox(height: 8),
-          _buildInfoRow([
-            _buildChip(widget.jobData.jobType, Color.fromRGBO(171, 196, 234, 1), Color.fromRGBO(54, 81, 121, 1)),
-            _buildChip(widget.jobData.salary, Color.fromRGBO(255, 242, 138, 1), Color.fromRGBO(137, 126, 31, 1)),
-            _buildChip(widget.jobData.languages, Color.fromRGBO(190, 243, 255, 1), Color.fromRGBO(18, 76, 89, 1)),
-          ]),
-          const SizedBox(height: 24),
-          const Text("Prior Experience", style: _headerStyle),
-          const SizedBox(height: 8),
-          _buildChip(widget.jobData.experience, Color.fromRGBO(255, 226, 192, 1), Color.fromRGBO(134, 82, 19, 1)),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Card header
+                Text(widget.jobData.title, style: _titleStyle),
+                Text(widget.jobData.company, style: _subtitleStyle),
+                const SizedBox(height: 5),
+                
+                // Location
+                Row(
+                  children: [
+                    const Icon(Icons.location_on, color: Colors.white70, size: 16),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(_getStringOrNA(widget.jobData.location), style: _infoStyle),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Job details
+                const Text("Job Details", style: _sectionStyle),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.start,
+                  children: [
+                    _buildChipWithIcon(
+                      _getStringOrNA(widget.jobData.jobType),
+                      Icons.work,
+                      const Color.fromRGBO(171, 196, 234, 1),
+                      const Color.fromRGBO(54, 81, 121, 1)
+                    ),
+                    _buildChipWithIcon(
+                      _getStringOrNA(widget.jobData.salary),
+                      Icons.attach_money,
+                      const Color.fromRGBO(255, 242, 138, 1),
+                      const Color.fromRGBO(137, 126, 31, 1)
+                    ),
+                    _buildChipWithIcon(
+                      _getStringOrNA(widget.jobData.workMode),
+                      Icons.business_center,
+                      const Color.fromRGBO(255, 190, 148, 1),
+                      const Color.fromRGBO(134, 82, 19, 1)
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Duration and Education
+                const Text("Education & Duration", style: _sectionStyle),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _buildChipWithIcon(
+                      _getStringOrNA(widget.jobData.duration),
+                      Icons.date_range,
+                      const Color.fromRGBO(154, 255, 148, 1),
+                      const Color.fromRGBO(51, 95, 48, 1)
+                    ),
+                    if (widget.jobData.education.isEmpty)
+                      _buildChipWithIcon(
+                        "N/A",
+                        Icons.school,
+                        const Color.fromRGBO(154, 255, 148, 1),
+                        const Color.fromRGBO(51, 95, 48, 1)
+                      )
+                    else
+                      ...widget.jobData.education.map((edu) => 
+                        _buildChipWithIcon(
+                          _getStringOrNA(edu),
+                          Icons.school,
+                          const Color.fromRGBO(154, 255, 148, 1),
+                          const Color.fromRGBO(51, 95, 48, 1)
+                        )
+                      ),
+                  ],
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Languages
+                const Text("Languages", style: _sectionStyle),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.start,
+                  children: widget.jobData.languages.isEmpty 
+                      ? [
+                          _buildChipWithIcon(
+                            "N/A",
+                            Icons.language,
+                            const Color.fromRGBO(190, 243, 255, 1),
+                            const Color.fromRGBO(18, 76, 89, 1)
+                          )
+                        ]
+                      : widget.jobData.languages.map((lang) => 
+                          _buildChipWithIcon(
+                            _getStringOrNA(lang),
+                            Icons.language,
+                            const Color.fromRGBO(190, 243, 255, 1),
+                            const Color.fromRGBO(18, 76, 89, 1)
+                          )
+                        ).toList(),
+                ),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
 
   Widget _buildBack() {
     return _buildCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Skills", style: _headerStyle),
-          const SizedBox(height: 12),
-          _buildWrappedChips(
-            widget.jobData.skills,
-            Color.fromRGBO(190, 243, 255, 1),
-            Color.fromRGBO(13, 107, 128, 1),
-          ),
-          const SizedBox(height: 24),
-          const Text("Nice-to-Haves", style: _headerStyle),
-          const SizedBox(height: 12),
-          _buildWrappedChips(
-            widget.jobData.niceToHave,
-            Color.fromRGBO(129, 220, 196, 1),
-            Color.fromRGBO(7, 84, 63, 1),
-          ),
-        ],
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Hard Skills
+            Row(
+              children: const [
+                Icon(Icons.build, color: Colors.white70, size: 20),
+                SizedBox(width: 8),
+                Text("Hard Skills", style: _headerStyle),
+              ],
+            ),
+            const SizedBox(height: 8),
+            _buildWrappedChips(
+              widget.jobData.hardSkills.isEmpty ? ["N/A"] : widget.jobData.hardSkills,
+              const Color.fromRGBO(190, 243, 255, 1),
+              const Color.fromRGBO(13, 107, 128, 1),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Soft Skills
+            Row(
+              children: const [
+                Icon(Icons.psychology, color: Colors.white70, size: 20),
+                SizedBox(width: 8),
+                Text("Soft Skills", style: _headerStyle),
+              ],
+            ),
+            const SizedBox(height: 8),
+            _buildWrappedChips(
+              widget.jobData.softSkills.isEmpty ? ["N/A"] : widget.jobData.softSkills,
+              const Color.fromRGBO(255, 190, 249, 1),
+              const Color.fromRGBO(108, 62, 103, 1),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Nice-to-Have
+            Row(
+              children: const [
+                Icon(Icons.star, color: Colors.white70, size: 20),
+                SizedBox(width: 8),
+                Text("Nice-to-Haves", style: _headerStyle),
+              ],
+            ),
+            const SizedBox(height: 8),
+            _buildWrappedChips(
+              widget.jobData.niceToHave.isEmpty ? ["N/A"] : widget.jobData.niceToHave,
+              const Color.fromRGBO(129, 220, 196, 1),
+              const Color.fromRGBO(7, 84, 63, 1),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  String _getStringOrNA(String? value) {
+    if (value == null || value.isEmpty) {
+      return "N/A";
+    }
+    return value;
   }
 
   Color _calculateGlowColor(double threshold) {
@@ -151,24 +307,26 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     bool shouldApplyEffect = threshold != 0;
     Color glowColor = _calculateGlowColor(threshold);
     double borderWidth = shouldApplyEffect ? 2.0 : 0.0;
-    
-    // double blurRadius = shouldApplyEffect ? 8.0 + (threshold.abs() / 100 * 8) : 0;
     double spreadRadius = shouldApplyEffect ? 0.5 + (threshold.abs() / 100 * 1.1) : 0;
 
     return Container(
+      width: double.infinity,
+      constraints: const BoxConstraints(
+        minHeight: 200,
+        maxHeight: 450,
+      ),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(31, 45, 42, 1),
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
-          BoxShadow(
-            color: const Color.fromRGBO(0, 0, 0, 0.2),
+          const BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.2),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: Offset(0, 5),
           ),
           if (shouldApplyEffect)
             BoxShadow(
               color: glowColor,
-              // blurRadius: blurRadius,
               spreadRadius: spreadRadius,
             ),
         ],
@@ -181,44 +339,101 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildInfoRow(List<Widget> children) {
-    return Row(
-      children: [
-        for (int i = 0; i < children.length; i++) ...[
-          if (i > 0) const SizedBox(width: 8),
-          children[i],
-        ],
-      ],
-    );
-  }
-
   Widget _buildWrappedChips(List<String> items, Color chipColor, Color textColor) {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: items.map((item) => _buildChip(item, chipColor, textColor)).toList(),
+      alignment: WrapAlignment.start,
+      children: items.map((item) => 
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: chipColor,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: chipColor.withAlpha((255 * 0.3).toInt()),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: Text(
+            item,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        )
+      ).toList(),
     );
   }
 
-  Widget _buildChip(String label, Color chipColor, Color textColor) {
+  Widget _buildChipWithIcon(String label, IconData icon, Color chipColor, Color textColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: chipColor,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: chipColor.withAlpha((255 * 0.3).toInt()),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w500,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: textColor, size: 14),
+          const SizedBox(width: 4),
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-const _titleStyle = TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold);
-const _subtitleStyle = TextStyle(color: Colors.white, fontSize: 22);
-const _infoStyle = TextStyle(color: Colors.white, fontSize: 14);
-const _headerStyle = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
+// Text styles
+const _titleStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+  letterSpacing: 0.2,
+);
+const _subtitleStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+);
+const _infoStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 13,
+  fontWeight: FontWeight.w400,
+);
+const _headerStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+  letterSpacing: 0.2,
+);
+const _sectionStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  letterSpacing: 0.2,
+);

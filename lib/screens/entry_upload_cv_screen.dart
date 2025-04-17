@@ -7,21 +7,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
-import 'package:youllgetit_flutter/providers/job_provider.dart';
-import 'package:youllgetit_flutter/screens/home_screen.dart';
+import 'package:youllgetit_flutter/screens/recommendation_processing_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
 class EntryUploadCvScreen extends ConsumerStatefulWidget {
-  const EntryUploadCvScreen({super.key});
+  final Map<String, dynamic> answers;
+  const EntryUploadCvScreen({
+    super.key,
+    required this.answers,
+  });
 
   @override
-  ConsumerState<EntryUploadCvScreen> createState() => _StandaloneCVScreenState();
+  ConsumerState<EntryUploadCvScreen> createState() => StandaloneCVScreenState();
 }
 
-class _StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
+class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
   File? _tempCvFile;
   bool _isLoading = false;
+  Map<String, dynamic> _answers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _answers = widget.answers;
+  }
 
   @override
   void dispose() {
@@ -115,8 +125,7 @@ class _StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
       
       await _deleteTempFile();
       await setFirstTimeOpening();
-      ref.read(jobProvider.notifier).fetchJobs(10);
-      _navigateToHomeScreen();
+      _navigateToProcessingScreen(withCv: false);
     } catch (e) {
       _showSnackBar('Failed to save CV');
       setState(() {
@@ -128,15 +137,17 @@ class _StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
   Future<void> _skipAndContinue() async {
     await _deleteTempFile();
     await setFirstTimeOpening();
-    ref.read(jobProvider.notifier).fetchJobs(10);
-    _navigateToHomeScreen();
+    _navigateToProcessingScreen(withCv: false);
   }
 
-  void _navigateToHomeScreen() {
+  void _navigateToProcessingScreen({required bool withCv}) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const HomeScreen(),
+        builder: (context) => RecommendationProcessingScreen(
+          withCv: true,
+          answers: _answers
+        ),
       ),
     );
   }

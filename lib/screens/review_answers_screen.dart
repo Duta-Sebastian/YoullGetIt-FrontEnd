@@ -5,18 +5,32 @@ import 'package:youllgetit_flutter/screens/entry_upload_cv_screen.dart';
 
 class ReviewAnswersScreen extends StatelessWidget {
   final Map<String, List<String>> answers;
+  final List<MapEntry<String, List<String>>> orderedAnswerEntries;
 
   static const Color primaryColor = Color.fromRGBO(89, 164, 144, 1);
 
-  const ReviewAnswersScreen({
+  ReviewAnswersScreen({
     super.key,
     required this.answers,
-  });
+  }) : orderedAnswerEntries = _getOrderedAnswers(answers);
+
+  static List<MapEntry<String, List<String>>> _getOrderedAnswers(Map<String, List<String>> answers) {
+    final List<Question> orderedQuestions = QuestionRepository.questions;
+    final List<MapEntry<String, List<String>>> orderedAnswerEntries = [];
+    
+    for (final question in orderedQuestions) {
+      if (answers.containsKey(question.id)) {
+        orderedAnswerEntries.add(
+          MapEntry(question.text, answers[question.id]!),
+        );
+      }
+    }
+    
+    return orderedAnswerEntries;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<MapEntry<String, List<String>>> orderedAnswerEntries = _getOrderedAnswers();
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -72,21 +86,6 @@ class ReviewAnswersScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  List<MapEntry<String, List<String>>> _getOrderedAnswers() {
-    final List<Question> orderedQuestions = QuestionRepository.questions;
-    final List<MapEntry<String, List<String>>> orderedAnswerEntries = [];
-    
-    for (final question in orderedQuestions) {
-      if (answers.containsKey(question.id)) {
-        orderedAnswerEntries.add(
-          MapEntry(question.text, answers[question.id]!),
-        );
-      }
-    }
-    
-    return orderedAnswerEntries;
   }
 
   Widget _buildAnswerCard(MapEntry<String, List<String>> entry) {
@@ -154,10 +153,18 @@ class ReviewAnswersScreen extends StatelessWidget {
   Widget _buildContinueButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
+        Map<String, dynamic> serializedAnswers = {};
+
+        for (var entry in orderedAnswerEntries) {
+          serializedAnswers[entry.key] = entry.value;
+        }
+        
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const EntryUploadCvScreen(),
+            builder: (context) => EntryUploadCvScreen(
+              answers: serializedAnswers,
+            ),
           ),
         );
       },

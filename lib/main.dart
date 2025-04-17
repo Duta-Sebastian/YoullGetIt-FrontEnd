@@ -9,6 +9,7 @@ import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';  
@@ -22,6 +23,9 @@ Future<void> initializeApp(ProviderContainer container) async {
 
     await container.read(authProvider.notifier).initialize();
     debugPrint('Auth initialized successfully');
+
+    JobApi.initialize(container);
+    debugPrint('JobApi initialized successfully');
 
     final parallelInitializationTasks = <Future>[];
 

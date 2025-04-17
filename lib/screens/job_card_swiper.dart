@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';  // Import Riverpod
-import 'package:youllgetit_flutter/utils/database_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
-import 'package:youllgetit_flutter/providers/job_provider.dart';  // Import your job provider
+import 'package:youllgetit_flutter/providers/job_provider.dart';
 
-class JobCardSwiper extends ConsumerStatefulWidget {  // Use StatefulConsumerWidget to listen to the provider
+class JobCardSwiper extends ConsumerStatefulWidget {
   const JobCardSwiper({super.key});
-
   @override
   JobCardSwiperState createState() => JobCardSwiperState();
 }
 
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
-  int _currentTopCardIndex = 0;
+  // Create a new controller each time we rebuild
+  late CardSwiperController controller;
   int jobNumber = 0;
+  
+  @override
+  void initState() {
+    super.initState();
+    controller = CardSwiperController();
+  }
+  
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
-  Widget build(BuildContext context,) {
-    int jobNumber = 0;
-    final jobList = ref.watch(jobProvider);  // Watch the job provider
-    if (jobList.isEmpty) {
-      return Scaffold(
+  Widget build(BuildContext context) {
+    final jobState = ref.watch(jobProvider);
+    final activeJobs = jobState.activeJobs;
+    
+    if (activeJobs.isEmpty) {
+      return const Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: CircularProgressIndicator(),  // Show loading indicator if jobs are still being fetched
+          child: CircularProgressIndicator(),
         ),
       );
     }
@@ -39,12 +51,14 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
           width: screenWidth,
           height: screenHeight * 0.7,
           child: CardSwiper(
-            cardsCount: jobList.length,
+            // Create a unique key for each build to ensure fresh state
+            key: UniqueKey(),
+            controller: controller,
+            cardsCount: activeJobs.length,
             cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
-              bool isTopCard = index == _currentTopCardIndex;
-              return IgnorePointer(
-                ignoring: !isTopCard,
-                child: JobCard(jobData: jobList[index], percentThresholdx: percentThresholdx.toDouble()),
+              return JobCard(
+                jobData: activeJobs[index], 
+                percentThresholdx: percentThresholdx.toDouble()
               );
             },
             numberOfCardsDisplayed: 2,
@@ -55,21 +69,20 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               right: true,
               left: true,
             ),
-            onSwipe: (previousIndex, currentIndex, direction) {
-              if (currentIndex == null) {
-                return false;
-              }
-              setState(() {
-                _currentTopCardIndex = currentIndex;
-              });
+            onSwipe: (previousIndex, currentIndex, direction) async {
+              // Process the swipe action
+              final liked = direction == CardSwiperDirection.right;
+              
+              // Process the swipe
+              await ref.read(jobProvider.notifier).swipeJob(previousIndex, liked);
+              
+              // Check if we need to fetch more jobs
+              jobNumber++;
               if (jobNumber % 5 == 0) {
                 ref.read(jobProvider.notifier).fetchJobs(5);
               }
-                if (direction == CardSwiperDirection.right) {
-                  DatabaseManager.insertJobCard(jobList[previousIndex]);
-                }
-              jobNumber++;
-              return true;
+              
+              return false;
             },
           ),
         ),
