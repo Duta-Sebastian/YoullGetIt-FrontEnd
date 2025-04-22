@@ -1,50 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';  // Import Riverpod
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
-import 'package:youllgetit_flutter/providers/job_provider.dart';  // Import your job provider
+import 'package:youllgetit_flutter/providers/job_provider.dart';
 
-class JobCardSwiper extends ConsumerStatefulWidget {  // Use StatefulConsumerWidget to listen to the provider
+class JobCardSwiper extends ConsumerStatefulWidget {
   const JobCardSwiper({super.key});
-
   @override
   JobCardSwiperState createState() => JobCardSwiperState();
 }
 
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
-  int _currentTopCardIndex = 0;
   int jobNumber = 0;
-
+  double? cachedScreenWidth;
+  double? cachedScreenHeight;
+  
   @override
-  Widget build(BuildContext context,) {
-    int jobNumber = 0;
-    final jobList = ref.watch(jobProvider);  // Watch the job provider
-    if (jobList.isEmpty) {
-      return Scaffold(
+  Widget build(BuildContext context) {
+    final activeJobs = ref.watch(activeJobsProvider);
+    
+    if (activeJobs.isEmpty) {
+      return const Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: CircularProgressIndicator(),  // Show loading indicator if jobs are still being fetched
+          child: CircularProgressIndicator(),
         ),
       );
     }
 
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    cachedScreenWidth ??= MediaQuery.of(context).size.width;
+    cachedScreenHeight ??= MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: SizedBox(
-          width: screenWidth,
-          height: screenHeight * 0.7,
+          width: cachedScreenWidth,
+          height: cachedScreenHeight! * 0.7,
           child: CardSwiper(
-            cardsCount: jobList.length,
+            cardsCount: activeJobs.length,
             cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
-              bool isTopCard = index == _currentTopCardIndex;
+              bool isTopCard = index == 0;
               return IgnorePointer(
                 ignoring: !isTopCard,
-                child: JobCard(jobData: jobList[index], percentThresholdx: percentThresholdx.toDouble()),
+                child: JobCard(
+                  jobData: activeJobs[index],
+                  percentThresholdx: percentThresholdx.toDouble(),
+                ),
               );
             },
             numberOfCardsDisplayed: 2,
@@ -55,21 +58,21 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               right: true,
               left: true,
             ),
-            onSwipe: (previousIndex, currentIndex, direction) {
-              if (currentIndex == null) {
+            onSwipe: (previousIndex, currentIndex, direction) async {
+              if (previousIndex < 0 || previousIndex >= activeJobs.length) {
                 return false;
               }
-              setState(() {
-                _currentTopCardIndex = currentIndex;
-              });
-              if (jobNumber % 5 == 0) {
-                ref.read(jobProvider.notifier).fetchJobs(5);
+              
+              final liked = direction == CardSwiperDirection.right;
+              
+              if (liked) {
+                DatabaseManager.insertJobCard(activeJobs[previousIndex]);
               }
-                if (direction == CardSwiperDirection.right) {
-                  DatabaseManager.insertJobCard(jobList[previousIndex]);
-                }
+              
+              ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
+              
               jobNumber++;
-              return true;
+              return false;
             },
           ),
         ),

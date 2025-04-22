@@ -16,7 +16,7 @@ Future<String> generateAndStoreUniqueId() async {
   return uniqueId;
 }
 
-Future<String?> getUniqueId() async {
+Future<String> getUniqueId() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString(_uniqueIdKey);
+  return prefs.getString(_uniqueIdKey)!;
 }
