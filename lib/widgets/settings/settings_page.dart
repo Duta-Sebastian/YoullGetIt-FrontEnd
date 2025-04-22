@@ -32,6 +32,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
         children: [
           AuthSection(),
           Expanded(
+            key: UniqueKey(),
             child: ListView(
               children: [
                 _buildSettingsItem(
