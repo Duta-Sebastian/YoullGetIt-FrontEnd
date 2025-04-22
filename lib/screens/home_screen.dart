@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/screens/job_card_swiper.dart';
+import 'package:youllgetit_flutter/screens/job_card_swiper_screen.dart';
 import 'package:youllgetit_flutter/screens/job_cart_screen.dart';
 import 'package:youllgetit_flutter/screens/profile_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
@@ -17,7 +17,7 @@ class HomeScreenState extends State<HomeScreen> {
   int pageIndex = 0;
 
   final pages = [
-    JobCardSwiper(),
+    JobCardSwiperScreen(),
     JobCartScreen(),
     const Page3(),
     ProfileScreen(),

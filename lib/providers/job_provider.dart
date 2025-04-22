@@ -104,7 +104,7 @@ class JobCoordinator {
   
   JobCoordinator(this._ref);
 
-  Future<void> handleSwipe(int index, bool liked) async {
+  Future<void> handleSwipe(int index, bool wasLiked) async {
     final activeJobs = _ref.read(activeJobsProvider);
     
     if (index < 0 || index >= activeJobs.length) return;
@@ -112,7 +112,7 @@ class JobCoordinator {
     final job = activeJobs[index];
     
     _ref.read(feedbackProvider.notifier).addFeedback(
-      JobFeedback(jobId: job.id, liked: liked)
+      JobFeedback(jobId: job.id, wasLiked: wasLiked)
     );
     
     _ref.read(swipedJobsProvider.notifier).addSwipedJob(job);

@@ -1,9 +1,9 @@
 class JobFeedback {
   final String jobId;
-  final bool liked;
+  final bool wasLiked;
 
   JobFeedback({
     required this.jobId,
-    required this.liked,
+    required this.wasLiked,
   });
 }

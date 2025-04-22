@@ -5,13 +5,13 @@ import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 
-class JobCardSwiper extends ConsumerStatefulWidget {
-  const JobCardSwiper({super.key});
+class JobCardSwiperScreen extends ConsumerStatefulWidget {
+  const JobCardSwiperScreen({super.key});
   @override
-  JobCardSwiperState createState() => JobCardSwiperState();
+  JobCardSwiperScreenState createState() => JobCardSwiperScreenState();
 }
 
-class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
+class JobCardSwiperScreenState extends ConsumerState<JobCardSwiperScreen> {
   int jobNumber = 0;
   double? cachedScreenWidth;
   double? cachedScreenHeight;
@@ -63,13 +63,13 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                 return false;
               }
               
-              final liked = direction == CardSwiperDirection.right;
+              final wasLiked = direction == CardSwiperDirection.right;
               
-              if (liked) {
+              if (wasLiked) {
                 DatabaseManager.insertJobCard(activeJobs[previousIndex]);
               }
               
-              ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
+              ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, wasLiked);
               
               jobNumber++;
               return false;

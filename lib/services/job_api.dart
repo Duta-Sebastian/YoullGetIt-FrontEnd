@@ -152,7 +152,7 @@ class JobApi {
         'job_feedbacks': jobFeedbacks.map((feedback) {
           return {
             'job_id': feedback.jobId,
-            'feedback': feedback.liked,
+            'feedback': feedback.wasLiked,
           };
         }).toList(),
       };
