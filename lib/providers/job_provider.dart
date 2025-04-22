@@ -25,6 +25,10 @@ class ActiveJobsNotifier extends StateNotifier<List<JobCardModel>> {
     newJobs.removeAt(index);
     state = newJobs;
   }
+
+  void resetJobs() {
+    state = [];
+  }
 }
 
 class SwipedJobsNotifier extends StateNotifier<List<JobCardModel>> {
@@ -38,6 +42,10 @@ class SwipedJobsNotifier extends StateNotifier<List<JobCardModel>> {
     } else {
       state = updatedJobs;
     }
+  }
+
+  void resetJobs() {
+    state = [];
   }
 }
 
@@ -68,6 +76,10 @@ class FeedbackNotifier extends StateNotifier<List<JobFeedback>> {
     if (state.isNotEmpty) {
       await _sendBatchedFeedback();
     }
+  }
+
+  void resetJobs() {
+    state = [];
   }
 }
 
@@ -110,6 +122,12 @@ class JobCoordinator {
     if (activeJobs.length - 1 <= 5) {
       _ref.read(activeJobsProvider.notifier).fetchJobs(5);
     }
+  }
+
+  Future<void> resetJobState() async {
+    _ref.read(activeJobsProvider.notifier).resetJobs();
+    _ref.read(swipedJobsProvider.notifier).resetJobs();
+    _ref.read(feedbackProvider.notifier).resetJobs();
   }
 }
 

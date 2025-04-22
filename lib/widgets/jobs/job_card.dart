@@ -85,8 +85,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(16.0),
                           gradient: LinearGradient(
                             colors: widget.percentThresholdx > 0 
-                                ? [Colors.green.withOpacity(0), Colors.green.withOpacity(min(0.5, widget.percentThresholdx / 100))]
-                                : [Colors.red.withOpacity(min(0.5, -widget.percentThresholdx / 100)), Colors.red.withOpacity(0)],
+                                ? [Colors.green.withAlpha(0), Colors.green.withAlpha((255 * min(0.5, widget.percentThresholdx / 100).toInt()))]
+                                : [Colors.red.withAlpha((255 * min(0.5, -widget.percentThresholdx / 100).toInt())), Colors.red.withAlpha(0)],
                             begin: widget.percentThresholdx > 0 ? Alignment.centerLeft : Alignment.centerLeft,
                             end: widget.percentThresholdx > 0 ? Alignment.centerRight : Alignment.centerRight,
                           ),

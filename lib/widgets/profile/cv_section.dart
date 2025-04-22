@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_upload_button.dart';
@@ -124,6 +125,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
 
       // Update database
       await DatabaseManager.updateCV(cvModel);
+      await JobApi.uploadUserInformation( true, null);
 
       // Release current file if it exists
       if (_cvFile != null) {
