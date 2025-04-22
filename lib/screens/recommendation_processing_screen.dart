@@ -45,7 +45,7 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
           });
         }
       } else {
-        ref.read(jobProvider.notifier).fetchJobs(10);
+        ref.read(activeJobsProvider.notifier).fetchJobs(10);
         
         if (mounted) {
           Navigator.of(context).pushReplacement(

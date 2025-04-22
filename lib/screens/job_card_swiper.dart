@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 
@@ -11,26 +12,13 @@ class JobCardSwiper extends ConsumerStatefulWidget {
 }
 
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
-  // Create a new controller each time we rebuild
-  late CardSwiperController controller;
   int jobNumber = 0;
+  double? cachedScreenWidth;
+  double? cachedScreenHeight;
   
-  @override
-  void initState() {
-    super.initState();
-    controller = CardSwiperController();
-  }
-  
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final jobState = ref.watch(jobProvider);
-    final activeJobs = jobState.activeJobs;
+    final activeJobs = ref.watch(activeJobsProvider);
     
     if (activeJobs.isEmpty) {
       return const Scaffold(
@@ -41,24 +29,25 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
       );
     }
 
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    cachedScreenWidth ??= MediaQuery.of(context).size.width;
+    cachedScreenHeight ??= MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: SizedBox(
-          width: screenWidth,
-          height: screenHeight * 0.7,
+          width: cachedScreenWidth,
+          height: cachedScreenHeight! * 0.7,
           child: CardSwiper(
-            // Create a unique key for each build to ensure fresh state
-            key: UniqueKey(),
-            controller: controller,
             cardsCount: activeJobs.length,
             cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
-              return JobCard(
-                jobData: activeJobs[index], 
-                percentThresholdx: percentThresholdx.toDouble()
+              bool isTopCard = index == 0;
+              return IgnorePointer(
+                ignoring: !isTopCard,
+                child: JobCard(
+                  jobData: activeJobs[index],
+                  percentThresholdx: percentThresholdx.toDouble(),
+                ),
               );
             },
             numberOfCardsDisplayed: 2,
@@ -70,18 +59,19 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               left: true,
             ),
             onSwipe: (previousIndex, currentIndex, direction) async {
-              // Process the swipe action
-              final liked = direction == CardSwiperDirection.right;
-              
-              // Process the swipe
-              await ref.read(jobProvider.notifier).swipeJob(previousIndex, liked);
-              
-              // Check if we need to fetch more jobs
-              jobNumber++;
-              if (jobNumber % 5 == 0) {
-                ref.read(jobProvider.notifier).fetchJobs(5);
+              if (previousIndex < 0 || previousIndex >= activeJobs.length) {
+                return false;
               }
               
+              final liked = direction == CardSwiperDirection.right;
+              
+              if (liked) {
+                DatabaseManager.insertJobCard(activeJobs[previousIndex]);
+              }
+              
+              ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
+              
+              jobNumber++;
               return false;
             },
           ),

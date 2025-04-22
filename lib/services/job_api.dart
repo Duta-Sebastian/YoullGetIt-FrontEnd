@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';
@@ -138,7 +139,7 @@ class JobApi {
     }
   }
 
-  static Future<void> postFeedback(JobCardModel jobCard, bool wasLiked) async {
+  static Future<void> postFeedback(List<JobFeedback> jobFeedbacks) async {
     try {
       final authState = _container!.read(authProvider);
       final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
@@ -148,16 +149,20 @@ class JobApi {
       final formData = {
         'guest_id': uniqueId,
         'auth_id': authId ?? '',
-        'job_id': jobCard.id,
-        'feedback': wasLiked ? 'true' : 'false',
+        'job_feedbacks': jobFeedbacks.map((feedback) {
+          return {
+            'job_id': feedback.jobId,
+            'feedback': feedback.liked,
+          };
+        }).toList(),
       };
 
       final response = await http.post(
         Uri.parse('https://api2.youllgetit.eu/upload_feedback'),
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
         },
-        body: formData,
+        body: jsonEncode(formData),
       );
 
       if (response.statusCode == 200) {

@@ -74,7 +74,32 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             return Transform(
               alignment: Alignment.center,
               transform: transform,
-              child: _buildFront(),
+              child: Stack(
+                children: [
+                  _buildFront(),
+                  // Only add overlay when there's a threshold value
+                  if (widget.percentThresholdx != 0)
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          gradient: LinearGradient(
+                            colors: widget.percentThresholdx > 0 
+                                ? [Colors.green.withOpacity(0), Colors.green.withOpacity(min(0.5, widget.percentThresholdx / 100))]
+                                : [Colors.red.withOpacity(min(0.5, -widget.percentThresholdx / 100)), Colors.red.withOpacity(0)],
+                            begin: widget.percentThresholdx > 0 ? Alignment.centerLeft : Alignment.centerLeft,
+                            end: widget.percentThresholdx > 0 ? Alignment.centerRight : Alignment.centerRight,
+                          ),
+                        ),
+                        child: Center(
+                          child: widget.percentThresholdx > 0
+                              ? Icon(Icons.check_circle, color: Colors.white, size: min(100, widget.percentThresholdx))
+                              : Icon(Icons.close, color: Colors.white, size: min(100, -widget.percentThresholdx)),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             );
           } else {
             // Back side - ensure we're not seeing any glitches
@@ -311,10 +336,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 
     return Container(
       width: double.infinity,
-      constraints: const BoxConstraints(
-        minHeight: 200,
-        maxHeight: 450,
-      ),
+      height: double.infinity,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(31, 45, 42, 1),
         borderRadius: BorderRadius.circular(16.0),
@@ -408,7 +430,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
   }
 }
 
-// Text styles
 const _titleStyle = TextStyle(
   color: Colors.white,
   fontSize: 20,

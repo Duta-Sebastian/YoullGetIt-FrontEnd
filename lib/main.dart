@@ -60,7 +60,7 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
     generateAndStoreUniqueId();
   }
   else {
-    await container.read(jobProvider.notifier).fetchJobs(10);
+    await container.read(activeJobsProvider.notifier).fetchJobs(10);
     container.read(appInitializationProvider.notifier).state = true;
   }
 }
