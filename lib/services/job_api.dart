@@ -2,18 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';
+import 'package:youllgetit_flutter/utils/job_api_encryption_manager.dart';
 
 class JobApi {
   static ProviderContainer? _container;
+  static JobApiEncryptionManager? _encryptionManager;
 
   static void initialize(ProviderContainer container) {
     _container = container;
+    _encryptionManager = JobApiEncryptionManager();
+    _encryptionManager!.initialize();
   }
 
   static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
@@ -42,23 +45,20 @@ class JobApi {
     final String? cvAsBase64 = cvFuture != null ? results[2] as String? : null;
 
     try {
-      final uri = Uri.parse('https://api2.youllgetit.eu/upload_cv_and_questions');
-      
-      final request = http.MultipartRequest('POST', uri)
-        ..fields['cv_byte_str_repr'] = cvAsBase64 ?? ''
-        ..fields['answers_to_questions_str'] = answersJson ?? ''
-        ..fields['guest_id'] = uniqueId
-        ..fields['auth_id'] = authId ?? '';
+      final Map<String, dynamic> userData = {
+        'cv_byte_str_repr': cvAsBase64 ?? '',
+        'answers_to_questions': answersJson ?? '',
+        'guest_id': uniqueId,
+        'auth_id': authId ?? '',
+      };
 
-      final response = await request.send();
+      final String taskId = await _encryptionManager!.encryptedPost<String>(
+        '/upload_cv_and_questions',
+        userData,
+        (responseJson) => jsonDecode(responseJson)
+      );
       
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        final String taskId = jsonDecode(responseBody);
-        await pollForCompletion(taskId);
-      } else {
-        throw Exception('Failed to upload data: ${response.statusCode}');
-      }
+      await pollForCompletion(taskId);
     } catch (e) {
       debugPrint('API call failed: $e');
       return 0;
@@ -72,20 +72,20 @@ class JobApi {
     
     while (!isComplete && attempts < 40) {
       try {
-        final response = await http.post(
-          Uri.parse('https://api2.youllgetit.eu/is_cv_ready?task_id=$taskId'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode({}),
+        final Map<String, dynamic> requestData = {
+          'task_id': taskId,
+        };
+        
+        final statusResponse = await _encryptionManager!.encryptedPost<Map<String, dynamic>>(
+          '/is_cv_ready',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
         );
         
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          
-          if (data['status'] == 'completed') {
-            isComplete = true;
-            return true;
-          }
-        }        
+        if (statusResponse.containsKey('status') && statusResponse['status'] == 'completed') {
+          isComplete = true;
+          return true;
+        }  
       } catch (e) {
         throw Exception('Error checking status: $e');
       }
@@ -107,32 +107,23 @@ class JobApi {
 
       final String uniqueId = await getUniqueId();
 
-      debugPrint('JobApi: uniqueId: $uniqueId');
-
-      final formData = {
+      final Map<String, dynamic> requestData = {
         'guest_id': uniqueId,
         'auth_id': authId ?? '',
       };
-      final response = await http.post(
-        Uri.parse('https://api2.youllgetit.eu/recommend'),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData,
+
+      final List<dynamic> jobsData = await _encryptionManager!.encryptedPost<List<dynamic>>(
+        '/recommend',
+        requestData,
+        (responseJson) => jsonDecode(responseJson)
       );
-      if (response.statusCode == 200) {
-        final List<dynamic> jobsData = jsonDecode(response.body);
-        return jobsData.map((job) {
-          final jobData = job[0];
-          final double matchScore = job[1];
-          jobData['match_score'] = matchScore;
-          return JobCardModel.fromJson(jobData);
-        }).toList().reversed.toList();
-      } else if (response.statusCode == 404) {
-        throw Exception('No recommendations found for this user');
-      } else {
-        throw Exception('Failed to load recommended jobs: ${response.statusCode}');
-      }
+
+      return jobsData.map((job) {
+        final jobData = job["internship"];
+        final double matchScore = job["score"];
+        jobData['match_score'] = matchScore;
+        return JobCardModel.fromJson(jobData);
+      }).toList().reversed.toList();
     } catch (e) {
       debugPrint('Error fetching recommendations: $e');
       return [];
@@ -146,7 +137,7 @@ class JobApi {
 
       final String uniqueId = await getUniqueId();
 
-      final formData = {
+      final Map<String, dynamic> requestData = {
         'guest_id': uniqueId,
         'auth_id': authId ?? '',
         'job_feedbacks': jobFeedbacks.map((feedback) {
@@ -157,22 +148,19 @@ class JobApi {
         }).toList(),
       };
 
-      final response = await http.post(
-        Uri.parse('https://api2.youllgetit.eu/upload_feedback'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(formData),
+      await _encryptionManager!.encryptedPost<dynamic>(
+        '/upload_feedback',
+        requestData,
+        (responseJson) => null
       );
 
-      if (response.statusCode == 200) {
-        debugPrint('Feedback posted successfully');
-      } else {
-        debugPrint('Failed to post feedback: ${response.statusCode}');
-        throw Exception('Failed to post feedback: ${response.statusCode}');
-      }
+      debugPrint('Feedback posted successfully');
     } catch (e) {
       debugPrint('Error posting feedback: $e');
     }
+  }
+
+  static void dispose() {
+    _encryptionManager?.dispose();
   }
 }
