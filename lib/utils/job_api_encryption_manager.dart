@@ -251,7 +251,6 @@ class JobApiEncryptionManager {
       
       final aesKey = decryptAesKey(encryptedKey);
       final decryptedJson = decryptWithAes(encryptedData, iv, aesKey);
-      debugPrint(decryptedJson);
       
       return parser(decryptedJson);
     } catch (e) {

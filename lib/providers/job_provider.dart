@@ -9,12 +9,12 @@ class ActiveJobsNotifier extends StateNotifier<List<JobCardModel>> {
   }
 
   Future<void> _initializeJobs() async {
-    final jobs = await JobApi.fetchJobs(10);
+    final jobs = await JobApi.fetchJobs();
     state = jobs;
   }
 
-  Future<void> fetchJobs(int count) async {
-    final jobs = await JobApi.fetchJobs(count);
+  Future<void> fetchJobs() async {
+    final jobs = await JobApi.fetchJobs();
     state = [...state, ...jobs];
   }
 
@@ -57,7 +57,7 @@ class FeedbackNotifier extends StateNotifier<List<JobFeedback>> {
   void addFeedback(JobFeedback feedback) {
     state = [...state, feedback];
     
-    if (state.length >= 5) {
+    if (state.isNotEmpty) {
       _sendBatchedFeedback();
     }
   }
@@ -119,8 +119,8 @@ class JobCoordinator {
     
     _ref.read(activeJobsProvider.notifier).removeJob(index);
     
-    if (activeJobs.length - 1 <= 5) {
-      _ref.read(activeJobsProvider.notifier).fetchJobs(5);
+    if (activeJobs.length - 1 <= 8) {
+      _ref.read(activeJobsProvider.notifier).fetchJobs();
     }
   }
 

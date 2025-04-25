@@ -47,7 +47,7 @@ class JobApi {
     try {
       final Map<String, dynamic> userData = {
         'cv_byte_str_repr': cvAsBase64 ?? '',
-        'answers_to_questions': answersJson ?? '',
+        'answers_to_questions_str': answersJson ?? '',
         'guest_id': uniqueId,
         'auth_id': authId ?? '',
       };
@@ -100,7 +100,7 @@ class JobApi {
     return isComplete;
   }
 
-  static Future<List<JobCardModel>> fetchJobs(int count) async {
+  static Future<List<JobCardModel>> fetchJobs() async {
     try {
       final authState = _container!.read(authProvider);
       final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
