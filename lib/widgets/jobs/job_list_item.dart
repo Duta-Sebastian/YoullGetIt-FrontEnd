@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
-import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
 
 class JobListItem extends StatelessWidget {
   final JobCardModel job;
@@ -27,7 +27,7 @@ class JobListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showJobCard(context, job),
+      onTap: () => _navigateToJobDetailPage(context, job),
       onLongPress: onLongPress,
       child: Stack(
         children: [
@@ -195,40 +195,12 @@ class JobListItem extends StatelessWidget {
     );
   }
 
-  void _showJobCard(BuildContext context, JobCardModel job) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: screenWidth,
-                height: screenHeight * 0.6,
-                child: JobCard(jobData: job, percentThresholdx: 0),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
-        );
-      },
+  void _navigateToJobDetailPage(BuildContext context, JobCardModel job) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JobDetailPage(job: job),
+      ),
     );
   }
-}	
+}

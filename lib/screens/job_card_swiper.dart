@@ -146,7 +146,6 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                     if (liked) {
                       DatabaseManager.insertJobCard(activeJobs[previousIndex]);
                     }
-                    
                     ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
                     
                     jobNumber++;

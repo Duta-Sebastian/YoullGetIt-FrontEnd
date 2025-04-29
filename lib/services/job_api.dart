@@ -123,9 +123,10 @@ class JobApi {
         if (jobsData.isEmpty) {
           return [];
         }
-
+        
         return jobsData.map((job) {
           final jobData = job["internship"];
+          debugPrint('JobAPI: Job data: $jobData');
           jobData['match_score'] = job["score"];
           return JobCardModel.fromJson(jobData);
         }).toList().reversed.toList();

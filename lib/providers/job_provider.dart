@@ -186,7 +186,8 @@ class FeedbackNotifier extends StateNotifier<List<JobFeedback>> {
     finally {
       _isSending = false;
       
-      if (state.isNotEmpty && _ref.read(connectivityServiceProvider).isConnected) {
+      if (state.isNotEmpty && _ref.read(connectivityServiceProvider).isConnected && !_isSending) {
+        _isSending = true;
         _sendBatchedFeedback();
       }
     }
