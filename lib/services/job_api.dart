@@ -44,33 +44,37 @@ class JobApi {
 
     final String? cvAsBase64 = cvFuture != null ? results[2] as String? : null;
 
-    try {
-      final Map<String, dynamic> userData = {
-        'cv_byte_str_repr': cvAsBase64 ?? '',
-        'answers_to_questions_str': answersJson ?? '',
-        'guest_id': uniqueId,
-        'auth_id': authId ?? '',
-      };
+    int attempts = 1;
+    while (attempts <= 3)
+    {
+      try {
+        final Map<String, dynamic> userData = {
+          'cv_byte_str_repr': cvAsBase64 ?? '',
+          'answers_to_questions_str': answersJson ?? '',
+          'guest_id': uniqueId,
+          'auth_id': authId ?? '',
+        };
 
-      final String taskId = await _encryptionManager!.encryptedPost<String>(
-        '/upload_cv_and_questions',
-        userData,
-        (responseJson) => jsonDecode(responseJson)
-      );
-      
-      await pollForCompletion(taskId);
-    } catch (e) {
-      debugPrint('API call failed: $e');
-      return 0;
+        final String taskId = await _encryptionManager!.encryptedPost<String>(
+          '/upload_cv_and_questions',
+          userData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+        
+        await pollForCompletion(taskId);
+        return 1;
+      } catch (e) {
+        debugPrint('JobAPI: Upload user information API call failed, attempt $attempts / 3, with the error : $e');
+        attempts += 1;
+      }
     }
-    return 1;
+    throw Exception("JobAPI: Upload user information API calls failed, maximum retry attempts excedeed!");
   }
 
-  static Future<bool> pollForCompletion(String taskId) async {
-    bool isComplete = false;
+  static Future<void> pollForCompletion(String taskId) async {
     int attempts = 0;
     
-    while (!isComplete && attempts < 40) {
+    while (attempts < 40) {
       try {
         final Map<String, dynamic> requestData = {
           'task_id': taskId,
@@ -83,8 +87,7 @@ class JobApi {
         );
         
         if (statusResponse.containsKey('status') && statusResponse['status'] == 'completed') {
-          isComplete = true;
-          return true;
+          return ;
         }  
       } catch (e) {
         throw Exception('Error checking status: $e');
@@ -93,41 +96,45 @@ class JobApi {
       attempts++;
     }
     
-    if (!isComplete) {
-      throw Exception('Processing timed out');
-    }
-    
-    return isComplete;
+    throw Exception('Processing timed out');
   }
 
   static Future<List<JobCardModel>> fetchJobs() async {
-    try {
-      final authState = _container!.read(authProvider);
-      final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+    final authState = _container!.read(authProvider);
+    final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
 
-      final String uniqueId = await getUniqueId();
+    final String uniqueId = await getUniqueId();
 
-      final Map<String, dynamic> requestData = {
-        'guest_id': uniqueId,
-        'auth_id': authId ?? '',
-      };
+    final Map<String, dynamic> requestData = {
+      'guest_id': uniqueId,
+      'auth_id': authId ?? '',
+    };
 
-      final List<dynamic> jobsData = await _encryptionManager!.encryptedPost<List<dynamic>>(
-        '/recommend',
-        requestData,
-        (responseJson) => jsonDecode(responseJson)
-      );
+    int attempts = 1;
+    while (attempts <= 3) 
+    {
+      try {
+        final List<dynamic> jobsData = await _encryptionManager!.encryptedPost<List<dynamic>>(
+          '/recommend',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
+        );
 
-      return jobsData.map((job) {
-        final jobData = job["internship"];
-        final double matchScore = job["score"];
-        jobData['match_score'] = matchScore;
-        return JobCardModel.fromJson(jobData);
-      }).toList().reversed.toList();
-    } catch (e) {
-      debugPrint('Error fetching recommendations: $e');
-      return [];
+        if (jobsData.isEmpty) {
+          return [];
+        }
+
+        return jobsData.map((job) {
+          final jobData = job["internship"];
+          jobData['match_score'] = job["score"];
+          return JobCardModel.fromJson(jobData);
+        }).toList().reversed.toList();
+      } catch (e) {
+        debugPrint('JobAPI: Error fetching recommendations, attempt $attempts / 3, with message : $e');
+        attempts += 1;
+      }
     }
+    throw Exception('JobAPI: Error fetching recommendations, retries exceeded!');
   }
 
   static Future<void> postFeedback(List<JobFeedback> jobFeedbacks) async {

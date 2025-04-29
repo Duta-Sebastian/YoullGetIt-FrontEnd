@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
+import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
@@ -18,6 +19,11 @@ final appInitializationProvider = StateProvider<bool>((ref) => false);
 
 Future<void> initializeApp(ProviderContainer container) async {
   try {
+    debugPrint('Starting app initialization...');
+
+    container.read(connectivityServiceProvider);
+    debugPrint('Connectivity service initialized successfully');
+    
     await container.read(databaseProvider.future);
     debugPrint('Database initialized successfully');
 
@@ -60,7 +66,7 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
     generateAndStoreUniqueId();
   }
   else {
-    await container.read(activeJobsProvider.notifier).fetchJobs(10);
+    container.read(activeJobsProvider.notifier);
     container.read(appInitializationProvider.notifier).state = true;
   }
 }
