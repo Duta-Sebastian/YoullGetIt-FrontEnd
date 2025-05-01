@@ -13,7 +13,7 @@ import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
-import 'package:youllgetit_flutter/utils/unique_id.dart';  
+import 'package:youllgetit_flutter/utils/unique_id.dart';
 
 final appInitializationProvider = StateProvider<bool>((ref) => false);
 
@@ -46,7 +46,6 @@ Future<void> initializeApp(ProviderContainer container) async {
         await syncService.startSync();
         debugPrint('Sync service initialized successfully');
       }(),
-
       _checkFirstTimeAndFetchJobs(container)
     ]);
 
@@ -68,7 +67,7 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
   else {
     final coordinator = container.read(jobCoordinatorProvider);
     await coordinator.initialize();
-    
+
     container.read(activeJobsProvider.notifier);
     container.read(appInitializationProvider.notifier).state = true;
   }
@@ -81,7 +80,6 @@ void main() async {
   final container = ProviderContainer();
 
   await initializeApp(container);
-
   runApp(
     UncontrolledProviderScope(
       container: container,
