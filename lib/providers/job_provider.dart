@@ -1,20 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/models/jobs_state.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 
-// ACTIVE JOBS NOTIFIER
 class ActiveJobsNotifier extends StateNotifier<JobsState> {
   final Ref _ref;
   StreamSubscription<bool>? _connectivitySubscription;
   bool _hasPendingFetch = false;
   
   ActiveJobsNotifier(this._ref) : super(const JobsState(jobs: [], isLoading: true)) {
-    // Listen to connectivity changes
     _connectivitySubscription = _ref.read(connectivityServiceProvider)
         .onConnectivityChanged
         .listen(_handleConnectivityChange);
@@ -39,7 +39,7 @@ class ActiveJobsNotifier extends StateNotifier<JobsState> {
 
   Future<void> _initializeJobs() async {
     final isConnected = _ref.read(connectivityServiceProvider).isConnected;
-    
+    debugPrint('Initializing Jobs');
     if (!isConnected) {
       _hasPendingFetch = true;
       state = const JobsState(
@@ -67,7 +67,7 @@ class ActiveJobsNotifier extends StateNotifier<JobsState> {
 
   Future<void> fetchJobs() async {
     final isConnected = _ref.read(connectivityServiceProvider).isConnected;
-    
+    debugPrint('Fetching Jobs');
     if (!isConnected) {
       _hasPendingFetch = true;
       if (state.jobs.isEmpty) {
@@ -136,75 +136,172 @@ class SwipedJobsNotifier extends StateNotifier<List<JobCardModel>> {
 }
 
 class FeedbackNotifier extends StateNotifier<List<JobFeedback>> {
+  static const String _storedFeedbackKey = 'stored_pending_feedback';
+  
   final Ref _ref;
-  bool _isSending = false;
+  final Map<String, Future<void>> _activeRequests = {};
   StreamSubscription<bool>? _connectivitySubscription;
   
   FeedbackNotifier(this._ref) : super([]) {
     _connectivitySubscription = _ref.read(connectivityServiceProvider)
         .onConnectivityChanged
         .listen(_handleConnectivityChange);
+    
+    _loadStoredFeedback();
+  }
+
+  Future<void> _loadStoredFeedback() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final storedFeedbackJson = prefs.getStringList(_storedFeedbackKey) ?? [];
+      
+      if (storedFeedbackJson.isEmpty) return;
+      
+      debugPrint('Found ${storedFeedbackJson.length} stored feedback items from previous session');
+      
+      final storedFeedback = storedFeedbackJson.map((jsonStr) {
+        final map = jsonDecode(jsonStr) as Map<String, dynamic>;
+        return JobFeedback(
+          jobId: map['jobId'] as String,
+          liked: map['liked'] as bool,
+        );
+      }).toList();
+      
+      state = [...state, ...storedFeedback];
+      
+      await prefs.remove(_storedFeedbackKey);
+      
+      if (_ref.read(connectivityServiceProvider).isConnected) {
+        for (final feedback in storedFeedback) {
+          _sendSingleFeedback(feedback);
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading stored feedback: $e');
+    }
+  }
+  
+  Future<void> _saveToLocalStorage() async {
+    if (state.isEmpty) return;
+    
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      final feedbackJsonList = state.map((feedback) => 
+        jsonEncode({
+          'jobId': feedback.jobId,
+          'liked': feedback.liked,
+          'timestamp': DateTime.now().toIso8601String(),
+        })
+      ).toList();
+      
+      await prefs.setStringList(_storedFeedbackKey, feedbackJsonList);
+      debugPrint('Saved ${feedbackJsonList.length} feedback items to local storage');
+    } catch (e) {
+      debugPrint('Error saving feedback to local storage: $e');
+    }
   }
 
   void _handleConnectivityChange(bool isConnected) {
-    if (isConnected && state.isNotEmpty && !_isSending) {
+    if (isConnected && state.isNotEmpty) {
       debugPrint('Connection restored, attempting to send pending feedback');
-      _sendBatchedFeedback();
+      
+      final pendingFeedback = List<JobFeedback>.from(state);
+      for (final feedback in pendingFeedback) {
+        if (!_activeRequests.containsKey(feedback.jobId)) {
+          _sendSingleFeedback(feedback);
+        }
+      }
     }
   }
 
-  void addFeedback(JobFeedback feedback) {
+  Future<void> addFeedback(JobFeedback feedback) {
     state = [...state, feedback];
     
-    final isConnected = _ref.read(connectivityServiceProvider).isConnected;
+    return _sendSingleFeedback(feedback);
+  }
+
+  Future<void> _sendSingleFeedback(JobFeedback feedback) async {
+    if (_activeRequests.containsKey(feedback.jobId)) {
+      return _activeRequests[feedback.jobId]!;
+    }
     
-    if (isConnected && !_isSending) {
-      _sendBatchedFeedback();
-    } else if (!isConnected) {
-      debugPrint('No connectivity, storing feedback for later');
+    final requestFuture = _processFeedback(feedback);
+    _activeRequests[feedback.jobId] = requestFuture;
+    
+    requestFuture.whenComplete(() {
+      _activeRequests.remove(feedback.jobId);
+    });
+    
+    return requestFuture;
+  }
+  
+  Future<void> _processFeedback(JobFeedback feedback) async {
+    final isConnected = _ref.read(connectivityServiceProvider).isConnected;
+    if (!isConnected) {
+      debugPrint('No connectivity, storing feedback for later: ${feedback.jobId}');
+      final completer = Completer<void>();      
+      return completer.future;
+    }
+
+    try {
+      final feedbackList = [feedback];
+      await JobApi.postFeedback(feedbackList);
+      
+      state = state.where((item) => item.jobId != feedback.jobId).toList();
+      
+      debugPrint('Successfully sent feedback for job: ${feedback.jobId}');
+    } catch (e) {
+      debugPrint('Error sending feedback for job ${feedback.jobId}: $e');
+      rethrow;
     }
   }
 
-  Future<void> _sendBatchedFeedback() async {
-    if (state.isEmpty || _isSending) return;
-
-    _isSending = true;
-    try {
-      final currentFeedback = [...state];
-      
-      await JobApi.postFeedback(currentFeedback);
-      
-      state = state.where((feedback) => 
-        !currentFeedback.any((sent) => sent.jobId == feedback.jobId && sent.liked == feedback.liked)
-      ).toList();
-      
-      debugPrint('Successfully sent ${currentFeedback.length} feedback items');
-    } 
-    catch (e) {
-      debugPrint('Error sending feedback: $e');
+  Future<void> waitForPendingFeedback() async {
+    if (_activeRequests.isEmpty && state.isEmpty) return;
+    
+    if (_activeRequests.isNotEmpty) {
+      final futures = _activeRequests.values.toList();
+      try {
+        await Future.wait(futures);
+      } catch (e) {
+        debugPrint('Error waiting for pending feedback: $e');
+      }
     }
-    finally {
-      _isSending = false;
+    
+    if (state.isNotEmpty && _ref.read(connectivityServiceProvider).isConnected) {
+      final pendingFeedbacks = List<JobFeedback>.from(state);
+      final futures = <Future<void>>[];
       
-      if (state.isNotEmpty && _ref.read(connectivityServiceProvider).isConnected && !_isSending) {
-        _isSending = true;
-        _sendBatchedFeedback();
+      for (final feedback in pendingFeedbacks) {
+        futures.add(_sendSingleFeedback(feedback));
+      }
+      
+      try {
+        await Future.wait(futures);
+      } catch (e) {
+        debugPrint('Error sending remaining feedback: $e');
       }
     }
   }
 
   Future<void> flushPendingFeedback() async {
-    if (state.isNotEmpty && _ref.read(connectivityServiceProvider).isConnected) {
-      await _sendBatchedFeedback();
+    await waitForPendingFeedback();
+    
+    if (state.isNotEmpty) {
+      await _saveToLocalStorage();
     }
   }
 
   void resetJobs() {
+    _activeRequests.clear();
     state = [];
   }
   
   @override
   void dispose() {
+    flushPendingFeedback();
+    
     _connectivitySubscription?.cancel();
     super.dispose();
   }
@@ -212,8 +309,16 @@ class FeedbackNotifier extends StateNotifier<List<JobFeedback>> {
 
 class JobCoordinator {
   final Ref _ref;
+  bool _initialFeedbackProcessed = false;
   
   JobCoordinator(this._ref);
+
+  Future<void> initialize() async {
+    if (!_initialFeedbackProcessed) {
+      await _ref.read(feedbackProvider.notifier).waitForPendingFeedback();
+      _initialFeedbackProcessed = true;
+    }
+  }
 
   Future<void> handleSwipe(int index, bool liked) async {
     final activeJobs = _ref.read(activeJobsProvider).jobs;
@@ -227,15 +332,17 @@ class JobCoordinator {
     );
     
     _ref.read(swipedJobsProvider.notifier).addSwipedJob(job);
-    
     _ref.read(activeJobsProvider.notifier).removeJob(index);
     
-    if (activeJobs.length - 1 <= 8) {
+    if (activeJobs.length == 1) {
+      await _ref.read(feedbackProvider.notifier).waitForPendingFeedback();
       _ref.read(activeJobsProvider.notifier).fetchJobs();
     }
   }
 
   Future<void> resetJobState() async {
+    await _ref.read(feedbackProvider.notifier).flushPendingFeedback();
+    
     _ref.read(activeJobsProvider.notifier).resetJobs();
     _ref.read(swipedJobsProvider.notifier).resetJobs();
     _ref.read(feedbackProvider.notifier).resetJobs();
@@ -256,6 +363,13 @@ final feedbackProvider = StateNotifierProvider<FeedbackNotifier, List<JobFeedbac
     notifier.flushPendingFeedback();
   });
   return notifier;
+});
+
+final appInitializationProvider = FutureProvider<void>((ref) async {
+  final coordinator = ref.read(jobCoordinatorProvider);
+  await coordinator.initialize();
+  
+  ref.read(activeJobsProvider.notifier)._initializeJobs();
 });
 
 final jobsLoadingProvider = Provider<bool>((ref) {

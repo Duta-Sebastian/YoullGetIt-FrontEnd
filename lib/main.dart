@@ -66,6 +66,9 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
     generateAndStoreUniqueId();
   }
   else {
+    final coordinator = container.read(jobCoordinatorProvider);
+    await coordinator.initialize();
+    
     container.read(activeJobsProvider.notifier);
     container.read(appInitializationProvider.notifier).state = true;
   }
