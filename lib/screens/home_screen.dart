@@ -6,20 +6,20 @@ import 'package:youllgetit_flutter/screens/profile_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/navbar.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends ConsumerState<HomeScreen> {
   int pageIndex = 0;
 
   final pages = [
     JobCardSwiper(),
-    JobCartScreen(),
     const Page3(),
+    JobCartScreen(),
     ProfileScreen(),
   ];
 

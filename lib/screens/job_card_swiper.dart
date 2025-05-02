@@ -3,6 +3,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
+import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
@@ -14,7 +15,6 @@ class JobCardSwiper extends ConsumerStatefulWidget {
 }
 
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
-  int jobNumber = 0;
   double? screenWidth;
   double? screenHeight;
   
@@ -145,10 +145,10 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                     
                     if (liked) {
                       DatabaseManager.insertJobCard(activeJobs[previousIndex]);
+                      ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
                     }
                     ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
                     
-                    jobNumber++;
                     return false;
                   },
                 ),

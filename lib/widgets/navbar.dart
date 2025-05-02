@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
+// bottom_nav_bar.dart
+import 'dart:math';
 
-class BottomNavBar extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
+
+class BottomNavBar extends ConsumerWidget {
   final int currentPageIndex;
   final ValueChanged<int> onPageChanged;
   final List<Widget> pages;
@@ -12,62 +17,92 @@ class BottomNavBar extends StatelessWidget {
     required this.pages,
   });
 
-  ClipRRect buildMyNavBar(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(context, Icons.loop, 0),
-            _buildNavItem(context, Icons.bookmark, 1),
-            _buildNavItem(context, Icons.widgets_rounded, 2),
-            _buildNavItem(context, Icons.person, 3),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavItem(BuildContext context, IconData icon, int index) {
-    final bool isSelected = currentPageIndex == index;
-    
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      child: IconButton(
-        enableFeedback: false,
-        onPressed: () {
-          onPageChanged(index);
-        },
-        icon: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: isSelected ? 46 : 32,
-          ),
-        ),
-        padding: EdgeInsets.all(isSelected ? 8 : 12),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-      ),
-    );
-  }
-
   @override
-  Widget build(BuildContext context) {
-    return buildMyNavBar(context);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final animationState = ref.watch(bookmarkAnimationProvider);
+    final primaryColor = Theme.of(context).primaryColor;
+    
+    return Container(
+      height: 70,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: Colors.grey.shade200,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildNavItem(context, Icons.loop, 0, false, 0, primaryColor),
+          _buildNavItem(context, Icons.search, 1, false, 0, primaryColor),
+          _buildNavItem(
+            context, 
+            Icons.bookmark, 
+            2, 
+            animationState.isAnimating, 
+            animationState.progress,
+            primaryColor
+          ),
+          _buildNavItem(context, Icons.person, 3, false, 0, primaryColor),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(
+    BuildContext context, 
+    IconData icon, 
+    int index, 
+    bool isAnimating,
+    double progress,
+    Color themeColor
+  ) {
+    final bool isSelected = currentPageIndex == index;
+    final Color iconColor = isSelected ? themeColor : Colors.grey.shade600;
+    
+    return GestureDetector(
+      onTap: () => onPageChanged(index),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+        child: isAnimating && index == 2
+            ? _buildSmoothAnimation(icon, iconColor, themeColor, progress)
+            : Icon(
+                icon,
+                color: iconColor,
+                size: 32,
+              ),
+      ),
+    );
+  }
+  
+  Widget _buildSmoothAnimation(
+    IconData icon, 
+    Color baseColor, 
+    Color themeColor,
+    double progress
+  ) {
+    final double scaleValue;
+    if (progress < 0.5) {
+      scaleValue = progress * 2; 
+    } else {
+      scaleValue = (1.0 - progress) * 2;
+    }
+    
+    final double smoothScale = 1.0 + (0.2 * sin(scaleValue * 3.14159));
+    
+    return Transform.scale(
+      scale: smoothScale,
+      child: Icon(
+        icon,
+        color: Color.lerp(baseColor, themeColor, progress < 0.5 
+                    ? progress * 2
+                    : 1.0 - (progress - 0.5) * 2),
+        size: 32,
+      ),
+    );
   }
 }
