@@ -88,6 +88,7 @@ class SyncService {
         ),
         inputData: {
           'accessToken': authState.credentials!.accessToken,
+          'aesKey': authState.aesKey,
         },
         existingWorkPolicy: ExistingWorkPolicy.replace,
       );
@@ -118,6 +119,7 @@ class SyncService {
         SYNC_TASK,
         inputData: {
           'accessToken': authState.credentials!.accessToken,
+          'aesKey': authState.aesKey,
           'manual': true,
         },
         existingWorkPolicy: ExistingWorkPolicy.replace,
@@ -151,18 +153,25 @@ void callbackDispatcher() {
           debugPrint('SyncService: Background task triggered - $taskName');
           NotificationManager.initializeForBackground();
           final accessToken = inputData?['accessToken'] as String?;
+          final aesKey = inputData?['aesKey'] as String?;
           
           if (accessToken == null || accessToken.isEmpty) {
             debugPrint('SyncService: Missing access token in background task');
             return Future.value(false);
           }
+
+          if (aesKey == null || aesKey.isEmpty) {
+            debugPrint('SyncService: Missing AES key in background task');
+            return Future.value(false);
+          }
+
           await DatabaseManager.init();
 
           List<Future<void>> syncTasks = [];
 
           for (DbTables table in DbTables.values) {
             syncTasks.add(Future<void>(() async {
-              int pullResult = await SyncApi.syncPull(accessToken, table);
+              int pullResult = await SyncApi.syncPull(accessToken, aesKey, table);
               debugPrint('SyncProcessor: Sync pull result for $table: $pullResult');
               
               if (pullResult != 0) {
@@ -177,7 +186,7 @@ void callbackDispatcher() {
                     await NotificationManager.sendJobCartUpdatedSignal();
                     break;
                 }
-                int pushResult = await SyncApi.syncPush(accessToken, table);
+                int pushResult = await SyncApi.syncPush(accessToken, aesKey, table);
                 debugPrint('SyncProcessor: Sync push result: $pushResult');
               }
             }));

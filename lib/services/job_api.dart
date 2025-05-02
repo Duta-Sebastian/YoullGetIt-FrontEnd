@@ -2,18 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';
+import 'package:youllgetit_flutter/utils/job_api_encryption_manager.dart';
 
 class JobApi {
   static ProviderContainer? _container;
+  static JobApiEncryptionManager? _encryptionManager;
 
   static void initialize(ProviderContainer container) {
     _container = container;
+    _encryptionManager = JobApiEncryptionManager();
+    _encryptionManager!.initialize();
   }
 
   static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
@@ -41,51 +44,51 @@ class JobApi {
 
     final String? cvAsBase64 = cvFuture != null ? results[2] as String? : null;
 
-    try {
-      final uri = Uri.parse('https://api2.youllgetit.eu/upload_cv_and_questions');
-      
-      final request = http.MultipartRequest('POST', uri)
-        ..fields['cv_byte_str_repr'] = cvAsBase64 ?? ''
-        ..fields['answers_to_questions_str'] = answersJson ?? ''
-        ..fields['guest_id'] = uniqueId
-        ..fields['auth_id'] = authId ?? '';
-
-      final response = await request.send();
-      
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        final String taskId = jsonDecode(responseBody);
-        await pollForCompletion(taskId);
-      } else {
-        throw Exception('Failed to upload data: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('API call failed: $e');
-      return 0;
-    }
-    return 1;
-  }
-
-  static Future<bool> pollForCompletion(String taskId) async {
-    bool isComplete = false;
-    int attempts = 0;
-    
-    while (!isComplete && attempts < 40) {
+    int attempts = 1;
+    while (attempts <= 3)
+    {
       try {
-        final response = await http.post(
-          Uri.parse('https://api2.youllgetit.eu/is_cv_ready?task_id=$taskId'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode({}),
+        final Map<String, dynamic> userData = {
+          'cv_byte_str_repr': cvAsBase64 ?? '',
+          'answers_to_questions_str': answersJson ?? '',
+          'guest_id': uniqueId,
+          'auth_id': authId ?? '',
+        };
+
+        final String taskId = await _encryptionManager!.encryptedPost<String>(
+          '/upload_cv_and_questions',
+          userData,
+          (responseJson) => jsonDecode(responseJson)
         );
         
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body);
-          
-          if (data['status'] == 'completed') {
-            isComplete = true;
-            return true;
-          }
-        }        
+        await pollForCompletion(taskId);
+        return 1;
+      } catch (e) {
+        debugPrint('JobAPI: Upload user information API call failed, attempt $attempts / 3, with the error : $e');
+        attempts += 1;
+      }
+    }
+    throw Exception("JobAPI: Upload user information API calls failed, maximum retry attempts excedeed!");
+  }
+
+  static Future<void> pollForCompletion(String taskId) async {
+    int attempts = 0;
+    
+    while (attempts < 40) {
+      try {
+        final Map<String, dynamic> requestData = {
+          'task_id': taskId,
+        };
+        
+        final statusResponse = await _encryptionManager!.encryptedPost<Map<String, dynamic>>(
+          '/is_cv_ready',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+        
+        if (statusResponse.containsKey('status') && statusResponse['status'] == 'completed') {
+          return ;
+        }  
       } catch (e) {
         throw Exception('Error checking status: $e');
       }
@@ -93,50 +96,45 @@ class JobApi {
       attempts++;
     }
     
-    if (!isComplete) {
-      throw Exception('Processing timed out');
-    }
-    
-    return isComplete;
+    throw Exception('Processing timed out');
   }
 
-  static Future<List<JobCardModel>> fetchJobs(int count) async {
-    try {
-      final authState = _container!.read(authProvider);
-      final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+  static Future<List<JobCardModel>> fetchJobs() async {
+    final authState = _container!.read(authProvider);
+    final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
 
-      final String uniqueId = await getUniqueId();
+    final String uniqueId = await getUniqueId();
 
-      debugPrint('JobApi: uniqueId: $uniqueId');
+    final Map<String, dynamic> requestData = {
+      'guest_id': uniqueId,
+      'auth_id': authId ?? '',
+    };
 
-      final formData = {
-        'guest_id': uniqueId,
-        'auth_id': authId ?? '',
-      };
-      final response = await http.post(
-        Uri.parse('https://api2.youllgetit.eu/recommend'),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: formData,
-      );
-      if (response.statusCode == 200) {
-        final List<dynamic> jobsData = jsonDecode(response.body);
+    int attempts = 1;
+    while (attempts <= 3) 
+    {
+      try {
+        final List<dynamic> jobsData = await _encryptionManager!.encryptedPost<List<dynamic>>(
+          '/recommend',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+
+        if (jobsData.isEmpty) {
+          return [];
+        }
+        
         return jobsData.map((job) {
-          final jobData = job[0];
-          final double matchScore = job[1];
-          jobData['match_score'] = matchScore;
+          final jobData = job["internship"];
+          jobData['match_score'] = job["score"];
           return JobCardModel.fromJson(jobData);
         }).toList().reversed.toList();
-      } else if (response.statusCode == 404) {
-        throw Exception('No recommendations found for this user');
-      } else {
-        throw Exception('Failed to load recommended jobs: ${response.statusCode}');
+      } catch (e) {
+        debugPrint('JobAPI: Error fetching recommendations, attempt $attempts / 3, with message : $e');
+        attempts += 1;
       }
-    } catch (e) {
-      debugPrint('Error fetching recommendations: $e');
-      return [];
     }
+    throw Exception('JobAPI: Error fetching recommendations, retries exceeded!');
   }
 
   static Future<void> postFeedback(List<JobFeedback> jobFeedbacks) async {
@@ -146,7 +144,7 @@ class JobApi {
 
       final String uniqueId = await getUniqueId();
 
-      final formData = {
+      final Map<String, dynamic> requestData = {
         'guest_id': uniqueId,
         'auth_id': authId ?? '',
         'job_feedbacks': jobFeedbacks.map((feedback) {
@@ -157,22 +155,19 @@ class JobApi {
         }).toList(),
       };
 
-      final response = await http.post(
-        Uri.parse('https://api2.youllgetit.eu/upload_feedback'),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(formData),
+      await _encryptionManager!.encryptedPost<dynamic>(
+        '/upload_feedback',
+        requestData,
+        (responseJson) => null
       );
 
-      if (response.statusCode == 200) {
-        debugPrint('Feedback posted successfully');
-      } else {
-        debugPrint('Failed to post feedback: ${response.statusCode}');
-        throw Exception('Failed to post feedback: ${response.statusCode}');
-      }
+      debugPrint('Feedback posted successfully');
     } catch (e) {
       debugPrint('Error posting feedback: $e');
     }
+  }
+
+  static void dispose() {
+    _encryptionManager?.dispose();
   }
 }

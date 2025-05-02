@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
@@ -13,69 +15,147 @@ class JobCardSwiper extends ConsumerStatefulWidget {
 
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
   int jobNumber = 0;
-  double? cachedScreenWidth;
-  double? cachedScreenHeight;
+  double? screenWidth;
+  double? screenHeight;
   
   @override
   Widget build(BuildContext context) {
-    final activeJobs = ref.watch(activeJobsProvider);
+    final jobsState = ref.watch(activeJobsProvider);
+    final List<JobCardModel> activeJobs = jobsState.jobs;
+    final bool isLoading = jobsState.isLoading;
+    final String? errorMessage = jobsState.errorMessage;
     
-    if (activeJobs.isEmpty) {
+    final connectivityStatus = ref.watch(isConnectedProvider);
+    final bool isConnected = connectivityStatus.when(
+      data: (value) => value,
+      loading: () => true,
+      error: (_, __) => false
+    );
+    
+    debugPrint('JobCardSwiper: Connectivity status = $isConnected, state = ${connectivityStatus.toString()}');
+
+    if (errorMessage != null) {
+      debugPrint('JobCardSwiper: Showing error state: $errorMessage');
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                errorMessage,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              if (!isConnected)
+                const Text(
+                  "Waiting for internet connection...",
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              if (isConnected)
+                ElevatedButton.icon(
+                  onPressed: () => {
+                    ref.read(activeJobsProvider.notifier).resetJobs()
+                  },
+                  icon: Icon(Icons.restore_rounded),
+                  label: Text("Retry"),
+                )
+            ],
+          ),
+        )
+      );
+    }
+    
+    if (isLoading || activeJobs.isEmpty) {
+      debugPrint('JobCardSwiper: Showing loading state');
       return const Scaffold(
         backgroundColor: Colors.white,
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text("Loading job recommendations...")
+            ],
+          ),
         ),
       );
     }
 
-    cachedScreenWidth ??= MediaQuery.of(context).size.width;
-    cachedScreenHeight ??= MediaQuery.of(context).size.height;
+    screenWidth ??= MediaQuery.of(context).size.width;
+    screenHeight ??= MediaQuery.of(context).size.height;
+
+    debugPrint('JobCardSwiper: Showing normal state with ${activeJobs.length} jobs, isConnected = $isConnected');
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: SizedBox(
-          width: cachedScreenWidth,
-          height: cachedScreenHeight! * 0.7,
-          child: CardSwiper(
-            cardsCount: activeJobs.length,
-            cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
-              bool isTopCard = index == 0;
-              return IgnorePointer(
-                ignoring: !isTopCard,
-                child: JobCard(
-                  jobData: activeJobs[index],
-                  percentThresholdx: percentThresholdx.toDouble(),
-                ),
-              );
-            },
-            numberOfCardsDisplayed: 2,
-            backCardOffset: const Offset(0, 40),
-            padding: const EdgeInsets.all(24.0),
-            isLoop: false,
-            allowedSwipeDirection: AllowedSwipeDirection.only(
-              right: true,
-              left: true,
+      body: Column(
+        children: [
+          if (!isConnected && connectivityStatus is AsyncData) 
+            Container(
+              color: Colors.amber.shade100,
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              child: Row(
+                children: [
+                  Icon(Icons.wifi_off, size: 16, color: Colors.amber.shade800),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      "You're offline. Some features may be limited.",
+                      style: TextStyle(fontSize: 12, color: Colors.amber.shade800),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            onSwipe: (previousIndex, currentIndex, direction) async {
-              if (previousIndex < 0 || previousIndex >= activeJobs.length) {
-                return false;
-              }
-              
-              final liked = direction == CardSwiperDirection.right;
-              
-              if (liked) {
-                DatabaseManager.insertJobCard(activeJobs[previousIndex]);
-              }
-              
-              ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
-              
-              jobNumber++;
-              return false;
-            },
+          
+          Expanded(
+            child: Center(
+              child: SizedBox(
+                width: screenWidth,
+                height: screenHeight! * 0.7,
+                child: CardSwiper(
+                  cardsCount: activeJobs.length,
+                  cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
+                    bool isTopCard = index == 0;
+                    return IgnorePointer(
+                      ignoring: !isTopCard,
+                      child: JobCard(
+                        jobData: activeJobs[index],
+                        percentThresholdx: percentThresholdx.toDouble(),
+                      ),
+                    );
+                  },
+                  numberOfCardsDisplayed: activeJobs.length > 1 ? 2 : 1,
+                  backCardOffset: const Offset(0, 40),
+                  padding: const EdgeInsets.all(24.0),
+                  isLoop: false,
+                  allowedSwipeDirection: AllowedSwipeDirection.only(
+                    right: true,
+                    left: true,
+                  ),
+                  onSwipe: (previousIndex, currentIndex, direction) async {
+                    if (previousIndex < 0 || previousIndex >= activeJobs.length) {
+                      return false;
+                    }
+                    
+                    final liked = direction == CardSwiperDirection.right;
+                    
+                    if (liked) {
+                      DatabaseManager.insertJobCard(activeJobs[previousIndex]);
+                    }
+                    ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
+                    
+                    jobNumber++;
+                    return false;
+                  },
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
