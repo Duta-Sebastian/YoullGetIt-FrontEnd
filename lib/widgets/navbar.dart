@@ -20,7 +20,8 @@ class BottomNavBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final animationState = ref.watch(bookmarkAnimationProvider);
-    final primaryColor = Theme.of(context).primaryColor;
+    // Use a color that matches the cream theme
+    final primaryColor = const Color.fromRGBO(121, 85, 72, 1); // Brown color
     
     return Container(
       height: 70,
@@ -61,7 +62,8 @@ class BottomNavBar extends ConsumerWidget {
     Color themeColor
   ) {
     final bool isSelected = currentPageIndex == index;
-    final Color iconColor = isSelected ? themeColor : Colors.grey.shade600;
+    // Use a color that complements the cream theme
+    final Color iconColor = isSelected ? themeColor : const Color.fromRGBO(188, 170, 148, 1);
     
     return GestureDetector(
       onTap: () => onPageChanged(index),

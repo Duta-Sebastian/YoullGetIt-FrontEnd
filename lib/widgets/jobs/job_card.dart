@@ -93,8 +93,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         ),
                         child: Center(
                           child: widget.percentThresholdx > 0
-                              ? Icon(Icons.check_circle, color: Colors.white, size: min(100, widget.percentThresholdx))
-                              : Icon(Icons.close, color: Colors.white, size: min(100, -widget.percentThresholdx)),
+                              ? Icon(Icons.check_circle, color: Colors.green, size: min(100, widget.percentThresholdx * 0.6))
+                              : Icon(Icons.close, color: Colors.red, size: min(100, -widget.percentThresholdx * 0.6)),
                         ),
                       ),
                     ),
@@ -134,7 +134,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 // Location
                 Row(
                   children: [
-                    const Icon(Icons.location_on, color: Colors.white70, size: 16),
+                    const Icon(Icons.location_on, color: Colors.black87, size: 16),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(_getStringOrNA(widget.jobData.location), style: _infoStyle),
@@ -252,7 +252,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Hard Skills
             Row(
               children: const [
-                Icon(Icons.build, color: Colors.white70, size: 20),
+                Icon(Icons.build, color: Colors.black87, size: 20),
                 SizedBox(width: 8),
                 Text("Hard Skills", style: _headerStyle),
               ],
@@ -269,7 +269,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Soft Skills
             Row(
               children: const [
-                Icon(Icons.psychology, color: Colors.white70, size: 20),
+                Icon(Icons.psychology, color: Colors.black87, size: 20),
                 SizedBox(width: 8),
                 Text("Soft Skills", style: _headerStyle),
               ],
@@ -286,7 +286,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Nice-to-Have
             Row(
               children: const [
-                Icon(Icons.star, color: Colors.white70, size: 20),
+                Icon(Icons.star, color: Colors.black87, size: 20),
                 SizedBox(width: 8),
                 Text("Nice-to-Haves", style: _headerStyle),
               ],
@@ -338,7 +338,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(31, 45, 42, 1),
+        color: const Color.fromRGBO(252, 245, 203, 1),
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
           const BoxShadow(
@@ -387,7 +387,9 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
               fontWeight: FontWeight.w600,
               fontSize: 13,
             ),
-            overflow: TextOverflow.ellipsis,
+            softWrap: true,
+            maxLines: 3,
+            textAlign: TextAlign.center,
           ),
         )
       ).toList(),
@@ -410,6 +412,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(icon, color: textColor, size: 14),
           const SizedBox(width: 4),
@@ -421,7 +424,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),
-              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 3,
             ),
           ),
         ],
@@ -431,29 +435,29 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 }
 
 const _titleStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 20,
   fontWeight: FontWeight.bold,
   letterSpacing: 0.2,
 );
 const _subtitleStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 16,
   fontWeight: FontWeight.w500,
 );
 const _infoStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 13,
   fontWeight: FontWeight.w400,
 );
 const _headerStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 16,
   fontWeight: FontWeight.bold,
   letterSpacing: 0.2,
 );
 const _sectionStyle = TextStyle(
-  color: Colors.white,
+  color: Colors.black,
   fontSize: 14,
   fontWeight: FontWeight.w600,
   letterSpacing: 0.2,
