@@ -48,10 +48,11 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
         ref.read(activeJobsProvider.notifier).fetchJobs();
         
         if (mounted) {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => HomeScreen(),
             ),
+            (route) => false,
           );
         }
       }

@@ -60,7 +60,6 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   void _onTabSelected(int index) {
     setState(() {
       _selectedIndex = index;
-      // Add animation when switching tabs
       _animationController.reset();
       _animationController.forward();
     });
@@ -107,7 +106,6 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   }
 
   void _handleRemove(JobCardModel job, JobStatus status) {
-    // Store the job's status before removal
     final previousStatus = status;
     
     Future(() async {
@@ -115,14 +113,13 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
       _loadJobs();
     });
     
-    // Show a snackbar with undo option that knows the job's previous status
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        backgroundColor: Colors.white,
         content: Text('${job.title} removed'),
         action: SnackBarAction(
           label: 'UNDO',
           onPressed: () {
-            // Re-add the job with its previous status
             DatabaseManager.insertJobCard(job);
             DatabaseManager.updateJobStatus(job.id, previousStatus);
             _loadJobs();

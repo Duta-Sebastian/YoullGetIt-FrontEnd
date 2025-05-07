@@ -64,20 +64,17 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
-          // Using a slightly higher perspective value to fix the black line
           final transform = Matrix4.identity()
-            ..setEntry(3, 2, 0.002) // Adjusted from 0.001 to 0.002
+            ..setEntry(3, 2, 0.002)
             ..rotateY(_animation.value);
             
           if (_animation.value <= pi / 2) {
-            // Front side
             return Transform(
               alignment: Alignment.center,
               transform: transform,
               child: Stack(
                 children: [
                   _buildFront(),
-                  // Only add overlay when there's a threshold value
                   if (widget.percentThresholdx != 0)
                     Positioned.fill(
                       child: Container(
@@ -102,11 +99,10 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
               ),
             );
           } else {
-            // Back side - ensure we're not seeing any glitches
             return Transform(
               alignment: Alignment.center,
               transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.002) // Consistent perspective
+                ..setEntry(3, 2, 0.002)
                 ..rotateY(pi)
                 ..rotateY(_animation.value),
               child: _buildBack(),
@@ -126,12 +122,10 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Card header
                 Text(widget.jobData.title, style: _titleStyle),
                 Text(widget.jobData.company, style: _subtitleStyle),
                 const SizedBox(height: 5),
                 
-                // Location
                 Row(
                   children: [
                     const Icon(Icons.location_on, color: Colors.black87, size: 16),
@@ -144,7 +138,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 const SizedBox(height: 16),
                 
-                // Job details
                 const Text("Job Details", style: _sectionStyle),
                 const SizedBox(height: 6),
                 Wrap(
@@ -175,7 +168,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 const SizedBox(height: 12),
                 
-                // Duration and Education
                 const Text("Education & Duration", style: _sectionStyle),
                 const SizedBox(height: 6),
                 Wrap(
@@ -209,7 +201,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 const SizedBox(height: 12),
                 
-                // Languages
                 const Text("Languages", style: _sectionStyle),
                 const SizedBox(height: 6),
                 Wrap(
@@ -249,7 +240,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hard Skills
             Row(
               children: const [
                 Icon(Icons.build, color: Colors.black87, size: 20),
@@ -266,7 +256,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             
             const SizedBox(height: 16),
             
-            // Soft Skills
             Row(
               children: const [
                 Icon(Icons.psychology, color: Colors.black87, size: 20),
@@ -283,7 +272,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             
             const SizedBox(height: 16),
             
-            // Nice-to-Have
             Row(
               children: const [
                 Icon(Icons.star, color: Colors.black87, size: 20),
