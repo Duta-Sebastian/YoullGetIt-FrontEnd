@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
@@ -77,6 +78,20 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                     // TODO: Implement terms of use navigation
                   },
                 ),
+
+                _buildSettingsItem(
+                  context, 
+                  icon: Icons.policy, 
+                  title: 'GDPR Policy',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GDPRPage(),
+                      )
+                    );
+                  }
+                ),
+
                 _buildSettingsItem(
                   context, 
                   icon: Icons.feedback, 

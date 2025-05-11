@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/screens/internship_selector_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
+import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
 
 class EntryScreen extends StatefulWidget {
   const EntryScreen({super.key});
@@ -17,14 +17,6 @@ class _EntryScreenState extends State<EntryScreen> {
   bool _gdprChecked = false;
   bool _nameEntered = false;
 
-  Future<void> _launchGdprUrl() async {
-    final Uri url = Uri.parse('https://youllgetit.eu/');
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  // Extracted function for button onPressed handler
   void _handleContinuePressed() {
     final username = _nameController.text.trim();
     
@@ -44,7 +36,6 @@ class _EntryScreenState extends State<EntryScreen> {
   @override
   void initState() {
     super.initState();
-    // Listen for changes in the text field
     _nameController.addListener(_updateNameStatus);
   }
 
@@ -94,7 +85,6 @@ class _EntryScreenState extends State<EntryScreen> {
               ),
               const SizedBox(height: 32),
               
-              // Title
               const Text(
                 "Welcome",
                 textAlign: TextAlign.center,
@@ -105,7 +95,6 @@ class _EntryScreenState extends State<EntryScreen> {
               ),
               const SizedBox(height: 24),
               
-              // Name Input
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -116,7 +105,6 @@ class _EntryScreenState extends State<EntryScreen> {
               ),
               const SizedBox(height: 24),
               
-              // GDPR Checkbox
               Row(
                 children: [
                   Checkbox(
@@ -148,7 +136,13 @@ class _EntryScreenState extends State<EntryScreen> {
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = _launchGdprUrl,
+                                ..onTap = () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => const GDPRPage(),
+                                    )
+                                  );
+                                },
                             ),
                           ],
                         ),
@@ -159,7 +153,6 @@ class _EntryScreenState extends State<EntryScreen> {
               ),
               const SizedBox(height: 32),
               
-              // Continue Button
               ElevatedButton(
                 onPressed: _isFormValid ? _handleContinuePressed : null,
                 style: ElevatedButton.styleFrom(
