@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
+import 'package:youllgetit_flutter/widgets/settings/privacy_policy_page.dart';
+import 'package:youllgetit_flutter/widgets/settings/tos_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
@@ -66,7 +69,11 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.privacy_tip, 
                   title: 'Privacy Policy',
                   onTap: () {
-                    // TODO: Implement privacy policy navigation
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicyPage(),
+                      )
+                    );
                   },
                 ),
                 _buildSettingsItem(
@@ -74,9 +81,27 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.document_scanner, 
                   title: 'Terms of Use',
                   onTap: () {
-                    // TODO: Implement terms of use navigation
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TermsOfServicePage(),
+                      )
+                    );
                   },
                 ),
+
+                _buildSettingsItem(
+                  context, 
+                  icon: Icons.policy, 
+                  title: 'GDPR Policy',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GDPRPage(),
+                      )
+                    );
+                  }
+                ),
+
                 _buildSettingsItem(
                   context, 
                   icon: Icons.feedback, 
