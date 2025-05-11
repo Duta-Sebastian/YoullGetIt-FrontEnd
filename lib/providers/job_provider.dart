@@ -347,6 +347,12 @@ class JobCoordinator {
     _ref.read(swipedJobsProvider.notifier).resetJobs();
     _ref.read(feedbackProvider.notifier).resetJobs();
   }
+
+  Future<void> handleManualSearchAdd(JobCardModel job) async {
+    await _ref.read(feedbackProvider.notifier).addFeedback(
+      JobFeedback(jobId: job.id, liked: true)
+    );
+  }
 }
 
 final activeJobsProvider = StateNotifierProvider<ActiveJobsNotifier, JobsState>((ref) {

@@ -10,7 +10,7 @@ class ChecklistCard extends StatefulWidget {
 
 class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProviderStateMixin {
   static const String _minimizedKey = 'checklist_card_minimized';
-  bool _isMinimized = false;
+  bool _isMinimized = true;
   late AnimationController _controller;
   late Animation<double> _rotationAnimation;
   late Animation<double> _sizeAnimation;
