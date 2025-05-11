@@ -73,7 +73,7 @@ class _JobTabBarState extends State<JobTabBar> with SingleTickerProviderStateMix
           color: _getTabColor(widget.selectedIndex),
           boxShadow: [
             BoxShadow(
-              color: _getTabColor(widget.selectedIndex).withOpacity(0.3),
+              color: _getTabColor(widget.selectedIndex).withAlpha((255 * 0.3).round()),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),

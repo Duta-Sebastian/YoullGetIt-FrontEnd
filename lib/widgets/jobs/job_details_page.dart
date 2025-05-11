@@ -298,7 +298,7 @@ class JobDetailPage extends StatelessWidget {
               ),
             ],
           ),
-        )).toList(),
+        )),
       ],
     );
   }
@@ -378,7 +378,7 @@ class JobDetailPage extends StatelessWidget {
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
-      print('Could not launch $urlString');
+      debugPrint('Could not launch $urlString');
     }
   }
 }

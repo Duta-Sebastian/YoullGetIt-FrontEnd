@@ -10,9 +10,9 @@ import 'package:youllgetit_flutter/services/sync_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncService {
-  static const String SYNC_TASK = "syncTask";
-  static const String SYNC_PERIODIC_TASK = "syncPeriodicTask";
-  static const Duration SYNC_INTERVAL = Duration(minutes: 15);
+  static const String syncTask = "syncTask";
+  static const String syncPeriodicTask = "syncPeriodicTask";
+  static const Duration syncInterval = Duration(minutes: 15);
   
   static final SyncService _instance = SyncService._internal();
   factory SyncService() => _instance;
@@ -80,9 +80,9 @@ class SyncService {
       await cancelSync();
       
       await Workmanager().registerPeriodicTask(
-        SYNC_PERIODIC_TASK,
-        SYNC_TASK,
-        frequency: SYNC_INTERVAL,
+        syncPeriodicTask,
+        syncTask,
+        frequency: syncInterval,
         constraints: Constraints(
           networkType: NetworkType.connected,
         ),
@@ -116,7 +116,7 @@ class SyncService {
     try {
       await Workmanager().registerOneOffTask(
         'manualSync${DateTime.now().millisecondsSinceEpoch}',
-        SYNC_TASK,
+        syncTask,
         inputData: {
           'accessToken': authState.credentials!.accessToken,
           'aesKey': authState.aesKey,
@@ -135,7 +135,7 @@ class SyncService {
   
   Future<void> cancelSync() async {
     try {
-      await Workmanager().cancelByUniqueName(SYNC_PERIODIC_TASK);
+      await Workmanager().cancelByUniqueName(syncPeriodicTask);
       _isSyncScheduled = false;
       debugPrint('SyncService: Sync canceled');
     } catch (e) {
@@ -149,7 +149,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     try {
       switch (taskName) {
-        case SyncService.SYNC_TASK:
+        case SyncService.syncTask:
           debugPrint('SyncService: Background task triggered - $taskName');
           NotificationManager.initializeForBackground();
           final accessToken = inputData?['accessToken'] as String?;

@@ -126,7 +126,6 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  // Helper method to create settings list items
   Widget _buildSettingsItem(
     BuildContext context, {
     required IconData icon,

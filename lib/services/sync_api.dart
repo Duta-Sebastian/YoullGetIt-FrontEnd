@@ -15,9 +15,9 @@ import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncApi {
-  static const API_BASE_URL = 'https://api1.youllgetit.eu/api/sync';
-  static const API_PULL_URL = '$API_BASE_URL/pull';
-  static const API_PUSH_URL = '$API_BASE_URL/push';
+  static const apiBaseUrl = 'https://api1.youllgetit.eu/api/sync';
+  static const apiPullUrl = '$apiBaseUrl/pull';
+  static const apiPushUrl = '$apiBaseUrl/push';
 
   static List<int> encryptCvData(List<int> cvData, String aesKey) {
     final secureRandom = FortunaRandom();
@@ -90,7 +90,7 @@ class SyncApi {
   }
 
   static Future<int> syncPull (String accessToken, String aesKey, DbTables dbTable) async {
-    final response = await http.get(Uri.parse("$API_PULL_URL?table=${dbTable.name}"),
+    final response = await http.get(Uri.parse("$apiPullUrl?table=${dbTable.name}"),
       headers: {HttpHeaders.authorizationHeader: "Bearer $accessToken"},
     );
     if (response.statusCode != 200 && response.statusCode != 204) {
@@ -181,7 +181,7 @@ class SyncApi {
       }
       
       final response = await http.post(
-      Uri.parse("$API_PUSH_URL?table=${dbTable.name}"),
+      Uri.parse("$apiPushUrl?table=${dbTable.name}"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $accessToken",
           HttpHeaders.contentTypeHeader: "application/json",

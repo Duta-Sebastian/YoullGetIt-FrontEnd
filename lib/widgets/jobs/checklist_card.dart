@@ -97,7 +97,7 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
         borderRadius: BorderRadius.circular(_isMinimized ? 12 : 20),
         boxShadow: [
           BoxShadow(
-            color: Colors.amber.withOpacity(0.2),
+            color: Colors.amber.withAlpha((255 * 0.2).round()),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -248,7 +248,7 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
           Container(
             padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withAlpha((255 * 0.1).round()),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(

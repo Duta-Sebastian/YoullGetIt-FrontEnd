@@ -34,13 +34,13 @@ class JobListItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withAlpha((255 * 0.08).round()),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
         border: Border.all(
-          color: _getBorderColor().withOpacity(0.5),
+          color: _getBorderColor().withAlpha((255 * 0.5).round()),
           width: 1.5,
         ),
       ),
@@ -56,8 +56,8 @@ class JobListItem extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      _getGradientColor().withOpacity(0.05),
-                      _getGradientColor().withOpacity(0.02),
+                      _getGradientColor().withAlpha((255 * 0.05).round()),
+                      _getGradientColor().withAlpha((255 * 0.02).round()),
                     ],
                   ),
                 ),
