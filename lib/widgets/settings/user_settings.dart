@@ -45,6 +45,7 @@ void _saveUsername() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text("Delete all data?"),
         content: const Text("This action cannot be undone."),
         actions: [

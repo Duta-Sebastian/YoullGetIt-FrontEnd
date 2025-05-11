@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
+import 'package:youllgetit_flutter/widgets/settings/privacy_policy_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/tos_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
@@ -68,7 +69,11 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.privacy_tip, 
                   title: 'Privacy Policy',
                   onTap: () {
-                    // TODO: Implement privacy policy navigation
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicyPage(),
+                      )
+                    );
                   },
                 ),
                 _buildSettingsItem(
