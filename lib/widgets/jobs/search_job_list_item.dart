@@ -1,6 +1,5 @@
-// lib/widgets/jobs/search_job_list_item.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart'; // You'll need to add this package
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
 
@@ -17,9 +16,8 @@ class SearchJobListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      // Slidable configuration with smaller width
       endActionPane: ActionPane(
-        extentRatio: 0.25, // Reduce the width of the slidable area
+        extentRatio: 0.25,
         motion: const ScrollMotion(),
         children: [
           SlidableAction(
@@ -30,8 +28,8 @@ class SearchJobListItem extends StatelessWidget {
             },
             backgroundColor: Colors.amber.shade500,
             foregroundColor: Colors.white,
-            icon: Icons.add_shopping_cart, // Changed to shopping cart icon
-            label: 'Add', // Shortened label
+            icon: Icons.add_shopping_cart,
+            label: 'Add',
             borderRadius: const BorderRadius.horizontal(right: Radius.circular(20)),
           ),
         ],
@@ -43,10 +41,7 @@ class SearchJobListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildJobCard(BuildContext context) {
-    // Get match score (for demonstration purposes)
-    final int matchScore = (job.matchScore * 100).toInt();
-    
+  Widget _buildJobCard(BuildContext context) {    
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -74,11 +69,9 @@ class SearchJobListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Header with title and company
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title area
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,7 +87,6 @@ class SearchJobListItem extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
-                            // Company info
                             Row(
                               children: [
                                 Icon(
@@ -121,7 +113,6 @@ class SearchJobListItem extends StatelessWidget {
                         ),
                       ),
                       
-                      // Location badge in top-right
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
@@ -153,7 +144,6 @@ class SearchJobListItem extends StatelessWidget {
                   
                   const SizedBox(height: 12),
                   
-                  // Work mode and job type
                   Row(
                     children: [
                       _buildInfoChip(
@@ -174,39 +164,10 @@ class SearchJobListItem extends StatelessWidget {
                   
                   const SizedBox(height: 12),
                   
-                  // Match score badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: _getScoreColor(matchScore),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.bolt,
-                          size: 14,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "Match Score: $matchScore%",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  
                   const SizedBox(height: 16),
                   const Divider(height: 1),
                   const SizedBox(height: 16),
                   
-                  // Skills
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -217,7 +178,6 @@ class SearchJobListItem extends StatelessWidget {
                   
                   const SizedBox(height: 16),
                   
-                  // View details button
                   Align(
                     alignment: Alignment.centerRight,
                     child: OutlinedButton.icon(
@@ -244,6 +204,9 @@ class SearchJobListItem extends StatelessWidget {
   }
 
   Widget _buildInfoChip(IconData icon, String text, Color bgColor, Color textColor) {
+    if (text.isEmpty) {
+      text = 'Not found';
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -289,18 +252,6 @@ class SearchJobListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getScoreColor(int score) {
-    if (score >= 90) {
-      return Colors.green.shade600;
-    } else if (score >= 80) {
-      return Colors.teal.shade500;
-    } else if (score >= 70) {
-      return Colors.amber.shade600;
-    } else {
-      return Colors.grey.shade500;
-    }
   }
 
   void _navigateToJobDetailPage(BuildContext context, JobCardModel job) {

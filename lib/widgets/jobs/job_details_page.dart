@@ -304,6 +304,7 @@ class JobDetailPage extends StatelessWidget {
   }
 
   Widget _buildMatchScoreSection() {
+    if (job.matchScore == 0) return SizedBox.shrink();
     final Color scoreColor = job.matchScore >= 80 
         ? Colors.green 
         : (job.matchScore >= 60 ? Colors.orange : Colors.red);

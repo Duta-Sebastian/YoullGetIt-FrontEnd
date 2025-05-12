@@ -1,121 +1,85 @@
-// lib/services/mock_job_search_service.dart
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/models/job_search_response.dart';
 
-class MockJobSearchService {
-  // Mock data to simulate API response
-  final List<JobCardModel> _allJobs = List.generate(
-    50,
-    (index) => JobCardModel(
-      id: 'job_$index',
-      title: 'Software Developer ${index % 3 == 0 ? 'Senior' : index % 3 == 1 ? 'Mid-level' : 'Junior'}',
-      company: 'Tech Company ${(index % 10) + 1}',
-      location: index % 3 == 0 ? 'Remote' : index % 3 == 1 ? 'New York' : 'San Francisco',
-      duration: 'Full-time',
-      education: ['Bachelor\'s degree'],
-      workMode: index % 3 == 0 ? 'Remote' : index % 3 == 1 ? 'Hybrid' : 'On-site',
-      jobType: 'Full-time',
-      salary: '\$${80 + index % 20}k - \$${110 + index % 30}k',
-      languages: ['English', if (index % 3 == 0) 'Spanish'],
-      hardSkills: [
-        'Flutter',
-        'Dart',
-        if (index % 2 == 0) 'React',
-        if (index % 3 == 0) 'Node.js',
-        if (index % 4 == 0) 'Python',
-      ],
-      softSkills: [
-        'Communication',
-        'Teamwork',
-        if (index % 2 == 0) 'Problem Solving',
-      ],
-      niceToHave: [
-        if (index % 2 == 0) 'AWS',
-        if (index % 3 == 0) 'Firebase',
-      ],
-      description: 'This is a job description for position $index. We are looking for talented developers to join our team.',
-      requirements: [
-        'Experience with Flutter',
-        '${1 + index % 5}+ years of experience',
-      ],
-      matchScore: 0.5 + (index % 50) / 100,
-      jobUrl: 'https://example.com/job/$index',
-    ),
-  );
+class JobSearchAPI {
+  static const String baseUrl = "https://api2.youllgetit.eu";
+  static const String endpoint = '/manual_search_endpoint';
 
-  Future<JobSearchResponse> searchJobs({
+  static Future<JobSearchResponse> searchJobs({
     String? query,
+    String? field,
     String? location,
     String? workMode,
-    List<String>? hardSkills,
+    List<String>? skills,
+    String? company,
     int page = 1,
     int pageSize = 10,
   }) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(milliseconds: 800));
+    final Map<String, dynamic> queryParams = {
+      'page': page.toString(),
+      'page_size': pageSize.toString(),
+    };
     
-    // Filter jobs based on query parameters
-    List<JobCardModel> filteredJobs = _allJobs.where((job) {
-      bool matches = true;
-      
-      if (query != null && query.isNotEmpty) {
-        matches = matches && (
-          job.title.toLowerCase().contains(query.toLowerCase()) ||
-          job.company.toLowerCase().contains(query.toLowerCase())
-        );
-      }
-      
-      if (location != null && location.isNotEmpty) {
-        matches = matches && job.location.toLowerCase().contains(location.toLowerCase());
-      }
-      
-      if (workMode != null && workMode.isNotEmpty && workMode != 'All') {
-        matches = matches && job.workMode == workMode;
-      }
-      
-      if (hardSkills != null && hardSkills.isNotEmpty) {
-        for (final skill in hardSkills) {
-          matches = matches && job.hardSkills.contains(skill);
-        }
-      }
-      
-      return matches;
-    }).toList();
-
-    // Calculate pagination values
-    final int totalCount = filteredJobs.length;
-    final int totalPages = (totalCount / pageSize).ceil();
-    
-    // Apply pagination
-    final int startIndex = (page - 1) * pageSize;
-    final int endIndex = startIndex + pageSize > filteredJobs.length 
-                         ? filteredJobs.length 
-                         : startIndex + pageSize;
-    
-    // Check for valid indices
-    List<JobCardModel> paginatedJobs = [];
-    if (startIndex < filteredJobs.length) {
-      paginatedJobs = filteredJobs.sublist(startIndex, endIndex);
+    if (field != null && field.isNotEmpty && field != 'All') {
+      queryParams['field'] = field;
     }
+    
+    if (location != null && location.isNotEmpty) {
+      queryParams['country'] = location;
+    }
+    
+    if (workMode != null && workMode.isNotEmpty && workMode != 'All') {
+      queryParams['work_mode'] = workMode;
+    }
+    
+    if (company != null && company.isNotEmpty) {
+      queryParams['company'] = company;
+    }
+    
+    if (query != null && query.isNotEmpty && company == null) {
+      queryParams['company'] = query;
+    }
+    
+    if (skills != null && skills.isNotEmpty) {
+      queryParams['skills'] = skills.join(',');
+    }
+    
+    final uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
+    
+    try {      
+      final response = await http.get(uri);
+      
+      if (response.statusCode == 200) {
+        final List<dynamic> jobsData = json.decode(response.body);
+        
+        debugPrint('Received ${jobsData.length} jobs from API');
+        
+        final List<JobCardModel> jobs = jobsData.map((jobData) {
+          return JobCardModel.fromJson(jobData["internship"]);
+        }).toList();
 
-    return JobSearchResponse(
-      jobs: paginatedJobs,
-      totalCount: totalCount,
-      currentPage: page,
-      totalPages: totalPages,
-    );
+        final bool hasMorePages = jobs.length >= pageSize;
+        
+        final int totalCount = hasMorePages 
+            ? (page * pageSize) + pageSize
+            : (page - 1) * pageSize + jobs.length;
+        
+        return JobSearchResponse(
+          jobs: jobs,
+          totalCount: totalCount,
+          currentPage: page,
+          hasMorePages: hasMorePages,
+        );
+      } else {
+        debugPrint('API Error: ${response.statusCode} - ${response.body}');
+        throw Exception('Failed to load jobs: ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('API Exception: $e');
+      throw Exception('Error connecting to job search API: $e');
+    }
   }
-}
-
-class JobSearchResponse {
-  final List<JobCardModel> jobs;
-  final int totalCount;
-  final int currentPage;
-  final int totalPages;
-
-  JobSearchResponse({
-    required this.jobs,
-    required this.totalCount,
-    required this.currentPage,
-    required this.totalPages,
-  });
 }

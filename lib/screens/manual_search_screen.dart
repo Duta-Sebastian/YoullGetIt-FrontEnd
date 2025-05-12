@@ -1,14 +1,13 @@
-// lib/screens/job_search_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
-import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
+import 'package:youllgetit_flutter/screens/job_filters_screen.dart';
 import 'package:youllgetit_flutter/services/job_search_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/search_job_list_item.dart';
 
-class JobSearchScreen extends ConsumerStatefulWidget  {
+class JobSearchScreen extends ConsumerStatefulWidget {
   const JobSearchScreen({super.key});
 
   @override
@@ -16,29 +15,19 @@ class JobSearchScreen extends ConsumerStatefulWidget  {
 }
 
 class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
-  final MockJobSearchService _jobService = MockJobSearchService();
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-
+  
+  String? _location;
+  String? _company;
+  String? _workMode;
+  String? _field;
+  List<String> _selectedSkills = [];
+  
   List<JobCardModel> _jobs = [];
   int _currentPage = 1;
-  int _totalPages = 1;
   int _totalCount = 0;
   bool _isLoading = false;
-  bool _isFilterShown = false;
-  String? _selectedWorkMode;
-  List<String> _selectedSkills = [];
-
-  final List<String> _workModeOptions = ['All', 'Remote', 'Hybrid', 'On-site'];
-  final List<String> _skillOptions = [
-    'Flutter',
-    'Dart',
-    'React',
-    'Node.js', 
-    'Python',
-    'AWS',
-    'Firebase'
-  ];
+  bool _hasMorePages = true;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -51,80 +40,127 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   @override
   void dispose() {
     _searchController.dispose();
-    _locationController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   Future<void> _fetchJobs({bool reset = false}) async {
-    if (_isLoading) return;
+    if (_isLoading) {
+      debugPrint('Already loading, skipping fetch');
+      return;
+    }
+
+    debugPrint('Fetching jobs for page $_currentPage (reset: $reset)');
 
     setState(() {
       _isLoading = true;
       if (reset) {
         _currentPage = 1;
         _jobs = [];
+        _hasMorePages = true;
       }
     });
 
     try {
-      final response = await _jobService.searchJobs(
+      final response = await JobSearchAPI.searchJobs(
         query: _searchController.text,
-        location: _locationController.text,
-        workMode: _selectedWorkMode == 'All' ? null : _selectedWorkMode,
-        hardSkills: _selectedSkills.isEmpty ? null : _selectedSkills,
+        location: _location,
+        workMode: _workMode == 'All' ? null : _workMode,
+        skills: _selectedSkills.isEmpty ? null : _selectedSkills,
+        company: _company,
+        field: _field == 'All' ? null : _field,
         page: _currentPage,
         pageSize: 10,
       );
 
-      setState(() {
-        if (reset || _currentPage == 1) {
-          _jobs = response.jobs;
-        } else {
-          _jobs.addAll(response.jobs);
-        }
-        _totalCount = response.totalCount;
-        _totalPages = response.totalPages;
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          if (reset || _currentPage == 1) {
+            _jobs = response.jobs;
+          } else {
+            _jobs.addAll(response.jobs);
+          }
+          
+          if (reset || _currentPage == 1) {
+            _totalCount = response.jobs.length;
+          } else {
+            _totalCount = _jobs.length;
+          }
+          
+          _hasMorePages = response.hasMorePages;
+          _isLoading = false;
+          
+          debugPrint('Loaded ${response.jobs.length} jobs (total: ${_jobs.length})');
+          debugPrint('Current page: $_currentPage, Has more pages: $_hasMorePages');
+        });
+      }
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error loading jobs: $e')),
-      );
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _hasMorePages = false;
+        });
+        debugPrint('Error loading jobs: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading jobs: $e')),
+        );
+      }
     }
   }
 
+  DateTime _lastScrollTime = DateTime.now();
+
   void _loadNextPage() {
-    if (_currentPage < _totalPages && !_isLoading) {
+    final now = DateTime.now();
+    if (now.difference(_lastScrollTime).inMilliseconds < 500) {
+      debugPrint('Debouncing scroll - ignoring request');
+      return;
+    }
+    _lastScrollTime = now;
+    
+    if (_isLoading) {
+      debugPrint('Already loading, skipping next page');
+      return;
+    }
+    
+    if (_hasMorePages) {
+      debugPrint('Loading next page: ${_currentPage + 1}');
       setState(() {
         _currentPage++;
       });
       _fetchJobs();
+    } else {
+      debugPrint('No more pages to load');
     }
   }
 
-  void _resetFilters() {
-    setState(() {
-      _searchController.clear();
-      _locationController.clear();
-      _selectedWorkMode = null;
-      _selectedSkills = [];
-      _isFilterShown = false;
-    });
-    _fetchJobs(reset: true);
-  }
-
-  void _toggleSkill(String skill) {
-    setState(() {
-      if (_selectedSkills.contains(skill)) {
-        _selectedSkills.remove(skill);
-      } else {
-        _selectedSkills.add(skill);
-      }
-    });
+  Future<void> _openFilters() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JobFiltersScreen(
+          initialQuery: _searchController.text,
+          initialLocation: _location,
+          initialCompany: _company,
+          initialWorkMode: _workMode,
+          initialField: _field,
+          initialSkills: _selectedSkills,
+        ),
+      ),
+    );
+    
+    if (result != null && result is Map<String, dynamic>) {
+      setState(() {
+        _searchController.text = result['query'] ?? '';
+        _location = result['location'];
+        _company = result['company'];
+        _workMode = result['workMode'];
+        _field = result['field'];
+        _selectedSkills = List<String>.from(result['skills'] ?? []);
+      });
+      
+      _fetchJobs(reset: true);
+    }
   }
 
   @override
@@ -142,21 +178,16 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              _isFilterShown ? Icons.filter_list_off : Icons.filter_list,
+              Icons.filter_list,
               color: Colors.blue.shade700,
             ),
-            onPressed: () {
-              setState(() {
-                _isFilterShown = !_isFilterShown;
-              });
-            },
+            onPressed: _openFilters,
           ),
         ],
       ),
       body: Column(
         children: [
           _buildSearchBar(),
-          if (_isFilterShown) _buildFilters(),
           _buildResultInfo(),
           Expanded(
             child: _jobs.isEmpty && !_isLoading
@@ -172,148 +203,29 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       color: Colors.white,
-      child: Column(
-        children: [
-          TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search jobs, titles, companies...',
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _searchController.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _searchController.clear();
-                        _fetchJobs(reset: true);
-                      },
-                    )
-                  : null,
-              filled: true,
-              fillColor: Colors.grey.shade100,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-            ),
-            onSubmitted: (_) => _fetchJobs(reset: true),
+      child: TextField(
+        controller: _searchController,
+        decoration: InputDecoration(
+          hintText: 'Search jobs, titles...',
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                    _fetchJobs(reset: true);
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: Colors.grey.shade100,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilters() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Location filter
-          TextField(
-            controller: _locationController,
-            decoration: InputDecoration(
-              hintText: 'Enter location',
-              prefixIcon: const Icon(Icons.location_on_outlined),
-              filled: true,
-              fillColor: Colors.grey.shade100,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-            ),
-            onSubmitted: (_) => _fetchJobs(reset: true),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          // Work mode filter
-          const Text(
-            'Work Mode',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 40,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: _workModeOptions.map((mode) {
-                final bool isSelected = _selectedWorkMode == mode;
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(mode),
-                    selected: isSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        _selectedWorkMode = selected ? mode : null;
-                      });
-                      _fetchJobs(reset: true);
-                    },
-                    backgroundColor: Colors.grey.shade100,
-                    selectedColor: Colors.blue.shade100,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.blue.shade800 : Colors.black87,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          // Skills filter
-          const Text(
-            'Skills',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _skillOptions.map((skill) {
-              final bool isSelected = _selectedSkills.contains(skill);
-              return FilterChip(
-                label: Text(skill),
-                selected: isSelected,
-                onSelected: (selected) {
-                  _toggleSkill(skill);
-                  _fetchJobs(reset: true);
-                },
-                backgroundColor: Colors.grey.shade100,
-                selectedColor: Colors.blue.shade100,
-                labelStyle: TextStyle(
-                  color: isSelected ? Colors.blue.shade800 : Colors.black87,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                ),
-              );
-            }).toList(),
-          ),
-          
-          const SizedBox(height: 16),
-          
-          // Reset filters button
-          Center(
-            child: TextButton.icon(
-              onPressed: _resetFilters,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Reset Filters'),
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red.shade700,
-              ),
-            ),
-          ),
-        ],
+          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+        ),
+        onSubmitted: (_) => _fetchJobs(reset: true),
       ),
     );
   }
@@ -349,14 +261,15 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   Widget _buildJobsList() {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
-        if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+        if (scrollInfo is ScrollEndNotification && 
+            scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 50) {
           _loadNextPage();
         }
         return false;
       },
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: _jobs.length + (_currentPage < _totalPages ? 1 : 0),
+        itemCount: _jobs.length + (_hasMorePages ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == _jobs.length) {
             return Center(
@@ -370,10 +283,9 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           }
           return SearchJobListItem(
             job: _jobs[index],
-            onAddToLiked: (JobCardModel job) => {
-               DatabaseManager.insertJobCard(job),
-               ref.read(bookmarkAnimationProvider.notifier).triggerAnimation(),
-               //ref.read(jobCoordinatorProvider).handleManualSearchAdd(job)
+            onAddToLiked: (JobCardModel job) {
+              DatabaseManager.insertJobCard(job);
+              ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
             },
           );
         },
@@ -409,7 +321,17 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           ),
           const SizedBox(height: 24),
           ElevatedButton.icon(
-            onPressed: _resetFilters,
+            onPressed: () {
+              setState(() {
+                _searchController.clear();
+                _location = null;
+                _company = null;
+                _workMode = null;
+                _field = null;
+                _selectedSkills = [];
+              });
+              _fetchJobs(reset: true);
+            },
             icon: const Icon(Icons.refresh),
             label: const Text('Reset Filters'),
             style: ElevatedButton.styleFrom(

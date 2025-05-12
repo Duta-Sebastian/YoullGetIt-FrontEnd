@@ -74,7 +74,6 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Show SnackBar after build if there's an error
     if (_errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -103,14 +102,12 @@ class ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Divider(),
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
+                      child: ListView(
                           children: [
                             CVUploadSection(),
                             SizedBox(height: 24),
                           ]
                         ),
-                      )
                     )
                   ],
                 ),

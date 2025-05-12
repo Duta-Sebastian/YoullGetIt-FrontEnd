@@ -259,7 +259,15 @@ class CVUploadSectionState extends State<CVUploadSection> {
                 border: Border.all(color: Colors.black, width: 0.5),
               ),
               child: _cvFile != null && _cvFile!.path.toLowerCase().endsWith('.pdf')
-                ? SfPdfViewer.file(_cvFile!)
+                ? SfPdfViewer.file(
+                    _cvFile!,
+                    scrollDirection: PdfScrollDirection.horizontal,
+                    canShowPageLoadingIndicator: false,
+                    canShowPaginationDialog: false,
+                    canShowSignaturePadDialog: false,
+                    canShowScrollHead: false,
+                    canShowScrollStatus: false,
+                  )
                 : Text('Document preview not supported'),
             ),
           ),
