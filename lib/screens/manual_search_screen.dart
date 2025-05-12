@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
 import 'package:youllgetit_flutter/screens/job_filters_screen.dart';
 import 'package:youllgetit_flutter/services/job_search_api.dart';
@@ -187,7 +188,6 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
       ),
       body: Column(
         children: [
-          _buildSearchBar(),
           _buildResultInfo(),
           Expanded(
             child: _jobs.isEmpty && !_isLoading
@@ -195,37 +195,6 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                 : _buildJobsList(),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      color: Colors.white,
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          hintText: 'Search jobs, titles...',
-          prefixIcon: const Icon(Icons.search),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                    _fetchJobs(reset: true);
-                  },
-                )
-              : null,
-          filled: true,
-          fillColor: Colors.grey.shade100,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 0),
-        ),
-        onSubmitted: (_) => _fetchJobs(reset: true),
       ),
     );
   }
@@ -286,6 +255,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
             onAddToLiked: (JobCardModel job) {
               DatabaseManager.insertJobCard(job);
               ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
+              //ref.read(jobCoordinatorProvider).handleManualSearchAdd(job);
             },
           );
         },

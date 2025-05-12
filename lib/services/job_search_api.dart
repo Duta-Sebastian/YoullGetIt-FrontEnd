@@ -39,8 +39,8 @@ class JobSearchAPI {
       queryParams['company'] = company;
     }
     
-    if (query != null && query.isNotEmpty && company == null) {
-      queryParams['company'] = query;
+    if (query != null && query.isNotEmpty) {
+      queryParams['role'] = query;
     }
     
     if (skills != null && skills.isNotEmpty) {

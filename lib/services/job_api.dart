@@ -6,6 +6,7 @@ import 'package:youllgetit_flutter/models/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
+import 'package:youllgetit_flutter/utils/questions_saver.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';
 import 'package:youllgetit_flutter/utils/job_api_encryption_manager.dart';
 
@@ -20,18 +21,28 @@ class JobApi {
   }
 
   static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
+    Map<String, dynamic> finalAnswers = {};
+    if (answers == null) {
+      final savedAnswers = await QuestionsSaver.getAnswers();
+      if (savedAnswers != null) {
+        finalAnswers = savedAnswers;
+      } else {
+        debugPrint('JobAPI: No answers found in SharedPreferences');
+        return -1;
+      }
+    } else {
+      finalAnswers = answers;
+    }
     final authState = _container!.read(authProvider);
     final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
 
     final Future<String> uniqueIdFuture = getUniqueId();
     final Future<String?>? cvFuture = (withCv == true) ? encodeCvFile() : null;
 
-    final Future<String?> answersJsonFuture = answers != null 
-        ? compute<Map<String, dynamic>, String>(
+    final Future<String?> answersJsonFuture = compute<Map<String, dynamic>, String>(
             (data) => jsonEncode(data), 
-            answers
-          )
-        : Future.value(null);
+            finalAnswers
+          );
 
     final results = await Future.wait<dynamic>([
       uniqueIdFuture,
@@ -86,11 +97,17 @@ class JobApi {
           (responseJson) => jsonDecode(responseJson)
         );
         
-        if (statusResponse.containsKey('status') && statusResponse['status'] == 'completed') {
-          return ;
-        }  
+        if (statusResponse.containsKey('status')) {
+          if (statusResponse['status'] == 'error ') {
+            throw ('Processing failed');
+          }
+          if (statusResponse['status'] == 'completed') {
+            return ;
+          }
+        }
       } catch (e) {
-        throw Exception('Error checking status: $e');
+        throw Exception("There was an error with the task, please try again later.");
+
       }
       await Future.delayed(const Duration(seconds: 3));
       attempts++;

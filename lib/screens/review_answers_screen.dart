@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/screens/entry_upload_cv_screen.dart';
+import 'package:youllgetit_flutter/utils/questions_saver.dart';
 
 class ReviewAnswersScreen extends StatelessWidget {
   final Map<String, List<String>> answers;
@@ -159,6 +160,7 @@ class ReviewAnswersScreen extends StatelessWidget {
           serializedAnswers[entry.key] = entry.value;
         }
         
+        QuestionsSaver.saveAnswers(serializedAnswers);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

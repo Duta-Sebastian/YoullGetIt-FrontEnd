@@ -89,7 +89,7 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(),
+          const CircularProgressIndicator(color: Color.fromRGBO(252, 245, 203, 1)),
           const SizedBox(height: 24),
           const Text(
             'Finding the perfect opportunities for you...',
