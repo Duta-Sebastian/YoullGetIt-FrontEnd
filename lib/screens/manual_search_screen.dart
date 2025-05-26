@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/models/job_card_model.dart';
-import 'package:youllgetit_flutter/providers/job_provider.dart';
+import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
 import 'package:youllgetit_flutter/screens/job_filters_screen.dart';
 import 'package:youllgetit_flutter/services/job_search_api.dart';
@@ -48,6 +48,27 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   Future<void> _fetchJobs({bool reset = false}) async {
     if (_isLoading) {
       debugPrint('Already loading, skipping fetch');
+      return;
+    }
+
+    // Check connectivity before making API call
+    final connectivityStatus = ref.read(isConnectedProvider);
+    final bool isConnected = connectivityStatus.when(
+      data: (value) => value,
+      loading: () => false,
+      error: (_, __) => false
+    );
+
+    if (!isConnected) {
+      debugPrint('JobSearchScreen: No internet connection, skipping API call');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No internet connection. Please check your network and try again.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
       return;
     }
 
@@ -166,6 +187,15 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final connectivityStatus = ref.watch(isConnectedProvider);
+    final bool isConnected = connectivityStatus.when(
+      data: (value) => value,
+      loading: () => true,
+      error: (_, __) => false
+    );
+    
+    debugPrint('JobSearchScreen: Connectivity status = $isConnected, state = ${connectivityStatus.toString()}');
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -188,11 +218,30 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
       ),
       body: Column(
         children: [
+          // Offline banner - similar to JobCardSwiper
+          if (!isConnected && connectivityStatus is AsyncData) 
+            Container(
+              color: Colors.amber.shade100,
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              child: Row(
+                children: [
+                  Icon(Icons.wifi_off, size: 16, color: Colors.amber.shade800),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      "You're offline. Search functionality is limited.",
+                      style: TextStyle(fontSize: 12, color: Colors.amber.shade800),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          
           _buildResultInfo(),
           Expanded(
             child: _jobs.isEmpty && !_isLoading
-                ? _buildEmptyState()
-                : _buildJobsList(),
+                ? _buildEmptyState(isConnected)
+                : _buildJobsList(isConnected),
           ),
         ],
       ),
@@ -227,18 +276,21 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     );
   }
 
-  Widget _buildJobsList() {
+  Widget _buildJobsList(bool isConnected) {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo is ScrollEndNotification && 
             scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent - 50) {
-          _loadNextPage();
+          // Only try to load next page if connected
+          if (isConnected) {
+            _loadNextPage();
+          }
         }
         return false;
       },
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: _jobs.length + (_hasMorePages ? 1 : 0),
+        itemCount: _jobs.length + (_hasMorePages && isConnected ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == _jobs.length) {
             return Center(
@@ -263,19 +315,19 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(bool isConnected) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            Icons.search_off_rounded,
+            !isConnected ? Icons.wifi_off_rounded : Icons.search_off_rounded,
             size: 80,
             color: Colors.grey.shade400,
           ),
           const SizedBox(height: 16),
           Text(
-            'No jobs found',
+            !isConnected ? 'No internet connection' : 'No jobs found',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -284,35 +336,56 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Try adjusting your filters or search query',
+            !isConnected 
+                ? 'Please check your connection and try again'
+                : 'Try adjusting your filters or search query',
             style: TextStyle(
               color: Colors.grey.shade600,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          ElevatedButton.icon(
-            onPressed: () {
-              setState(() {
-                _searchController.clear();
-                _location = null;
-                _company = null;
-                _workMode = null;
-                _field = null;
-                _selectedSkills = [];
-              });
-              _fetchJobs(reset: true);
-            },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Reset Filters'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.shade600,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          if (!isConnected)
+            ElevatedButton.icon(
+              onPressed: () {
+                // Retry fetching jobs when connection is restored
+                _fetchJobs(reset: true);
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.shade600,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            )
+          else
+            ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  _searchController.clear();
+                  _location = null;
+                  _company = null;
+                  _workMode = null;
+                  _field = null;
+                  _selectedSkills = [];
+                });
+                _fetchJobs(reset: true);
+              },
+              icon: const Icon(Icons.refresh),
+              label: const Text('Reset Filters'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue.shade600,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
