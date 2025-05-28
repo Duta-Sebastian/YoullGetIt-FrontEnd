@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/screens/internship_selector_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
+import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 
 class EntryScreen extends StatefulWidget {
   const EntryScreen({super.key});

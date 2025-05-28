@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youllgetit_flutter/widgets/settings/GDPR_page.dart';
+import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
 import 'package:youllgetit_flutter/widgets/settings/privacy_policy_page.dart';
