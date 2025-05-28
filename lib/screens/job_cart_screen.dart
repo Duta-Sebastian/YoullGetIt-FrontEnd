@@ -65,14 +65,14 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
     });
   }
 
-  String getTabTitle(int index) {
+  String getTabTitle(int index, int jobCount) {
     switch (index) {
       case 0:
-        return 'potential opportunities';
+        return 'potential opportunitie${jobCount > 1 ? 's' : ''}';
       case 1:
-        return 'applications remaining';
+        return 'application${jobCount > 1 ? 's' : ''} remaining';
       case 2:
-        return 'applications completed';
+        return 'applications${jobCount > 1 ? 's' : ''} completed';
       default:
         return '';
     }
@@ -260,7 +260,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        getTabTitle(_selectedIndex),
+                        getTabTitle(_selectedIndex, filteredJobs.length),
                         style: TextStyle(
                           fontSize: 16,
                           color: _getTabColor(),
