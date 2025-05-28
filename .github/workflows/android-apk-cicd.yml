@@ -47,6 +47,9 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
       
+    - name: Accept Android SDK licenses
+      run: yes | sdkmanager --licenses
+      
     - name: Setup Android signing
       run: |
         echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
