@@ -32,6 +32,18 @@ jobs:
       with:
         flutter-version: '3.29.3'
         channel: 'stable'
+        cache: true
+        
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+          **/.dart_tool
+          **/.packages
+        key: flutter-deps-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          flutter-deps-${{ runner.os }}-
         
     - name: Get dependencies
       run: flutter pub get
