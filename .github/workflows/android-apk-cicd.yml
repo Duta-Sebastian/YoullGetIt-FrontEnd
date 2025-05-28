@@ -13,9 +13,9 @@ jobs:
       matrix:
         build-type: 
           - { name: "appbundle", command: "flutter build appbundle --release", path: "build/app/outputs/bundle/release/app-release.aab", artifact: "android-aab" }
-          - { name: "arm64-v8a", command: "flutter build apk --release --target-platform android-arm64-v8a", path: "build/app/outputs/flutter-apk/app-arm64-v8a-release.apk", artifact: "android-arm64-v8a" }
-          - { name: "armeabi-v7a", command: "flutter build apk --release --target-platform android-armeabi-v7a", path: "build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk", artifact: "android-armeabi-v7a" }
-          - { name: "x86_64", command: "flutter build apk --release --target-platform android-x86_64", path: "build/app/outputs/flutter-apk/app-x86_64-release.apk", artifact: "android-x86_64" }
+          - { name: "arm64-v8a", command: "flutter build apk --release --target-platform=android-arm64", path: "build/app/outputs/flutter-apk/app-arm64-v8a-release.apk", artifact: "android-arm64-v8a" }
+          - { name: "armeabi-v7a", command: "flutter build apk --release --target-platform=android-arm", path: "build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk", artifact: "android-armeabi-v7a" }
+          - { name: "x86_64", command: "flutter build apk --release --target-platform=android-x64", path: "build/app/outputs/flutter-apk/app-x86_64-release.apk", artifact: "android-x86_64" }
     
     steps:
     - name: Checkout code
