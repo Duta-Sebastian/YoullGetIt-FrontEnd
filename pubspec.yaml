@@ -99,10 +99,10 @@ flutter:
   fonts:
     - family: Inter
       fonts:
-        - asset: assets/fonts/inter_18pt-regular.ttf
-        - asset: assets/fonts/inter_18pt-bold.ttf
+        - asset: assets/fonts/Inter_18pt-Regular.ttf
+        - asset: assets/fonts/Inter_18pt-Bold.ttf
           weight: 700
-        - asset: assets/fonts/inter_18pt-medium.ttf
-        - asset: assets/fonts/inter_18pt-thin.ttf
+        - asset: assets/fonts/Inter_18pt-Medium.ttf
+        - asset: assets/fonts/Inter_18pt-Thin.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
