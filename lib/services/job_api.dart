@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
@@ -140,12 +140,7 @@ class JobApi {
         if (jobsData.isEmpty) {
           return [];
         }
-        
-        return jobsData.map((job) {
-          final jobData = job["internship"];
-          jobData['match_score'] = job["score"];
-          return JobCardModel.fromJson(jobData);
-        }).toList().reversed.toList();
+        return JobCardModel.jobCardModelListFactory(jobsData);
       } catch (e) {
         debugPrint('JobAPI: Error fetching recommendations, attempt $attempts / 3, with message : $e');
         attempts += 1;

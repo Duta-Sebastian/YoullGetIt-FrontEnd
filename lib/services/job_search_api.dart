@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/job_search_response.dart';
 
@@ -53,13 +53,7 @@ class JobSearchAPI {
       final response = await http.get(uri);
       
       if (response.statusCode == 200) {
-        final List<dynamic> jobsData = json.decode(response.body);
-        
-        debugPrint('Received ${jobsData.length} jobs from API');
-        
-        final List<JobCardModel> jobs = jobsData.map((jobData) {
-          return JobCardModel.fromJson(jobData["internship"]);
-        }).toList();
+        final jobs =  JobCardModel.jobCardModelListFactory(json.decode(response.body) as List<dynamic>);
 
         final bool hasMorePages = jobs.length >= pageSize;
         

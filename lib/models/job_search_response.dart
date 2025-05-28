@@ -1,4 +1,4 @@
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 
 class JobSearchResponse {
   final List<JobCardModel> jobs;

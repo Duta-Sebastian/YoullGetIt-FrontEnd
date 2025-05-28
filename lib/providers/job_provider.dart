@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/models/jobs_state.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
@@ -328,7 +328,7 @@ class JobCoordinator {
     final job = activeJobs[index];
     
     _ref.read(feedbackProvider.notifier).addFeedback(
-      JobFeedback(jobId: job.id, liked: liked)
+      JobFeedback(jobId: job.feedbackId, liked: liked)
     );
     
     _ref.read(swipedJobsProvider.notifier).addSwipedJob(job);
@@ -350,7 +350,7 @@ class JobCoordinator {
 
   Future<void> handleManualSearchAdd(JobCardModel job) async {
     await _ref.read(feedbackProvider.notifier).addFeedback(
-      JobFeedback(jobId: job.id, liked: true)
+      JobFeedback(jobId: job.feedbackId, liked: true)
     );
   }
 }

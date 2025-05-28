@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
@@ -58,7 +58,7 @@ class DatabaseManager {
     return List.generate(maps.length, (index) {
       final jsonData = jsonDecode(maps[index]['job_data']);
       return JobCardStatusModel(
-        jobId: maps[index]['id'],
+        feedbackId: maps[index]['id'],
         jobCard: JobCardModel.fromJson(jsonData),
         status: JobStatusExtension.fromString(maps[index]['status']),
         lastChanged: DateTime.parse(maps[index]['last_changed']).toUtc(),
@@ -69,7 +69,7 @@ class DatabaseManager {
   static Future<int> insertJobCard(JobCardModel jobCard) async {
     final jsonString = jsonEncode(jobCard.toJson());
     return await _database.insert('jobs', {
-      'id': jobCard.id,
+      'id': jobCard.feedbackId,
       'job_data': jsonString,
       'last_changed': DateTime.now().toUtc().toIso8601String(),
       'status': "liked"
@@ -187,7 +187,7 @@ class DatabaseManager {
     
     int syncedCount = 0;
     
-    final List<String> jobIds = jobCart.map((job) => job.jobCard.id).toList();
+    final List<String> jobIds = jobCart.map((job) => job.jobCard.feedbackId).toList();
     
     final List<Map<String, dynamic>> existingJobs = await _database.query(
       'jobs',
@@ -200,7 +200,7 @@ class DatabaseManager {
     };
     await _database.transaction((txn) async {
       for (var jobCardStatus in jobCart) {
-        final String jobId = jobCardStatus.jobCard.id;
+        final String jobId = jobCardStatus.jobCard.feedbackId;
         if (!existingJobsMap.containsKey(jobId)) {
           final jsonString = jsonEncode(jobCardStatus.jobCard.toJson());
           await txn.insert('jobs', {

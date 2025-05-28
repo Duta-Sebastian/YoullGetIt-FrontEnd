@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_list_item.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -30,10 +30,10 @@ class JobList extends StatelessWidget {
 
   Widget _buildJobListItem(BuildContext context, int index) {
     final job = jobs[index];
-    final jobStatus = jobStatuses[job.id] ?? JobStatus.liked;
+    final jobStatus = jobStatuses[job.feedbackId] ?? JobStatus.liked;
     
     return Slidable(
-      key: Key(job.id),
+      key: Key(job.feedbackId),
       endActionPane: ActionPane(
         motion: const BehindMotion(),
         extentRatio: 0.25,

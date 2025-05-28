@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
 import 'package:youllgetit_flutter/screens/job_filters_screen.dart';
@@ -29,13 +29,29 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   int _totalCount = 0;
   bool _isLoading = false;
   bool _hasMorePages = true;
+  bool _hasInitialized = false;
 
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _fetchJobs();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_hasInitialized) {
+      _hasInitialized = true;
+      // Get connectivity status from build context and pass it
+      final connectivityStatus = ref.read(isConnectedProvider);
+      final isConnected = connectivityStatus.when(
+        data: (value) => value,
+        loading: () => true, // Changed to true to be optimistic during loading
+        error: (_, __) => false
+      );
+      _fetchJobs(isConnected: isConnected);
+    }
   }
 
   @override
@@ -45,33 +61,45 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     super.dispose();
   }
 
-  Future<void> _fetchJobs({bool reset = false}) async {
+  Future<void> _fetchJobs({bool reset = false, bool? isConnected}) async {
     if (_isLoading) {
       debugPrint('Already loading, skipping fetch');
       return;
     }
 
-    // Check connectivity before making API call
-    final connectivityStatus = ref.read(isConnectedProvider);
-    final bool isConnected = connectivityStatus.when(
-      data: (value) => value,
-      loading: () => false,
-      error: (_, __) => false
-    );
+    // Use passed connectivity status or get current snapshot
+    bool connected = isConnected ?? true; // Default to true if not provided
+    
+    if (isConnected == null) {
+      // Fallback to reading current state
+      final connectivityStatus = ref.read(isConnectedProvider);
+      connected = connectivityStatus.when(
+        data: (value) => value,
+        loading: () => true, // Changed to true to be optimistic
+        error: (_, __) => false
+      );
+    }
 
-    if (!isConnected) {
+    debugPrint('JobSearchScreen: Using connectivity status = $connected');
+
+    if (!connected) {
       debugPrint('JobSearchScreen: No internet connection, skipping API call');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No internet connection. Please check your network and try again.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
+      if (mounted && context.mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted && context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No internet connection. Please check your network and try again.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+        });
       }
       return;
     }
 
+    debugPrint('JobSearchScreen: Proceeding with API call');
     debugPrint('Fetching jobs for page $_currentPage (reset: $reset)');
 
     setState(() {
@@ -123,9 +151,16 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           _hasMorePages = false;
         });
         debugPrint('Error loading jobs: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading jobs: $e')),
-        );
+        
+        if (context.mounted) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted && context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error loading jobs: $e')),
+              );
+            }
+          });
+        }
       }
     }
   }
@@ -150,7 +185,15 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
       setState(() {
         _currentPage++;
       });
-      _fetchJobs();
+      
+      // Pass current connectivity status
+      final connectivityStatus = ref.read(isConnectedProvider);
+      final isConnected = connectivityStatus.when(
+        data: (value) => value,
+        loading: () => true,
+        error: (_, __) => false
+      );
+      _fetchJobs(isConnected: isConnected);
     } else {
       debugPrint('No more pages to load');
     }
@@ -181,7 +224,14 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         _selectedSkills = List<String>.from(result['skills'] ?? []);
       });
       
-      _fetchJobs(reset: true);
+      // Pass current connectivity status
+      final connectivityStatus = ref.read(isConnectedProvider);
+      final isConnected = connectivityStatus.when(
+        data: (value) => value,
+        loading: () => true,
+        error: (_, __) => false
+      );
+      _fetchJobs(reset: true, isConnected: isConnected);
     }
   }
 
@@ -190,7 +240,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     final connectivityStatus = ref.watch(isConnectedProvider);
     final bool isConnected = connectivityStatus.when(
       data: (value) => value,
-      loading: () => true,
+      loading: () => true, // Changed to true to be optimistic during loading
       error: (_, __) => false
     );
     
@@ -218,7 +268,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
       ),
       body: Column(
         children: [
-          // Offline banner - similar to JobCardSwiper
+          // Offline banner - only show when we're confirmed offline
           if (!isConnected && connectivityStatus is AsyncData) 
             Container(
               color: Colors.amber.shade100,
@@ -348,8 +398,14 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           if (!isConnected)
             ElevatedButton.icon(
               onPressed: () {
-                // Retry fetching jobs when connection is restored
-                _fetchJobs(reset: true);
+                // Get current connectivity and retry
+                final connectivityStatus = ref.read(isConnectedProvider);
+                final isConnected = connectivityStatus.when(
+                  data: (value) => value,
+                  loading: () => true,
+                  error: (_, __) => false
+                );
+                _fetchJobs(reset: true, isConnected: isConnected);
               },
               icon: const Icon(Icons.refresh),
               label: const Text('Retry'),
@@ -373,7 +429,15 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                   _field = null;
                   _selectedSkills = [];
                 });
-                _fetchJobs(reset: true);
+                
+                // Get current connectivity and reset
+                final connectivityStatus = ref.read(isConnectedProvider);
+                final isConnected = connectivityStatus.when(
+                  data: (value) => value,
+                  loading: () => true,
+                  error: (_, __) => false
+                );
+                _fetchJobs(reset: true, isConnected: isConnected);
               },
               icon: const Icon(Icons.refresh),
               label: const Text('Reset Filters'),
