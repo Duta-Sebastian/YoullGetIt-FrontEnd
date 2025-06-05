@@ -4,7 +4,7 @@ import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/screens/review_answers_screen.dart';
 import 'package:youllgetit_flutter/widgets/character_speech_bubble.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/questions_wrapper.dart';
-import 'package:youllgetit_flutter/widgets/progress_bar.dart';
+import 'package:youllgetit_flutter/widgets/first_time_questions/progress_bar.dart';
 
 class QuestionnaireScreen extends StatefulWidget {
   const QuestionnaireScreen({super.key});

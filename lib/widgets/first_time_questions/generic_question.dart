@@ -284,14 +284,14 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                           ),
                                           decoration: BoxDecoration(
                                             color: isSelected 
-                                                ? const Color.fromRGBO(89, 164, 144, 1)
+                                                ? Colors.amber
                                                 : Colors.grey[200],
                                             borderRadius: BorderRadius.circular(20),
                                           ),
                                           child: Text(
                                             levelOption,
                                             style: TextStyle(
-                                              color: isSelected ? Colors.white : Colors.black,
+                                              color: isSelected ? Colors.black : Colors.black,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                             ),
@@ -404,7 +404,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                               _updateFilteredOptions('');
                             },
                             child: Container(
-                              color: isSelected ? const Color.fromRGBO(89, 164, 144, 0.2) : Colors.transparent,
+                              color: isSelected ? const Color(0x33FFC107) : Colors.transparent, // Colors.amber with 0.2 opacity equivalent
                               padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                               child: Row(
                                 children: [
@@ -417,9 +417,9 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                     ),
                                   ),
                                   if (isSelected)
-                                    const Icon(
+                                    Icon(
                                       Icons.check,
-                                      color: Color.fromRGBO(89, 164, 144, 1),
+                                      color: Colors.amber,
                                       size: 20,
                                     ),
                                 ],
@@ -460,7 +460,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                     },
                     style: NeumorphicStyle(
                       color: widget.selectedChoices.contains(option)
-                          ? const Color.fromRGBO(89, 164, 144, 1)
+                          ? Colors.amber.shade600
                           : Colors.white,
                       depth: 5,
                       intensity: 0.5,
@@ -477,7 +477,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: widget.selectedChoices.contains(option)
-                                ? Colors.white
+                                ? Colors.black
                                 : Colors.black,
                           ),
                           textAlign: TextAlign.center,
@@ -584,7 +584,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                           children: widget.selectedChoices.map((option) {
                             return Neumorphic(
                               style: NeumorphicStyle(
-                                color: const Color.fromRGBO(89, 164, 144, 1),
+                                color: Colors.amber,
                                 depth: 3,
                                 intensity: 0.5,
                                 boxShape: NeumorphicBoxShape.roundRect(
@@ -606,7 +606,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                           style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ),
                                           overflow: TextOverflow.visible,
                                           softWrap: true,
@@ -620,7 +620,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                           child: const Icon(
                                             Icons.close,
                                             size: 16,
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
@@ -692,11 +692,11 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                       onTap: () {
                                         _addCustomChip(_searchController.text);
                                       },
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Icon(
                                           Icons.add_circle_outline,
-                                          color: Color.fromRGBO(89, 164, 144, 1),
+                                          color: Colors.amber,
                                         ),
                                       ),
                                     ),
@@ -752,7 +752,7 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                   _updateFilteredOptions('');
                                 },
                                 child: Container(
-                                  color: isSelected ? const Color.fromRGBO(89, 164, 144, 0.2) : Colors.transparent,
+                                  color: isSelected ? const Color(0x33FFC107) : Colors.transparent, // Colors.amber with 0.2 opacity equivalent
                                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                                   child: Row(
                                     children: [
@@ -765,9 +765,9 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
                                         ),
                                       ),
                                       if (isSelected)
-                                        const Icon(
+                                        Icon(
                                           Icons.check,
-                                          color: Color.fromRGBO(89, 164, 144, 1),
+                                          color: Colors.amber,
                                           size: 20,
                                         ),
                                     ],

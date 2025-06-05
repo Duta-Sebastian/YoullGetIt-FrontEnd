@@ -263,7 +263,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     return NeumorphicButton(
       onPressed: _goToPreviousQuestion,
       style: NeumorphicStyle(
-        color: Colors.white,
+        color: Colors.amber.shade600,
         depth: 5,
         intensity: 0.5,
         boxShape: NeumorphicBoxShape.roundRect(
@@ -284,7 +284,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     return NeumorphicButton(
       onPressed: _goToNextQuestion,
       style: NeumorphicStyle(
-        color: const Color.fromRGBO(89, 164, 144, 1),
+        color: Colors.amber.shade600,
         depth: 5,
         intensity: 0.5,
         boxShape: NeumorphicBoxShape.roundRect(
@@ -296,7 +296,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
         child: Text(
           _isLastQuestion() ? "Finish" : "Next",
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

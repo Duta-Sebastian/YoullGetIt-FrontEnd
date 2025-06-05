@@ -89,7 +89,7 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(color: Color.fromRGBO(252, 245, 203, 1)),
+          const CircularProgressIndicator(color: Colors.amber),
           const SizedBox(height: 24),
           const Text(
             'Finding the perfect opportunities for you...',
@@ -142,6 +142,10 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
               });
               _processRecommendation();
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.black,
+            ),
             child: const Text('Try Again'),
           ),
           const SizedBox(height: 16),
@@ -149,6 +153,9 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
             onPressed: () {
               Navigator.of(context).pop();
             },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.amber,
+            ),
             child: const Text('Go Back'),
           ),
         ],

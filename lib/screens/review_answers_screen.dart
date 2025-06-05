@@ -8,7 +8,7 @@ class ReviewAnswersScreen extends StatelessWidget {
   final Map<String, List<String>> answers;
   final List<MapEntry<String, List<String>>> orderedAnswerEntries;
 
-  static const Color primaryColor = Color.fromRGBO(89, 164, 144, 1);
+  static const Color primaryColor = Colors.amber;
 
   ReviewAnswersScreen({
     super.key,
@@ -172,7 +172,7 @@ class ReviewAnswersScreen extends StatelessWidget {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
-        foregroundColor: Colors.white,
+        foregroundColor: Colors.black,
         elevation: 5,
         padding: const EdgeInsets.symmetric(
           horizontal: 50,
