@@ -156,7 +156,7 @@ class _EntryScreenState extends State<EntryScreen> {
               ElevatedButton(
                 onPressed: _isFormValid ? _handleContinuePressed : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _isFormValid ? Colors.green : Colors.grey,
+                  backgroundColor: _isFormValid ? Colors.yellow.shade800 : Colors.grey,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
