@@ -223,7 +223,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                     ),
                     _buildChipWithIcon(
                       widget.jobData.expectedSalary.isEmpty ? "N/A" : widget.jobData.expectedSalary,
-                      Icons.attach_money_rounded,
+                      Icons.payments_rounded,
                       const Color(0xFFFBBF24), // Golden yellow
                       const Color(0xFF1F2937),
                     ),

@@ -50,10 +50,19 @@ class JobSearchAPI {
     final uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
     
     try {      
-      final response = await http.get(uri);
+      // ADD UTF-8 HEADERS
+      final response = await http.get(
+        uri,
+        headers: {
+          'Accept': 'application/json; charset=utf-8',
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      );
       
       if (response.statusCode == 200) {
-        final jobs =  JobCardModel.jobCardModelListFactory(json.decode(response.body) as List<dynamic>);
+        // DECODE WITH UTF-8 EXPLICITLY
+        final String responseBody = utf8.decode(response.bodyBytes);
+        final jobs = JobCardModel.jobCardModelListFactory(json.decode(responseBody) as List<dynamic>);
 
         final bool hasMorePages = jobs.length >= pageSize;
         

@@ -175,45 +175,50 @@ class SearchJobListItem extends StatelessWidget {
               
               const SizedBox(height: 16),
               
-              // Job details chips
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  if (job.workMode.isNotEmpty)
-                    _buildInfoChip(
-                      Icons.work_rounded,
-                      job.workMode,
-                      const Color(0xFFA5B4FC),
-                      const Color(0xFF1F2937),
-                    ),
-                  if (job.expectedSalary.isNotEmpty)
-                    _buildInfoChip(
-                      Icons.attach_money_rounded,
-                      job.expectedSalary,
-                      const Color(0xFFFBBF24),
-                      const Color(0xFF1F2937),
-                    ),
-                  if (job.durationInMonths > 0)
-                    _buildInfoChip(
-                      Icons.timer_rounded,
-                      '${job.durationInMonths} months',
-                      const Color(0xFF86EFAC),
-                      const Color(0xFF1F2937),
-                    ),
-                  if (job.internshipSeason.isNotEmpty)
-                    _buildInfoChip(
-                      Icons.calendar_today_rounded,
-                      job.internshipSeason,
-                      const Color(0xFF86EFAC), // Light green for season
-                      const Color(0xFF1F2937),
-                    ),
-                ],
+              // Job details chips - Improved wrapping
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  return Wrap(
+                    spacing: 8,
+                    runSpacing: 6,
+                    clipBehavior: Clip.none,
+                    children: [
+                      if (job.workMode.isNotEmpty)
+                        _buildInfoChip(
+                          Icons.work_rounded,
+                          job.workMode,
+                          const Color(0xFFA5B4FC),
+                          const Color(0xFF1F2937),
+                        ),
+                      if (job.expectedSalary.isNotEmpty)
+                        _buildInfoChip(
+                          Icons.payments_rounded,
+                          job.expectedSalary,
+                          const Color(0xFFFBBF24),
+                          const Color(0xFF1F2937),
+                        ),
+                      if (job.durationInMonths > 0)
+                        _buildInfoChip(
+                          Icons.timer_rounded,
+                          '${job.durationInMonths} months',
+                          const Color(0xFF86EFAC),
+                          const Color(0xFF1F2937),
+                        ),
+                      if (job.internshipSeason.isNotEmpty)
+                        _buildInfoChip(
+                          Icons.calendar_today_rounded,
+                          job.internshipSeason,
+                          const Color(0xFF86EFAC), // Light green for season
+                          const Color(0xFF1F2937),
+                        ),
+                    ],
+                  );
+                },
               ),
               
               const SizedBox(height: 16),
               
-              // Skills preview
+              // Skills preview - Improved wrapping
               if (job.hardSkills.isNotEmpty) ...[
                 Row(
                   children: [
@@ -234,15 +239,20 @@ class SearchJobListItem extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: job.hardSkills.take(4).map((skill) => _buildSkillChip(skill)).toList(),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      clipBehavior: Clip.none,
+                      children: job.hardSkills.take(4).map((skill) => _buildSkillChip(skill)).toList(),
+                    );
+                  },
                 ),
                 const SizedBox(height: 4),
               ],
               
-              // Related fields if no hard skills
+              // Related fields if no hard skills - Improved wrapping
               if (job.hardSkills.isEmpty && job.relatedFields.isNotEmpty) ...[
                 Row(
                   children: [
@@ -263,10 +273,15 @@ class SearchJobListItem extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: job.relatedFields.take(3).map((field) => _buildSkillChip(field)).toList(),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      clipBehavior: Clip.none,
+                      children: job.relatedFields.take(3).map((field) => _buildSkillChip(field)).toList(),
+                    );
+                  },
                 ),
                 const SizedBox(height: 4),
               ],
@@ -389,51 +404,61 @@ class SearchJobListItem extends StatelessWidget {
       text = 'N/A';
     }
     
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: bgColor.withAlpha(51),
-            blurRadius: 3,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 12, color: textColor),
-          const SizedBox(width: 4),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: textColor,
+    return IntrinsicWidth(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: bgColor.withAlpha(51),
+              blurRadius: 3,
+              offset: const Offset(0, 1),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 12, color: textColor),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: textColor,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSkillChip(String skill) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3F4F6),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFE5E7EB), width: 0.5),
-      ),
-      child: Text(
-        skill,
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xFF6B7280),
+    return IntrinsicWidth(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF3F4F6),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFFE5E7EB), width: 0.5),
+        ),
+        child: Text(
+          skill,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF6B7280),
+          ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
         ),
       ),
     );

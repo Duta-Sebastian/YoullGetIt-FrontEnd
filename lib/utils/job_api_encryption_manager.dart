@@ -126,10 +126,16 @@ class JobApiEncryptionManager {
     _fetchingKeyCompleter = Completer<void>();
 
     try {
-      final response = await _client.get(Uri.parse('$_baseUrl/public-key'));
+      final response = await _client.get(
+        Uri.parse('$_baseUrl/public-key'),
+        headers: {
+          'Accept': 'application/json; charset=utf-8',
+        },
+      );
       
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final responseBody = utf8.decode(response.bodyBytes);
+        final data = jsonDecode(responseBody);
         final modulus = BigInt.parse(data['modulus'], radix: 16);
         final exponent = BigInt.from(data['exponent']);
         
@@ -268,10 +274,11 @@ class JobApiEncryptionManager {
     final encryptedPayload = await encryptData(jsonData);
     
     final String? clientPublicKeyJson = getClientPublicKeyAsJson();
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      if (clientPublicKeyJson != null) 'X-Client-Public-Key': clientPublicKeyJson,
-    };
+  final Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Accept': 'application/json; charset=utf-8',
+    if (clientPublicKeyJson != null) 'X-Client-Public-Key': clientPublicKeyJson,
+  };
     
     final response = await _client.post(
       Uri.parse('$_baseUrl$endpoint'),
@@ -280,7 +287,8 @@ class JobApiEncryptionManager {
     );
     
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
+      final responseBody = utf8.decode(response.bodyBytes);
+      final responseData = jsonDecode(responseBody);
       
       if (responseData is Map<String, dynamic> && 
           responseData.containsKey('encrypted_data') && 

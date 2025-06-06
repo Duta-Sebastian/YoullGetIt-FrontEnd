@@ -227,7 +227,7 @@ class JobDetailPage extends StatelessWidget {
       if (job.workMode.isNotEmpty) 
         _DetailItem(Icons.work_rounded, 'Work Mode', job.workMode),
       if (job.expectedSalary.isNotEmpty)
-        _DetailItem(Icons.attach_money_rounded, 'Salary', job.expectedSalary),
+        _DetailItem(Icons.payments_rounded, 'Salary', job.expectedSalary),
       if (job.durationInMonths > 0)
         _DetailItem(Icons.timer_rounded, 'Duration', '${job.durationInMonths} months'),
       if (job.timeSpent.isNotEmpty)
