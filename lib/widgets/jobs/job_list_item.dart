@@ -24,12 +24,13 @@ class JobListItem extends StatelessWidget {
   }
 
   Widget _buildJobCard(BuildContext context) {
-    // Get match score (for demonstration purposes)
-    int? matchScore;
+    // Removed match score for now
+    // This can be uncommented if match score is needed in the future
+    // int? matchScore;
 
-    if (job.matchScore != null) {
-      matchScore = (job.matchScore! * 100).toInt();
-    }
+    // if (job.matchScore != null) {
+    //   matchScore = (job.matchScore! * 100).toInt();
+    // }
     
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -167,34 +168,35 @@ class JobListItem extends StatelessWidget {
                   
                   const SizedBox(height: 16),
                   
-                  // Match score badge
-                  if (matchScore != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _getScoreColor(matchScore),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.bolt,
-                            size: 14,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            "Match Score: $matchScore%",
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  // Hide match score for now
+                  // Uncomment if needed in the future
+                  // if (matchScore != null)
+                  //   Container(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  //     decoration: BoxDecoration(
+                  //       color: _getScoreColor(matchScore),
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         const Icon(
+                  //           Icons.bolt,
+                  //           size: 14,
+                  //           color: Colors.white,
+                  //         ),
+                  //         const SizedBox(width: 4),
+                  //         Text(
+                  //           "Match Score: $matchScore%",
+                  //           style: const TextStyle(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
                   
                   const SizedBox(height: 16),
                   const Divider(height: 1),

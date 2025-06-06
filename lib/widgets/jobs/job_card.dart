@@ -143,29 +143,29 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    if (widget.jobData.matchScore != null)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: _getMatchScoreColor(widget.jobData.matchScore!),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: _getMatchScoreColor(widget.jobData.matchScore!).withAlpha(77),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Text(
-                          '${(widget.jobData.matchScore! * 100).round()}%',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
+                    // if (widget.jobData.matchScore != null)
+                    //   Container(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    //     decoration: BoxDecoration(
+                    //       color: _getMatchScoreColor(widget.jobData.matchScore!),
+                    //       borderRadius: BorderRadius.circular(20),
+                    //       boxShadow: [
+                    //         BoxShadow(
+                    //           color: _getMatchScoreColor(widget.jobData.matchScore!).withAlpha(77),
+                    //           blurRadius: 4,
+                    //           offset: const Offset(0, 2),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //     child: Text(
+                    //       '${(widget.jobData.matchScore! * 100).round()}%',
+                    //       style: const TextStyle(
+                    //         color: Colors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //         fontSize: 12,
+                    //       ),
+                    //     ),
+                    //   ),
                   ],
                 ),
                 

@@ -71,8 +71,9 @@ class JobDetailPage extends StatelessWidget {
                     _buildRequirementsCard(),
                   if (job.requirements.isNotEmpty)
                     const SizedBox(height: 16),
-                  _buildMatchScoreCard(),
-                  const SizedBox(height: 24),
+                  // Uncomment if you want to show match score card
+                  // _buildMatchScoreCard(),
+                  // const SizedBox(height: 24),
                   _buildApplyButton(),
                   const SizedBox(height: 40),
                 ],
@@ -128,36 +129,37 @@ class JobDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            if (job.matchScore != null)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: _getMatchScoreColor(job.matchScore!),
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: _getMatchScoreColor(job.matchScore!).withAlpha(77),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.star_rounded, color: Colors.white, size: 18),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${(job.matchScore! * 100).round()}%',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            // Uncomment if you want to show match score
+            // if (job.matchScore != null)
+            //   Container(
+            //     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            //     decoration: BoxDecoration(
+            //       color: _getMatchScoreColor(job.matchScore!),
+            //       borderRadius: BorderRadius.circular(25),
+            //       boxShadow: [
+            //         BoxShadow(
+            //           color: _getMatchScoreColor(job.matchScore!).withAlpha(77),
+            //           blurRadius: 8,
+            //           offset: const Offset(0, 2),
+            //         ),
+            //       ],
+            //     ),
+            //     child: Row(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: [
+            //         const Icon(Icons.star_rounded, color: Colors.white, size: 18),
+            //         const SizedBox(width: 4),
+            //         Text(
+            //           '${(job.matchScore! * 100).round()}%',
+            //           style: const TextStyle(
+            //             color: Colors.white,
+            //             fontWeight: FontWeight.bold,
+            //             fontSize: 16,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
           ],
         ),
         
