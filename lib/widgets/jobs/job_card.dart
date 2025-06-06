@@ -497,12 +497,12 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     }
   }
 
-  Color _getMatchScoreColor(double score) {
-    if (score >= 0.8) return const Color(0xFF22C55E);
-    if (score >= 0.6) return const Color(0xFF3B82F6);
-    if (score >= 0.4) return const Color(0xFFF59E0B);
-    return const Color(0xFFEF4444);
-  }
+  // Color _getMatchScoreColor(double score) {
+  //   if (score >= 0.8) return const Color(0xFF22C55E);
+  //   if (score >= 0.6) return const Color(0xFF3B82F6);
+  //   if (score >= 0.4) return const Color(0xFFF59E0B);
+  //   return const Color(0xFFEF4444);
+  // }
 
   Color _calculateGlowColor(double threshold) {
     const Color positiveGlowBase = Color(0xFF86EFAC);

@@ -339,17 +339,17 @@ class JobListItem extends StatelessWidget {
     }
   }
 
-  Color _getScoreColor(int score) {
-    if (score >= 90) {
-      return const Color(0xFF22C55E);
-    } else if (score >= 80) {
-      return const Color(0xFF3B82F6);
-    } else if (score >= 70) {
-      return const Color(0xFFFBBF24);
-    } else {
-      return const Color(0xFFEF4444);
-    }
-  }
+  // Color _getScoreColor(int score) {
+  //   if (score >= 90) {
+  //     return const Color(0xFF22C55E);
+  //   } else if (score >= 80) {
+  //     return const Color(0xFF3B82F6);
+  //   } else if (score >= 70) {
+  //     return const Color(0xFFFBBF24);
+  //   } else {
+  //     return const Color(0xFFEF4444);
+  //   }
+  // }
 
   Color _getStatusColor() {
     switch (jobStatus) {
