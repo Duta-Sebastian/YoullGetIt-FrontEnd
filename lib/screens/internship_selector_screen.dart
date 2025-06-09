@@ -46,7 +46,7 @@ class QuestionnaireScreenState extends State<QuestionnaireScreen> {
         const SizedBox(height: 16),
         ProgressBar(
           currentQuestionIndex: _currentQuestionIndex,
-          totalQuestions: QuestionRepository.questions.length,
+          totalQuestions: QuestionRepository.questionsCount,
         ),
         const SizedBox(height: 24),
       ],
@@ -71,7 +71,7 @@ class QuestionnaireScreenState extends State<QuestionnaireScreen> {
               Expanded(
                 child: QuestionWrapper(
                   currentQuestionIndex: _currentQuestionIndex,
-                  totalQuestions: QuestionRepository.questions.length,
+                  totalQuestions: QuestionRepository.questionsCount,
                   onQuestionIndexChanged: _updateQuestionIndex,
                   onQuestionTextUpdated: _updateQuestionText,
                   onFinish: _onFinish,

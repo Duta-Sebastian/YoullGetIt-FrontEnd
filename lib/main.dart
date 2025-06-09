@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
@@ -64,6 +65,7 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
 
   if (isFirstTime){
     generateAndStoreUniqueId();
+    await QuestionRepository.initialize();
   }
   else {
     final coordinator = container.read(jobCoordinatorProvider);
