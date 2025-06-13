@@ -60,24 +60,22 @@ jobs:
       run: |
         # Debug: Check current signing style
         echo "Current CODE_SIGN_STYLE settings:"
-        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
         
-        # FIRST: Change all CODE_SIGN_STYLE from Automatic to Manual
-        echo "Changing CODE_SIGN_STYLE from Automatic to Manual..."
+        # Set code signing to manual for ALL configurations
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # SECOND: Add provisioning profile (on separate lines)
-        echo "Adding provisioning profile..."
+        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
+        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
+        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
+        
+        # Add development provisioning profile to ALL configurations
         sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
         		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";' ios/Runner.xcodeproj/project.pbxproj
         
-        # Verify changes were made
-        echo "After changes - CODE_SIGN_STYLE lines:"
-        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
-        
-        echo "After changes - PROVISIONING_PROFILE_SPECIFIER lines:"
-        grep -n "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "No PROVISIONING_PROFILE_SPECIFIER found"
-        
+        # Verify changes
+        echo "After changes:"
+        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"  
     - name: Flutter Build iOS (Development)
       run: flutter build ios --release
       
