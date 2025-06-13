@@ -1,0 +1,143 @@
+name: Build and Deploy iOS
+
+on:
+  push:
+    branches: [ '**' ]  # Every push to any branch
+  pull_request:
+    branches: [ main ]   # PRs targeting main branch
+
+jobs:
+  build-development:
+    name: Build Development IPA
+    runs-on: macos-latest
+    if: github.event_name == 'push'  # Runs on every push
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        
+    - name: Get Flutter dependencies
+      run: flutter pub get
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Import Development Code-Signing Certificates
+      uses: Apple-Actions/import-codesign-certs@v2
+      with:
+        p12-file-base64: ${{ secrets.DEV_CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
+        
+    - name: Download Development Provisioning Profiles
+      uses: Apple-Actions/download-provisioning-profiles@v3
+      with:
+        bundle-id: com.youllgetit.app
+        profile-type: IOS_APP_DEVELOPMENT
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+        
+    - name: Flutter Build iOS (Development)
+      run: flutter build ios --release --no-codesign
+      
+    - name: Build and Archive with Xcode (Development)
+      run: |
+        cd ios
+        xcodebuild -workspace Runner.xcworkspace \
+          -scheme Runner \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath $RUNNER_TEMP/Runner-Dev.xcarchive \
+          archive
+          
+    - name: Export Development IPA
+      run: |
+        cd ios
+        xcodebuild -exportArchive \
+          -archivePath $RUNNER_TEMP/Runner-Dev.xcarchive \
+          -exportPath $RUNNER_TEMP/Development \
+          -exportOptionsPlist ExportOptions-Development.plist
+          
+    - name: Upload Development IPA as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-development-ipa
+        path: ${{ runner.temp }}/Development/*.ipa
+
+  build-production:
+    name: Build App Store IPA
+    runs-on: macos-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'  # PRs to main
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        
+    - name: Get Flutter dependencies
+      run: flutter pub get
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Import Distribution Code-Signing Certificates
+      uses: Apple-Actions/import-codesign-certs@v2
+      with:
+        p12-file-base64: ${{ secrets.DIST_CERTIFICATES_P12 }}
+        p12-password: ${{ secrets.DIST_CERTIFICATES_P12_PASSWORD }}
+        
+    - name: Download App Store Provisioning Profiles
+      uses: Apple-Actions/download-provisioning-profiles@v3
+      with:
+        bundle-id: com.youllgetit.app
+        profile-type: IOS_APP_STORE
+        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+        
+    - name: Flutter Build iOS (Production)
+      run: flutter build ios --release --no-codesign
+      
+    - name: Build and Archive with Xcode (Production)
+      run: |
+        cd ios
+        xcodebuild -workspace Runner.xcworkspace \
+          -scheme Runner \
+          -configuration Release \
+          -destination generic/platform=iOS \
+          -archivePath $RUNNER_TEMP/Runner-Prod.xcarchive \
+          archive
+          
+    - name: Export App Store IPA
+      run: |
+        cd ios
+        xcodebuild -exportArchive \
+          -archivePath $RUNNER_TEMP/Runner-Prod.xcarchive \
+          -exportPath $RUNNER_TEMP/AppStore \
+          -exportOptionsPlist ExportOptions-AppStore.plist
+          
+    - name: Upload to App Store Connect
+      run: |
+        xcrun altool --upload-app \
+          --type ios \
+          --file "$RUNNER_TEMP/AppStore/You'll Get It.ipa" \
+          --username "${{ secrets.APPLE_ID }}" \
+          --password "${{ secrets.APPLE_APP_PASSWORD }}" \
+          --verbose
+          
+    - name: Upload App Store IPA as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-appstore-ipa
+        path: ${{ runner.temp }}/AppStore/*.ipa
