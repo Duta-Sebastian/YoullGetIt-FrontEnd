@@ -25,11 +25,9 @@ class AppRatingHelper {
   static Future<void> _openStoreListing(BuildContext context) async {
     try {
       await _inAppReview.openStoreListing(
-        // TODO: Replace with app store ID when we have it
-        appStoreId: 'your_app_store_id_here',
+        appStoreId: '6747272202',
       );
     } catch (e) {
-      // Show error message if store opening fails
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -41,7 +39,6 @@ class AppRatingHelper {
     }
   }
 
-  // Alternative: Show custom dialog first, then rating
   static Future<void> showRatingDialog(BuildContext context) async {
     return showDialog(
       context: context,
