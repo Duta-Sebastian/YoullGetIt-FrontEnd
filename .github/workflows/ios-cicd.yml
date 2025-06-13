@@ -46,22 +46,23 @@ jobs:
       run: |
         # Debug: Check current signing style
         echo "Current CODE_SIGN_STYLE settings:"
-        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
         
-        # Set code signing to manual for ALL configurations
+        # FIRST: Change all CODE_SIGN_STYLE from Automatic to Manual
+        echo "Changing CODE_SIGN_STYLE from Automatic to Manual..."
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
-        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
-        
-        # Add development provisioning profile to ALL configurations
+        # SECOND: Add provisioning profile (on separate lines)
+        echo "Adding provisioning profile..."
         sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
         		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";' ios/Runner.xcodeproj/project.pbxproj
         
-        # Verify changes
-        echo "After changes:"
-        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"
+        # Verify changes were made
+        echo "After changes - CODE_SIGN_STYLE lines:"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        
+        echo "After changes - PROVISIONING_PROFILE_SPECIFIER lines:"
+        grep -n "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "No PROVISIONING_PROFILE_SPECIFIER found"
         
     - name: Flutter Build iOS (Development)
       run: flutter build ios --release
@@ -129,22 +130,23 @@ jobs:
       run: |
         # Debug: Check current signing style
         echo "Current CODE_SIGN_STYLE settings:"
-        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
         
-        # Set code signing to manual for ALL configurations
+        # FIRST: Change all CODE_SIGN_STYLE from Automatic to Manual
+        echo "Changing CODE_SIGN_STYLE from Automatic to Manual..."
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
-        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
-        
-        # Add production provisioning profile to ALL configurations
+        # SECOND: Add provisioning profile (on separate lines)
+        echo "Adding provisioning profile..."
         sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
         		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";' ios/Runner.xcodeproj/project.pbxproj
         
-        # Verify changes
-        echo "After changes:"
-        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"
+        # Verify changes were made
+        echo "After changes - CODE_SIGN_STYLE lines:"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        
+        echo "After changes - PROVISIONING_PROFILE_SPECIFIER lines:"
+        grep -n "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "No PROVISIONING_PROFILE_SPECIFIER found"
         
     - name: Flutter Build iOS (Production)
       run: flutter build ios --release
@@ -169,9 +171,17 @@ jobs:
           
     - name: Upload to App Store Connect
       run: |
+        # List the actual IPA files created
+        echo "IPA files created:"
+        ls -la "$RUNNER_TEMP/AppStore/"
+        
+        # Find the actual IPA file (might be named differently)
+        IPA_FILE=$(find "$RUNNER_TEMP/AppStore" -name "*.ipa" | head -1)
+        echo "Using IPA file: $IPA_FILE"
+        
         xcrun altool --upload-app \
           --type ios \
-          --file "$RUNNER_TEMP/AppStore/You'll Get It.ipa" \
+          --file "$IPA_FILE" \
           --username "${{ secrets.APPLE_ID }}" \
           --password "${{ secrets.APPLE_APP_PASSWORD }}" \
           --verbose
