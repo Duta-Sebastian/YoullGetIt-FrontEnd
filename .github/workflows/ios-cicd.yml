@@ -60,22 +60,37 @@ jobs:
       run: |
         # Debug: Check current signing style
         echo "Current CODE_SIGN_STYLE settings:"
-        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
         
-        # Set code signing to manual for ALL configurations
+        # Create a backup of the project file
+        cp ios/Runner.xcodeproj/project.pbxproj ios/Runner.xcodeproj/project.pbxproj.backup
+        
+        # Change CODE_SIGN_STYLE from Automatic to Manual
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
-        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
-        
-        # Add development provisioning profile to ALL configurations
-        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";' ios/Runner.xcodeproj/project.pbxproj
+        # Find lines with DEVELOPMENT_TEAM and add provisioning profile after each one
+        # Use awk to properly handle the insertion
+        awk '
+        /DEVELOPMENT_TEAM = "JPXGBUG6ZW";/ {
+            print $0
+            print "\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = \"You'\''ll Get It - Development\";"
+            next
+        }
+        { print }
+        ' ios/Runner.xcodeproj/project.pbxproj > ios/Runner.xcodeproj/project.pbxproj.tmp && \
+        mv ios/Runner.xcodeproj/project.pbxproj.tmp ios/Runner.xcodeproj/project.pbxproj
         
         # Verify changes
-        echo "After changes:"
-        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"  
+        echo "After changes - CODE_SIGN_STYLE lines:"
+        grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        
+        echo "After changes - PROVISIONING_PROFILE_SPECIFIER lines:"
+        grep -n "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "No PROVISIONING_PROFILE_SPECIFIER found"
+        
+        # Show the provisioning profiles that are available
+        echo "Available provisioning profiles:"
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || echo "No provisioning profiles directory found"
+        
     - name: Flutter Build iOS (Development)
       run: flutter build ios --release
       
@@ -87,7 +102,9 @@ jobs:
           -configuration Release \
           -destination generic/platform=iOS \
           -archivePath $RUNNER_TEMP/Runner-Dev.xcarchive \
-          archive
+          archive \
+          CODE_SIGN_IDENTITY="iPhone Developer" \
+          PROVISIONING_PROFILE_SPECIFIER="You'll Get It - Development"
           
     - name: Export Development IPA
       run: |
@@ -158,14 +175,23 @@ jobs:
         echo "Current CODE_SIGN_STYLE settings:"
         grep -n "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
         
-        # FIRST: Change all CODE_SIGN_STYLE from Automatic to Manual
-        echo "Changing CODE_SIGN_STYLE from Automatic to Manual..."
+        # Create a backup of the project file
+        cp ios/Runner.xcodeproj/project.pbxproj ios/Runner.xcodeproj/project.pbxproj.backup
+        
+        # Change CODE_SIGN_STYLE from Automatic to Manual
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # SECOND: Add provisioning profile (on separate lines)
-        echo "Adding provisioning profile..."
-        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";' ios/Runner.xcodeproj/project.pbxproj
+        # Find lines with DEVELOPMENT_TEAM and add provisioning profile after each one
+        # Use awk to properly handle the insertion
+        awk '
+        /DEVELOPMENT_TEAM = "JPXGBUG6ZW";/ {
+            print $0
+            print "\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = \"You'\''ll Get It\";"
+            next
+        }
+        { print }
+        ' ios/Runner.xcodeproj/project.pbxproj > ios/Runner.xcodeproj/project.pbxproj.tmp && \
+        mv ios/Runner.xcodeproj/project.pbxproj.tmp ios/Runner.xcodeproj/project.pbxproj
         
         # Verify changes were made
         echo "After changes - CODE_SIGN_STYLE lines:"
@@ -173,6 +199,10 @@ jobs:
         
         echo "After changes - PROVISIONING_PROFILE_SPECIFIER lines:"
         grep -n "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "No PROVISIONING_PROFILE_SPECIFIER found"
+        
+        # Show the provisioning profiles that are available
+        echo "Available provisioning profiles:"
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || echo "No provisioning profiles directory found"
         
     - name: Flutter Build iOS (Production)
       run: flutter build ios --release
@@ -185,7 +215,9 @@ jobs:
           -configuration Release \
           -destination generic/platform=iOS \
           -archivePath $RUNNER_TEMP/Runner-Prod.xcarchive \
-          archive
+          archive \
+          CODE_SIGN_IDENTITY="iPhone Distribution" \
+          PROVISIONING_PROFILE_SPECIFIER="You'll Get It"
           
     - name: Export App Store IPA
       run: |
