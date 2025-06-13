@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youllgetit_flutter/utils/app_rating_helper.dart';
 import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
@@ -128,7 +129,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.star, 
                   title: 'Rate Us',
                   onTap: () {
-                    // TODO: Implement app rating logic
+                    AppRatingHelper.requestRating(context);
                   },
                 ),
               ],
