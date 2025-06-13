@@ -87,22 +87,8 @@ class QuestionRepository {
         answerType: AnswerType.checkbox,
         options: ['Mechanical', 'Electrical', 'Aerospace', 'Civil', 'Chemical'],
         hasOtherField: true,
-        nextQuestionId: 'q4_eng_skills',
-        previousQuestionId: 'q4',
-        rootQuestionId: 'q4',
-      ),
-
-      Question(
-        id: 'q4_eng_skills',
-        text: 'What practical engineering skills do you have?',
-        answerType: AnswerType.chips,
-        options: ['CAD (SolidWorks, AutoCAD, CATIA)', '3D Printing & Prototyping', 
-                  'Circuit Design & Testing', 'Robotics & Automation', 'Thermodynamics & Fluid Dynamics',
-                  'Mechanical Stress Analysis', 'Embedded Systems (Arduino, Raspberry Pi)',
-                  'CNC Machining & Manufacturing Processes', 'Aerospace Materials & Structures'],
-        hasOtherField: true,
         nextQuestionId: 'q5',
-        previousQuestionId: 'q4_eng',
+        previousQuestionId: 'q4',
         rootQuestionId: 'q4',
       ),
       
@@ -115,21 +101,8 @@ class QuestionRepository {
                   'IT Support & System Administration', 'Product Management',
                   'Machine Learning & AI', 'Data Analysis'],
         hasOtherField: true,
-        nextQuestionId: 'q4_it_skills',
-        previousQuestionId: 'q4',
-        rootQuestionId: 'q4',
-      ),
-      
-      Question(
-        id: 'q4_it_skills',
-        text: 'What programming languages and tools do you know?',
-        answerType: AnswerType.chips,
-        options: ['Python', 'Java', 'C++', 'JavaScript', 'SQL/NoSQL Databases',
-                  'Cloud Platforms', 'Machine Learning Frameworks', 'API Development',
-                  'Cybersecurity', 'Blockchain & Web3'],
-        hasOtherField: false,
         nextQuestionId: 'q5',
-        previousQuestionId: 'q4_it',
+        previousQuestionId: 'q4',
         rootQuestionId: 'q4',
       ),
       
@@ -160,7 +133,10 @@ class QuestionRepository {
       Question(
         id: 'q7',
         text: 'What other fields have you worked in before?',
-        answerType: AnswerType.text,
+        answerType: AnswerType.chips,
+        options: ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
+            'Political Science & Public Administration', 'Sales & Business Administration', 
+            'Arts & Culture', 'Biology, Chemistry, & Life Sciences', 'None'],
         hasOtherField: false,
         nextQuestionId: 'q8',
         previousQuestionId: 'q6',
@@ -227,7 +203,7 @@ class QuestionRepository {
       
       Question(
         id: 'q12',
-        text: 'What is your availability?',
+        text: 'What is your availability? ( you can select multiple options )',
         answerType: AnswerType.checkbox,
         options: ['Anytime', 'Summer', 'Autumn', 'Winter', 'Spring'],
         hasOtherField: false,
@@ -238,7 +214,7 @@ class QuestionRepository {
       
       Question(
         id: 'q13',
-        text: 'How long should the internship be?',
+        text: 'How long should the internship be? ( you can select multiple options )',
         answerType: AnswerType.checkbox,
         options: ['1-3 months', '3-6 months', '6-12 months', 'More than 12 months'],
         nextQuestionId: 'q14',
