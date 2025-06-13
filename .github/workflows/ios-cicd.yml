@@ -69,7 +69,8 @@ jobs:
         # SECOND: Add provisioning profile (on separate lines)
         echo "Adding provisioning profile..."
         sed -i '' '/CODE_SIGN_STYLE = Manual;/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";' ios/Runner.xcodeproj/project.pbxproj
+                PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";
+        ' ios/Runner.xcodeproj/project.pbxproj
         
         # Verify changes were made
         echo "After changes - CODE_SIGN_STYLE lines:"
@@ -169,9 +170,9 @@ jobs:
         sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
         		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add production provisioning profile to ALL configurations
         sed -i '' '/CODE_SIGN_STYLE = Manual;/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";' ios/Runner.xcodeproj/project.pbxproj
+                PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";
+        ' ios/Runner.xcodeproj/project.pbxproj
         
         # Verify changes
         echo "After changes:"
