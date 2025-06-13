@@ -43,7 +43,7 @@ jobs:
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
         
     - name: Flutter Build iOS (Development)
-      run: flutter build ios --release --no-codesign
+      run: flutter build ios --release
       
     - name: Build and Archive with Xcode (Development)
       run: |
@@ -105,7 +105,7 @@ jobs:
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
         
     - name: Flutter Build iOS (Production)
-      run: flutter build ios --release --no-codesign
+      run: flutter build ios --release
       
     - name: Build and Archive with Xcode (Production)
       run: |
