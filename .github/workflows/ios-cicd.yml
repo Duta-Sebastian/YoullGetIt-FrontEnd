@@ -44,14 +44,24 @@ jobs:
         
     - name: Setup Code Signing (Development)
       run: |
-        # Set code signing to manual for development
+        # Debug: Check current signing style
+        echo "Current CODE_SIGN_STYLE settings:"
+        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        
+        # Set code signing to manual for ALL configurations
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add development provisioning profile to Debug configuration only
-        sed -i '' '/97C147061CF9000F007C117D \/\* Debug \*\/ = {/,/name = Debug;/{
-          /DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";
-        }' ios/Runner.xcodeproj/project.pbxproj
+        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
+        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
+        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
+        
+        # Add development provisioning profile to ALL configurations
+        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
+        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It - Development";' ios/Runner.xcodeproj/project.pbxproj
+        
+        # Verify changes
+        echo "After changes:"
+        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"
         
     - name: Flutter Build iOS (Development)
       run: flutter build ios --release
@@ -117,19 +127,24 @@ jobs:
         
     - name: Setup Code Signing (Production)
       run: |
-        # Set code signing to manual for production
+        # Debug: Check current signing style
+        echo "Current CODE_SIGN_STYLE settings:"
+        grep "CODE_SIGN_STYLE" ios/Runner.xcodeproj/project.pbxproj || echo "No CODE_SIGN_STYLE found"
+        
+        # Set code signing to manual for ALL configurations
         sed -i '' 's/CODE_SIGN_STYLE = Automatic;/CODE_SIGN_STYLE = Manual;/g' ios/Runner.xcodeproj/project.pbxproj
         
-        # Add production provisioning profile to Release and Profile configurations
-        sed -i '' '/97C147071CF9000F007C117D \/\* Release \*\/ = {/,/name = Release;/{
-          /DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";
-        }' ios/Runner.xcodeproj/project.pbxproj
+        # Add CODE_SIGN_STYLE = Manual if it doesn't exist
+        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
+        		CODE_SIGN_STYLE = Manual;' ios/Runner.xcodeproj/project.pbxproj
         
-        sed -i '' '/249021D4217E4FDB00AE95B9 \/\* Profile \*\/ = {/,/name = Profile;/{
-          /DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
-        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";
-        }' ios/Runner.xcodeproj/project.pbxproj
+        # Add production provisioning profile to ALL configurations
+        sed -i '' '/DEVELOPMENT_TEAM = "JPXGBUG6ZW";/a\
+        		PROVISIONING_PROFILE_SPECIFIER = "You'\''ll Get It";' ios/Runner.xcodeproj/project.pbxproj
+        
+        # Verify changes
+        echo "After changes:"
+        grep -A5 -B5 "PROVISIONING_PROFILE_SPECIFIER" ios/Runner.xcodeproj/project.pbxproj || echo "PROVISIONING_PROFILE_SPECIFIER not found"
         
     - name: Flutter Build iOS (Production)
       run: flutter build ios --release
