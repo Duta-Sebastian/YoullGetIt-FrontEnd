@@ -23,6 +23,20 @@ jobs:
         
     - name: Get Flutter dependencies
       run: flutter pub get
+
+    - name: Clean iOS build
+      run: |
+        cd ios
+        rm -rf Pods
+        rm -rf .symlinks
+        rm -rf Flutter/Flutter.framework
+        rm -rf Flutter/Flutter.podspec
+        rm -f Podfile.lock
+        
+    - name: Install CocoaPods dependencies
+      run: |
+        cd ios
+        pod install --repo-update
       
     # - name: Run tests
     #   run: flutter test
@@ -107,6 +121,20 @@ jobs:
         
     - name: Get Flutter dependencies
       run: flutter pub get
+
+    - name: Clean iOS build
+      run: |
+        cd ios
+        rm -rf Pods
+        rm -rf .symlinks
+        rm -rf Flutter/Flutter.framework
+        rm -rf Flutter/Flutter.podspec
+        rm -f Podfile.lock
+        
+    - name: Install CocoaPods dependencies
+      run: |
+        cd ios
+        pod install --repo-update
       
     # - name: Run tests
     #   run: flutter test
