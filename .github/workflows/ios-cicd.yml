@@ -32,27 +32,68 @@ jobs:
         rm -rf Flutter/Flutter.framework
         rm -rf Flutter/Flutter.podspec
         rm -f Podfile.lock
+        rm -rf build/
+        flutter clean
         
-    - name: Install CocoaPods dependencies
+    - name: Install CocoaPods dependencies with SQLCipher fix
       run: |
         cd ios
+        
+        # Install pods first
         pod install --repo-update
         
         # Fix SQLCipher duplicate bundle issue
         echo "Fixing SQLCipher duplicate bundle issue..."
-        # Remove the conflicting resource bundle from FMDB-SQLCipher
-        sed -i '' '/FMDB-SQLCipher.*{$/,/^[[:space:]]*};$/{
-          /PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.SQLCipher;/d
-          /PRODUCT_NAME = SQLCipher;/d
-        }' Pods/Pods.xcodeproj/project.pbxproj
         
-        # Fix SQLCipher duplicate target issue
-        echo "Fixing SQLCipher duplicate bundle issue..."
-        # Remove duplicate SQLCipher bundle target from FMDB-SQLCipher
-        sed -i '' '/PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.SQLCipher/d' Pods/Pods.xcodeproj/project.pbxproj
-      
-    # - name: Run tests
-    #   run: flutter test
+        # Create a script to fix the Pods project
+        cat > fix_sqlcipher.rb << 'EOF'
+        require 'xcodeproj'
+        
+        project_path = 'Pods/Pods.xcodeproj'
+        project = Xcodeproj::Project.open(project_path)
+        
+        # Find and remove duplicate SQLCipher bundle targets
+        targets_to_remove = []
+        
+        project.targets.each do |target|
+          if target.name == 'FMDB-SQLCipher'
+            # Remove bundle target from FMDB-SQLCipher
+            target.build_phases.each do |phase|
+              if phase.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase)
+                phase.files.each do |file|
+                  if file.file_ref && file.file_ref.path && file.file_ref.path.include?('SQLCipher.bundle')
+                    phase.files.delete(file)
+                  end
+                end
+              end
+            end
+            
+            # Remove bundle product reference
+            target.product_reference = nil if target.product_reference && target.product_reference.path == 'SQLCipher.bundle'
+          end
+        end
+        
+        # Save the project
+        project.save
+        puts "SQLCipher duplicate bundle issue fixed"
+        EOF
+        
+        # Install xcodeproj gem and run the fix
+        gem install xcodeproj
+        ruby fix_sqlcipher.rb
+        
+        # Alternative sed-based fix as backup
+        echo "Applying additional fixes..."
+        
+        # Remove duplicate bundle references from project.pbxproj
+        sed -i '' '/FMDB-SQLCipher.*SQLCipher\.bundle/d' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' '/PRODUCT_BUNDLE_IDENTIFIER.*org\.cocoapods\.SQLCipher.*FMDB-SQLCipher/d' Pods/Pods.xcodeproj/project.pbxproj
+        
+        # Update iOS deployment targets to fix warnings
+        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 9.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 11.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
+        
+        echo "SQLCipher fixes applied successfully"
       
     - name: Import Development Code-Signing Certificates
       uses: Apple-Actions/import-codesign-certs@v2
@@ -71,14 +112,37 @@ jobs:
         
     - name: Setup Code Signing (Development)
       run: |
-        # Show available provisioning profiles
         echo "Available provisioning profiles:"
         ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || echo "No provisioning profiles directory found"
         
-        # Find the development provisioning profile UUID
         DEV_PROFILE_UUID=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/ | grep ".mobileprovision" | head -1 | sed 's/.mobileprovision//')
         echo "Development Profile UUID: $DEV_PROFILE_UUID"
         echo "DEV_PROFILE_UUID=$DEV_PROFILE_UUID" >> $GITHUB_ENV
+
+    - name: Create Export Options files
+      run: |
+        cd ios
+        
+        # Create Development Export Options
+        cat > ExportOptions-Development.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>method</key>
+            <string>development</string>
+            <key>teamID</key>
+            <string>JPXGBUG6ZW</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+                <key>com.youllgetit.app</key>
+                <string>\$DEV_PROFILE_UUID</string>
+            </dict>
+        </dict>
+        </plist>
+        EOF
 
     - name: Flutter Build iOS (Development)
       run: flutter build ios --release --no-codesign
@@ -86,6 +150,12 @@ jobs:
     - name: Build and Archive with Xcode (Development)
       run: |
         cd ios
+        
+        # Clean derived data
+        rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
+        
+        xcodebuild clean -workspace Runner.xcworkspace -scheme Runner -configuration Release
+        
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
           -configuration Release \
@@ -94,7 +164,9 @@ jobs:
           archive \
           CODE_SIGN_STYLE=Manual \
           CODE_SIGN_IDENTITY="iPhone Developer" \
-          PROVISIONING_PROFILE_SPECIFIER="$DEV_PROFILE_UUID"
+          PROVISIONING_PROFILE_SPECIFIER="$DEV_PROFILE_UUID" \
+          DEVELOPMENT_TEAM="JPXGBUG6ZW" \
+          -allowProvisioningUpdates
           
     - name: Export Development IPA
       run: |
@@ -113,7 +185,7 @@ jobs:
   build-production:
     name: Build App Store IPA
     runs-on: macos-latest
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'  # PRs to main
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     
     steps:
     - name: Checkout repository
@@ -135,14 +207,52 @@ jobs:
         rm -rf Flutter/Flutter.framework
         rm -rf Flutter/Flutter.podspec
         rm -f Podfile.lock
+        rm -rf build/
+        flutter clean
         
-    - name: Install CocoaPods dependencies
+    - name: Install CocoaPods dependencies with SQLCipher fix
       run: |
         cd ios
+        
+        # Install pods first
         pod install --repo-update
-      
-    # - name: Run tests
-    #   run: flutter test
+        
+        # Apply the same SQLCipher fixes as development
+        echo "Fixing SQLCipher duplicate bundle issue..."
+        
+        cat > fix_sqlcipher.rb << 'EOF'
+        require 'xcodeproj'
+        
+        project_path = 'Pods/Pods.xcodeproj'
+        project = Xcodeproj::Project.open(project_path)
+        
+        project.targets.each do |target|
+          if target.name == 'FMDB-SQLCipher'
+            target.build_phases.each do |phase|
+              if phase.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase)
+                phase.files.each do |file|
+                  if file.file_ref && file.file_ref.path && file.file_ref.path.include?('SQLCipher.bundle')
+                    phase.files.delete(file)
+                  end
+                end
+              end
+            end
+            target.product_reference = nil if target.product_reference && target.product_reference.path == 'SQLCipher.bundle'
+          end
+        end
+        
+        project.save
+        puts "SQLCipher duplicate bundle issue fixed"
+        EOF
+        
+        gem install xcodeproj
+        ruby fix_sqlcipher.rb
+        
+        # Apply sed fixes
+        sed -i '' '/FMDB-SQLCipher.*SQLCipher\.bundle/d' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' '/PRODUCT_BUNDLE_IDENTIFIER.*org\.cocoapods\.SQLCipher.*FMDB-SQLCipher/d' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 9.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 11.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
       
     - name: Import Distribution Code-Signing Certificates
       uses: Apple-Actions/import-codesign-certs@v2
@@ -161,21 +271,54 @@ jobs:
         
     - name: Setup Code Signing (Production)
       run: |
-        # Show available provisioning profiles
         echo "Available provisioning profiles:"
         ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || echo "No provisioning profiles directory found"
         
-        # Find the App Store provisioning profile UUID
         PROD_PROFILE_UUID=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/ | grep ".mobileprovision" | head -1 | sed 's/.mobileprovision//')
         echo "Production Profile UUID: $PROD_PROFILE_UUID"
         echo "PROD_PROFILE_UUID=$PROD_PROFILE_UUID" >> $GITHUB_ENV
         
+    - name: Create Export Options files
+      run: |
+        cd ios
+        
+        # Create App Store Export Options
+        cat > ExportOptions-AppStore.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>JPXGBUG6ZW</string>
+            <key>signingStyle</key>
+            <string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+                <key>com.youllgetit.app</key>
+                <string>\$PROD_PROFILE_UUID</string>
+            </dict>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+        </dict>
+        </plist>
+        EOF
+
     - name: Flutter Build iOS (Production)
       run: flutter build ios --release --no-codesign
       
     - name: Build and Archive with Xcode (Production)
       run: |
         cd ios
+        
+        # Clean derived data
+        rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
+        
+        xcodebuild clean -workspace Runner.xcworkspace -scheme Runner -configuration Release
+        
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
           -configuration Release \
@@ -184,7 +327,9 @@ jobs:
           archive \
           CODE_SIGN_STYLE=Manual \
           CODE_SIGN_IDENTITY="iPhone Distribution" \
-          PROVISIONING_PROFILE_SPECIFIER="$PROD_PROFILE_UUID"
+          PROVISIONING_PROFILE_SPECIFIER="$PROD_PROFILE_UUID" \
+          DEVELOPMENT_TEAM="JPXGBUG6ZW" \
+          -allowProvisioningUpdates
           
     - name: Export App Store IPA
       run: |
@@ -196,11 +341,9 @@ jobs:
           
     - name: Upload to App Store Connect
       run: |
-        # List the actual IPA files created
         echo "IPA files created:"
         ls -la "$RUNNER_TEMP/AppStore/"
         
-        # Find the actual IPA file (might be named differently)
         IPA_FILE=$(find "$RUNNER_TEMP/AppStore" -name "*.ipa" | head -1)
         echo "Using IPA file: $IPA_FILE"
         
