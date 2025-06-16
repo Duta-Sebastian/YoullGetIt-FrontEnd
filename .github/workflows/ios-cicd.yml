@@ -144,8 +144,8 @@ jobs:
         mkdir -p "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 
-        echo "$DEV_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision"
-        cp "$HOME/Library/MobileDevice/Provisioning Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision"
+        echo "$DEV_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision"
+        cp "$HOME/Library/MobileDevice/Provisioning Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision"
         
         ls -l ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles/  
 
@@ -172,7 +172,7 @@ jobs:
           "Runner:CODE_SIGN_STYLE=Manual" \
           "Runner:DEVELOPMENT_TEAM=JPXGBUG6ZW" \
           "Runner:CODE_SIGN_IDENTITY=iPhone Developer: ANDREI SEBASTIAN DUȚĂ (9QD83S28R6)" \
-          "Runner:PROVISIONING_PROFILE=33cccf2f-fb56-4d66-bc00-3e1230f9340b"
+          "Runner:PROVISIONING_PROFILE=02453868-11d4-4316-93ad-8d1e2ea59221"
 
     - name: Export Development IPA
       run: |
