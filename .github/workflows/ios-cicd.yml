@@ -184,7 +184,6 @@ jobs:
           archive \
           "Runner:CODE_SIGN_STYLE=Manual" \
           "Runner:DEVELOPMENT_TEAM=JPXGBUG6ZW" \
-          "Runner:CODE_SIGN_IDENTITY=iPhone Developer: ANDREI SEBASTIAN DUȚĂ (9QD83S28R6)" \
           "Runner:PROVISIONING_PROFILE=02453868-11d4-4316-93ad-8d1e2ea59221"
 
     - name: Export Development IPA
