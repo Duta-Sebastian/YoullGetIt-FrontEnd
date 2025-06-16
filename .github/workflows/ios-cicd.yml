@@ -168,8 +168,8 @@ jobs:
         echo "=== Installed provisioning profiles ==="
         ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
 
-    - name: Flutter Build
-      run: flutter build ios --release --verbose
+    # - name: Flutter Build
+    #   run: flutter build ios --no-codesign --debug
       
     - name: Archive Development Build
       run: |
@@ -182,7 +182,7 @@ jobs:
 
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
-          -configuration Release \
+          -configuration Debug \
           -destination generic/platform=iOS \
           -archivePath "$RUNNER_TEMP/Runner-Dev.xcarchive" \
           archive \
