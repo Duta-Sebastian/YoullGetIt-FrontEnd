@@ -169,8 +169,7 @@ jobs:
         ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
 
     - name: Flutter Build
-      run: flutter build ios --release \
-            --export-options-plist ExportOptions-Development.plist \
+      run: flutter build ios --release --verbose
       
     - name: Archive Development Build
       run: |
