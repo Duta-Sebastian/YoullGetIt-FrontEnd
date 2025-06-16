@@ -131,18 +131,12 @@ jobs:
         security set-keychain-settings -t 3600 -u $KEYCHAIN
         
         # IMPORTANT: Set ONLY our keychain in search path
-        security list-keychains -s $KEYCHAIN
-        security default-keychain -s $KEYCHAIN
+        security list-keychains -d user -s $KEYCHAIN
+        security default-keychain -d user -s $KEYCHAIN
         
         echo "=== Keychain search path (should only show build.keychain) ==="
         security list-keychains
         
-        echo "=== Verify keychain is completely empty ==="
-        security find-identity -v -p codesigning "$KEYCHAIN" && echo "❌ ERROR: Keychain has certificates!" || echo "✅ SUCCESS: Keychain is empty"
-        
-        echo "=== What xcodebuild will see (should be nothing) ==="
-        security find-identity -v -p codesigning && echo "❌ ERROR: xcodebuild sees certificates!" || echo "✅ SUCCESS: xcodebuild sees no certificates"
-            
     - name: Import Development Certificates
       env:
         P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
@@ -150,18 +144,12 @@ jobs:
       run: |
         KEYCHAIN_PATH="$HOME/Library/Keychains/build.keychain"
         
-        echo "=== Before import: Verify keychain is still empty ==="
-        security find-identity -v -p codesigning "$KEYCHAIN_PATH" && echo "❌ Keychain has certificates before import!" || echo "✅ Keychain is empty before import"
-        
         # Delete any existing certificates from the keychain (should be none, but just in case)
         security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep ") " | while read line; do
           cert_hash=$(echo "$line" | awk '{print $2}')
           echo "Deleting existing certificate: $cert_hash"
           security delete-identity -Z "$cert_hash" "$KEYCHAIN_PATH" 2>/dev/null || true
         done
-        
-        echo "=== After cleanup: Verify keychain is empty ==="
-        security find-identity -v -p codesigning "$KEYCHAIN_PATH" && echo "❌ Still has certificates!" || echo "✅ Keychain is now clean"
         
         # Import fresh certificate
         echo "=== Importing certificate ==="
@@ -206,6 +194,23 @@ jobs:
         security list-keychains
         security default-keychain
 
+    - name: Debug Bundle ID Configuration
+      run: |
+        cd ios
+        echo "=== Xcode Project Bundle ID ==="
+        xcodebuild -workspace Runner.xcworkspace -scheme Runner -showBuildSettings | grep PRODUCT_BUNDLE_IDENTIFIER
+        
+        echo "=== Provisioning Profile App ID ==="
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision | grep -A1 "application-identifier"
+        
+        echo "=== Certificate in Profile ==="
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision | grep -A5 "DeveloperCertificates"
+
+    - name: Verify Profile Matches Certificate
+      run: |
+        # Check if the certificate in the profile matches what we have
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision | grep -A20 "DeveloperCertificates"
+
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
       
@@ -217,7 +222,7 @@ jobs:
         KEYCHAIN_PATH="$HOME/Library/Keychains/build.keychain"
 
         # Set default keychain
-        security default-keychain -s "$KEYCHAIN_PATH"
+        security default-keychain -d user -s "$KEYCHAIN_PATH"
         security unlock-keychain -p github-actions "$KEYCHAIN_PATH"
 
         xcodebuild -workspace Runner.xcworkspace \
