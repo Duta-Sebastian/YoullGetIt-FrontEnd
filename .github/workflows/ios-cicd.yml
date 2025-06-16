@@ -132,23 +132,85 @@ jobs:
         api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
         
-    - name: Get Provisioning Profile UUID
+    - name: Configure Apple Developer Account
       run: |
-        echo "📱 Checking provisioning profiles..."
+        echo "🍎 Adding Apple Developer account to Xcode..."
+        
+        # Create the necessary directories
+        mkdir -p ~/Library/Developer/Xcode/UserData/IDEAccounts
+        mkdir -p ~/Library/Preferences
+        
+        # Add Apple ID account to Xcode using App Store Connect API
+        # This tells Xcode about our developer account
+        cat > ~/Library/Developer/Xcode/UserData/IDEAccounts/Accounts.json << EOF
+        {
+          "accounts" : [
+            {
+              "accountID" : "JPXGBUG6ZW",
+              "accountTypeIdentifier" : "DVTPortalAccount",
+              "username" : "${{ secrets.APPLE_ID }}",
+              "teamID" : "JPXGBUG6ZW",
+              "teams" : [
+                {
+                  "teamID" : "JPXGBUG6ZW",
+                  "name" : "Your Team Name"
+                }
+              ]
+            }
+          ]
+        }
+        EOF
+        
+        echo "✅ Apple Developer account configured"
+        
+    - name: Debug Provisioning Profiles
+      run: |
+        echo "🔍 Debugging provisioning profiles..."
+        echo "📁 Profile directory contents:"
         ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || true
         
-        # Get the profile UUID from the downloaded profile
-        PROFILE_FILE=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1)
-        if [ -n "$PROFILE_FILE" ]; then
-          DEV_PROFILE_UUID=$(basename "$PROFILE_FILE" .mobileprovision)
-          echo "DEV_PROFILE_UUID=$DEV_PROFILE_UUID" >> $GITHUB_ENV
-          echo "✅ Development Profile UUID: $DEV_PROFILE_UUID"
-          
-          # Check profile details
-          /usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
-          /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
-        else
-          echo "❌ No provisioning profile found!"
+        echo "🔍 All certificates in keychain:"
+        security find-identity -v -p codesigning || true
+        
+        echo "📱 Checking downloaded profiles..."
+        for profile in ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+          if [ -f "$profile" ]; then
+            echo "=== Profile: $(basename "$profile") ==="
+            security cms -D -i "$profile" | plutil -p - | head -20
+            echo
+          fi
+        done
+        
+    - name: Get Provisioning Profile UUID
+      run: |
+        echo "📱 Getting provisioning profile UUID..."
+        
+        # Find all development profiles for our bundle ID
+        for profile in ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+          if [ -f "$profile" ]; then
+            # Extract and check if this profile matches our app
+            PROFILE_DATA=$(security cms -D -i "$profile")
+            BUNDLE_ID=$(echo "$PROFILE_DATA" | plutil -extract "Entitlements.application-identifier" raw -)
+            PROFILE_TYPE=$(echo "$PROFILE_DATA" | plutil -extract "ProvisionedDevices" raw - 2>/dev/null || echo "AppStore")
+            
+            echo "Profile: $(basename "$profile")"
+            echo "Bundle ID: $BUNDLE_ID"
+            echo "Type: $PROFILE_TYPE"
+            
+            if [[ "$BUNDLE_ID" == *"com.youllgetit.app"* ]]; then
+              DEV_PROFILE_UUID=$(basename "$profile" .mobileprovision)
+              PROFILE_NAME=$(echo "$PROFILE_DATA" | plutil -extract "Name" raw -)
+              echo "✅ Found matching profile!"
+              echo "UUID: $DEV_PROFILE_UUID"
+              echo "Name: $PROFILE_NAME"
+              echo "DEV_PROFILE_UUID=$DEV_PROFILE_UUID" >> $GITHUB_ENV
+              break
+            fi
+          fi
+        done
+        
+        if [ -z "$DEV_PROFILE_UUID" ]; then
+          echo "❌ No matching provisioning profile found for com.youllgetit.app"
           exit 1
         fi
         
@@ -158,7 +220,7 @@ jobs:
     - name: Configure Code Signing for Runner Only
       run: |
         cd ios
-        echo "🔧 Configuring code signing for Runner target..."
+        echo "🔧 Configuring manual code signing for Runner target..."
         
         # First, let's see what UUIDs exist in the project
         echo "📋 Current project build configurations:"
@@ -337,23 +399,67 @@ jobs:
         api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
         api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
         
+    - name: Configure Apple Developer Account
+      run: |
+        echo "🍎 Adding Apple Developer account to Xcode..."
+        
+        # Create the necessary directories
+        mkdir -p ~/Library/Developer/Xcode/UserData/IDEAccounts
+        mkdir -p ~/Library/Preferences
+        
+        # Add Apple ID account to Xcode using App Store Connect API
+        # This tells Xcode about our developer account
+        cat > ~/Library/Developer/Xcode/UserData/IDEAccounts/Accounts.json << EOF
+        {
+          "accounts" : [
+            {
+              "accountID" : "JPXGBUG6ZW",
+              "accountTypeIdentifier" : "DVTPortalAccount",
+              "username" : "${{ secrets.APPLE_ID }}",
+              "teamID" : "JPXGBUG6ZW",
+              "teams" : [
+                {
+                  "teamID" : "JPXGBUG6ZW",
+                  "name" : "Your Team Name"
+                }
+              ]
+            }
+          ]
+        }
+        EOF
+        
+        echo "✅ Apple Developer account configured"
+        
     - name: Get Provisioning Profile UUID
       run: |
-        echo "📱 Checking provisioning profiles..."
-        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || true
+        echo "📱 Getting provisioning profile UUID..."
         
-        # Get the profile UUID from the downloaded profile
-        PROFILE_FILE=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1)
-        if [ -n "$PROFILE_FILE" ]; then
-          APPSTORE_PROFILE_UUID=$(basename "$PROFILE_FILE" .mobileprovision)
-          echo "APPSTORE_PROFILE_UUID=$APPSTORE_PROFILE_UUID" >> $GITHUB_ENV
-          echo "✅ App Store Profile UUID: $APPSTORE_PROFILE_UUID"
-          
-          # Check profile details
-          /usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
-          /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
-        else
-          echo "❌ No provisioning profile found!"
+        # Find all App Store profiles for our bundle ID
+        for profile in ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+          if [ -f "$profile" ]; then
+            # Extract and check if this profile matches our app
+            PROFILE_DATA=$(security cms -D -i "$profile")
+            BUNDLE_ID=$(echo "$PROFILE_DATA" | plutil -extract "Entitlements.application-identifier" raw -)
+            PROFILE_TYPE=$(echo "$PROFILE_DATA" | plutil -extract "ProvisionedDevices" raw - 2>/dev/null || echo "AppStore")
+            
+            echo "Profile: $(basename "$profile")"
+            echo "Bundle ID: $BUNDLE_ID"
+            echo "Type: $PROFILE_TYPE"
+            
+            if [[ "$BUNDLE_ID" == *"com.youllgetit.app"* ]]; then
+              APPSTORE_PROFILE_UUID=$(basename "$profile" .mobileprovision)
+              PROFILE_NAME=$(echo "$PROFILE_DATA" | plutil -extract "Name" raw -)
+              echo "✅ Found matching profile!"
+              echo "UUID: $APPSTORE_PROFILE_UUID"
+              echo "Name: $APPSTORE_PROFILE_UUID"
+              echo "APPSTORE_PROFILE_UUID=$APPSTORE_PROFILE_UUID" >> $GITHUB_ENV
+              break
+            fi
+          fi
+        done
+        
+        if [ -z "$APPSTORE_PROFILE_UUID" ]; then
+          echo "❌ No matching provisioning profile found for com.youllgetit.app"
           exit 1
         fi
         
@@ -363,7 +469,7 @@ jobs:
     - name: Configure Code Signing for Runner Only
       run: |
         cd ios
-        echo "🔧 Configuring code signing for Runner target..."
+        echo "🔧 Configuring manual code signing for Runner target..."
         
         # Set manual code signing ONLY for Runner target configurations
         /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
