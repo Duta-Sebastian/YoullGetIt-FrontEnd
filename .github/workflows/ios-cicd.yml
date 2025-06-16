@@ -134,9 +134,23 @@ jobs:
         
     - name: Get Provisioning Profile UUID
       run: |
-        DEV_PROFILE_UUID=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/ | grep ".mobileprovision" | head -1 | sed 's/.mobileprovision//')
-        echo "DEV_PROFILE_UUID=$DEV_PROFILE_UUID" >> $GITHUB_ENV
-        echo "Development Profile UUID: $DEV_PROFILE_UUID"
+        echo "📱 Checking provisioning profiles..."
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || true
+        
+        # Get the profile UUID from the downloaded profile
+        PROFILE_FILE=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1)
+        if [ -n "$PROFILE_FILE" ]; then
+          DEV_PROFILE_UUID=$(basename "$PROFILE_FILE" .mobileprovision)
+          echo "DEV_PROFILE_UUID=$DEV_PROFILE_UUID" >> $GITHUB_ENV
+          echo "✅ Development Profile UUID: $DEV_PROFILE_UUID"
+          
+          # Check profile details
+          /usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
+          /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
+        else
+          echo "❌ No provisioning profile found!"
+          exit 1
+        fi
         
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
@@ -144,10 +158,21 @@ jobs:
     - name: Configure Code Signing for Runner Only
       run: |
         cd ios
-        # Set manual code signing ONLY for Runner target
+        echo "🔧 Configuring code signing for Runner target..."
+        
+        # First, let's see what UUIDs exist in the project
+        echo "📋 Current project build configurations:"
+        grep -A 5 -B 5 "buildSettings" Runner.xcodeproj/project.pbxproj | grep -E "(isa = XCBuildConfiguration|buildSettings|name =)" || true
+        
+        # Set manual code signing ONLY for Runner target configurations
         /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
         /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
         /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        
+        # Set code sign identity for Runner
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_IDENTITY iPhone Developer" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_IDENTITY iPhone Developer" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_IDENTITY iPhone Developer" Runner.xcodeproj/project.pbxproj || true
         
         # Set provisioning profile for Runner
         /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $DEV_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
@@ -314,9 +339,23 @@ jobs:
         
     - name: Get Provisioning Profile UUID
       run: |
-        APPSTORE_PROFILE_UUID=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/ | grep ".mobileprovision" | head -1 | sed 's/.mobileprovision//')
-        echo "APPSTORE_PROFILE_UUID=$APPSTORE_PROFILE_UUID" >> $GITHUB_ENV
-        echo "App Store Profile UUID: $APPSTORE_PROFILE_UUID"
+        echo "📱 Checking provisioning profiles..."
+        ls -la ~/Library/MobileDevice/Provisioning\ Profiles/ || true
+        
+        # Get the profile UUID from the downloaded profile
+        PROFILE_FILE=$(ls ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision | head -1)
+        if [ -n "$PROFILE_FILE" ]; then
+          APPSTORE_PROFILE_UUID=$(basename "$PROFILE_FILE" .mobileprovision)
+          echo "APPSTORE_PROFILE_UUID=$APPSTORE_PROFILE_UUID" >> $GITHUB_ENV
+          echo "✅ App Store Profile UUID: $APPSTORE_PROFILE_UUID"
+          
+          # Check profile details
+          /usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
+          /usr/libexec/PlistBuddy -c "Print :Name" /dev/stdin <<< $(security cms -D -i "$PROFILE_FILE") || true
+        else
+          echo "❌ No provisioning profile found!"
+          exit 1
+        fi
         
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
@@ -324,10 +363,17 @@ jobs:
     - name: Configure Code Signing for Runner Only
       run: |
         cd ios
-        # Set manual code signing ONLY for Runner target
+        echo "🔧 Configuring code signing for Runner target..."
+        
+        # Set manual code signing ONLY for Runner target configurations
         /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
         /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
         /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        
+        # Set code sign identity for Runner (App Store Distribution)
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_IDENTITY iPhone Distribution" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_IDENTITY iPhone Distribution" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_IDENTITY iPhone Distribution" Runner.xcodeproj/project.pbxproj || true
         
         # Set provisioning profile for Runner
         /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $APPSTORE_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
