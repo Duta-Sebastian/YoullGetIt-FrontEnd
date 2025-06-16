@@ -145,7 +145,7 @@ jobs:
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 
         echo "$DEV_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision"
-        cp "$HOME/Library/MobileDevice/Provisioning Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision"
+        cp "$HOME/Library/MobileDevice/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/02453868-11d4-4316-93ad-8d1e2ea59221.mobileprovision"
         
         ls -l ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles/  
 
