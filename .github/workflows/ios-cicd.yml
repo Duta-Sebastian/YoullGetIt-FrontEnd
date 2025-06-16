@@ -141,6 +141,21 @@ jobs:
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
       
+    - name: Configure Code Signing for Runner Only
+      run: |
+        cd ios
+        # Set manual code signing ONLY for Runner target
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        
+        # Set provisioning profile for Runner
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $DEV_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $DEV_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:PROVISIONING_PROFILE_SPECIFIER $DEV_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        
+        echo "✅ Configured manual code signing for Runner target only"
+        
     - name: Archive Development Build
       run: |
         cd ios
@@ -151,9 +166,6 @@ jobs:
           -destination generic/platform=iOS \
           -archivePath $RUNNER_TEMP/Runner-Dev.xcarchive \
           archive \
-          CODE_SIGN_STYLE=Manual \
-          CODE_SIGN_IDENTITY="iPhone Developer" \
-          PROVISIONING_PROFILE_SPECIFIER="$DEV_PROFILE_UUID" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
           -allowProvisioningUpdates
           
@@ -309,6 +321,21 @@ jobs:
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
       
+    - name: Configure Code Signing for Runner Only
+      run: |
+        cd ios
+        # Set manual code signing ONLY for Runner target
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:CODE_SIGN_STYLE Manual" Runner.xcodeproj/project.pbxproj || true
+        
+        # Set provisioning profile for Runner
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147061CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $APPSTORE_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:97C147071CF9000F007C117D:buildSettings:PROVISIONING_PROFILE_SPECIFIER $APPSTORE_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        /usr/libexec/PlistBuddy -c "Set :objects:249021D4217E4FDB00AE95B9:buildSettings:PROVISIONING_PROFILE_SPECIFIER $APPSTORE_PROFILE_UUID" Runner.xcodeproj/project.pbxproj || true
+        
+        echo "✅ Configured manual code signing for Runner target only"
+        
     - name: Archive App Store Build
       run: |
         cd ios
@@ -319,9 +346,6 @@ jobs:
           -destination generic/platform=iOS \
           -archivePath $RUNNER_TEMP/Runner-AppStore.xcarchive \
           archive \
-          CODE_SIGN_STYLE=Manual \
-          CODE_SIGN_IDENTITY="iPhone Distribution" \
-          PROVISIONING_PROFILE_SPECIFIER="$APPSTORE_PROFILE_UUID" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
           -allowProvisioningUpdates
           
