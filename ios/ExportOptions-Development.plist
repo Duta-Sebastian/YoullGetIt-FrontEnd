@@ -20,7 +20,14 @@
     
     <!-- Manual signing for development -->
     <key>signingStyle</key>
-    <string>automatic</string>
+    <string>manual</string>
+    
+    <!-- Specify your development provisioning profile -->
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.youllgetit.app</key>
+        <string>You'll Get It - Development</string>
+    </dict>
     
     <!-- Compile bitcode for development -->
     <key>compileBitcode</key>
