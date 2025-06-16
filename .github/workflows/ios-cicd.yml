@@ -149,6 +149,19 @@ jobs:
         
         ls -l ~/Library/Developer/Xcode/UserData/Provisioning\ Profiles/  
 
+    - name: Debug Signing Setup
+      run: |
+        echo "=== Available Certificates ==="
+        security find-identity -v -p codesigning
+        
+        echo "=== Provisioning Profiles ==="
+        ls -la "$HOME/Library/MobileDevice/Provisioning Profiles/" 2>/dev/null || echo "No MobileDevice profiles"
+        ls -la "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/" 2>/dev/null || echo "No Xcode profiles"
+        
+        echo "=== Keychain Status ==="
+        security list-keychains
+        security default-keychain
+
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
       
