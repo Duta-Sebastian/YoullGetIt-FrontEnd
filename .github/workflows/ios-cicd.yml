@@ -41,65 +41,75 @@ jobs:
         flutter precache --ios
         flutter build ios --config-only
         
-    - name: Install CocoaPods dependencies with SQLCipher fix
+    - name: Create/Update Podfile with SQLCipher fix
       run: |
         cd ios
         
-        # Install pods first
-        pod install --repo-update
-        
-        # Fix SQLCipher duplicate bundle issue
-        echo "Fixing SQLCipher duplicate bundle issue..."
-        
-        # Create a script to fix the Pods project
-        cat > fix_sqlcipher.rb << 'EOF'
-        require 'xcodeproj'
-        
-        project_path = 'Pods/Pods.xcodeproj'
-        project = Xcodeproj::Project.open(project_path)
-        
-        # Find and remove duplicate SQLCipher bundle targets
-        targets_to_remove = []
-        
-        project.targets.each do |target|
-          if target.name == 'FMDB-SQLCipher'
-            # Remove bundle target from FMDB-SQLCipher
-            target.build_phases.each do |phase|
-              if phase.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase)
-                phase.files.each do |file|
-                  if file.file_ref && file.file_ref.path && file.file_ref.path.include?('SQLCipher.bundle')
-                    phase.files.delete(file)
-                  end
-                end
+        # Create a proper Podfile with the SQLCipher fix
+        cat > Podfile << 'EOF'
+        platform :ios, '14.0'
+
+        # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+        ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+
+        project 'Runner', {
+          'Debug' => :debug,
+          'Profile' => :release,
+          'Release' => :release,
+        }
+
+        def flutter_root
+          generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
+          unless File.exist?(generated_xcode_build_settings_path)
+            raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+          end
+
+          File.foreach(generated_xcode_build_settings_path) do |line|
+            matches = line.match(/FLUTTER_ROOT\=(.*)/)
+            return matches[1].strip if matches
+          end
+          raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+        end
+
+        require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
+
+        flutter_ios_podfile_setup
+
+        target 'Runner' do
+          use_frameworks!
+          use_modular_headers!
+
+          flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+        end
+
+        post_install do |installer|
+          installer.pods_project.targets.each do |target|
+            # Fix SQLCipher duplicate bundle issue
+            if target.name == 'FMDB-SQLCipher'
+              target.build_configurations.each do |config|
+                config.build_settings['PRODUCT_NAME'] = 'FMDBSQLCipher'
               end
             end
             
-            # Remove bundle product reference
-            target.product_reference = nil if target.product_reference && target.product_reference.path == 'SQLCipher.bundle'
+            # Set automatic code signing for all pod targets
+            target.build_configurations.each do |config|
+              config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
+              config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+              # Remove manual provisioning profile settings for pods
+              config.build_settings.delete('PROVISIONING_PROFILE_SPECIFIER')
+              config.build_settings.delete('PROVISIONING_PROFILE')
+            end
+            
+            flutter_additional_ios_build_settings(target)
           end
         end
-        
-        # Save the project
-        project.save
-        puts "SQLCipher duplicate bundle issue fixed"
         EOF
         
-        # Install xcodeproj gem and run the fix
-        gem install xcodeproj
-        ruby fix_sqlcipher.rb
-        
-        # Alternative sed-based fix as backup
-        echo "Applying additional fixes..."
-        
-        # Remove duplicate bundle references from project.pbxproj
-        sed -i '' '/FMDB-SQLCipher.*SQLCipher\.bundle/d' Pods/Pods.xcodeproj/project.pbxproj
-        sed -i '' '/PRODUCT_BUNDLE_IDENTIFIER.*org\.cocoapods\.SQLCipher.*FMDB-SQLCipher/d' Pods/Pods.xcodeproj/project.pbxproj
-        
-        # Update iOS deployment targets to fix warnings
-        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 9.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
-        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 11.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
-        
-        echo "SQLCipher fixes applied successfully"
+    - name: Install CocoaPods dependencies
+      run: |
+        cd ios
+        pod install --repo-update
+        echo "CocoaPods installation completed with SQLCipher fix applied"
       
     - name: Import Development Code-Signing Certificates
       uses: Apple-Actions/import-codesign-certs@v2
@@ -229,42 +239,70 @@ jobs:
         # Install pods first
         pod install --repo-update
         
-        # Apply the same SQLCipher fixes as development
+        # Apply the same comprehensive fixes as development
         echo "Fixing SQLCipher duplicate bundle issue..."
         
-        cat > fix_sqlcipher.rb << 'EOF'
+        cat > fix_pods_project.rb << 'EOF'
         require 'xcodeproj'
         
         project_path = 'Pods/Pods.xcodeproj'
         project = Xcodeproj::Project.open(project_path)
         
+        # Fix 1: Remove SQLCipher bundle from FMDB-SQLCipher target
         project.targets.each do |target|
           if target.name == 'FMDB-SQLCipher'
+            puts "Fixing target: #{target.name}"
+            
+            # Remove resource build phases that contain SQLCipher.bundle
             target.build_phases.each do |phase|
               if phase.is_a?(Xcodeproj::Project::Object::PBXResourcesBuildPhase)
+                files_to_remove = []
                 phase.files.each do |file|
-                  if file.file_ref && file.file_ref.path && file.file_ref.path.include?('SQLCipher.bundle')
-                    phase.files.delete(file)
+                  if file.file_ref && file.file_ref.path && file.file_ref.path.include?('SQLCipher')
+                    files_to_remove << file
                   end
                 end
+                files_to_remove.each { |file| phase.files.delete(file) }
               end
             end
-            target.product_reference = nil if target.product_reference && target.product_reference.path == 'SQLCipher.bundle'
+            
+            # Remove product reference if it's SQLCipher.bundle
+            if target.product_reference && target.product_reference.path == 'SQLCipher.bundle'
+              target.product_reference = nil
+            end
+          end
+        end
+        
+        # Fix 2: Set CODE_SIGN_STYLE to Automatic for all pod targets
+        project.targets.each do |target|
+          unless target.name == 'Runner'
+            target.build_configurations.each do |config|
+              config.build_settings['CODE_SIGN_STYLE'] = 'Automatic'
+              config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
+              config.build_settings.delete('PROVISIONING_PROFILE')
+              config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+            end
           end
         end
         
         project.save
-        puts "SQLCipher duplicate bundle issue fixed"
+        puts "Fixed SQLCipher duplicate bundle and provisioning profile issues"
         EOF
         
         gem install xcodeproj
-        ruby fix_sqlcipher.rb
+        ruby fix_pods_project.rb
         
-        # Apply sed fixes
-        sed -i '' '/FMDB-SQLCipher.*SQLCipher\.bundle/d' Pods/Pods.xcodeproj/project.pbxproj
-        sed -i '' '/PRODUCT_BUNDLE_IDENTIFIER.*org\.cocoapods\.SQLCipher.*FMDB-SQLCipher/d' Pods/Pods.xcodeproj/project.pbxproj
-        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 9.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
-        sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = 11.0/IPHONEOS_DEPLOYMENT_TARGET = 14.0/g' Pods/Pods.xcodeproj/project.pbxproj
+        # Apply additional sed fixes
+        perl -i -pe '
+          if (/FMDB-SQLCipher/ .. /End PBXNativeTarget section/) {
+            if (/SQLCipher\.bundle/ || /org\.cocoapods\.SQLCipher/) {
+              $_ = "";
+            }
+          }
+        ' Pods/Pods.xcodeproj/project.pbxproj
+        
+        sed -i '' 's/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Automatic;/g' Pods/Pods.xcodeproj/project.pbxproj
+        sed -i '' '/PROVISIONING_PROFILE_SPECIFIER.*=.*33cccf2f/d' Pods/Pods.xcodeproj/project.pbxproj
       
     - name: Import Distribution Code-Signing Certificates
       uses: Apple-Actions/import-codesign-certs@v2
