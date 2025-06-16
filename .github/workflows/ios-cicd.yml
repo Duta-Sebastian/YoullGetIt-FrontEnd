@@ -143,6 +143,10 @@ jobs:
       run: |
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
         echo "$DEV_PROVISIONING_PROFILE_BASE64" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision
+
+        ls -l ~/Library/MobileDevice/Provisioning\ Profiles/
+
+        security cms -D -i ~/Library/MobileDevice/Provisioning\ Profiles/33cccf2f-fb56-4d66-bc00-3e1230f9340b.mobileprovision | xmllint --xpath "//key[text()='ApplicationIdentifierPrefix'] | //key[text()='Entitlements']" - 
         
     - name: Flutter Build
       run: flutter build ios --release --no-codesign
@@ -167,7 +171,7 @@ jobs:
           "Runner:CODE_SIGN_STYLE=Manual" \
           "Runner:DEVELOPMENT_TEAM=JPXGBUG6ZW" \
           "Runner:CODE_SIGN_IDENTITY=iPhone Developer" \
-          "Runner:PROVISIONING_PROFILE=33cccf2f-fb56-4d66-bc00-3e1230f9340b"
+          "Runner:PROVISIONING_PROFILE_SPECIFIER=You'll Get It - Development"
 
     - name: Export Development IPA
       run: |
