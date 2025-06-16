@@ -123,6 +123,33 @@ jobs:
         p12-file-base64: ${{ secrets.DEV_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
         
+    - name: Setup Keychain
+      run: |
+        # Create variables
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+        
+        # Create temporary keychain
+        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        
+        # Add to keychain search list
+        security list-keychains -d user -s $KEYCHAIN_PATH $(security list-keychains -d user | sed s/\"//g)
+        security default-keychain -s $KEYCHAIN_PATH
+        
+        # Import certificate
+        echo "${{ secrets.DEV_CERTIFICATES_P12 }}" | base64 --decode > certificate.p12
+        security import certificate.p12 -k $KEYCHAIN_PATH -P "${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}" -T /usr/bin/codesign -T /usr/bin/security
+        rm certificate.p12
+        
+        # Allow codesign to access keychain without password prompt
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        
+        # Verify the certificate was imported
+        echo "🔍 Checking imported certificates:"
+        security find-identity -v -p codesigning $KEYCHAIN_PATH
+        
     - name: Download Development Provisioning Profile
       uses: Apple-Actions/download-provisioning-profiles@v3
       with:
@@ -170,24 +197,14 @@ jobs:
         cd ios
         rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
         
-        # Create a temporary keychain for the build
-        KEYCHAIN_NAME="build-temp.keychain"
-        KEYCHAIN_PASSWORD="temp-password"
+        # Use the keychain we created earlier
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
         
-        security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-        security set-keychain-settings -lut 21600 "$KEYCHAIN_NAME"
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
+        # Ensure keychain is unlocked and default
+        security default-keychain -s $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH 2>/dev/null || true
         
-        # Make the temporary keychain the default
-        security default-keychain -s "$KEYCHAIN_NAME"
-        
-        # Add keychain to search list
-        security list-keychains -d user -s "$KEYCHAIN_NAME" $(security list-keychains -d user | sed s/\"//g)
-        
-        # Allow codesign to access the keychain without prompting
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-        
-        # Build without automatic provisioning - we'll use manual signing
+        # Build with automatic provisioning
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
           -configuration Release \
@@ -197,7 +214,8 @@ jobs:
           CODE_SIGN_STYLE="Automatic" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
           PROVISIONING_PROFILE_SPECIFIER="" \
-          CODE_SIGN_IDENTITY="iPhone Developer"
+          CODE_SIGN_IDENTITY="iPhone Developer" \
+          OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH"
           
     - name: Export Development IPA
       run: |
@@ -334,6 +352,33 @@ jobs:
         p12-file-base64: ${{ secrets.DIST_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.DIST_CERTIFICATES_P12_PASSWORD }}
         
+    - name: Setup Keychain
+      run: |
+        # Create variables
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+        
+        # Create temporary keychain
+        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        
+        # Add to keychain search list
+        security list-keychains -d user -s $KEYCHAIN_PATH $(security list-keychains -d user | sed s/\"//g)
+        security default-keychain -s $KEYCHAIN_PATH
+        
+        # Import certificate
+        echo "${{ secrets.DIST_CERTIFICATES_P12 }}" | base64 --decode > certificate.p12
+        security import certificate.p12 -k $KEYCHAIN_PATH -P "${{ secrets.DIST_CERTIFICATES_P12_PASSWORD }}" -T /usr/bin/codesign -T /usr/bin/security
+        rm certificate.p12
+        
+        # Allow codesign to access keychain without password prompt
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        
+        # Verify the certificate was imported
+        echo "🔍 Checking imported certificates:"
+        security find-identity -v -p codesigning $KEYCHAIN_PATH
+        
     - name: Download App Store Provisioning Profile
       uses: Apple-Actions/download-provisioning-profiles@v3
       with:
@@ -386,22 +431,12 @@ jobs:
         cd ios
         rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
         
-        # Create a temporary keychain for the build
-        KEYCHAIN_NAME="build-temp.keychain"
-        KEYCHAIN_PASSWORD="temp-password"
+        # Use the keychain we created earlier
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
         
-        security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-        security set-keychain-settings -lut 21600 "$KEYCHAIN_NAME"
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-        
-        # Make the temporary keychain the default
-        security default-keychain -s "$KEYCHAIN_NAME"
-        
-        # Add keychain to search list
-        security list-keychains -d user -s "$KEYCHAIN_NAME" $(security list-keychains -d user | sed s/\"//g)
-        
-        # Allow codesign to access the keychain without prompting
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
+        # Ensure keychain is unlocked and default
+        security default-keychain -s $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH 2>/dev/null || true
         
         # Build with automatic provisioning
         xcodebuild -workspace Runner.xcworkspace \
@@ -413,7 +448,8 @@ jobs:
           CODE_SIGN_STYLE="Automatic" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
           PROVISIONING_PROFILE_SPECIFIER="" \
-          CODE_SIGN_IDENTITY="iPhone Distribution"
+          CODE_SIGN_IDENTITY="iPhone Distribution" \
+          OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH"
           
     - name: Export App Store IPA
       run: |
