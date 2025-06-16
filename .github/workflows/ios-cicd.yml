@@ -168,7 +168,8 @@ jobs:
           "Runner:CODE_SIGN_STYLE=Manual" \
           "Runner:DEVELOPMENT_TEAM=JPXGBUG6ZW" \
           "Runner:CODE_SIGN_IDENTITY=iPhone Developer" \
-          "Runner:PROVISIONING_PROFILE_SPECIFIER=You'll Get It - Development"
+          "Runner:PROVISIONING_PROFILE_SPECIFIER=You'll Get It - Development" \
+          OTHER_CODE_SIGN_FLAGS="-v"
 
     - name: Export Development IPA
       run: |
