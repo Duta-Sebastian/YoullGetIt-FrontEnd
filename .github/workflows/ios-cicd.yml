@@ -123,43 +123,6 @@ jobs:
         p12-file-base64: ${{ secrets.DEV_CERTIFICATES_P12 }}
         p12-password: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
         
-    - name: Setup keychain
-      run: |
-        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-        KEYCHAIN_PASSWORD="temporary-password-12345"
-
-        security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-        security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-
-        EXISTING_KEYCHAINS=$(security list-keychains -d user | sed 's/"//g')
-        security list-keychains -d user -s "$KEYCHAIN_PATH" $EXISTING_KEYCHAINS
-        security default-keychain -s "$KEYCHAIN_PATH"
-
-        echo "${DEV_CERTIFICATES_P12}" | base64 --decode > certificate.p12
-        security import certificate.p12 -k "$KEYCHAIN_PATH" -P "${DEV_CERTIFICATES_P12_PASSWORD}" -T /usr/bin/codesign -T /usr/bin/security
-        rm certificate.p12
-
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-
-        echo "🔍 Checking imported certificates:"
-        security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-
-        echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
-      env:
-        DEV_CERTIFICATES_P12: ${{ secrets.DEV_CERTIFICATES_P12 }}
-        DEV_CERTIFICATES_P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
-
-        
-    - name: Download Development Provisioning Profile
-      uses: Apple-Actions/download-provisioning-profiles@v3
-      with:
-        bundle-id: com.youllgetit.app
-        profile-type: IOS_APP_DEVELOPMENT
-        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-        
     - name: Create or Update ExportOptions Plist
       run: |
         cd ios
@@ -198,9 +161,6 @@ jobs:
         cd ios
         rm -rf ~/Library/Developer/Xcode/DerivedData/Runner-*
         
-        # Use the keychain we created earlier
-        security default-keychain -s $KEYCHAIN_PATH
-        
         # Build with automatic provisioning
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
@@ -208,11 +168,9 @@ jobs:
           -destination generic/platform=iOS \
           -archivePath $RUNNER_TEMP/Runner-Dev.xcarchive \
           archive \
+          -allowProvisioningUpdates \
           CODE_SIGN_STYLE="Automatic" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
-          PROVISIONING_PROFILE_SPECIFIER="" \
-          CODE_SIGN_IDENTITY="iPhone Developer" \
-          OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH"
           
     - name: Export Development IPA
       run: |
