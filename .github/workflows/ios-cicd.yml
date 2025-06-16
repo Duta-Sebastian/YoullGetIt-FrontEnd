@@ -166,7 +166,6 @@ jobs:
           archive \
           CODE_SIGN_STYLE="Manual" \
           DEVELOPMENT_TEAM="JPXGBUG6ZW" \
-          PROVISIONING_PROFILE_SPECIFIER="33cccf2f-fb56-4d66-bc00-3e1230f9340b" \
           CODE_SIGN_IDENTITY="iPhone Developer"
 
     - name: Export Development IPA
