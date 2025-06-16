@@ -117,25 +117,69 @@ jobs:
           echo "Using cached pods"
         fi
 
-    - name: Setup Keychain
+    - name: Setup Isolated Keychain
       run: |
         KEYCHAIN=$HOME/Library/Keychains/build.keychain
         KEYCHAIN_PASSWORD=github-actions
 
+        # Delete any existing build keychains
+        security delete-keychain $KEYCHAIN 2>/dev/null || true
+        
+        # Create fresh keychain
         security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
-        security default-keychain -s $KEYCHAIN
         security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN
         security set-keychain-settings -t 3600 -u $KEYCHAIN
-        security list-keychains -s $KEYCHAIN $(security list-keychains -d user | tr -d '"')
         
+        # IMPORTANT: Set ONLY our keychain in search path
+        security list-keychains -s $KEYCHAIN
+        security default-keychain -s $KEYCHAIN
+        
+        echo "=== Keychain search path (should only show build.keychain) ==="
+        security list-keychains
+        
+        echo "=== Verify keychain is completely empty ==="
+        security find-identity -v -p codesigning "$KEYCHAIN" && echo "❌ ERROR: Keychain has certificates!" || echo "✅ SUCCESS: Keychain is empty"
+        
+        echo "=== What xcodebuild will see (should be nothing) ==="
+        security find-identity -v -p codesigning && echo "❌ ERROR: xcodebuild sees certificates!" || echo "✅ SUCCESS: xcodebuild sees no certificates"
+            
     - name: Import Development Certificates
       env:
-          P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
-          DEV_CERT_BASE64: ${{ secrets.DEV_CERTIFICATES_P12 }}
+        P12_PASSWORD: ${{ secrets.DEV_CERTIFICATES_P12_PASSWORD }}
+        DEV_CERT_BASE64: ${{ secrets.DEV_CERTIFICATES_P12 }}
       run: |
-          KEYCHAIN_PATH="$HOME/Library/Keychains/build.keychain"
-          echo "$DEV_CERT_BASE64" | base64 --decode > cert.p12
-          security import cert.p12 -k "$KEYCHAIN_PATH" -P "$P12_PASSWORD" -T /usr/bin/codesign
+        KEYCHAIN_PATH="$HOME/Library/Keychains/build.keychain"
+        
+        echo "=== Before import: Verify keychain is still empty ==="
+        security find-identity -v -p codesigning "$KEYCHAIN_PATH" && echo "❌ Keychain has certificates before import!" || echo "✅ Keychain is empty before import"
+        
+        # Delete any existing certificates from the keychain (should be none, but just in case)
+        security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep ") " | while read line; do
+          cert_hash=$(echo "$line" | awk '{print $2}')
+          echo "Deleting existing certificate: $cert_hash"
+          security delete-identity -Z "$cert_hash" "$KEYCHAIN_PATH" 2>/dev/null || true
+        done
+        
+        echo "=== After cleanup: Verify keychain is empty ==="
+        security find-identity -v -p codesigning "$KEYCHAIN_PATH" && echo "❌ Still has certificates!" || echo "✅ Keychain is now clean"
+        
+        # Import fresh certificate
+        echo "=== Importing certificate ==="
+        echo "$DEV_CERT_BASE64" | base64 --decode > cert.p12
+        security import cert.p12 -k "$KEYCHAIN_PATH" -P "$P12_PASSWORD" -T /usr/bin/codesign
+        
+        echo "=== After import: Certificate count ==="
+        CERT_COUNT=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep -c ") " || echo "0")
+        echo "Number of certificates: $CERT_COUNT"
+        
+        echo "=== All certificates in keychain ==="
+        security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+        
+        # Clean up the P12 file
+        rm cert.p12
+      
+        echo "=== Final verification: What xcodebuild sees ==="
+        security find-identity -v -p codesigning "$KEYCHAIN_PATH" && echo "✅ xcodebuild sees certificates" || echo "❌ xcodebuild does not see certificates"
 
     - name: Install Development Provisioning Profile
       env:
@@ -184,7 +228,8 @@ jobs:
           archive \
           "Runner:CODE_SIGN_STYLE=Manual" \
           "Runner:DEVELOPMENT_TEAM=JPXGBUG6ZW" \
-          "Runner:PROVISIONING_PROFILE=02453868-11d4-4316-93ad-8d1e2ea59221"
+          "Runner:PROVISIONING_PROFILE=02453868-11d4-4316-93ad-8d1e2ea59221" \
+          "Runner:CODE_SIGN_IDENTITY=iPhone Developer: ANDREI SEBASTIAN DUȚĂ (9QD83S28R6)"
 
     - name: Export Development IPA
       run: |
