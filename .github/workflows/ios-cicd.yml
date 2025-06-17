@@ -16,13 +16,25 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: macos-latest
+    runs-on: macos-15
     
     steps:
-    - name: Setup Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '16.4'
+    - name: Check available Xcode versions
+      run: |
+        echo "Available Xcode versions:"
+        ls /Applications/ | grep Xcode
+        
+        # Try to find 16.4 specifically
+        if [ -d "/Applications/Xcode_16.4.app" ]; then
+          echo "Xcode 16.4 found!"
+          sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+        else
+          echo "Xcode 16.4 not available, using latest:"
+          LATEST_XCODE=$(ls /Applications/ | grep "Xcode" | sort -V | tail -1)
+          sudo xcode-select -s /Applications/$LATEST_XCODE/Contents/Developer
+        fi
+        
+        xcodebuild -version
 
     - name: Checkout Code
       uses: actions/checkout@v4
