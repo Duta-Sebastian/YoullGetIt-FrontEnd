@@ -2,43 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- App Store method for distribution -->
     <key>method</key>
     <string>app-store</string>
-    
-    <!-- Your Team ID -->
+
     <key>teamID</key>
     <string>JPXGBUG6ZW</string>
-    
-    <!-- Upload symbols for crash reporting -->
+
     <key>uploadSymbols</key>
     <true/>
-    
-    <!-- Bitcode disabled (deprecated by Apple) -->
+
     <key>uploadBitcode</key>
     <false/>
-    
-    <!-- App Store specific settings -->
-    <key>manageAppVersionAndBuildNumber</key>
-    <false/>
-    
-    <!-- Manual signing for App Store -->
-    <key>signingStyle</key>
-    <string>manual</string>
-    
-    <!-- Upload destination -->
-    <key>destination</key>
-    <string>upload</string>
-    
-    <!-- Optional: Specify provisioning profile if needed -->
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>com.youllgetit.app</key>
-        <string>You'll Get It</string>
-    </dict>
-    
-    <!-- Strip Swift symbols for release -->
+
     <key>stripSwiftSymbols</key>
     <true/>
+
+    <key>signingStyle</key>
+    <string>automatic</string>
 </dict>
 </plist>
