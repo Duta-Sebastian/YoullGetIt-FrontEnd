@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
+import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
 class RecommendationProcessingScreen extends ConsumerStatefulWidget {
   final bool withCv;
@@ -46,7 +47,7 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
         }
       } else {
         ref.read(activeJobsProvider.notifier).fetchJobs();
-        
+        await setFirstTimeOpening();
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

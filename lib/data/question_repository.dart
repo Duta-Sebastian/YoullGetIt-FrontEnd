@@ -146,7 +146,7 @@ class QuestionRepository {
       Question(
         id: 'q8',
         text: 'What soft skills do you master?',
-        answerType: AnswerType.chips,
+        answerType: AnswerType.restrictedChips,
         options: softSkills,
         hasOtherField: false,
         nextQuestionId: 'q9',
@@ -157,7 +157,7 @@ class QuestionRepository {
       Question(
         id: 'q9',
         text: 'What hard skills do you master?',
-        answerType: AnswerType.chips,
+        answerType: AnswerType.restrictedChips,
         options: hardSkills,
         hasOtherField: false,
         nextQuestionId: 'q10',
@@ -185,7 +185,7 @@ class QuestionRepository {
       Question(
         id: 'q11',
         text: 'What countries are you searching an internship in?',
-        answerType: AnswerType.chips,
+        answerType: AnswerType.restrictedChips,
         options: ['Any', 'Albania', 'Andorra', 'Austria', 'Belgium', 'Bosnia and Herzegovina',
                   'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark',
                   'Estonia', 'Finland', 'France', 'Germany', 'Greece',

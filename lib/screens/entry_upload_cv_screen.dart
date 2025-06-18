@@ -9,7 +9,6 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/screens/recommendation_processing_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
 class EntryUploadCvScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> answers;
@@ -124,7 +123,6 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
       _showSnackBar('CV successfully saved');
       
       await _deleteTempFile();
-      await setFirstTimeOpening();
       _navigateToProcessingScreen(withCv: false);
     } catch (e) {
       _showSnackBar('Failed to save CV');
@@ -136,7 +134,6 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
 
   Future<void> _skipAndContinue() async {
     await _deleteTempFile();
-    await setFirstTimeOpening();
     _navigateToProcessingScreen(withCv: false);
   }
 
