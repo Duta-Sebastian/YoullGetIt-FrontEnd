@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/screens/entry_upload_cv_screen.dart';
-import 'package:youllgetit_flutter/utils/questions_saver.dart';
 import 'package:youllgetit_flutter/widgets/answers_review_widget.dart';
 
-class ReviewAnswersScreen extends StatelessWidget {
+class ReviewAnswersScreen extends StatefulWidget {
   final Map<String, List<String>> answers;
 
   static const Color primaryColor = Colors.amber;
@@ -14,6 +13,25 @@ class ReviewAnswersScreen extends StatelessWidget {
     super.key,
     required this.answers,
   });
+
+  @override
+  State<ReviewAnswersScreen> createState() => _ReviewAnswersScreenState();
+}
+
+class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
+  late Map<String, List<String>> _currentAnswers;
+  late List<MapEntry<String, List<String>>> _orderedAnswerEntries;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentAnswers = Map<String, List<String>>.from(widget.answers);
+    _updateOrderedEntries();
+  }
+
+  void _updateOrderedEntries() {
+    _orderedAnswerEntries = _getOrderedAnswers(_currentAnswers);
+  }
 
   static List<MapEntry<String, List<String>>> _getOrderedAnswers(
       Map<String, List<String>> answers) {
@@ -31,10 +49,36 @@ class ReviewAnswersScreen extends StatelessWidget {
     return orderedAnswerEntries;
   }
 
+  Map<String, List<String>> _convertToQuestionIds(Map<String, List<String>> textAnswers) {
+    final Map<String, List<String>> idAnswers = {};
+    
+    for (final entry in textAnswers.entries) {
+      final questionText = entry.key;
+      final answers = entry.value;
+      
+      final question = QuestionRepository.questions.firstWhere(
+        (q) => q.text == questionText,
+        orElse: () => Question(id: '', text: '', answerType: AnswerType.text),
+      );
+      
+      if (question.id.isNotEmpty) {
+        idAnswers[question.id] = answers;
+      }
+    }
+    
+    return idAnswers;
+  }
+
+  void _onAnswersUpdated(Map<String, List<String>> updatedTextAnswers) {
+    _currentAnswers = _convertToQuestionIds(updatedTextAnswers);
+    
+    setState(() {
+      _updateOrderedEntries();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final orderedAnswerEntries = _getOrderedAnswers(answers);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,19 +99,17 @@ class ReviewAnswersScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: AnswersReviewWidget(
-                  entries: orderedAnswerEntries,
+                  entries: _orderedAnswerEntries,
+                  onAnswersUpdated: _onAnswersUpdated,
                 ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   Map<String, dynamic> serializedAnswers = {
-                    for (var entry in orderedAnswerEntries)
+                    for (var entry in _currentAnswers.entries)
                       entry.key: entry.value
                   };
-
-                  QuestionsSaver.saveAnswers(serializedAnswers);
-
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -77,7 +119,7 @@ class ReviewAnswersScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
+                  backgroundColor: ReviewAnswersScreen.primaryColor,
                   foregroundColor: Colors.black,
                   elevation: 5,
                   padding: const EdgeInsets.symmetric(

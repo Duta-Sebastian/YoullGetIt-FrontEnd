@@ -316,21 +316,29 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       }
     });
 
-    return Column(
-      children: [
-        Expanded(
-          child: GenericQuestionWidget(
-            question: currentQuestion,
-            selectedChoices: answersMap[currentQuestion.id] ?? [],
-            onChoicesUpdated: _updateSelectedChoices,
-            onTextUpdated: _updateOtherText,
+    return PopScope(
+      canPop: _navigationStackIndex == 0,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && _navigationStackIndex > 0) {
+          _goToPreviousQuestion();
+        }
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: GenericQuestionWidget(
+              question: currentQuestion,
+              selectedChoices: answersMap[currentQuestion.id] ?? [],
+              onChoicesUpdated: _updateSelectedChoices,
+              onTextUpdated: _updateOtherText,
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: _buildNavigationButtons(),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: _buildNavigationButtons(),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -39,13 +39,11 @@ class _UserSettingsState extends State<UserSettings> {
   bool _isEditing = false;
   bool _isLoading = false;
   String? _currentUsername;
-  List<MapEntry<String, dynamic>> _questionsAnswers = [];
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUsername();
-    _loadQuestionsAnswers();
   }
 
   @override
@@ -61,21 +59,6 @@ class _UserSettingsState extends State<UserSettings> {
       _usernameController.text = _currentUsername ?? '';
     });
   }
-
-  void _loadQuestionsAnswers() async {
-    try {
-      final answers = await DatabaseManager.getQuestionAnswers();
-      if (mounted) {
-        setState(() {
-          _questionsAnswers = answers ?? [];
-        });
-      }
-    } catch (e) {
-      debugPrint('Error loading questions answers: $e');
-    }
-  }
-
-
 
   void _startEditing() {
     setState(() {
@@ -319,10 +302,11 @@ class _UserSettingsState extends State<UserSettings> {
                 leading: const Icon(Icons.question_answer, color: Colors.blue),
                 title: const Text("Review answered questions"),
                 subtitle: const Text("Tap to view your answers"),
+                splashColor: Colors.transparent,
                 onTap: () async {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ViewAnswersScreen(entries: _questionsAnswers,),
+                      builder: (context) => ViewAnswersScreen(),
                     ),
                   );
                 },

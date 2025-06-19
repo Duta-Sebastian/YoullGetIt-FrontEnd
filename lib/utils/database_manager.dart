@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
@@ -282,7 +282,7 @@ class DatabaseManager {
     });
   }
 
-  static Future<List<MapEntry<String, dynamic>>?> getQuestionAnswers() async {
+  static Future<Map<String, dynamic>?> getQuestionAnswersMap() async {
     final results = await _database.query(
       'question_answers',
       orderBy: 'last_changed DESC',
@@ -296,6 +296,14 @@ class DatabaseManager {
     final answersJson = results.first['answers_json'] as String;
     final Map<String, dynamic> decodedMap = jsonDecode(answersJson) as Map<String, dynamic>;
 
+    return decodedMap;
+  }
+
+  static Future<List<MapEntry<String, dynamic>>?> getQuestionAnswers() async {
+    final decodedMap = await getQuestionAnswersMap();
+    if (decodedMap == null) {
+      return null;
+    }
     final entries = decodedMap.entries.toList();
 
     return entries;

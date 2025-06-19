@@ -75,7 +75,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
+              CircularProgressIndicator(color: Colors.amber,),
               SizedBox(height: 20),
               Text("Loading job recommendations...", selectionColor: Colors.amber,)
             ],

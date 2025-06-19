@@ -6,7 +6,7 @@ import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
-import 'package:youllgetit_flutter/utils/questions_saver.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/unique_id.dart';
 import 'package:youllgetit_flutter/utils/job_api_encryption_manager.dart';
 
@@ -23,7 +23,7 @@ class JobApi {
   static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
     Map<String, dynamic> finalAnswers = {};
     if (answers == null) {
-      final savedAnswers = await QuestionsSaver.getAnswers();
+      final savedAnswers = await DatabaseManager.getQuestionAnswersMap();
       if (savedAnswers != null) {
         finalAnswers = savedAnswers;
       } else {
