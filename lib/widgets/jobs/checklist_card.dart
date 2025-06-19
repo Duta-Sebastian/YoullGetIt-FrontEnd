@@ -83,7 +83,7 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: _isMinimized ? 8 : 16,
+        vertical: 8,
       ),
       decoration: BoxDecoration(
         gradient: LinearGradient(

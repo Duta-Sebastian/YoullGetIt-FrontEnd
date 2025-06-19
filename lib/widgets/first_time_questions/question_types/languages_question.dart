@@ -133,6 +133,7 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
                             style: NeumorphicStyle(
                               depth: 3,
                               intensity: 0.5,
+                              color: Colors.white,
                               boxShape: NeumorphicBoxShape.roundRect(
                                 BorderRadius.circular(8),
                               ),
@@ -181,7 +182,7 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
                                           decoration: BoxDecoration(
                                             color: isSelected 
                                                 ? Colors.amber
-                                                : Colors.grey[200],
+                                                : Colors.white,
                                             borderRadius: BorderRadius.circular(20),
                                           ),
                                           child: Text(
@@ -220,6 +221,7 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
                         style: NeumorphicStyle(
                           depth: 5,
                           intensity: 0.5,
+                          color: Colors.white,
                           boxShape: NeumorphicBoxShape.roundRect(
                             BorderRadius.circular(8),
                           ),
@@ -229,21 +231,26 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
                           child: Row(
                             children: [
                               Expanded(
-                                child: TextField(
-                                  controller: _searchController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Search languages...',
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.symmetric(vertical: 12.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white
                                   ),
-                                  onChanged: (value) {
-                                    _updateFilteredOptions(value);
-                                    if (!_isDropdownOpen) {
-                                      setState(() {
-                                        _isDropdownOpen = true;
-                                      });
-                                    }
-                                  },
+                                  child: TextField(
+                                    controller: _searchController,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Search languages...',
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(vertical: 12.0),
+                                    ),
+                                    onChanged: (value) {
+                                      _updateFilteredOptions(value);
+                                      if (!_isDropdownOpen) {
+                                        setState(() {
+                                          _isDropdownOpen = true;
+                                        });
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                               InkWell(
@@ -283,6 +290,7 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
                     ),
                     child: Container(
                       constraints: const BoxConstraints(maxHeight: 200),
+                      color: Colors.white,
                       child: ListView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,

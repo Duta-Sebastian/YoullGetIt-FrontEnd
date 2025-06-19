@@ -43,9 +43,41 @@ class DatabaseManager {
             PRIMARY KEY (cv_data, last_changed)
           )
         ''');
+
+        await db.execute('''
+          CREATE TABLE question_answers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            answers_json TEXT NOT NULL,
+            last_changed DATETIME NOT NULL
+          )
+        ''');
       },
     );
     _database = db;
+  }
+
+  static Future<Map<String, int>> deleteAllDataWithTransaction() async {
+  try {
+      late Map<String, int> results;
+      
+      await _database.transaction((txn) async {
+        final jobsDeleted = await txn.delete('jobs');
+        final usersDeleted = await txn.delete('user');
+        final cvsDeleted = await txn.delete('cv');
+        final questionAnswersDeleted = await txn.delete('question_answers');
+        
+        results = {
+          'jobs': jobsDeleted,
+          'users': usersDeleted,
+          'cvs': cvsDeleted,
+          'question_answers': questionAnswersDeleted,
+        };
+      });
+      
+      return results;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<void> close() async {
@@ -237,5 +269,39 @@ class DatabaseManager {
     });
     
     return syncedCount;
+  }
+
+  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers) async {
+    final answersJson = jsonEncode(answers);
+
+    await _database.delete('question_answers');
+    
+    return await _database.insert('question_answers', {
+      'answers_json': answersJson,
+      'last_changed': DateTime.now().toUtc().toIso8601String(),
+    });
+  }
+
+  static Future<List<MapEntry<String, dynamic>>?> getQuestionAnswers() async {
+    final results = await _database.query(
+      'question_answers',
+      orderBy: 'last_changed DESC',
+      limit: 1,
+    );
+
+    if (results.isEmpty) {
+      return null;
+    }
+
+    final answersJson = results.first['answers_json'] as String;
+    final Map<String, dynamic> decodedMap = jsonDecode(answersJson) as Map<String, dynamic>;
+
+    final entries = decodedMap.entries.toList();
+
+    return entries;
+  }
+
+  static Future<int> deleteQuestionAnswers() async {
+    return await _database.delete('question_answers');
   }
 }

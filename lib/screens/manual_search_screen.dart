@@ -26,7 +26,6 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   
   List<JobCardModel> _jobs = [];
   int _currentPage = 1;
-  int _totalCount = 0;
   bool _isLoading = false;
   bool _hasMorePages = true;
   bool _hasInitialized = false;
@@ -129,12 +128,6 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
             _jobs = response.jobs;
           } else {
             _jobs.addAll(response.jobs);
-          }
-          
-          if (reset || _currentPage == 1) {
-            _totalCount = response.jobs.length;
-          } else {
-            _totalCount = _jobs.length;
           }
           
           _hasMorePages = response.hasMorePages;
@@ -306,7 +299,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$_totalCount Jobs Found',
+            'Scroll to discover more jobs',
             style: TextStyle(
               color: Colors.grey.shade700,
               fontWeight: FontWeight.bold,

@@ -11,8 +11,10 @@ import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   final VoidCallback onUsernameChanged;
+  final String? currentUsername;
   const SettingsPage({
     super.key,
+    required this.currentUsername,
     required this.onUsernameChanged
   });
 
@@ -62,6 +64,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => UserSettings(
+                          currentUsername: widget.currentUsername,
                           onUsernameChanged: widget.onUsernameChanged,
                         ),
                       )

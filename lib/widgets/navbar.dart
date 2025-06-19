@@ -23,6 +23,7 @@ class BottomNavBar extends ConsumerWidget {
     
     return Container(
       height: 70,
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
