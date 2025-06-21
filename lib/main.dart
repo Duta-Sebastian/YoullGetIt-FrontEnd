@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -48,6 +47,10 @@ Future<void> initializeApp(ProviderContainer container) async {
         await syncService.startSync();
         debugPrint('Sync service initialized successfully');
       }(),
+      () async {
+        await QuestionRepository.initialize();
+      }
+      (),
       _checkFirstTimeAndFetchJobs(container)
     ]);
 
@@ -65,7 +68,6 @@ Future<void> _checkFirstTimeAndFetchJobs(ProviderContainer container) async {
 
   if (isFirstTime){
     generateAndStoreUniqueId();
-    await QuestionRepository.initialize();
   }
   else {
     final coordinator = container.read(jobCoordinatorProvider);
@@ -105,7 +107,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       title: 'You\'ll Get It',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         fontFamily: 'Inter',
       ),
       debugShowCheckedModeBanner: false,

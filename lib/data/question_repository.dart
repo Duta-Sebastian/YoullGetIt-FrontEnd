@@ -1,9 +1,12 @@
 import 'package:youllgetit_flutter/data/skills_repository.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/utils/question_id_parts.dart';
 
 class QuestionRepository {
   static List<Question> _questions = [];
   static int _questionsCount = 0;
+  static Map<String, Question>? _textToQuestionCache;
+  static Map<String, Question>? _idToQuestionCache;
 
   static Future<void> initialize() async {
     final softSkills = await SkillsRepository.getSoftSkills();
@@ -169,13 +172,13 @@ class QuestionRepository {
         id: 'q10',
         text: 'What languages are you comfortable doing the internship in?',
         answerType: AnswerType.languages,
-        options: ['Albanian', 'Catalan', 'German', 'French', 'Dutch', 'Italian',
-                  'Spanish', 'Portuguese', 'English', 'Irish', 'Greek', 'Turkish',
-                  'Maltese', 'Slovak', 'Czech', 'Hungarian', 'Polish', 'Romanian',
-                  'Russian', 'Ukrainian', 'Serbian', 'Croatian', 'Bosnian',
-                  'Montenegrin', 'Slovenian', 'Macedonian', 'Bulgarian', 'Latvian',
-                  'Lithuanian', 'Estonian', 'Icelandic', 'Norwegian', 'Swedish',
-                  'Danish', 'Finnish', 'Luxembourgish'],
+        options: ['Albanian', 'Bosnian', 'Bulgarian', 'Catalan', 'Croatian',
+                  'Czech', 'Danish', 'Dutch', 'English', 'Estonian', 'Finnish',
+                  'French', 'German', 'Greek', 'Hungarian', 'Icelandic', 'Irish',
+                  'Italian', 'Latvian', 'Lithuanian', 'Luxembourgish', 'Macedonian',
+                  'Maltese', 'Montenegrin', 'Norwegian', 'Polish', 'Portuguese',
+                  'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian',
+                  'Spanish', 'Swedish', 'Turkish', 'Ukrainian'],
         hasOtherField: false,
         nextQuestionId: 'q11',
         previousQuestionId: 'q9',
@@ -245,8 +248,118 @@ class QuestionRepository {
     ];
     
     _questionsCount = _questions.length;
+    _buildCaches();
+  }
+
+  static void _buildCaches() {
+    _textToQuestionCache = {};
+    _idToQuestionCache = {};
+    for (final question in _questions) {
+      _textToQuestionCache![question.text] = question;
+      _idToQuestionCache![question.id] = question;
+    }
   }
 
   static List<Question> get questions => _questions;
-  static int get questionsCount => _questionsCount;  
+  static int get questionsCount => _questionsCount;
+
+  static Question? getQuestionByText(String text) {
+    _textToQuestionCache ??= _buildTextToQuestionCacheSync();
+    return _textToQuestionCache![text];
+  }
+
+  static Question? getQuestionById(String id) {
+    _idToQuestionCache ??= _buildIdToQuestionCacheSync();
+    return _idToQuestionCache![id];
+  }
+
+  static Map<String, Question> _buildTextToQuestionCacheSync() {
+    final cache = <String, Question>{};
+    for (final question in _questions) {
+      cache[question.text] = question;
+    }
+    return cache;
+  }
+
+  static Map<String, Question> _buildIdToQuestionCacheSync() {
+    final cache = <String, Question>{};
+    for (final question in _questions) {
+      cache[question.id] = question;
+    }
+    return cache;
+  }
+
+  static List<Question> getQuestionsByTexts(List<String> texts) {
+    return texts
+        .map((text) => getQuestionByText(text))
+        .where((q) => q != null)
+        .cast<Question>()
+        .toList();
+  }
+
+  static int compareQuestionIds(String idA, String idB) {
+    final partsA = parseQuestionId(idA);
+    final partsB = parseQuestionId(idB);
+    
+    final mainCompare = partsA.mainNumber.compareTo(partsB.mainNumber);
+    if (mainCompare != 0) return mainCompare;
+    
+    if (partsA.branchPart == null && partsB.branchPart == null) return 0;
+    if (partsA.branchPart == null) return -1;
+    if (partsB.branchPart == null) return 1;
+    
+    final branchCompare = partsA.branchPart!.compareTo(partsB.branchPart!);
+    if (branchCompare != 0) return branchCompare;
+    
+    return partsA.subNumber.compareTo(partsB.subNumber);
+  }
+
+  static List<Question> getSortedQuestions(List<String> questionTexts) {
+    final questions = getQuestionsByTexts(questionTexts);
+    questions.sort((a, b) => compareQuestionIds(a.id, b.id));
+    return questions;
+  }
+
+  static List<String> getSortedQuestionTexts(List<String> questionTexts) {
+    return getSortedQuestions(questionTexts).map((q) => q.text).toList();
+  }
+
+  static List<MapEntry<String, List<String>>> sortAnswerEntries(
+    List<MapEntry<String, List<String>>> entries,
+  ) {
+    final sortedEntries = List<MapEntry<String, List<String>>>.from(entries);
+    
+    sortedEntries.sort((a, b) {
+      final questionA = getQuestionByText(a.key);
+      final questionB = getQuestionByText(b.key);
+      
+      if (questionA == null || questionB == null) return 0;
+      
+      return compareQuestionIds(questionA.id, questionB.id);
+    });
+    
+    return sortedEntries;
+  }
+
+  static List<MapEntry<String, dynamic>> sortDynamicEntries(
+    List<MapEntry<String, dynamic>> entries,
+  ) {
+    final sortedEntries = List<MapEntry<String, dynamic>>.from(entries);
+    
+    sortedEntries.sort((a, b) {
+      final questionA = getQuestionByText(a.key);
+      final questionB = getQuestionByText(b.key);
+      
+      if (questionA == null || questionB == null) return 0;
+      
+      return compareQuestionIds(questionA.id, questionB.id);
+    });
+    
+    return sortedEntries;
+  }
+
+  static void clearCache() {
+    _textToQuestionCache = null;
+    _idToQuestionCache = null;
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/view_answers_screen.dart';
@@ -162,7 +161,6 @@ class _UserSettingsState extends State<UserSettings> {
               try {
                 await DatabaseManager.deleteAllDataWithTransaction();
                 await resetFirstTimeOpening();
-                await QuestionRepository.initialize();
                 navigator.pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const EntryScreen()),
                   (route) => false,

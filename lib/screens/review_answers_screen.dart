@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
-import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/screens/entry_upload_cv_screen.dart';
 import 'package:youllgetit_flutter/widgets/answers_review_widget.dart';
 
@@ -20,65 +20,29 @@ class ReviewAnswersScreen extends StatefulWidget {
 
 class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
   late Map<String, List<String>> _currentAnswers;
-  late List<MapEntry<String, List<String>>> _orderedAnswerEntries;
 
   @override
   void initState() {
     super.initState();
     _currentAnswers = Map<String, List<String>>.from(widget.answers);
-    _updateOrderedEntries();
   }
 
-  void _updateOrderedEntries() {
-    _orderedAnswerEntries = _getOrderedAnswers(_currentAnswers);
+  List<MapEntry<String, List<String>>> _getOrderedAnswers() {
+    return QuestionRepository.sortAnswerEntries(_currentAnswers.entries.toList());
   }
 
-  static List<MapEntry<String, List<String>>> _getOrderedAnswers(
-      Map<String, List<String>> answers) {
-    final List<Question> orderedQuestions = QuestionRepository.questions;
-    final List<MapEntry<String, List<String>>> orderedAnswerEntries = [];
-
-    for (final question in orderedQuestions) {
-      if (answers.containsKey(question.id)) {
-        orderedAnswerEntries.add(
-          MapEntry(question.text, answers[question.id]!),
-        );
-      }
+  void _onAnswersUpdated(Map<String, List<String>> updatedAnswers) {
+    if (!const DeepCollectionEquality().equals(_currentAnswers, updatedAnswers)) {
+      setState(() {
+        _currentAnswers = updatedAnswers;
+      });
     }
-
-    return orderedAnswerEntries;
-  }
-
-  Map<String, List<String>> _convertToQuestionIds(Map<String, List<String>> textAnswers) {
-    final Map<String, List<String>> idAnswers = {};
-    
-    for (final entry in textAnswers.entries) {
-      final questionText = entry.key;
-      final answers = entry.value;
-      
-      final question = QuestionRepository.questions.firstWhere(
-        (q) => q.text == questionText,
-        orElse: () => Question(id: '', text: '', answerType: AnswerType.text),
-      );
-      
-      if (question.id.isNotEmpty) {
-        idAnswers[question.id] = answers;
-      }
-    }
-    
-    return idAnswers;
-  }
-
-  void _onAnswersUpdated(Map<String, List<String>> updatedTextAnswers) {
-    _currentAnswers = _convertToQuestionIds(updatedTextAnswers);
-    
-    setState(() {
-      _updateOrderedEntries();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Current answers: $_currentAnswers');
+    debugPrint('What comes: ${widget.answers}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -99,7 +63,7 @@ class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
             children: [
               Expanded(
                 child: AnswersReviewWidget(
-                  entries: _orderedAnswerEntries,
+                  entries: _getOrderedAnswers(),
                   onAnswersUpdated: _onAnswersUpdated,
                 ),
               ),

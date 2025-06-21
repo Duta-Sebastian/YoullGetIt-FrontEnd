@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
-import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/utils/question_id_parts.dart';
 import 'package:youllgetit_flutter/widgets/answers_review_widget.dart';
 
 class ViewAnswersScreen extends ConsumerStatefulWidget {
@@ -22,55 +20,24 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
   bool hasUpdatedAnswers = false;
   late final JobCoordinator _jobCoordinator;
 
-  Question? _getQuestionByText(String text) {
-    try {
-      return QuestionRepository.questions.firstWhere((q) => q.text == text);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  int _compareQuestionIds(String idA, String idB) {
-    final partsA = parseQuestionId(idA);
-    final partsB = parseQuestionId(idB);
-    
-    final mainCompare = partsA.mainNumber.compareTo(partsB.mainNumber);
-    if (mainCompare != 0) return mainCompare;
-    
-    if (partsA.branchPart == null && partsB.branchPart == null) return 0;
-    if (partsA.branchPart == null) return -1;
-    if (partsB.branchPart == null) return 1;
-    
-    final branchCompare = partsA.branchPart!.compareTo(partsB.branchPart!);
-    if (branchCompare != 0) return branchCompare;
-    
-    return partsA.subNumber.compareTo(partsB.subNumber);
-  }
-
   void _loadQuestionsAnswers() async {
     try {
       final answers = await DatabaseManager.getQuestionAnswers();
-      debugPrint('Loaded answers: $answers');
-      
-      // Order the entries here
-      if (answers != null) {
-        await QuestionRepository.initialize(); // Ensure questions are loaded
+      if (answers != null && mounted) {
+        final sortedAnswers = QuestionRepository.sortAnswerEntries(
+          answers.map((e) => MapEntry(e.key, e.value is List 
+            ? List<String>.from(e.value.map((item) => item.toString()))
+            : [e.value.toString()]
+          )).toList()
+        );
+
+        final sortedEntries = sortedAnswers.map((entry) => 
+          MapEntry<String, dynamic>(entry.key, entry.value)
+        ).toList();
         
-        final sortedAnswers = answers.toList();
-        sortedAnswers.sort((a, b) {
-          final questionA = _getQuestionByText(a.key);
-          final questionB = _getQuestionByText(b.key);
-          
-          if (questionA == null || questionB == null) return 0;
-          
-          return _compareQuestionIds(questionA.id, questionB.id);
+        setState(() {
+          entries = sortedEntries;
         });
-        
-        if (mounted) {
-          setState(() {
-            entries = sortedAnswers;
-          });
-        }
       }
     } catch (e) {
       debugPrint('Error loading question answers: $e');
@@ -91,6 +58,17 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
     await DatabaseManager.saveQuestionAnswers(answersToSave);
   }
 
+  Future<void> _handleExit() async {
+    if (hasUpdatedAnswers) {
+      try {
+        await JobApi.uploadUserInformation(null, null);
+        await _jobCoordinator.resetJobState();
+      } catch (e) {
+        debugPrint('Error in exit operations: $e');
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -100,50 +78,41 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          await _handleExit();
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          title: const Text('Review Answers'),
+          centerTitle: true,
         ),
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        title: const Text('Review Answers'),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: entries.isEmpty ? 
-            const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: entries.isEmpty ? 
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              ) :
+              AnswersReviewWidget(
+                entries: entries,
+                onAnswersUpdated: _onAnswersUpdated,
               ),
-            ) :
-            AnswersReviewWidget(
-              entries: entries,
-              onAnswersUpdated: _onAnswersUpdated,
-            ),
+          ),
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    if (hasUpdatedAnswers) {
-      // Run async operations in a Future
-      Future(() async {
-        try {
-          await JobApi.uploadUserInformation(null, null);
-          await _jobCoordinator.resetJobState();
-        } catch (e) {
-          debugPrint('Error in dispose operations: $e');
-        }
-      });
-    }
-    super.dispose();
   }
 }

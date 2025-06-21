@@ -110,7 +110,7 @@ class JobApiEncryptionManager {
     });
   }
 
-  Future<RSAPublicKey> getServerPublicKey({bool forceRefresh = false}) async {
+  Future<RSAPublicKey?> getServerPublicKey({bool forceRefresh = false}) async {
     if (_serverPublicKey != null && !forceRefresh) {
       return _serverPublicKey!;
     }
@@ -141,15 +141,19 @@ class JobApiEncryptionManager {
         
         _serverPublicKey = RSAPublicKey(modulus, exponent);
       } else {
-        throw Exception('Failed to load public key: ${response.statusCode}');
+        debugPrint('Failed to load public key: ${response.statusCode}');
       }
-    } finally {
+    
+    } catch (e){
+        debugPrint('Error encountered while trying to connect to the api server: $e');
+    }
+    finally {
       _fetchingKey = false;
       _fetchingKeyCompleter?.complete();
       _fetchingKeyCompleter = null;
     }
     
-    return _serverPublicKey!;
+    return _serverPublicKey;
   }
 
   Uint8List generateAesKey() {
@@ -209,7 +213,7 @@ class JobApiEncryptionManager {
   
   Future<String> encryptAesKey(Uint8List aesKey) async {
     final publicKey = await getServerPublicKey();
-    
+    if (publicKey == null) throw Exception("Server's public key not found");
     final cipher = OAEPEncoding.withSHA256(RSAEngine())
       ..init(true, PublicKeyParameter<RSAPublicKey>(publicKey));
     

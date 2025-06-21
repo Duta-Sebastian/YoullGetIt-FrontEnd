@@ -30,6 +30,7 @@ environment:
 dependencies:
   auth0_flutter: ^1.9.0
   build_runner: ^2.4.15
+  collection: ^1.19.1
   connectivity_plus: ^6.1.4
   crypto: ^3.0.6
   cupertino_icons: ^1.0.8
@@ -84,7 +85,7 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/logo.png"
   min_sdk_android: 21
-  remove_alpha_ios: true 
+  remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
