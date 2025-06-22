@@ -1,87 +1,210 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
-import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
+import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
 
 class JobListItem extends StatelessWidget {
   final JobCardModel job;
   final JobStatus jobStatus;
-  final bool isLongPressed;
-  final bool isBlurred;
   final Function(JobStatus) onStatusChanged;
-  final VoidCallback onLongPress;
-  final VoidCallback onRemove;
 
   const JobListItem({
     super.key,
     required this.job,
     required this.jobStatus,
-    required this.isLongPressed,
-    required this.isBlurred,
     required this.onStatusChanged,
-    required this.onLongPress,
-    required this.onRemove,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showJobCard(context, job),
-      onLongPress: onLongPress,
-      child: Stack(
-        children: [
-          _buildJobCard(),
-          _buildStatusIcons(),
-          if (isBlurred) _buildBlurOverlay(),
-          if (isLongPressed) _buildRemoveButton(),
-        ],
-      ),
+      onTap: () => _navigateToJobDetailPage(context, job),
+      child: _buildJobCard(context),
     );
   }
 
-  Widget _buildJobCard() {
-    return Card(
+  Widget _buildJobCard(BuildContext context) {
+    // Removed match score for now
+    // This can be uncommented if match score is needed in the future
+    // int? matchScore;
+
+    // if (job.matchScore != null) {
+    //   matchScore = (job.matchScore! * 100).toInt();
+    // }
+    
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          color: _getBorderColor(),
-          width: 1,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha((255 * 0.08).round()),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+        border: Border.all(
+          color: _getBorderColor().withAlpha((255 * 0.5).round()),
+          width: 1.5,
         ),
       ),
-      elevation: 3,
-      shadowColor: Colors.black,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12.0, bottom: 60.0, left: 16.0, right: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
           children: [
-            Text(
-              job.title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+            // Subtle gradient overlay
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      _getGradientColor().withAlpha((255 * 0.05).round()),
+                      _getGradientColor().withAlpha((255 * 0.02).round()),
+                    ],
+                  ),
+                ),
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  job.company,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontSize: 14,
-                  ),
+            
+            // Status indicator on left side
+            Positioned(
+              left: 0,
+              top: 16,
+              bottom: 16,
+              child: Container(
+                width: 4,
+                decoration: BoxDecoration(
+                  color: _getStatusColor(),
+                  borderRadius: const BorderRadius.horizontal(right: Radius.circular(4)),
                 ),
-                Text(
-                  ' ®',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade600,
+              ),
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Header with title and status
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title area
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              job.roleName,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.3,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            // Company info
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.business_center_outlined,
+                                  size: 14,
+                                  color: const Color(0xFF6B7280),
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    job.companyName,
+                                    style: TextStyle(
+                                      color: const Color(0xFF6B7280),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      // Status badge in top-right
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _getStatusIcon(),
+                              size: 14,
+                              color: _getStatusTextColor(),
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              _getStatusText(),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: _getStatusTextColor(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Hide match score for now
+                  // Uncomment if needed in the future
+                  // if (matchScore != null)
+                  //   Container(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  //     decoration: BoxDecoration(
+                  //       color: _getScoreColor(matchScore),
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         const Icon(
+                  //           Icons.bolt,
+                  //           size: 14,
+                  //           color: Colors.white,
+                  //         ),
+                  //         const SizedBox(width: 4),
+                  //         Text(
+                  //           "Match Score: $matchScore%",
+                  //           style: const TextStyle(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  
+                  const SizedBox(height: 16),
+                  const Divider(height: 1),
+                  const SizedBox(height: 16),
+                  
+                  _buildActionButtons(context),
+                ],
+              ),
             ),
           ],
         ),
@@ -89,146 +212,194 @@ class JobListItem extends StatelessWidget {
     );
   }
 
+  Widget _buildActionButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        OutlinedButton.icon(
+          onPressed: () {
+            // View details action
+            _navigateToJobDetailPage(context, job);
+          },
+          icon: const Icon(Icons.visibility_outlined, size: 16),
+          label: const Text('View Details'),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFF6B7280),
+            side: BorderSide(color: const Color(0xFFD1D5DB)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
+        ),
+        _buildStatusControlButtons(),
+      ],
+    );
+  }
+
+  Widget _buildStatusControlButtons() {
+    return Row(
+      children: [
+        if (jobStatus != JobStatus.liked) 
+          IconButton(
+            onPressed: () {
+              switch (jobStatus) {
+                case JobStatus.toApply:
+                  onStatusChanged(JobStatus.liked);
+                  break;
+                case JobStatus.applied:
+                  onStatusChanged(JobStatus.toApply);
+                  break;
+                default:
+                  break;
+              }
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
+            style: IconButton.styleFrom(
+              backgroundColor: const Color(0xFFF3F4F6),
+              foregroundColor: const Color(0xFF6B7280),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(36, 36),
+            ),
+            tooltip: 'Move back',
+          ),
+        
+        if (jobStatus != JobStatus.applied)
+          const SizedBox(width: 8),
+        
+        if (jobStatus != JobStatus.applied)
+          IconButton(
+            onPressed: () {
+              switch (jobStatus) {
+                case JobStatus.liked:
+                  onStatusChanged(JobStatus.toApply);
+                  break;
+                case JobStatus.toApply:
+                  onStatusChanged(JobStatus.applied);
+                  break;
+                default:
+                  break;
+              }
+            },
+            icon: const Icon(Icons.arrow_forward_ios_rounded, size: 18),
+            style: IconButton.styleFrom(
+              backgroundColor: _getActionButtonColor(),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(36, 36),
+            ),
+            tooltip: 'Move forward',
+          ),
+      ],
+    );
+  }
+
   Color _getBorderColor() {
     switch (jobStatus) {
       case JobStatus.liked:
-        return Colors.black;
+        return const Color(0xFFFBBF24);
       case JobStatus.toApply:
-        return Colors.blue;
+        return const Color(0xFF3B82F6);
       case JobStatus.applied:
-        return Colors.green;
+        return const Color(0xFF22C55E);
       default:
-        return Colors.grey;
+        return const Color(0xFFD1D5DB);
     }
   }
 
-  Widget _buildStatusIcons() {
-    return Positioned(
-      right: 40,
-      bottom: 30,
-      child: Row(
-        children: [
-          if (jobStatus != JobStatus.liked) 
-            GestureDetector(
-              onTap: () {
-                switch (jobStatus) {
-                  case JobStatus.toApply:
-                    onStatusChanged(JobStatus.liked);
-                    break;
-                  case JobStatus.applied:
-                    onStatusChanged(JobStatus.toApply);
-                    break;
-                  default:
-                    break;
-                }
-              },
-              child: Icon(
-                Icons.close,
-                color: Colors.red,
-                size: 20,
-              ),
-            ),
-          
-          if (jobStatus != JobStatus.applied)
-            SizedBox(width: 10),
-          
-          if (jobStatus != JobStatus.applied)
-            GestureDetector(
-              onTap: () {
-                switch (jobStatus) {
-                  case JobStatus.liked:
-                    onStatusChanged(JobStatus.toApply);
-                    break;
-                  case JobStatus.toApply:
-                    onStatusChanged(JobStatus.applied);
-                    break;
-                  default:
-                    break;
-                }
-              },
-              child: Icon(
-                Icons.check,
-                color: jobStatus == JobStatus.liked ? Colors.grey : Colors.green,
-                size: 20,
-              ),
-            ),
-        ],
+  Color _getGradientColor() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return const Color(0xFFFBBF24);
+      case JobStatus.toApply:
+        return const Color(0xFF3B82F6);
+      case JobStatus.applied:
+        return const Color(0xFF22C55E);
+      default:
+        return const Color(0xFFD1D5DB);
+    }
+  }
+
+  Color _getActionButtonColor() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return const Color(0xFF3B82F6);
+      case JobStatus.toApply:
+        return const Color(0xFF22C55E);
+      case JobStatus.applied:
+        return const Color(0xFFD1D5DB);
+      default:
+        return const Color(0xFFD1D5DB);
+    }
+  }
+
+  // Color _getScoreColor(int score) {
+  //   if (score >= 90) {
+  //     return const Color(0xFF22C55E);
+  //   } else if (score >= 80) {
+  //     return const Color(0xFF3B82F6);
+  //   } else if (score >= 70) {
+  //     return const Color(0xFFFBBF24);
+  //   } else {
+  //     return const Color(0xFFEF4444);
+  //   }
+  // }
+
+  Color _getStatusColor() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return const Color(0xFFFBBF24);
+      case JobStatus.toApply:
+        return const Color(0xFF3B82F6);
+      case JobStatus.applied:
+        return const Color(0xFF22C55E);
+      default:
+        return const Color(0xFFD1D5DB);
+    }
+  }
+
+  Color _getStatusTextColor() {
+    return Colors.white;
+  }
+
+  String _getStatusText() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return "Liked";
+      case JobStatus.toApply:
+        return "To Apply";
+      case JobStatus.applied:
+        return "Applied";
+      default:
+        return "";
+    }
+  }
+
+  IconData _getStatusIcon() {
+    switch (jobStatus) {
+      case JobStatus.liked:
+        return Icons.thumb_up_outlined;
+      case JobStatus.toApply:
+        return Icons.edit_document;
+      case JobStatus.applied:
+        return Icons.check_circle_outline;
+      default:
+        return Icons.circle_outlined;
+    }
+  }
+
+  void _navigateToJobDetailPage(BuildContext context, JobCardModel job) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JobDetailPage(job: job),
       ),
     );
   }
-
-  Widget _buildBlurOverlay() {
-    return Positioned.fill(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha((0.2 * 255).toInt()),
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRemoveButton() {
-    return Positioned(
-      right: 26,
-      bottom: 18,
-      child: ElevatedButton.icon(
-        onPressed: onRemove,
-        icon: const Icon(Icons.delete_outline, size: 18),
-        label: const Text('Remove'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red.shade400,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showJobCard(BuildContext context, JobCardModel job) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: screenWidth,
-                height: screenHeight * 0.6,
-                child: JobCard(jobData: job, percentThresholdx: 0),
-              ),
-              const SizedBox(height: 16),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text('Close'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}	
+}

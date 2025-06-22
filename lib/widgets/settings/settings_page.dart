@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:youllgetit_flutter/utils/app_rating_helper.dart';
+import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
+import 'package:youllgetit_flutter/widgets/settings/privacy_policy_page.dart';
+import 'package:youllgetit_flutter/widgets/settings/tos_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/user_settings.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   final VoidCallback onUsernameChanged;
+  final String? currentUsername;
   const SettingsPage({
     super.key,
+    required this.currentUsername,
     required this.onUsernameChanged
   });
 
@@ -16,6 +23,20 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class SettingsPageState extends ConsumerState<SettingsPage> {
+
+  Future<void> _launchURL() async {
+    final Uri url = Uri.parse('https://youllgetit.eu/feedback');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not launch https://youllgetit.eu/feedback')),
+        );
+      }
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +53,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
         children: [
           AuthSection(),
           Expanded(
+            key: UniqueKey(),
             child: ListView(
               children: [
                 _buildSettingsItem(
@@ -42,6 +64,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => UserSettings(
+                          currentUsername: widget.currentUsername,
                           onUsernameChanged: widget.onUsernameChanged,
                         ),
                       )
@@ -65,7 +88,11 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.privacy_tip, 
                   title: 'Privacy Policy',
                   onTap: () {
-                    // TODO: Implement privacy policy navigation
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicyPage(),
+                      )
+                    );
                   },
                 ),
                 _buildSettingsItem(
@@ -73,23 +100,39 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                   icon: Icons.document_scanner, 
                   title: 'Terms of Use',
                   onTap: () {
-                    // TODO: Implement terms of use navigation
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const TermsOfServicePage(),
+                      )
+                    );
                   },
                 ),
+
+                _buildSettingsItem(
+                  context, 
+                  icon: Icons.policy, 
+                  title: 'GDPR Policy',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const GDPRPage(),
+                      )
+                    );
+                  }
+                ),
+
                 _buildSettingsItem(
                   context, 
                   icon: Icons.feedback, 
                   title: 'Feedback',
-                  onTap: () {
-                    // TODO: Implement feedback mechanism
-                  },
+                  onTap: _launchURL,
                 ),
                 _buildSettingsItem(
                   context, 
                   icon: Icons.star, 
                   title: 'Rate Us',
                   onTap: () {
-                    // TODO: Implement app rating logic
+                    AppRatingHelper.requestRating(context);
                   },
                 ),
               ],
@@ -100,7 +143,6 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  // Helper method to create settings list items
   Widget _buildSettingsItem(
     BuildContext context, {
     required IconData icon,

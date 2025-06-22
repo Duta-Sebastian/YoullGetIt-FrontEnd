@@ -1,312 +1,185 @@
 import 'dart:async';
-import '../models/job_card_model.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_feedback.dart';
+import 'package:youllgetit_flutter/providers/auth_provider.dart';
+import 'package:youllgetit_flutter/utils/cv_to_base64.dart';
+import 'package:youllgetit_flutter/utils/database_manager.dart';
+import 'package:youllgetit_flutter/utils/unique_id.dart';
+import 'package:youllgetit_flutter/utils/job_api_encryption_manager.dart';
 
 class JobApi {
-  static int _jobCount = 0;
-  static Future<List<JobCardModel>> fetchJobs(int count) async {
-    await Future.delayed(Duration(seconds: 1)); // Simulating network delay
+  static ProviderContainer? _container;
+  static JobApiEncryptionManager? _encryptionManager;
 
-    List<JobCardModel> jobs = [
-      JobCardModel(
-        id: '0',
-        title: 'Chassis Engineer',
-        company: 'RedBull',
-        location: 'Amsterdam, The Netherlands',
-        duration: 'Feb - Aug, 2025',
-        education: 'BA3/MSc',
-        salary: '1000\$',
-        languages: 'EN, FR',
-        jobType: 'Full-Time',
-        experience: 'Not needed',
-        skills: ['CAD', 'FEA', 'CFD'],
-        niceToHave: ['Python', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '1',
-        title: 'Automotive Engineer',
-        company: 'Mercedes',
-        location: 'Berlin, Germany',
-        duration: 'Feb - Aug, 2025',
-        education: 'BSc/MSc',
-        salary: '2000\$',
-        languages: 'EN, GER',
-        jobType: 'Part-Time',
-        experience: 'Not needed',
-        skills: ['CAD', 'FEA', 'CFD'],
-        niceToHave: ['No', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '2',
-        title: 'Automotive Engineer1',
-        company: 'Mercedes',
-        location: 'Berlin, Germany',
-        duration: 'Feb - Aug, 2025',
-        education: 'BSc/MSc',
-        salary: '2000\$',
-        languages: 'EN, GER',
-        jobType: 'Part-Time',
-        experience: 'Not needed',
-        skills: ['CAD', 'FEA', 'CFD'],
-        niceToHave: ['No', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '3',
-        title: 'Automotive Engineer2',
-        company: 'Mercedes',
-        location: 'Berlin, Germany',
-        duration: 'Feb - Aug, 2025',
-        education: 'BSc/MSc',
-        salary: '2000\$',
-        languages: 'EN, GER',
-        jobType: 'Part-Time',
-        experience: 'Not needed',
-        skills: ['CAD', 'FEA', 'CFD'],
-        niceToHave: ['No', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '4',
-        title: 'Mechanical Engineer',
-        company: 'Ferrari',
-        location: 'Milan, Italy',
-        duration: 'Jan - June, 2025',
-        education: 'BSc/MSc',
-        salary: '2200\$',
-        languages: 'EN, IT',
-        jobType: 'Full-Time',
-        experience: '1 year',
-        skills: ['CAD', 'FEA', 'CFD'],
-        niceToHave: ['Python', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '5',
-        title: 'Software Engineer',
-        company: 'Tesla',
-        location: 'Palo Alto, USA',
-        duration: 'Mar - Sep, 2025',
-        education: 'BSc/MSc',
-        salary: '5000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['C++', 'Python', 'Embedded Systems'],
-        niceToHave: ['ROS', 'AI'],
-      ),
-      JobCardModel(
-        id: '6',
-        title: 'Electrical Engineer',
-        company: 'Porsche',
-        location: 'Stuttgart, Germany',
-        duration: 'May - Nov, 2025',
-        education: 'MSc',
-        salary: '3500\$',
-        languages: 'EN, GER',
-        jobType: 'Full-Time',
-        experience: '3 years',
-        skills: ['PCB Design', 'Embedded C', 'MATLAB'],
-        niceToHave: ['Python', 'FPGA'],
-      ),
-      JobCardModel(
-        id: '7',
-        title: 'AI Researcher',
-        company: 'Google DeepMind',
-        location: 'London, UK',
-        duration: 'July - Dec, 2025',
-        education: 'PhD',
-        salary: '6000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '4 years',
-        skills: ['Machine Learning', 'Deep Learning', 'Python'],
-        niceToHave: ['PyTorch', 'TensorFlow'],
-      ),
-      JobCardModel(
-        id: '8',
-        title: 'Aerodynamics Engineer',
-        company: 'McLaren',
-        location: 'Woking, UK',
-        duration: 'Feb - Aug, 2025',
-        education: 'BSc/MSc',
-        salary: '2500\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '1 year',
-        skills: ['CFD', 'Wind Tunnel Testing', 'CAD'],
-        niceToHave: ['Python', 'Matlab'],
-      ),
-      JobCardModel(
-        id: '9',
-        title: 'Robotics Engineer',
-        company: 'Boston Dynamics',
-        location: 'Boston, USA',
-        duration: 'Apr - Oct, 2025',
-        education: 'MSc/PhD',
-        salary: '5000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['ROS', 'Python', 'C++'],
-        niceToHave: ['Deep Learning', 'AI'],
-      ),
-      JobCardModel(
-        id: '10',
-        title: 'Cybersecurity Engineer',
-        company: 'Palantir',
-        location: 'New York, USA',
-        duration: 'Mar - Sep, 2025',
-        education: 'BSc/MSc',
-        salary: '4500\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['Penetration Testing', 'Network Security', 'C++'],
-        niceToHave: ['Rust', 'Malware Analysis'],
-      ),
-      JobCardModel(
-        id: '11',
-        title: 'Blockchain Developer',
-        company: 'Ethereum Foundation',
-        location: 'Remote',
-        duration: 'Jan - June, 2025',
-        education: 'BSc/MSc',
-        salary: '4000\$',
-        languages: 'EN',
-        jobType: 'Remote',
-        experience: '3 years',
-        skills: ['Solidity', 'Ethereum', 'Smart Contracts'],
-        niceToHave: ['Rust', 'Cryptography'],
-      ),
-      JobCardModel(
-        id: '12',
-        title: 'Game Developer',
-        company: 'Ubisoft',
-        location: 'Montreal, Canada',
-        duration: 'May - Nov, 2025',
-        education: 'BSc',
-        salary: '3800\$',
-        languages: 'EN, FR',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['Unity', 'C#', 'Game Design'],
-        niceToHave: ['Blender', 'C++'],
-      ),
-      JobCardModel(
-        id: '13',
-        title: 'Data Scientist',
-        company: 'Netflix',
-        location: 'Los Gatos, USA',
-        duration: 'Aug - Dec, 2025',
-        education: 'MSc/PhD',
-        salary: '7000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '3 years',
-        skills: ['Python', 'Pandas', 'Machine Learning'],
-        niceToHave: ['Hadoop', 'TensorFlow'],
-      ),
-      JobCardModel(
-        id: '14',
-        title: 'Cloud Engineer',
-        company: 'AWS',
-        location: 'Seattle, USA',
-        duration: 'Feb - Aug, 2025',
-        education: 'BSc/MSc',
-        salary: '6000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '3 years',
-        skills: ['AWS', 'Kubernetes', 'Terraform'],
-        niceToHave: ['Python', 'DevOps'],
-      ),
-      JobCardModel(
-        id: '15',
-        title: 'DevOps Engineer',
-        company: 'Microsoft',
-        location: 'Redmond, USA',
-        duration: 'Apr - Oct, 2025',
-        education: 'BSc/MSc',
-        salary: '5800\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['CI/CD', 'Docker', 'Kubernetes'],
-        niceToHave: ['Terraform', 'AWS'],
-      ),
-      JobCardModel(
-        id: '16',
-        title: 'NLP Researcher',
-        company: 'OpenAI',
-        location: 'San Francisco, USA',
-        duration: 'June - Dec, 2025',
-        education: 'PhD',
-        salary: '9000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '4 years',
-        skills: ['Python', 'NLP', 'Transformers'],
-        niceToHave: ['GPT', 'Llama'],
-      ),
-      JobCardModel(
-        id: '17',
-        title: 'Hardware Engineer',
-        company: 'Intel',
-        location: 'San Jose, USA',
-        duration: 'Mar - Sep, 2025',
-        education: 'BSc/MSc',
-        salary: '4200\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['VHDL', 'FPGA', 'Circuit Design'],
-        niceToHave: ['Embedded C', 'Rust'],
-      ),
-      JobCardModel(
-        id: '18',
-        title: 'Game AI Engineer',
-        company: 'Rockstar Games',
-        location: 'Edinburgh, UK',
-        duration: 'July - Dec, 2025',
-        education: 'BSc/MSc',
-        salary: '5000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '3 years',
-        skills: ['C++', 'AI', 'Game Engines'],
-        niceToHave: ['Unreal Engine', 'Python'],
-      ),
-      JobCardModel(
-        id: '19',
-        title: 'Bioinformatics Engineer',
-        company: 'Moderna',
-        location: 'Cambridge, USA',
-        duration: 'Feb - Aug, 2025',
-        education: 'MSc/PhD',
-        salary: '7000\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '3 years',
-        skills: ['Python', 'Genomics', 'Machine Learning'],
-        niceToHave: ['TensorFlow', 'BioPython'],
-      ),
-      JobCardModel(
-        id: '20',
-        title: 'Embedded Systems Engineer',
-        company: 'NVIDIA',
-        location: 'Santa Clara, USA',
-        duration: 'Jan - July, 2025',
-        education: 'BSc/MSc',
-        salary: '4800\$',
-        languages: 'EN',
-        jobType: 'Full-Time',
-        experience: '2 years',
-        skills: ['C', 'RTOS', 'Embedded C'],
-        niceToHave: ['FPGA', 'MATLAB'],
-      ),
-    ];
-    List<JobCardModel> result = [];
-    for (int i = 0; i < count; i++) {
-      result.add(jobs[(_jobCount + i) % jobs.length]);
+  static void initialize(ProviderContainer container) {
+    _container = container;
+    _encryptionManager = JobApiEncryptionManager();
+    _encryptionManager!.initialize();
+  }
+
+  static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
+    Map<String, dynamic> finalAnswers = {};
+    if (answers == null) {
+      final savedAnswers = await DatabaseManager.getQuestionAnswersMap();
+      if (savedAnswers != null) {
+        finalAnswers = savedAnswers;
+      } else {
+        debugPrint('JobAPI: No answers found in SharedPreferences');
+        return -1;
+      }
+    } else {
+      finalAnswers = answers;
     }
-    _jobCount = (_jobCount + count) % jobs.length;
-    return result;
+    final authState = _container!.read(authProvider);
+    final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+
+    final Future<String> uniqueIdFuture = getUniqueId();
+    final Future<String?>? cvFuture = (withCv == true) ? encodeCvFile() : null;
+
+    final Future<String?> answersJsonFuture = compute<Map<String, dynamic>, String>(
+            (data) => jsonEncode(data), 
+            finalAnswers
+          );
+
+    final results = await Future.wait<dynamic>([
+      uniqueIdFuture,
+      answersJsonFuture,
+      if (cvFuture != null) cvFuture,
+    ]);
+
+    final String uniqueId = results[0] as String;
+    final String? answersJson = results[1] as String?;
+
+    final String? cvAsBase64 = cvFuture != null ? results[2] as String? : null;
+
+    int attempts = 1;
+    while (attempts <= 3)
+    {
+      try {
+        final Map<String, dynamic> userData = {
+          'cv_byte_str_repr': cvAsBase64 ?? '',
+          'answers_to_questions_str': answersJson ?? '',
+          'guest_id': uniqueId,
+          'auth_id': authId ?? '',
+        };
+
+        final String taskId = await _encryptionManager!.encryptedPost<String>(
+          '/upload_cv_and_questions',
+          userData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+        
+        await pollForCompletion(taskId);
+        return 1;
+      } catch (e) {
+        debugPrint('JobAPI: Upload user information API call failed, attempt $attempts / 3, with the error : $e');
+        attempts += 1;
+      }
+    }
+    throw Exception("JobAPI: Upload user information API calls failed, maximum retry attempts excedeed!");
+  }
+
+  static Future<void> pollForCompletion(String taskId) async {
+    int attempts = 0;
+    
+    while (attempts < 40) {
+      try {
+        final Map<String, dynamic> requestData = {
+          'task_id': taskId,
+        };
+        
+        final statusResponse = await _encryptionManager!.encryptedPost<Map<String, dynamic>>(
+          '/is_cv_ready',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+        
+        if (statusResponse.containsKey('status')) {
+          if (statusResponse['status'] == 'error ') {
+            throw ('Processing failed');
+          }
+          if (statusResponse['status'] == 'completed') {
+            return ;
+          }
+        }
+      } catch (e) {
+        throw Exception("There was an error with the task, please try again later.");
+
+      }
+      await Future.delayed(const Duration(seconds: 3));
+      attempts++;
+    }
+    
+    throw Exception('Processing timed out');
+  }
+
+  static Future<List<JobCardModel>> fetchJobs() async {
+    final authState = _container!.read(authProvider);
+    final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+
+    final String uniqueId = await getUniqueId();
+
+    final Map<String, dynamic> requestData = {
+      'guest_id': uniqueId,
+      'auth_id': authId ?? '',
+    };
+
+    int attempts = 1;
+    while (attempts <= 3) 
+    {
+      try {
+        final List<dynamic> jobsData = await _encryptionManager!.encryptedPost<List<dynamic>>(
+          '/recommend',
+          requestData,
+          (responseJson) => jsonDecode(responseJson)
+        );
+
+        if (jobsData.isEmpty) {
+          return [];
+        }
+        return JobCardModel.jobCardModelListFactory(jobsData);
+      } catch (e) {
+        debugPrint('JobAPI: Error fetching recommendations, attempt $attempts / 3, with message : $e');
+        attempts += 1;
+      }
+    }
+    throw Exception('JobAPI: Error fetching recommendations, retries exceeded!');
+  }
+
+  static Future<void> postFeedback(List<JobFeedback> jobFeedbacks) async {
+    try {
+      final authState = _container!.read(authProvider);
+      final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+
+      final String uniqueId = await getUniqueId();
+
+      final Map<String, dynamic> requestData = {
+        'guest_id': uniqueId,
+        'auth_id': authId ?? '',
+        'job_feedbacks': jobFeedbacks.map((feedback) {
+          return {
+            'job_id': feedback.jobId,
+            'feedback': feedback.liked,
+          };
+        }).toList(),
+      };
+
+      await _encryptionManager!.encryptedPost<dynamic>(
+        '/upload_feedback',
+        requestData,
+        (responseJson) => null
+      );
+
+      debugPrint('Feedback posted successfully');
+    } catch (e) {
+      debugPrint('Error posting feedback: $e');
+    }
+  }
+
+  static void dispose() {
+    _encryptionManager?.dispose();
   }
 }

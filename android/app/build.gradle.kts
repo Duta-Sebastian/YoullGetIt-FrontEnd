@@ -14,17 +14,17 @@ plugins {
 
 android {
     namespace = "youllgetit.app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = "29.0.13113456"
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_23
+        targetCompatibility = JavaVersion.VERSION_23
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "23"
     }
 
     defaultConfig {
@@ -35,7 +35,7 @@ android {
         versionName = flutter.versionName
         manifestPlaceholders.putAll(
             mapOf(
-                "auth0Domain" to "dev-noubkiybttkpdcu4.eu.auth0.com",
+                "auth0Domain" to "auth.youllgetit.eu",
                 "auth0Scheme" to "https"
             )
         )

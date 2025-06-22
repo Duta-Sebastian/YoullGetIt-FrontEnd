@@ -10,9 +10,9 @@ import 'package:youllgetit_flutter/services/sync_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncService {
-  static const String SYNC_TASK = "syncTask";
-  static const String SYNC_PERIODIC_TASK = "syncPeriodicTask";
-  static const Duration SYNC_INTERVAL = Duration(minutes: 15);
+  static const String syncTask = "syncTask";
+  static const String syncPeriodicTask = "syncPeriodicTask";
+  static const Duration syncInterval = Duration(minutes: 15);
   
   static final SyncService _instance = SyncService._internal();
   factory SyncService() => _instance;
@@ -80,14 +80,15 @@ class SyncService {
       await cancelSync();
       
       await Workmanager().registerPeriodicTask(
-        SYNC_PERIODIC_TASK,
-        SYNC_TASK,
-        frequency: SYNC_INTERVAL,
+        syncPeriodicTask,
+        syncTask,
+        frequency: syncInterval,
         constraints: Constraints(
           networkType: NetworkType.connected,
         ),
         inputData: {
           'accessToken': authState.credentials!.accessToken,
+          'aesKey': authState.aesKey,
         },
         existingWorkPolicy: ExistingWorkPolicy.replace,
       );
@@ -115,9 +116,10 @@ class SyncService {
     try {
       await Workmanager().registerOneOffTask(
         'manualSync${DateTime.now().millisecondsSinceEpoch}',
-        SYNC_TASK,
+        syncTask,
         inputData: {
           'accessToken': authState.credentials!.accessToken,
+          'aesKey': authState.aesKey,
           'manual': true,
         },
         existingWorkPolicy: ExistingWorkPolicy.replace,
@@ -133,7 +135,7 @@ class SyncService {
   
   Future<void> cancelSync() async {
     try {
-      await Workmanager().cancelByUniqueName(SYNC_PERIODIC_TASK);
+      await Workmanager().cancelByUniqueName(syncPeriodicTask);
       _isSyncScheduled = false;
       debugPrint('SyncService: Sync canceled');
     } catch (e) {
@@ -147,22 +149,29 @@ void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     try {
       switch (taskName) {
-        case SyncService.SYNC_TASK:
+        case SyncService.syncTask:
           debugPrint('SyncService: Background task triggered - $taskName');
           NotificationManager.initializeForBackground();
           final accessToken = inputData?['accessToken'] as String?;
+          final aesKey = inputData?['aesKey'] as String?;
           
           if (accessToken == null || accessToken.isEmpty) {
             debugPrint('SyncService: Missing access token in background task');
             return Future.value(false);
           }
+
+          if (aesKey == null || aesKey.isEmpty) {
+            debugPrint('SyncService: Missing AES key in background task');
+            return Future.value(false);
+          }
+
           await DatabaseManager.init();
 
           List<Future<void>> syncTasks = [];
 
           for (DbTables table in DbTables.values) {
             syncTasks.add(Future<void>(() async {
-              int pullResult = await SyncApi.syncPull(accessToken, table);
+              int pullResult = await SyncApi.syncPull(accessToken, aesKey, table);
               debugPrint('SyncProcessor: Sync pull result for $table: $pullResult');
               
               if (pullResult != 0) {
@@ -177,7 +186,7 @@ void callbackDispatcher() {
                     await NotificationManager.sendJobCartUpdatedSignal();
                     break;
                 }
-                int pushResult = await SyncApi.syncPush(accessToken, table);
+                int pushResult = await SyncApi.syncPush(accessToken, aesKey, table);
                 debugPrint('SyncProcessor: Sync push result: $pushResult');
               }
             }));

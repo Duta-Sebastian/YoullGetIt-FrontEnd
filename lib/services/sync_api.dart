@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart' as crypto;
+import 'package:pointycastle/api.dart';
+import 'package:pointycastle/random/fortuna_random.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
@@ -10,15 +15,84 @@ import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class SyncApi {
-  static const API_BASE_URL = 'https://api1.youllgetit.eu/api/sync';
-  static const API_PULL_URL = '$API_BASE_URL/pull';
-  static const API_PUSH_URL = '$API_BASE_URL/push';
+  static const apiBaseUrl = 'https://api1.youllgetit.eu/api/sync';
+  static const apiPullUrl = '$apiBaseUrl/pull';
+  static const apiPushUrl = '$apiBaseUrl/push';
 
-  static Future<int> syncPull (String accessToken, DbTables dbTable) async {
-    final response = await http.get(Uri.parse("$API_PULL_URL?table=${dbTable.name}"),
+  static List<int> encryptCvData(List<int> cvData, String aesKey) {
+    final secureRandom = FortunaRandom();
+    final seedSource = Random.secure();
+    final seeds = <int>[];
+    for (var i = 0; i < 32; i++) {
+      seeds.add(seedSource.nextInt(255));
+    }
+    secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
+    
+    final iv = Uint8List(16);
+    for (var i = 0; i < 16; i++) {
+      iv[i] = secureRandom.nextUint8();
+    }
+    
+    final keyBytes = _createKeyBytes(aesKey);
+    final keyParam = KeyParameter(keyBytes);
+    
+    final params = ParametersWithIV(keyParam, iv);
+    
+    final BlockCipher paddedCipher = PaddedBlockCipher(
+      "AES/CBC/PKCS7"
+    );
+    paddedCipher.init(true, params);
+
+    final Uint8List inputData = Uint8List.fromList(cvData);
+    
+    final encryptedData = paddedCipher.process(inputData);
+    
+    final result = Uint8List(iv.length + encryptedData.length);
+    result.setRange(0, iv.length, iv);
+    result.setRange(iv.length, result.length, encryptedData);
+    
+    return result.toList();
+  }
+  
+  static List<int> decryptCvData(List<int> encryptedData, String aesKey) {
+    final data = Uint8List.fromList(encryptedData);
+    
+    final iv = data.sublist(0, 16);
+    
+    final encData = data.sublist(16);
+    
+    final keyBytes = _createKeyBytes(aesKey);
+    final keyParam = KeyParameter(keyBytes);
+    
+    final params = ParametersWithIV(keyParam, iv);
+    
+    final BlockCipher paddedCipher = PaddedBlockCipher(
+      "AES/CBC/PKCS7"
+    );
+    paddedCipher.init(false, params);
+    
+    final decryptedData = paddedCipher.process(encData);
+    
+    return decryptedData.toList();
+  }
+  
+  static Uint8List _createKeyBytes(String aesKey) {
+    final Uint8List keyBytes;
+    final utf8Key = utf8.encode(aesKey);
+    
+    if (utf8Key.length == 16 || utf8Key.length == 24 || utf8Key.length == 32) {
+      keyBytes = Uint8List.fromList(utf8Key);
+    } else {
+      keyBytes = Uint8List.fromList(crypto.sha256.convert(utf8Key).bytes);
+    }
+    
+    return keyBytes;
+  }
+
+  static Future<int> syncPull (String accessToken, String aesKey, DbTables dbTable) async {
+    final response = await http.get(Uri.parse("$apiPullUrl?table=${dbTable.name}"),
       headers: {HttpHeaders.authorizationHeader: "Bearer $accessToken"},
     );
-
     if (response.statusCode != 200 && response.statusCode != 204) {
       debugPrint("SyncProcessor: Sync pull ( ${dbTable.name} ) with status code: ${response.statusCode}");
       return 0;
@@ -37,7 +111,9 @@ class SyncApi {
         case DbTables.cv:
             final decodedJson = json.decode(response.body) as List<dynamic>;
             if (decodedJson.isNotEmpty) {
-              decodedJson[0]['cv_data'] = base64Decode(decodedJson[0]['cv_data']);
+              final List<int> encodedData = base64Decode(decodedJson[0]['cv_data']);
+              final List<int> decryptedData = decryptCvData(encodedData, aesKey);
+              decodedJson[0]['cv_data'] = decryptedData;
             }
             var pulledCv = CvModel.fromJson(decodedJson);
             var result = DatabaseManager.updateCV(pulledCv);
@@ -64,7 +140,7 @@ class SyncApi {
     }
   }
 
-  static Future<int> syncPush(String accessToken, DbTables dbTable) async {
+  static Future<int> syncPush(String accessToken, String aesKey, DbTables dbTable) async {
     try {
       String requestBody;
       switch (dbTable) {
@@ -75,9 +151,11 @@ class SyncApi {
             debugPrint("SyncProcessor: No CV data to push");
             return 0;
           }
+
+          final List<int> encryptedCvData = encryptCvData(cvModel.cvData, aesKey);
           
           requestBody = json.encode([{
-            "cv_data": base64Encode(cvModel.cvData),
+            "cv_data": base64Encode(encryptedCvData),
             "last_changed": cvModel.lastChanged.toIso8601String()
           }]);
         case DbTables.auth_user:
@@ -100,11 +178,10 @@ class SyncApi {
             return 0;
           }
           requestBody = JobCardStatusModel.encodeJobCartToJson(jobCart);
-        }
+      }
       
-
       final response = await http.post(
-      Uri.parse("$API_PUSH_URL?table=${dbTable.name}"),
+      Uri.parse("$apiPushUrl?table=${dbTable.name}"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $accessToken",
           HttpHeaders.contentTypeHeader: "application/json",

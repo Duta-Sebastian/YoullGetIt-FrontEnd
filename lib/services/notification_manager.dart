@@ -9,11 +9,11 @@ class NotificationManager {
   static NotificationManager get instance => _instance;
   NotificationManager._();
 
-  static const String USER_UPDATED = 'user_updated';
-  static const String CV_UPDATED = 'cv_updated';
-  static const String JOB_CART_UPDATED = 'job_cart_updated';
+  static const String userUpdated = 'user_updated';
+  static const String cvUpdated = 'cv_updated';
+  static const String jobCartUpdated = 'job_cart_updated';
   
-  static const String BACKGROUND_SIGNAL_PORT = 'background_signal_port';
+  static const String backgroundSignalPort = 'background_signal_port';
   
   final FlutterLocalNotificationsPlugin _notificationsPlugin = FlutterLocalNotificationsPlugin();
   bool _isInitialized = false;
@@ -61,11 +61,11 @@ class NotificationManager {
   void _setupBackgroundMessageHandler() {
     _receivePort = ReceivePort();
     
-    IsolateNameServer.removePortNameMapping(BACKGROUND_SIGNAL_PORT);
+    IsolateNameServer.removePortNameMapping(backgroundSignalPort);
     
     IsolateNameServer.registerPortWithName(
       _receivePort!.sendPort, 
-      BACKGROUND_SIGNAL_PORT
+      backgroundSignalPort
     );
     
     _receivePort!.listen((dynamic message) {
@@ -73,13 +73,13 @@ class NotificationManager {
       
       if (message is String) {
         switch (message) {
-          case USER_UPDATED:
+          case userUpdated:
             _userUpdatedController.add(null);
             break;
-          case CV_UPDATED:
+          case cvUpdated:
             _cvUpdatedController.add(null);
             break;
-          case JOB_CART_UPDATED:
+          case jobCartUpdated:
             _jobCartUpdatedController.add(null);
             break;
           default:
@@ -96,15 +96,15 @@ class NotificationManager {
     debugPrint('NotificationManager: Received notification response with payload: $payload');
     
     switch (payload) {
-      case USER_UPDATED:
+      case userUpdated:
         _userUpdatedController.add(null);
         break;
         
-      case CV_UPDATED:
+      case cvUpdated:
         _cvUpdatedController.add(null);
         break;
         
-      case JOB_CART_UPDATED:
+      case jobCartUpdated:
         _jobCartUpdatedController.add(null);
         break;
         
@@ -119,7 +119,7 @@ class NotificationManager {
     _jobCartUpdatedController.close();
     
     if (_receivePort != null) {
-      IsolateNameServer.removePortNameMapping(BACKGROUND_SIGNAL_PORT);
+      IsolateNameServer.removePortNameMapping(backgroundSignalPort);
       _receivePort!.close();
     }
     
@@ -131,22 +131,22 @@ class NotificationManager {
   }
   
   static Future<void> sendUserUpdatedSignal() async {
-    await _sendSignal(USER_UPDATED, 'User Updated', 'Your profile has been synchronized');
-    _sendIsolateMessage(USER_UPDATED);
+    await _sendSignal(userUpdated, 'User Updated', 'Your profile has been synchronized');
+    _sendIsolateMessage(userUpdated);
   }
   
   static Future<void> sendCvUpdatedSignal() async {
-    await _sendSignal(CV_UPDATED, 'CV Updated', 'Your CV has been synchronized');
-    _sendIsolateMessage(CV_UPDATED);
+    await _sendSignal(cvUpdated, 'CV Updated', 'Your CV has been synchronized');
+    _sendIsolateMessage(cvUpdated);
   }
   
   static Future<void> sendJobCartUpdatedSignal() async {
-    await _sendSignal(JOB_CART_UPDATED, 'Job Cart Updated', 'Your job cart has been synchronized');
-    _sendIsolateMessage(JOB_CART_UPDATED);
+    await _sendSignal(jobCartUpdated, 'Job Cart Updated', 'Your job cart has been synchronized');
+    _sendIsolateMessage(jobCartUpdated);
   }
   
   static void _sendIsolateMessage(String message) {
-    final SendPort? sendPort = IsolateNameServer.lookupPortByName(BACKGROUND_SIGNAL_PORT);
+    final SendPort? sendPort = IsolateNameServer.lookupPortByName(backgroundSignalPort);
     
     if (sendPort != null) {
       sendPort.send(message);

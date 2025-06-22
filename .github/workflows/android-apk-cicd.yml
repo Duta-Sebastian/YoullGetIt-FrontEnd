@@ -1,0 +1,71 @@
+name: Flutter Android CI/CD
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        build-type: 
+          - { name: "appbundle", command: "flutter build appbundle --release", path: "build/app/outputs/bundle/release/app-release.aab", artifact: "android-aab" }
+          - { name: "arm64-v8a", command: "flutter build apk --release --target-platform=android-arm64", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-arm64-v8a" }
+          - { name: "armeabi-v7a", command: "flutter build apk --release --target-platform=android-arm", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-armeabi-v7a" }
+          - { name: "x86_64", command: "flutter build apk --release --target-platform=android-x64", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-x86_64" }
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'oracle'
+        java-version: '23'
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.29.3'
+        channel: 'stable'
+        cache: true
+        cache-key: 'flutter-3.29.3'
+        
+    - name: Cache pub dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pub-cache
+        key: pub-cache-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          pub-cache-
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Accept Android SDK licenses
+      run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+      
+    - name: Setup Android signing
+      run: |
+        echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/app/keystore.jks
+        echo "storeFile=keystore.jks" >> android/key.properties
+        echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
+        echo "storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}" >> android/key.properties
+        echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
+        # Override gradle.properties to use CI Java home
+        sed -i 's|org.gradle.java.home=.*|org.gradle.java.home='$JAVA_HOME'|' android/gradle.properties
+      
+    - name: Build ${{ matrix.build-type.name }}
+      run: ${{ matrix.build-type.command }}
+      
+    - name: Upload ${{ matrix.build-type.name }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.build-type.artifact }}-signed-${{ github.sha }}
+        path: ${{ matrix.build-type.path }}
+        retention-days: 30
