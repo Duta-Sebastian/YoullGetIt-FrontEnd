@@ -151,7 +151,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
               border: Border.all(color: Colors.grey.shade300),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withAlpha((0.1 * 255).toInt()),
                   blurRadius: 4,
                   offset: Offset(0, 2),
                 ),

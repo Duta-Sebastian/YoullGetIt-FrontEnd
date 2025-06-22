@@ -4,9 +4,10 @@ class JobFiltersScreen extends StatefulWidget {
   final String? initialQuery;
   final String? initialLocation;
   final String? initialCompany;
-  final String? initialWorkMode;
-  final String? initialField;
-  final List<String> initialSkills;
+  final List<String>? initialWorkMode;
+  final List<String>? initialField;
+  final List<String>? initialSkills;
+  final List<String>? initialDurations;
 
   const JobFiltersScreen({
     super.key, 
@@ -15,7 +16,8 @@ class JobFiltersScreen extends StatefulWidget {
     this.initialCompany,
     this.initialWorkMode,
     this.initialField,
-    this.initialSkills = const [],
+    this.initialSkills,
+    this.initialDurations,
   });
 
   @override
@@ -27,20 +29,23 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _companyController = TextEditingController();
 
-  String? _selectedWorkMode;
-  String? _selectedField;
+  List<String>       _selectedDurations = [];
+  List<String> _selectedFields = [];
+  List<String> _selectedWorkModes = [];
   List<String> _selectedSkills = [];
 
-  final List<String> _workModeOptions = ['All', 'Remote', 'Hybrid', 'On-site'];
-  final List<String> _fieldOptions = [
-    'All',
-    'Software Development',
-    'Data Science',
-    'Design',
-    'Marketing',
-    'Finance',
-    'Human Resources'
+  final List<String> _workModeOptions = ['Remote', 'Hybrid', 'On-site'];
+  final List<String> _fieldOptions = ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
+                  'Political Science & Public Administration', 'Sales & Business Administration', 
+                  'Arts & Culture', 'Biology, Chemistry, & Life Sciences'];
+  final List<Map<String, dynamic>> _durationOptions = [
+    {'label': '1-3 months', 'icon': Icons.schedule, 'value': '1-3'},
+    {'label': '3-6 months', 'icon': Icons.timer, 'value': '3-6'},
+    {'label': '6-12 months', 'icon': Icons.timer_10, 'value': '6-12'},
+    {'label': '12+ months', 'icon': Icons.timelapse, 'value': '12+'},
   ];
+  // TODO : Add more skills when we know what skills we will use in the questionnaire
+  // For now, we will use a test list of skills
   final List<String> _skillOptions = [
     'Flutter',
     'Dart',
@@ -59,9 +64,24 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _searchController.text = widget.initialQuery ?? '';
     _locationController.text = widget.initialLocation ?? '';
     _companyController.text = widget.initialCompany ?? '';
-    _selectedWorkMode = widget.initialWorkMode;
-    _selectedField = widget.initialField;
-    _selectedSkills = List.from(widget.initialSkills);
+    _selectedFields = widget.initialField != null ? List.from(widget.initialField!) : [];
+    _selectedDurations = widget.initialDurations != null ? List.from(widget.initialDurations!) : [];
+    _selectedSkills = widget.initialSkills != null? List.from(widget.initialSkills!) : [];
+    _selectedWorkModes = widget.initialWorkMode != null? List.from(widget.initialWorkMode!) : [];
+
+    _selectedDurations = [];
+    if (widget.initialDurations != null) {
+      for (String durationValue in widget.initialDurations!) {
+        // Find the label that corresponds to this value
+        final matchingOption = _durationOptions.firstWhere(
+          (option) => option['value'] == durationValue,
+          orElse: () => {},
+        );
+        if (matchingOption.isNotEmpty) {
+          _selectedDurations.add(matchingOption['label']);
+        }
+      }
+    }
   }
 
   @override
@@ -70,6 +90,26 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _locationController.dispose();
     _companyController.dispose();
     super.dispose();
+  }
+
+  void _toggleWorkMode(String mode) {
+    setState(() {
+      if (_selectedWorkModes.contains(mode)) {
+        _selectedWorkModes.remove(mode);
+      } else {
+        _selectedWorkModes.add(mode);
+      }
+    });
+  }
+
+  void _toggleField(String field) {
+    setState(() {
+      if (_selectedFields.contains(field)) {
+        _selectedFields.remove(field);
+      } else {
+        _selectedFields.add(field);
+      }
+    });
   }
 
   void _toggleSkill(String skill) {
@@ -82,26 +122,136 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     });
   }
 
+  void _toggleDuration(String duration) {
+    setState(() {
+      if (_selectedDurations.contains(duration)) {
+        _selectedDurations.remove(duration);
+      } else {
+        _selectedDurations.add(duration);
+      }
+    });
+  }
+
   void _resetFilters() {
     setState(() {
       _searchController.clear();
       _locationController.clear();
       _companyController.clear();
-      _selectedWorkMode = null;
-      _selectedField = null;
+      _selectedWorkModes = [];
+      _selectedFields = [];
+      _selectedDurations = [];
       _selectedSkills = [];
     });
   }
 
   void _applyFilters() {
+    // Convert selected duration labels to API values
+    List<String> durationValues = [];
+    for (String selectedLabel in _selectedDurations) {
+      final selectedOption = _durationOptions.firstWhere(
+        (option) => option['label'] == selectedLabel,
+        orElse: () => {},
+      );
+      if (selectedOption.isNotEmpty) {
+        durationValues.add(selectedOption['value']);
+      }
+    }
+
     Navigator.pop(context, {
-      'query': _searchController.text,
-      'location': _locationController.text,
-      'company': _companyController.text,
-      'workMode': _selectedWorkMode,
-      'field': _selectedField,
-      'skills': _selectedSkills,
+      'query': _searchController.text.trim().isEmpty ? null : _searchController.text.trim(),
+      'location': _locationController.text.trim().isEmpty ? null : _locationController.text.trim(),
+      'company': _companyController.text.trim().isEmpty ? null : _companyController.text.trim(),
+      'workModes': _selectedWorkModes.isEmpty ? null : _selectedWorkModes,
+      'fields': _selectedFields.isEmpty ? null : _selectedFields,
+      'durations': durationValues.isEmpty ? null : durationValues,
+      'skills': _selectedSkills.isEmpty ? null : _selectedSkills,
     });
+  }
+
+  Widget _buildDurationCard(Map<String, dynamic> duration) {
+    final bool isSelected = _selectedDurations.contains(duration['label']);
+    final Color selectedColor = Color(0xFFFFDE15);
+    
+    return GestureDetector(
+      onTap: () => _toggleDuration(duration['label']),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? selectedColor.withAlpha(38) : Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isSelected ? selectedColor : Colors.grey.shade200,
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: isSelected 
+            ? [
+                BoxShadow(
+                  color: selectedColor.withAlpha(51),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : [
+                BoxShadow(
+                  color: Colors.black.withAlpha(13),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isSelected 
+                  ? selectedColor 
+                  : Colors.grey.shade300,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                duration['icon'],
+                color: isSelected ? Colors.black87 : Colors.grey.shade600,
+                size: 24,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Flexible(
+              child: Text(
+                duration['label'],
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                  color: isSelected ? Colors.black87 : Colors.grey.shade700,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (isSelected)
+              Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: selectedColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Text(
+                  'Selected',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -219,6 +369,31 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   
                   const SizedBox(height: 24),
                   
+                  const Text(
+                    'Duration',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemCount: _durationOptions.length,
+                    itemBuilder: (context, index) {
+                      return _buildDurationCard(_durationOptions[index]);
+                    },
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
                   // Field filter
                   const Text(
                     'Field',
@@ -232,20 +407,22 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: _fieldOptions.map((field) {
-                      final bool isSelected = _selectedField == field;
-                      return ChoiceChip(
+                      final bool isSelected = _selectedFields.contains(field);
+                      return FilterChip(
                         label: Text(field),
                         selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            _selectedField = selected ? field : null;
-                          });
-                        },
+                        onSelected: (selected) => _toggleField(field),
                         backgroundColor: Colors.grey.shade100,
-                        selectedColor: Colors.blue.shade100,
+                        selectedColor: Color(0xFFFFDE15).withAlpha(51),
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.blue.shade800 : Colors.black87,
+                          color: isSelected ? Colors.black87 : Colors.grey.shade700,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                        showCheckmark: true,
+                        checkmarkColor: Colors.black87,
+                        side: BorderSide(
+                          color: isSelected ? Color(0xFFFFDE15) : Colors.grey.shade300,
+                          width: isSelected ? 2 : 1,
                         ),
                       );
                     }).toList(),
@@ -266,20 +443,22 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: _workModeOptions.map((mode) {
-                      final bool isSelected = _selectedWorkMode == mode;
-                      return ChoiceChip(
+                      final bool isSelected = _selectedWorkModes.contains(mode);
+                      return FilterChip(
                         label: Text(mode),
                         selected: isSelected,
-                        onSelected: (selected) {
-                          setState(() {
-                            _selectedWorkMode = selected ? mode : null;
-                          });
-                        },
+                        onSelected: (selected) => _toggleWorkMode(mode),
                         backgroundColor: Colors.grey.shade100,
-                        selectedColor: Colors.blue.shade100,
+                        selectedColor: Color(0xFFFFDE15).withAlpha(51),
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.blue.shade800 : Colors.black87,
+                          color: isSelected ? Colors.black87 : Colors.grey.shade700,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                        showCheckmark: true,
+                        checkmarkColor: Colors.black87,
+                        side: BorderSide(
+                          color: isSelected ? Color(0xFFFFDE15) : Colors.grey.shade300,
+                          width: isSelected ? 2 : 1,
                         ),
                       );
                     }).toList(),
@@ -304,17 +483,19 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                       return FilterChip(
                         label: Text(skill),
                         selected: isSelected,
-                        onSelected: (selected) {
-                          _toggleSkill(skill);
-                        },
+                        onSelected: (selected) => _toggleSkill(skill),
                         backgroundColor: Colors.grey.shade100,
-                        selectedColor: Colors.blue.shade100,
+                        selectedColor: Color(0xFFFFDE15).withAlpha(51),
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.blue.shade800 : Colors.black87,
+                          color: isSelected ? Colors.black87 : Colors.grey.shade700,
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                         ),
                         showCheckmark: true,
-                        checkmarkColor: Colors.blue.shade800,
+                        checkmarkColor: Colors.black87,
+                        side: BorderSide(
+                          color: isSelected ? Color(0xFFFFDE15) : Colors.grey.shade300,
+                          width: isSelected ? 2 : 1,
+                        ),
                       );
                     }).toList(),
                   ),

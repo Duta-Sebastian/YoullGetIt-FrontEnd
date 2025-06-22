@@ -10,11 +10,12 @@ class JobSearchAPI {
 
   static Future<JobSearchResponse> searchJobs({
     String? query,
-    String? field,
     String? location,
-    String? workMode,
-    List<String>? skills,
     String? company,
+    List<String>? workModes,
+    List<String>? skills,
+    List<String>? fields,
+    List<String>? durations,
     int page = 1,
     int pageSize = 10,
   }) async {
@@ -23,16 +24,20 @@ class JobSearchAPI {
       'page_size': pageSize.toString(),
     };
     
-    if (field != null && field.isNotEmpty && field != 'All') {
-      queryParams['field'] = field;
+    if (fields != null && fields.isNotEmpty) {
+      queryParams['job_fields'] = fields.join(',');
     }
     
     if (location != null && location.isNotEmpty) {
       queryParams['country'] = location;
     }
     
-    if (workMode != null && workMode.isNotEmpty && workMode != 'All') {
-      queryParams['work_mode'] = workMode;
+    if (workModes != null && workModes.isNotEmpty) {
+      queryParams['work_modes'] = workModes.join(',');
+    }
+
+    if (durations != null && durations.isNotEmpty) {
+      queryParams['durations'] = durations.join(',');
     }
     
     if (company != null && company.isNotEmpty) {
@@ -46,9 +51,10 @@ class JobSearchAPI {
     if (skills != null && skills.isNotEmpty) {
       queryParams['skills'] = skills.join(',');
     }
+    debugPrint('JobSearchAPI: Searching with query params: $queryParams');
     
     final uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
-    
+    debugPrint('JobSearchAPI: Request URI: $uri');
     try {      
       // ADD UTF-8 HEADERS
       final response = await http.get(
@@ -62,6 +68,7 @@ class JobSearchAPI {
       if (response.statusCode == 200) {
         // DECODE WITH UTF-8 EXPLICITLY
         final String responseBody = utf8.decode(response.bodyBytes);
+        debugPrint('JobSearchAPI: Response body: $responseBody');
         final jobs = JobCardModel.jobCardModelListFactory(json.decode(responseBody) as List<dynamic>);
 
         final bool hasMorePages = jobs.length >= pageSize;

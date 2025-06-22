@@ -20,9 +20,10 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   
   String? _location;
   String? _company;
-  String? _workMode;
-  String? _field;
-  List<String> _selectedSkills = [];
+  List<String>_workMode = [];
+  List<String>_field = [];
+  List<String>_selectedSkills = [];
+  List<String>_durations = [];
   
   List<JobCardModel> _jobs = [];
   int _currentPage = 1;
@@ -114,10 +115,11 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
       final response = await JobSearchAPI.searchJobs(
         query: _searchController.text,
         location: _location,
-        workMode: _workMode == 'All' ? null : _workMode,
+        workModes: _workMode.isEmpty ? null : _workMode,
         skills: _selectedSkills.isEmpty ? null : _selectedSkills,
+        fields: _field.isEmpty ? null : _field,
+        durations: _durations.isEmpty ? null : _durations,
         company: _company,
-        field: _field == 'All' ? null : _field,
         page: _currentPage,
         pageSize: 10,
       );
@@ -203,6 +205,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           initialWorkMode: _workMode,
           initialField: _field,
           initialSkills: _selectedSkills,
+          initialDurations: _durations,
         ),
       ),
     );
@@ -212,8 +215,9 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         _searchController.text = result['query'] ?? '';
         _location = result['location'];
         _company = result['company'];
-        _workMode = result['workMode'];
-        _field = result['field'];
+        _workMode = List<String>.from(result['workModes'] ?? []);
+        _field = List<String>.from(result['fields'] ?? []);
+        _durations = List<String>.from(result['durations'] ?? []);
         _selectedSkills = List<String>.from(result['skills'] ?? []);
       });
       
@@ -418,9 +422,10 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                   _searchController.clear();
                   _location = null;
                   _company = null;
-                  _workMode = null;
-                  _field = null;
+                  _workMode = [];
+                  _field = [];
                   _selectedSkills = [];
+                  _durations = [];
                 });
                 
                 // Get current connectivity and reset
