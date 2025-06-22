@@ -16,3 +16,8 @@ Future<void> setFirstTimeOpening() async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setBool('first_time', false);
 }
+
+Future<void> resetFirstTimeOpening() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('first_time', true);
+}

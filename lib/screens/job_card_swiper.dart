@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
@@ -75,9 +75,9 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
+              CircularProgressIndicator(color: Colors.amber,),
               SizedBox(height: 20),
-              Text("Loading job recommendations...")
+              Text("Loading job recommendations...", selectionColor: Colors.amber,)
             ],
           ),
         ),
@@ -99,12 +99,12 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: Row(
                 children: [
-                  Icon(Icons.wifi_off, size: 16, color: Colors.amber.shade800),
+                  Icon(Icons.wifi_off, size: 16, color: const Color.fromRGBO(252, 245, 203, 1)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       "You're offline. Some features may be limited.",
-                      style: TextStyle(fontSize: 12, color: Colors.amber.shade800),
+                      style: TextStyle(fontSize: 12, color: const Color.fromRGBO(252, 245, 203, 1)),
                     ),
                   ),
                 ],

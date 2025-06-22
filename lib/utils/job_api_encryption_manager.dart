@@ -110,7 +110,7 @@ class JobApiEncryptionManager {
     });
   }
 
-  Future<RSAPublicKey> getServerPublicKey({bool forceRefresh = false}) async {
+  Future<RSAPublicKey?> getServerPublicKey({bool forceRefresh = false}) async {
     if (_serverPublicKey != null && !forceRefresh) {
       return _serverPublicKey!;
     }
@@ -126,24 +126,34 @@ class JobApiEncryptionManager {
     _fetchingKeyCompleter = Completer<void>();
 
     try {
-      final response = await _client.get(Uri.parse('$_baseUrl/public-key'));
+      final response = await _client.get(
+        Uri.parse('$_baseUrl/public-key'),
+        headers: {
+          'Accept': 'application/json; charset=utf-8',
+        },
+      );
       
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final responseBody = utf8.decode(response.bodyBytes);
+        final data = jsonDecode(responseBody);
         final modulus = BigInt.parse(data['modulus'], radix: 16);
         final exponent = BigInt.from(data['exponent']);
         
         _serverPublicKey = RSAPublicKey(modulus, exponent);
       } else {
-        throw Exception('Failed to load public key: ${response.statusCode}');
+        debugPrint('Failed to load public key: ${response.statusCode}');
       }
-    } finally {
+    
+    } catch (e){
+        debugPrint('Error encountered while trying to connect to the api server: $e');
+    }
+    finally {
       _fetchingKey = false;
       _fetchingKeyCompleter?.complete();
       _fetchingKeyCompleter = null;
     }
     
-    return _serverPublicKey!;
+    return _serverPublicKey;
   }
 
   Uint8List generateAesKey() {
@@ -203,7 +213,7 @@ class JobApiEncryptionManager {
   
   Future<String> encryptAesKey(Uint8List aesKey) async {
     final publicKey = await getServerPublicKey();
-    
+    if (publicKey == null) throw Exception("Server's public key not found");
     final cipher = OAEPEncoding.withSHA256(RSAEngine())
       ..init(true, PublicKeyParameter<RSAPublicKey>(publicKey));
     
@@ -268,10 +278,11 @@ class JobApiEncryptionManager {
     final encryptedPayload = await encryptData(jsonData);
     
     final String? clientPublicKeyJson = getClientPublicKeyAsJson();
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      if (clientPublicKeyJson != null) 'X-Client-Public-Key': clientPublicKeyJson,
-    };
+  final Map<String, String> headers = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Accept': 'application/json; charset=utf-8',
+    if (clientPublicKeyJson != null) 'X-Client-Public-Key': clientPublicKeyJson,
+  };
     
     final response = await _client.post(
       Uri.parse('$_baseUrl$endpoint'),
@@ -280,7 +291,8 @@ class JobApiEncryptionManager {
     );
     
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
+      final responseBody = utf8.decode(response.bodyBytes);
+      final responseData = jsonDecode(responseBody);
       
       if (responseData is Map<String, dynamic> && 
           responseData.containsKey('encrypted_data') && 

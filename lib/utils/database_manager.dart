@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
@@ -43,9 +43,41 @@ class DatabaseManager {
             PRIMARY KEY (cv_data, last_changed)
           )
         ''');
+
+        await db.execute('''
+          CREATE TABLE question_answers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            answers_json TEXT NOT NULL,
+            last_changed DATETIME NOT NULL
+          )
+        ''');
       },
     );
     _database = db;
+  }
+
+  static Future<Map<String, int>> deleteAllDataWithTransaction() async {
+  try {
+      late Map<String, int> results;
+      
+      await _database.transaction((txn) async {
+        final jobsDeleted = await txn.delete('jobs');
+        final usersDeleted = await txn.delete('user');
+        final cvsDeleted = await txn.delete('cv');
+        final questionAnswersDeleted = await txn.delete('question_answers');
+        
+        results = {
+          'jobs': jobsDeleted,
+          'users': usersDeleted,
+          'cvs': cvsDeleted,
+          'question_answers': questionAnswersDeleted,
+        };
+      });
+      
+      return results;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Future<void> close() async {
@@ -58,7 +90,7 @@ class DatabaseManager {
     return List.generate(maps.length, (index) {
       final jsonData = jsonDecode(maps[index]['job_data']);
       return JobCardStatusModel(
-        jobId: maps[index]['id'],
+        feedbackId: maps[index]['id'],
         jobCard: JobCardModel.fromJson(jsonData),
         status: JobStatusExtension.fromString(maps[index]['status']),
         lastChanged: DateTime.parse(maps[index]['last_changed']).toUtc(),
@@ -69,7 +101,7 @@ class DatabaseManager {
   static Future<int> insertJobCard(JobCardModel jobCard) async {
     final jsonString = jsonEncode(jobCard.toJson());
     return await _database.insert('jobs', {
-      'id': jobCard.id,
+      'id': jobCard.feedbackId,
       'job_data': jsonString,
       'last_changed': DateTime.now().toUtc().toIso8601String(),
       'status': "liked"
@@ -187,7 +219,7 @@ class DatabaseManager {
     
     int syncedCount = 0;
     
-    final List<String> jobIds = jobCart.map((job) => job.jobCard.id).toList();
+    final List<String> jobIds = jobCart.map((job) => job.jobCard.feedbackId).toList();
     
     final List<Map<String, dynamic>> existingJobs = await _database.query(
       'jobs',
@@ -200,7 +232,7 @@ class DatabaseManager {
     };
     await _database.transaction((txn) async {
       for (var jobCardStatus in jobCart) {
-        final String jobId = jobCardStatus.jobCard.id;
+        final String jobId = jobCardStatus.jobCard.feedbackId;
         if (!existingJobsMap.containsKey(jobId)) {
           final jsonString = jsonEncode(jobCardStatus.jobCard.toJson());
           await txn.insert('jobs', {
@@ -237,5 +269,47 @@ class DatabaseManager {
     });
     
     return syncedCount;
+  }
+
+  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers) async {
+    final answersJson = jsonEncode(answers);
+
+    await _database.delete('question_answers');
+    
+    return await _database.insert('question_answers', {
+      'answers_json': answersJson,
+      'last_changed': DateTime.now().toUtc().toIso8601String(),
+    });
+  }
+
+  static Future<Map<String, dynamic>?> getQuestionAnswersMap() async {
+    final results = await _database.query(
+      'question_answers',
+      orderBy: 'last_changed DESC',
+      limit: 1,
+    );
+
+    if (results.isEmpty) {
+      return null;
+    }
+
+    final answersJson = results.first['answers_json'] as String;
+    final Map<String, dynamic> decodedMap = jsonDecode(answersJson) as Map<String, dynamic>;
+
+    return decodedMap;
+  }
+
+  static Future<List<MapEntry<String, dynamic>>?> getQuestionAnswers() async {
+    final decodedMap = await getQuestionAnswersMap();
+    if (decodedMap == null) {
+      return null;
+    }
+    final entries = decodedMap.entries.toList();
+
+    return entries;
+  }
+
+  static Future<int> deleteQuestionAnswers() async {
+    return await _database.delete('question_answers');
   }
 }

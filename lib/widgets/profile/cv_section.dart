@@ -112,6 +112,24 @@ class CVUploadSectionState extends State<CVUploadSection> {
     }
   }
 
+  // New method for editing/replacing CV directly
+  Future<void> _editCV() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+
+      if (result != null && result.files.single.path != null) {
+        await _savePDF(File(result.files.single.path!));
+        _showSnackBar('CV updated successfully');
+      }
+    } catch (e) {
+      debugPrint('Error updating CV: $e');
+      _showSnackBar('Failed to update CV: $e');
+    }
+  }
+
   Future<void> _savePDF(File sourceFile) async {
     try {
       // Read the PDF file
@@ -259,17 +277,33 @@ class CVUploadSectionState extends State<CVUploadSection> {
                 border: Border.all(color: Colors.black, width: 0.5),
               ),
               child: _cvFile != null && _cvFile!.path.toLowerCase().endsWith('.pdf')
-                ? SfPdfViewer.file(_cvFile!)
+                ? SfPdfViewer.file(
+                    _cvFile!,
+                    scrollDirection: PdfScrollDirection.horizontal,
+                    canShowPageLoadingIndicator: false,
+                    canShowPaginationDialog: false,
+                    canShowSignaturePadDialog: false,
+                    canShowScrollHead: false,
+                    canShowScrollStatus: false,
+                  )
                 : Text('Document preview not supported'),
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            icon: Icon(Icons.create),
-            onPressed: () => _removeCV(),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.blue),
+              onPressed: _editCV,
+              tooltip: 'Replace CV',
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: _removeCV,
+              tooltip: 'Delete CV',
+            ),
+          ],
         ),
       ],
     );

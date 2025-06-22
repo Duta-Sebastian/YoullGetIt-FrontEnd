@@ -26,7 +26,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final Auth0 auth0;
 
   AuthNotifier() 
-    : auth0 = Auth0('dev-noubkiybttkpdcu4.eu.auth0.com', 'cC4B6I0iUEzZnHr0geeWePJyapl0Ghm3'),
+    : auth0 = Auth0('auth.youllgetit.eu', 'cC4B6I0iUEzZnHr0geeWePJyapl0Ghm3'),
       super(AuthState()) {
     initialize();
   }

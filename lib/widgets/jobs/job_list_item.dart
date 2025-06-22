@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
 
@@ -24,8 +24,13 @@ class JobListItem extends StatelessWidget {
   }
 
   Widget _buildJobCard(BuildContext context) {
-    // Get match score (for demonstration purposes)
-    final int matchScore = (job.matchScore * 100).toInt();
+    // Removed match score for now
+    // This can be uncommented if match score is needed in the future
+    // int? matchScore;
+
+    // if (job.matchScore != null) {
+    //   matchScore = (job.matchScore! * 100).toInt();
+    // }
     
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -94,7 +99,7 @@ class JobListItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              job.title,
+                              job.roleName,
                               style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
@@ -110,14 +115,14 @@ class JobListItem extends StatelessWidget {
                                 Icon(
                                   Icons.business_center_outlined,
                                   size: 14,
-                                  color: Colors.grey.shade600,
+                                  color: const Color(0xFF6B7280),
                                 ),
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    job.company,
+                                    job.companyName,
                                     style: TextStyle(
-                                      color: Colors.grey.shade700,
+                                      color: const Color(0xFF6B7280),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -163,33 +168,35 @@ class JobListItem extends StatelessWidget {
                   
                   const SizedBox(height: 16),
                   
-                  // Match score badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: _getScoreColor(matchScore),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.bolt,
-                          size: 14,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "Match Score: $matchScore%",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Hide match score for now
+                  // Uncomment if needed in the future
+                  // if (matchScore != null)
+                  //   Container(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  //     decoration: BoxDecoration(
+                  //       color: _getScoreColor(matchScore),
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       children: [
+                  //         const Icon(
+                  //           Icons.bolt,
+                  //           size: 14,
+                  //           color: Colors.white,
+                  //         ),
+                  //         const SizedBox(width: 4),
+                  //         Text(
+                  //           "Match Score: $matchScore%",
+                  //           style: const TextStyle(
+                  //             fontSize: 12,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
                   
                   const SizedBox(height: 16),
                   const Divider(height: 1),
@@ -217,8 +224,8 @@ class JobListItem extends StatelessWidget {
           icon: const Icon(Icons.visibility_outlined, size: 16),
           label: const Text('View Details'),
           style: OutlinedButton.styleFrom(
-            foregroundColor: Colors.grey.shade700,
-            side: BorderSide(color: Colors.grey.shade300),
+            foregroundColor: const Color(0xFF6B7280),
+            side: BorderSide(color: const Color(0xFFD1D5DB)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -249,8 +256,8 @@ class JobListItem extends StatelessWidget {
             },
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
             style: IconButton.styleFrom(
-              backgroundColor: Colors.grey.shade100,
-              foregroundColor: Colors.grey.shade700,
+              backgroundColor: const Color(0xFFF3F4F6),
+              foregroundColor: const Color(0xFF6B7280),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -296,64 +303,64 @@ class JobListItem extends StatelessWidget {
   Color _getBorderColor() {
     switch (jobStatus) {
       case JobStatus.liked:
-        return Colors.amber.shade300;
+        return const Color(0xFFFBBF24);
       case JobStatus.toApply:
-        return Colors.blue.shade300;
+        return const Color(0xFF3B82F6);
       case JobStatus.applied:
-        return Colors.green.shade300;
+        return const Color(0xFF22C55E);
       default:
-        return Colors.grey.shade300;
+        return const Color(0xFFD1D5DB);
     }
   }
 
   Color _getGradientColor() {
     switch (jobStatus) {
       case JobStatus.liked:
-        return Colors.amber;
+        return const Color(0xFFFBBF24);
       case JobStatus.toApply:
-        return Colors.blue;
+        return const Color(0xFF3B82F6);
       case JobStatus.applied:
-        return Colors.green;
+        return const Color(0xFF22C55E);
       default:
-        return Colors.grey;
+        return const Color(0xFFD1D5DB);
     }
   }
 
   Color _getActionButtonColor() {
     switch (jobStatus) {
       case JobStatus.liked:
-        return Colors.blue;
+        return const Color(0xFF3B82F6);
       case JobStatus.toApply:
-        return Colors.green;
+        return const Color(0xFF22C55E);
       case JobStatus.applied:
-        return Colors.grey;
+        return const Color(0xFFD1D5DB);
       default:
-        return Colors.grey;
+        return const Color(0xFFD1D5DB);
     }
   }
 
-  Color _getScoreColor(int score) {
-    if (score >= 90) {
-      return Colors.green.shade600;
-    } else if (score >= 80) {
-      return Colors.teal.shade500;
-    } else if (score >= 70) {
-      return Colors.amber.shade600;
-    } else {
-      return Colors.grey.shade500;
-    }
-  }
+  // Color _getScoreColor(int score) {
+  //   if (score >= 90) {
+  //     return const Color(0xFF22C55E);
+  //   } else if (score >= 80) {
+  //     return const Color(0xFF3B82F6);
+  //   } else if (score >= 70) {
+  //     return const Color(0xFFFBBF24);
+  //   } else {
+  //     return const Color(0xFFEF4444);
+  //   }
+  // }
 
   Color _getStatusColor() {
     switch (jobStatus) {
       case JobStatus.liked:
-        return Colors.amber.shade500;
+        return const Color(0xFFFBBF24);
       case JobStatus.toApply:
-        return Colors.blue.shade500;
+        return const Color(0xFF3B82F6);
       case JobStatus.applied:
-        return Colors.green.shade500;
+        return const Color(0xFF22C55E);
       default:
-        return Colors.grey.shade500;
+        return const Color(0xFFD1D5DB);
     }
   }
 

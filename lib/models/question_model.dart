@@ -4,6 +4,7 @@ enum AnswerType {
   chips,
   radio,
   languages,
+  restrictedChips,
 }
 
 class Question {

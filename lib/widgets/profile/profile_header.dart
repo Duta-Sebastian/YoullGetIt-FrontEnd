@@ -27,6 +27,7 @@ class ProfileHeader extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SettingsPage(
+                      currentUsername: username,
                       onUsernameChanged: onUsernameChanged,
                     ),
                   ),

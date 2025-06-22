@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 
 class JobCardStatusModel {
-  final String jobId;
+  final String feedbackId;
   final JobCardModel jobCard;
   final JobStatus status;
   final DateTime? lastChanged;
   final bool isDeleted;
 
   JobCardStatusModel({
-    required this.jobId,
+    required this.feedbackId,
     required this.jobCard,
     required this.status,
     this.lastChanged,
@@ -23,7 +23,7 @@ class JobCardStatusModel {
     final Map<String, dynamic> jobData = jsonDecode(jobDataStr);
     final JobCardModel jobCardObj = JobCardModel.fromJson(jobData);
     return JobCardStatusModel(
-      jobId: json['job_id'],
+      feedbackId: json['feedback_id'],
       jobCard: jobCardObj,
       status: JobStatusExtension.fromString(json['status']),
       lastChanged: json['last_changed'] != null 
@@ -47,7 +47,7 @@ class JobCardStatusModel {
 
   static String encodeJobCartToJson(List<JobCardStatusModel> jobCart) {
     List<Map<String, dynamic>> jobRecords = jobCart.map((job) => {
-      'job_id': job.jobCard.id,
+      'id': job.jobCard.feedbackId,
       'job_data': jsonEncode(job.jobCard.toJson()),
       'last_changed': job.lastChanged?.toUtc().toIso8601String() ?? DateTime.now().toUtc().toIso8601String(),
       'status': job.status.name,

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/models/job_card_model.dart';
+import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
@@ -65,14 +65,14 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
     });
   }
 
-  String getTabTitle(int index) {
+  String getTabTitle(int index, int jobCount) {
     switch (index) {
       case 0:
-        return 'potential opportunities';
+        return 'potential opportunitie${jobCount > 1 ? 's' : ''}';
       case 1:
-        return 'applications remaining';
+        return 'application${jobCount > 1 ? 's' : ''} remaining';
       case 2:
-        return 'applications completed';
+        return 'applications${jobCount > 1 ? 's' : ''} completed';
       default:
         return '';
     }
@@ -89,7 +89,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
         allJobs = jobs.map((e) => e.jobCard).toList();
         jobStatuses.clear();
         for (var job in jobs) {
-          jobStatuses[job.jobCard.id] = job.status;
+          jobStatuses[job.jobCard.feedbackId] = job.status;
         }
         jobCount = allJobs.length;
         _isLoading = false;
@@ -100,8 +100,8 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
 
   void _handleStatusChanged(JobCardModel job, JobStatus newStatus) {
     setState(() {
-      jobStatuses[job.id] = newStatus;
-      DatabaseManager.updateJobStatus(job.id, newStatus);
+      jobStatuses[job.feedbackId] = newStatus;
+      DatabaseManager.updateJobStatus(job.feedbackId, newStatus);
     });
   }
 
@@ -109,19 +109,19 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
     final previousStatus = status;
     
     Future(() async {
-      await DatabaseManager.deleteJob(job.id);
+      await DatabaseManager.deleteJob(job.feedbackId);
       _loadJobs();
     });
     
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.white,
-        content: Text('${job.title} removed'),
+        content: Text('${job.roleName} removed'),
         action: SnackBarAction(
           label: 'UNDO',
           onPressed: () {
             DatabaseManager.insertJobCard(job);
-            DatabaseManager.updateJobStatus(job.id, previousStatus);
+            DatabaseManager.updateJobStatus(job.feedbackId, previousStatus);
             _loadJobs();
           },
         ),
@@ -134,18 +134,18 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
     );
     
     setState(() {
-      jobStatuses.remove(job.id);
+      jobStatuses.remove(job.feedbackId);
     });
   }
 
   List<JobCardModel> _getFilteredJobs() {
     switch (_selectedIndex) {
       case 0:
-        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.liked).toList();
+        return allJobs.where((job) => jobStatuses[job.feedbackId] == JobStatus.liked).toList();
       case 1:
-        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.toApply).toList();
+        return allJobs.where((job) => jobStatuses[job.feedbackId] == JobStatus.toApply).toList();
       case 2:
-        return allJobs.where((job) => jobStatuses[job.id] == JobStatus.applied).toList();
+        return allJobs.where((job) => jobStatuses[job.feedbackId] == JobStatus.applied).toList();
       default:
         return [];
     }
@@ -197,7 +197,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
                     child: JobList(
                       jobs: filteredJobs,
                       jobStatuses: Map.fromEntries(
-                        filteredJobs.map((job) => MapEntry(job.id, jobStatuses[job.id]!))
+                        filteredJobs.map((job) => MapEntry(job.feedbackId, jobStatuses[job.feedbackId]!))
                       ),
                       onJobRemoved: _handleRemove,
                       onStatusChanged: _handleStatusChanged,
@@ -260,7 +260,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        getTabTitle(_selectedIndex),
+                        getTabTitle(_selectedIndex, filteredJobs.length),
                         style: TextStyle(
                           fontSize: 16,
                           color: _getTabColor(),
