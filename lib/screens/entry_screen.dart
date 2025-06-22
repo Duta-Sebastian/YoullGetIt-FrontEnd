@@ -215,7 +215,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> {
     return ElevatedButton(
       onPressed: _isFormValid ? _handleContinuePressed : null,
       style: ElevatedButton.styleFrom(
-        backgroundColor: _isFormValid ? const Color(0xFFB8A00D) : Colors.grey,
+        backgroundColor: _isFormValid ? const Color(0xFFFFDE15) : Colors.grey,
         foregroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 16),
         shape: RoundedRectangleBorder(

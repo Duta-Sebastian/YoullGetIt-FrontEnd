@@ -1,6 +1,7 @@
-// widgets/restricted_chips_widget.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class RestrictedChipsWidget extends StatefulWidget {
   final Question question;
@@ -22,6 +23,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
   late TextEditingController _searchController;
   late FocusNode _focusNode;
   List<String> _filteredOptions = [];
+  List<String> _filteredTranslations = [];
   bool _showDropdown = false;
 
   @override
@@ -41,6 +43,13 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize filtered options with translations after context is available
+    _updateFilteredOptions('');
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _focusNode.dispose();
@@ -50,13 +59,28 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
   void _updateFilteredOptions(String query) {
     if (widget.question.options == null) return;
     
+    final l10n = AppLocalizations.of(context)!;
+    final translatedOptions = QuestionTranslationService.getTranslatedOptions(
+      widget.question.id, 
+      widget.question.options!, 
+      l10n
+    );
+    
     setState(() {
       if (query.isEmpty) {
         _filteredOptions = List.from(widget.question.options!);
+        _filteredTranslations = List.from(translatedOptions);
       } else {
-        _filteredOptions = widget.question.options!
-            .where((option) => option.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        final filteredIndices = <int>[];
+        for (int i = 0; i < translatedOptions.length; i++) {
+          if (translatedOptions[i].toLowerCase().contains(query.toLowerCase()) ||
+              widget.question.options![i].toLowerCase().contains(query.toLowerCase())) {
+            filteredIndices.add(i);
+          }
+        }
+        
+        _filteredOptions = filteredIndices.map((i) => widget.question.options![i]).toList();
+        _filteredTranslations = filteredIndices.map((i) => translatedOptions[i]).toList();
       }
       _showDropdown = _filteredOptions.isNotEmpty;
     });
@@ -85,15 +109,30 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
       _showDropdown = !_showDropdown;
       if (_showDropdown) {
         _updateFilteredOptions(_searchController.text);
-        // Don't auto-focus when using the arrow button
       } else {
         _focusNode.unfocus();
       }
     });
   }
 
+  String _getDisplayText(String originalChoice) {
+    final l10n = AppLocalizations.of(context)!;
+    if (widget.question.options?.contains(originalChoice) == true) {
+      final index = widget.question.options!.indexOf(originalChoice);
+      final translatedOptions = QuestionTranslationService.getTranslatedOptions(
+        widget.question.id, 
+        widget.question.options!, 
+        l10n
+      );
+      return translatedOptions[index];
+    }
+    return originalChoice;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final hintText = QuestionTranslationService.getTranslatedHintText(widget.question.id, l10n);
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final screenHeight = MediaQuery.of(context).size.height;
     final availableHeight = screenHeight - keyboardHeight - 200;
@@ -117,10 +156,10 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
               controller: _searchController,
               focusNode: _focusNode,
               decoration: InputDecoration(
-                hintText: 'Search options...',
+                hintText: hintText,
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.all(12.0),
-                prefixIcon: Icon(Icons.search),
+                contentPadding: const EdgeInsets.all(12.0),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _showDropdown ? Icons.expand_less : Icons.expand_more,
@@ -144,7 +183,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
         if (_showDropdown)
           Container(
             height: dropdownHeight,
-            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            margin: const EdgeInsets.symmetric(horizontal: 16.0),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -153,14 +192,14 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
                 BoxShadow(
                   color: Colors.black.withAlpha((0.1 * 255).toInt()),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             child: _filteredOptions.isEmpty
                 ? Center(
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Text(
                         _searchController.text.isNotEmpty 
                             ? 'No matches found'
@@ -173,60 +212,63 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
                 : ListView.builder(
                     itemCount: _filteredOptions.length,
                     itemBuilder: (context, index) {
-                      final option = _filteredOptions[index];
-                      final isSelected = widget.selectedChoices.contains(option);
+                      final originalOption = _filteredOptions[index];
+                      final translatedOption = _filteredTranslations[index];
+                      final isSelected = widget.selectedChoices.contains(originalOption);
                       
                       return Container(
                         decoration: BoxDecoration(
-                          color: isSelected ? Colors.amber.shade100 : Colors.white,
+                          color: isSelected ? const Color(0xFFFFDE15).withOpacity(0.3) : Colors.white,
                           border: Border(
                             bottom: BorderSide(color: Colors.grey.shade200),
                           ),
                         ),
                         child: ListTile(
                           dense: true,
-                          title: Text(option),
+                          title: Text(translatedOption),
                           trailing: isSelected 
-                              ? Icon(Icons.check, color: Colors.amber) 
+                              ? const Icon(Icons.check, color: Color(0xFFFFDE15)) 
                               : null,
-                          onTap: () => _toggleChoice(option),
+                          onTap: () => _toggleChoice(originalOption),
                         ),
                       );
                     },
                   ),
           ),
 
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
 
         // Selected chips
         if (widget.selectedChoices.isNotEmpty)
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
-              children: widget.selectedChoices.map((option) {
+              children: widget.selectedChoices.map((originalChoice) {
+                final displayText = _getDisplayText(originalChoice);
+                
                 return Container(
                   decoration: BoxDecoration(
-                    color: Colors.amber,
+                    color: const Color(0xFFFFDE15),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        option,
-                        style: TextStyle(
+                        displayText,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       GestureDetector(
-                        onTap: () => _removeChip(option),
-                        child: Icon(
+                        onTap: () => _removeChip(originalChoice),
+                        child: const Icon(
                           Icons.close,
                           size: 16,
                           color: Colors.black,
@@ -241,7 +283,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
 
         if (widget.selectedChoices.isEmpty)
           Container(
-            padding: EdgeInsets.all(24.0),
+            padding: const EdgeInsets.all(24.0),
             child: Text(
               'No items selected',
               style: TextStyle(
@@ -253,7 +295,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
 
         // Add some bottom padding when keyboard is visible
         if (keyboardHeight > 0)
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
       ],
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 
@@ -98,6 +100,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
 
   bool _validateCurrentAnswer() {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    
     if ((answersMap[currentQuestion.text] ?? []).isEmpty && // Use text instead of ID
         currentQuestion.answerType != AnswerType.text) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -256,31 +259,36 @@ class QuestionWrapperState extends State<QuestionWrapper> {
   }
 
   Widget _buildPreviousButton() {
+    final l10n = AppLocalizations.of(context)!;
     return NeumorphicButton(
       onPressed: _goToPreviousQuestion,
       style: NeumorphicStyle(
-        color: Colors.amber.shade600,
+        color: const Color(0xFFFFDE15),
         depth: 5,
         intensity: 0.5,
         boxShape: NeumorphicBoxShape.roundRect(
           BorderRadius.circular(8),
         ),
       ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         child: Text(
-          "Previous",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          l10n.questionsPrevious,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
       ),
     );
   }
 
   Widget _buildNextButton() {
+    final l10n = AppLocalizations.of(context)!;
     return NeumorphicButton(
       onPressed: _goToNextQuestion,
       style: NeumorphicStyle(
-        color: Colors.amber.shade600,
+        color: const Color(0xFFFFDE15),
         depth: 5,
         intensity: 0.5,
         boxShape: NeumorphicBoxShape.roundRect(
@@ -290,7 +298,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
         child: Text(
-          _isLastQuestion() ? "Finish" : "Next",
+          _isLastQuestion() ? l10n.questionsFinish : l10n.questionsNext,
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -303,9 +311,14 @@ class QuestionWrapperState extends State<QuestionWrapper> {
   @override
   Widget build(BuildContext context) {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    final l10n = AppLocalizations.of(context)!;
+    final translatedQuestionText = QuestionTranslationService.getTranslatedQuestionText(
+      currentQuestion.id, 
+      l10n
+    );
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onQuestionTextUpdated(currentQuestion.text);
+      widget.onQuestionTextUpdated(translatedQuestionText);
       
       if (currentQuestion.rootQuestionId == currentQuestion.id) {
         _recomputeNavigationStackFromRoot(currentQuestion.id);

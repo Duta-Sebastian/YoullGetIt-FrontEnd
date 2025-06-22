@@ -1,5 +1,7 @@
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class TextWidget extends StatefulWidget {
   final Question question;
@@ -66,6 +68,9 @@ class TextWidgetState extends State<TextWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final hintText = QuestionTranslationService.getTranslatedHintText(widget.question.id, l10n);
+
     return FractionallySizedBox(
       widthFactor: 0.9,
       child: Neumorphic(
@@ -79,10 +84,10 @@ class TextWidgetState extends State<TextWidget> {
         child: TextField(
           controller: _controller,
           textAlign: TextAlign.center,
-          decoration: const InputDecoration(
-            hintText: 'Type your answer here',
+          decoration: InputDecoration(
+            hintText: hintText,
             border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(
+            contentPadding: const EdgeInsets.symmetric(
               vertical: 12.0,
               horizontal: 10.0,
             ),

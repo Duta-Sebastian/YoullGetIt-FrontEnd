@@ -46,6 +46,9 @@ jobs:
         
     - name: Get dependencies
       run: flutter pub get
+
+    - name: Generate localizations
+      run: flutter gen-l10n
       
     - name: Accept Android SDK licenses
       run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses

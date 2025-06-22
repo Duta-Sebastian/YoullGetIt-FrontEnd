@@ -1,5 +1,7 @@
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class RadioWidget extends StatefulWidget {
   final Question question;
@@ -97,6 +99,15 @@ class RadioWidgetState extends State<RadioWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final translatedOptions = QuestionTranslationService.getTranslatedOptions(
+      widget.question.id, 
+      widget.question.options ?? [], 
+      l10n
+    );
+    final hintText = QuestionTranslationService.getTranslatedHintText(widget.question.id, l10n);
+    final otherHint = QuestionTranslationService.getOtherFieldHint(widget.question.id, l10n);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,7 +116,7 @@ class RadioWidgetState extends State<RadioWidget> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              'Select one option',
+              hintText,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[600],
@@ -113,18 +124,21 @@ class RadioWidgetState extends State<RadioWidget> {
               ),
             ),
           ),
-        ...(widget.question.options ?? []).map(
-          (option) => Padding(
+        ...List.generate(translatedOptions.length, (index) {
+          final originalOption = widget.question.options![index];
+          final translatedOption = translatedOptions[index];
+          
+          return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: FractionallySizedBox(
               widthFactor: 0.9,
               child: NeumorphicButton(
                 onPressed: () {
-                  _selectChoice(option);
+                  _selectChoice(originalOption);
                 },
                 style: NeumorphicStyle(
-                  color: widget.selectedChoices.contains(option)
-                      ? Colors.amber.shade600
+                  color: widget.selectedChoices.contains(originalOption)
+                      ? const Color(0xFFFFDE15)
                       : Colors.white,
                   depth: 5,
                   intensity: 0.5,
@@ -137,23 +151,23 @@ class RadioWidgetState extends State<RadioWidget> {
                   child: Row(
                     children: [
                       Icon(
-                        widget.selectedChoices.contains(option)
+                        widget.selectedChoices.contains(originalOption)
                             ? Icons.radio_button_checked
                             : Icons.radio_button_unchecked,
-                        color: widget.selectedChoices.contains(option)
-                            ? Colors.white
+                        color: widget.selectedChoices.contains(originalOption)
+                            ? Colors.black
                             : Colors.grey[600],
                         size: 20,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          option,
+                          translatedOption,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: widget.selectedChoices.contains(option)
-                                ? Colors.white
+                            color: widget.selectedChoices.contains(originalOption)
+                                ? Colors.black
                                 : Colors.black,
                           ),
                         ),
@@ -163,8 +177,8 @@ class RadioWidgetState extends State<RadioWidget> {
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
         if (widget.question.hasOtherField)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -173,7 +187,7 @@ class RadioWidgetState extends State<RadioWidget> {
               child: Neumorphic(
                 style: NeumorphicStyle(
                   color: otherText?.isNotEmpty == true
-                      ? Colors.amber.shade600
+                      ? const Color(0xFFFFDE15)
                       : Colors.white,
                   depth: 5,
                   intensity: 0.5,
@@ -190,7 +204,7 @@ class RadioWidgetState extends State<RadioWidget> {
                             ? Icons.radio_button_checked
                             : Icons.radio_button_unchecked,
                         color: otherText?.isNotEmpty == true
-                            ? Colors.white
+                            ? Colors.black
                             : Colors.grey[600],
                         size: 20,
                       ),
@@ -199,21 +213,21 @@ class RadioWidgetState extends State<RadioWidget> {
                       child: TextField(
                         controller: _otherController,
                         decoration: InputDecoration(
-                          hintText: 'Other, specify',
+                          hintText: otherHint,
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0,
                             horizontal: 12.0,
                           ),
                           hintStyle: TextStyle(
                             color: otherText?.isNotEmpty == true
-                                ? Colors.white70
+                                ? Colors.black54
                                 : Colors.grey[600],
                           ),
                         ),
                         style: TextStyle(
                           color: otherText?.isNotEmpty == true
-                              ? Colors.white
+                              ? Colors.black
                               : Colors.black,
                           fontWeight: FontWeight.bold,
                         ),

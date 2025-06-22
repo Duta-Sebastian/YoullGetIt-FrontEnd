@@ -1,5 +1,7 @@
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class CheckboxWidget extends StatefulWidget {
   final Question question;
@@ -101,6 +103,15 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final translatedOptions = QuestionTranslationService.getTranslatedOptions(
+      widget.question.id, 
+      widget.question.options ?? [], 
+      l10n
+    );
+    final hintText = QuestionTranslationService.getTranslatedHintText(widget.question.id, l10n);
+    final otherHint = QuestionTranslationService.getOtherFieldHint(widget.question.id, l10n);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,7 +120,7 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
-              'Select all that apply',
+              hintText,
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[600],
@@ -117,18 +128,21 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
               ),
             ),
           ),
-        ...(widget.question.options ?? []).map(
-          (option) => Padding(
+        ...List.generate(translatedOptions.length, (index) {
+          final originalOption = widget.question.options![index];
+          final translatedOption = translatedOptions[index];
+          
+          return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: FractionallySizedBox(
               widthFactor: 0.9,
               child: NeumorphicButton(
                 onPressed: () {
-                  _toggleChoice(option);
+                  _toggleChoice(originalOption);
                 },
                 style: NeumorphicStyle(
-                  color: widget.selectedChoices.contains(option)
-                      ? Colors.amber.shade600
+                  color: widget.selectedChoices.contains(originalOption)
+                      ? const Color(0xFFFFDE15)
                       : Colors.white,
                   depth: 5,
                   intensity: 0.5,
@@ -141,23 +155,23 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
                   child: Row(
                     children: [
                       Icon(
-                        widget.selectedChoices.contains(option)
+                        widget.selectedChoices.contains(originalOption)
                             ? Icons.check_box
                             : Icons.check_box_outline_blank,
-                        color: widget.selectedChoices.contains(option)
-                            ? Colors.white
+                        color: widget.selectedChoices.contains(originalOption)
+                            ? Colors.black
                             : Colors.grey[600],
                         size: 20,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          option,
+                          translatedOption,
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: widget.selectedChoices.contains(option)
-                                ? Colors.white
+                            color: widget.selectedChoices.contains(originalOption)
+                                ? Colors.black
                                 : Colors.black,
                           ),
                         ),
@@ -167,8 +181,8 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
         if (widget.question.hasOtherField)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -185,10 +199,10 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
                 child: TextField(
                   controller: _otherController,
                   textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    hintText: 'Other, specify',
+                  decoration: InputDecoration(
+                    hintText: otherHint,
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
+                    contentPadding: const EdgeInsets.symmetric(
                       vertical: 12.0,
                       horizontal: 10.0,
                     ),
