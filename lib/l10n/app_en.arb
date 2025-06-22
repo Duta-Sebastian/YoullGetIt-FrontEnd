@@ -1,0 +1,37 @@
+{
+  "@@locale": "en",
+  "languagesSelectLanguage": "Select Language",
+  "languagesChoosePreferredLanguage": "Choose your preferred language",
+  "languagesLanguageChangedTo": "Language changed to {language}",
+  "@languagesLanguageChangedTo": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languagesSelected": "Selected",
+  "languagesRomanian": "Romanian",
+  "languagesFrench": "French", 
+  "languagesGerman": "German",
+  "languagesItalian": "Italian",
+  "languagesSpanish": "Spanish",
+  "languagesDutch": "Dutch",
+  "languagesEnglish": "English",
+  "countryRomania": "Romania",
+  "countryMoldova": "Moldova", 
+  "countryFrance": "France",
+  "countryBelgium": "Belgium",
+  "countryGermany": "Germany",
+  "countrySwitzerland": "Switzerland",
+  "countryItaly": "Italy",
+  "countrySpain": "Spain",
+  "countryNetherlands": "Netherlands",
+  "countryUnitedKingdom": "United Kingdom",
+  "entryScreenWelcome": "Welcome",
+  "entryScreenYourName": "Your Name",
+  "entryScreenEnterFullName": "Enter your full name",
+  "entryScreenIAgreeToThe": "I agree to the ",
+  "entryScreenGdprPrivacyPolicy": "GDPR Privacy Policy",
+  "entryScreenContinue": "Continue"
+}

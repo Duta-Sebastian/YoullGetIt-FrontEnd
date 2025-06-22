@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/providers/background_sync_provider.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/database_provider.dart';
+import 'package:youllgetit_flutter/providers/locale_provider.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
@@ -30,6 +32,9 @@ Future<void> initializeApp(ProviderContainer container) async {
 
     await container.read(authProvider.notifier).initialize();
     debugPrint('Auth initialized successfully');
+
+    await container.read(localeProvider.notifier).loadSavedLocale();
+    debugPrint('Locale provider initialized successfully');
 
     JobApi.initialize(container);
     debugPrint('JobApi initialized successfully');
@@ -104,6 +109,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentLocale = ref.watch(localeProvider);
+    
     return MaterialApp(
       title: 'You\'ll Get It',
       theme: ThemeData(
@@ -112,58 +119,24 @@ class MyApp extends ConsumerWidget {
       ),
       debugShowCheckedModeBanner: false,
       
-      // ADD COMPREHENSIVE EU LOCALIZATION SUPPORT
+      locale: currentLocale,
+      
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       
-      // COMPREHENSIVE EU LOCALES - covers all EU languages
       supportedLocales: const [
-        // Western Europe
-        Locale('en', 'US'), // English (US)
-        Locale('en', 'GB'), // English (UK)
-        Locale('de', 'DE'), // German
-        Locale('fr', 'FR'), // French
-        Locale('es', 'ES'), // Spanish
-        Locale('it', 'IT'), // Italian
-        Locale('pt', 'PT'), // Portuguese
-        Locale('nl', 'NL'), // Dutch
-        Locale('da', 'DK'), // Danish
-        Locale('sv', 'SE'), // Swedish
-        Locale('no', 'NO'), // Norwegian
-        Locale('fi', 'FI'), // Finnish
-        Locale('is', 'IS'), // Icelandic
-        Locale('ga', 'IE'), // Irish
-        Locale('mt', 'MT'), // Maltese
-        Locale('lb', 'LU'), // Luxembourgish
-        
-        // Central/Eastern Europe
-        Locale('pl', 'PL'), // Polish
-        Locale('cs', 'CZ'), // Czech
-        Locale('sk', 'SK'), // Slovak
-        Locale('hu', 'HU'), // Hungarian
-        Locale('ro', 'RO'), // Romanian
-        Locale('bg', 'BG'), // Bulgarian
-        Locale('hr', 'HR'), // Croatian
-        Locale('sl', 'SI'), // Slovenian
-        Locale('et', 'EE'), // Estonian
-        Locale('lv', 'LV'), // Latvian
-        Locale('lt', 'LT'), // Lithuanian
-        
-        // Southeastern Europe
-        Locale('el', 'GR'), // Greek
-        Locale('cy', 'CY'), // Greek (Cyprus)
-        
-        // Additional useful locales
-        Locale('tr', 'TR'), // Turkish (candidate country)
-        Locale('uk', 'UA'), // Ukrainian
-        Locale('ru', 'RU'), // Russian (for certain regions)
+        Locale('en'), // English
+        Locale('ro'), // Romanian
+        Locale('fr'), // French
+        Locale('de'), // German
+        Locale('it'), // Italian
+        Locale('es'), // Spanish
+        Locale('nl'), // Dutch
       ],
-      
-      // Fallback to English if locale not supported
-      locale: const Locale('en', 'US'),
       
       home: isFirstTimeOpening ? EntryScreen() : HomeScreen(),
     );
