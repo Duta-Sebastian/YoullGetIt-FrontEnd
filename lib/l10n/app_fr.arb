@@ -198,5 +198,33 @@
   "pleaseSelectAtLeastOneOption": "Veuillez sélectionner au moins une option",
   "questionnaireCompleted": "Vous avez terminé le questionnaire !",
   "clearAllSelections": "Effacer toutes les sélections",
-  "selectedCount": "Sélectionné ({count})"
+  "selectedCount": "Sélectionné ({count})",
+
+  "reviewAnswersTitle": "Vérifiez vos réponses",
+  "reviewAnswersLetsFind": "Trouvons-le !",
+
+  "reviewNoAnswer": "Aucune réponse",
+  "reviewNoAnswersToDisplay": "Aucune réponse à afficher",
+  "reviewAnswerUpdatedSuccessfully": "Réponse mise à jour avec succès",
+
+  "uploadCvTitle": "Ajoutez votre CV",
+  "uploadCvOneLastStep": "Une dernière étape",
+  "uploadCvDescription": "Téléchargez votre CV pour nous aider à vous associer avec des stages pertinents",
+  "uploadCvHelpInfo": "Cela nous aide à mieux comprendre vos compétences et votre expérience",
+  "uploadCvUploadPdf": "Téléchargez votre CV (PDF)",
+  "uploadCvSkipForNow": "Passer pour l'instant",
+  "uploadCvLetsGetIt": "Allons-y",
+  "uploadCvReadyToUpload": "CV prêt à télécharger",
+  "uploadCvChooseDifferentFile": "Choisir un fichier différent",
+  "uploadCvPleaseUploadFirst": "Veuillez d'abord télécharger votre CV",
+  "uploadCvFailedToPick": "Impossible de sélectionner le fichier CV",
+  "uploadCvSuccessfullySaved": "CV enregistré avec succès",
+  "uploadCvFailedToSave": "Impossible d'enregistrer le CV",
+
+  "processingFindingOpportunities": "Nous trouvons les opportunités parfaites pour vous...",
+  "processingAnalyzingProfile": "Nous analysons votre profil pour vous associer aux meilleurs emplois",
+  "processingFailedToProcess": "Impossible de traiter vos données. Veuillez réessayer.",
+  "processingErrorOccurred": "Une erreur s'est produite : {error}",
+  "processingTryAgain": "Réessayer",
+  "processingGoBack": "Retour"
 }

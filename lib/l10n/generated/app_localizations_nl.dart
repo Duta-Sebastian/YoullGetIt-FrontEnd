@@ -554,4 +554,78 @@ class AppLocalizationsNl extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Geselecteerd ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Bekijk je antwoorden';
+
+  @override
+  String get reviewAnswersLetsFind => 'Laten we het vinden!';
+
+  @override
+  String get reviewNoAnswer => 'Geen antwoord';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'Geen antwoorden om weer te geven';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Antwoord succesvol bijgewerkt';
+
+  @override
+  String get uploadCvTitle => 'Voeg je CV toe';
+
+  @override
+  String get uploadCvOneLastStep => 'Een laatste stap';
+
+  @override
+  String get uploadCvDescription => 'Upload je CV om ons te helpen je te koppelen aan relevante stages';
+
+  @override
+  String get uploadCvHelpInfo => 'Dit helpt ons je vaardigheden en ervaring beter te begrijpen';
+
+  @override
+  String get uploadCvUploadPdf => 'Upload je CV (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Voorlopig overslaan';
+
+  @override
+  String get uploadCvLetsGetIt => 'Laten we gaan';
+
+  @override
+  String get uploadCvReadyToUpload => 'CV klaar om te uploaden';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Kies een ander bestand';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Upload eerst je CV';
+
+  @override
+  String get uploadCvFailedToPick => 'Kon CV-bestand niet selecteren';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'CV succesvol opgeslagen';
+
+  @override
+  String get uploadCvFailedToSave => 'Kon CV niet opslaan';
+
+  @override
+  String get processingFindingOpportunities => 'We vinden de perfecte kansen voor jou...';
+
+  @override
+  String get processingAnalyzingProfile => 'We analyseren je profiel om je te koppelen aan de beste banen';
+
+  @override
+  String get processingFailedToProcess => 'Kon je gegevens niet verwerken. Probeer het opnieuw.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'Er is een fout opgetreden: $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Probeer opnieuw';
+
+  @override
+  String get processingGoBack => 'Ga terug';
 }

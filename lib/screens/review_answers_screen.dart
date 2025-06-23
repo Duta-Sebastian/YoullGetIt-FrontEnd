@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/screens/entry_upload_cv_screen.dart';
 import 'package:youllgetit_flutter/widgets/answers_review_widget.dart';
 
@@ -41,6 +42,8 @@ class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     debugPrint('Current answers: $_currentAnswers');
     debugPrint('What comes: ${widget.answers}');
     return Scaffold(
@@ -51,7 +54,7 @@ class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('Review your answers'),
+        title: Text(localizations.reviewAnswersTitle),
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -94,9 +97,9 @@ class _ReviewAnswersScreenState extends State<ReviewAnswersScreen> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: const Text(
-                  "Let's find it!",
-                  style: TextStyle(
+                child: Text(
+                  localizations.reviewAnswersLetsFind,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

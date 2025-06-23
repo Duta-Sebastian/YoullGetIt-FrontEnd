@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
@@ -78,6 +79,8 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
@@ -94,7 +97,7 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
           ),
           elevation: 0,
           scrolledUnderElevation: 0,
-          title: const Text('Review Answers'),
+          title: Text(localizations.reviewAnswersTitle),
           centerTitle: true,
         ),
         body: SafeArea(

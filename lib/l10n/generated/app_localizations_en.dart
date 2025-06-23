@@ -554,4 +554,78 @@ class AppLocalizationsEn extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Selected ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Review your answers';
+
+  @override
+  String get reviewAnswersLetsFind => 'Let\'s find it!';
+
+  @override
+  String get reviewNoAnswer => 'No answer';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'No answers to display';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Answer updated successfully';
+
+  @override
+  String get uploadCvTitle => 'Add Your CV';
+
+  @override
+  String get uploadCvOneLastStep => 'One last step';
+
+  @override
+  String get uploadCvDescription => 'Upload your CV to help us match you with relevant internships';
+
+  @override
+  String get uploadCvHelpInfo => 'This helps us understand your skills and experience better';
+
+  @override
+  String get uploadCvUploadPdf => 'Upload your CV (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Skip it for now';
+
+  @override
+  String get uploadCvLetsGetIt => 'Let\'s Get It';
+
+  @override
+  String get uploadCvReadyToUpload => 'CV ready to upload';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Choose a different file';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Please upload your CV first';
+
+  @override
+  String get uploadCvFailedToPick => 'Failed to pick CV file';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'CV successfully saved';
+
+  @override
+  String get uploadCvFailedToSave => 'Failed to save CV';
+
+  @override
+  String get processingFindingOpportunities => 'Finding the perfect opportunities for you...';
+
+  @override
+  String get processingAnalyzingProfile => 'We\'re analyzing your profile to match you with the best jobs';
+
+  @override
+  String get processingFailedToProcess => 'Failed to process your data. Please try again.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'An error occurred: $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Try Again';
+
+  @override
+  String get processingGoBack => 'Go Back';
 }

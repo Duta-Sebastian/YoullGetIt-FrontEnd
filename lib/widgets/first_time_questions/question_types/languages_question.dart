@@ -492,7 +492,7 @@ class _LanguageSelectionBottomSheetState extends State<_LanguageSelectionBottomS
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               controller: _searchController,
-              autofocus: true,
+              autofocus: false,
               decoration: InputDecoration(
                 hintText: hintText,
                 prefixIcon: Icon(Icons.search, color: Color(0xFFFFDE15)),

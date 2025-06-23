@@ -197,5 +197,33 @@
   "pleaseSelectAtLeastOneOption": "Selecteer ten minste één optie",
   "questionnaireCompleted": "Je hebt de vragenlijst voltooid!",
   "clearAllSelections": "Wis alle selecties",
-  "selectedCount": "Geselecteerd ({count})"
+  "selectedCount": "Geselecteerd ({count})",
+
+  "reviewAnswersTitle": "Bekijk je antwoorden",
+  "reviewAnswersLetsFind": "Laten we het vinden!",
+
+  "reviewNoAnswer": "Geen antwoord",
+  "reviewNoAnswersToDisplay": "Geen antwoorden om weer te geven",
+  "reviewAnswerUpdatedSuccessfully": "Antwoord succesvol bijgewerkt",
+
+  "uploadCvTitle": "Voeg je CV toe",
+  "uploadCvOneLastStep": "Een laatste stap",
+  "uploadCvDescription": "Upload je CV om ons te helpen je te koppelen aan relevante stages",
+  "uploadCvHelpInfo": "Dit helpt ons je vaardigheden en ervaring beter te begrijpen",
+  "uploadCvUploadPdf": "Upload je CV (PDF)",
+  "uploadCvSkipForNow": "Voorlopig overslaan",
+  "uploadCvLetsGetIt": "Laten we gaan",
+  "uploadCvReadyToUpload": "CV klaar om te uploaden",
+  "uploadCvChooseDifferentFile": "Kies een ander bestand",
+  "uploadCvPleaseUploadFirst": "Upload eerst je CV",
+  "uploadCvFailedToPick": "Kon CV-bestand niet selecteren",
+  "uploadCvSuccessfullySaved": "CV succesvol opgeslagen",
+  "uploadCvFailedToSave": "Kon CV niet opslaan",
+
+  "processingFindingOpportunities": "We vinden de perfecte kansen voor jou...",
+  "processingAnalyzingProfile": "We analyseren je profiel om je te koppelen aan de beste banen",
+  "processingFailedToProcess": "Kon je gegevens niet verwerken. Probeer het opnieuw.",
+  "processingErrorOccurred": "Er is een fout opgetreden: {error}",
+  "processingTryAgain": "Probeer opnieuw",
+  "processingGoBack": "Ga terug"
 }

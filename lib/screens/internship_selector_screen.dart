@@ -15,12 +15,15 @@ class QuestionnaireScreen extends StatefulWidget {
 
 class QuestionnaireScreenState extends State<QuestionnaireScreen> {
   int _currentQuestionIndex = 0;
+  String _currentQuestionId = '';
   String _currentQuestionText = '';
   QuestionWrapperState? _questionWrapperState; // Reference to QuestionWrapper state
   
-  void _updateQuestionIndex(int newIndex) {
+  void _updateQuestionIndex(int newIndex, String questionId) {
+    debugPrint('Updating question index to: $newIndex');
     setState(() {
       _currentQuestionIndex = newIndex;
+      _currentQuestionId = questionId;
     });
   }
   
@@ -48,7 +51,7 @@ class QuestionnaireScreenState extends State<QuestionnaireScreen> {
       children: [
         const SizedBox(height: 12),
         ProgressBar(
-          currentQuestionIndex: _currentQuestionIndex,
+          currentQuestionId: _currentQuestionId,
           totalQuestions: QuestionRepository.questionsCount,
         ),
         const SizedBox(height: 24),

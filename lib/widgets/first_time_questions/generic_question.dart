@@ -1,10 +1,10 @@
-import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+
+import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/checkbox_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/languages_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/radio_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/restricted_chips_question.dart';
-import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/text_question.dart';
 
 class GenericQuestionWidget extends StatefulWidget {
   final Question question;
@@ -43,14 +43,6 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
           question: widget.question,
           selectedChoices: widget.selectedChoices,
           onChoicesUpdated: widget.onChoicesUpdated,
-        );
-        break;
-        
-      case AnswerType.text:
-        answerWidget = TextWidget(
-          question: widget.question,
-          selectedChoices: widget.selectedChoices,
-          onTextUpdated: widget.onTextUpdated,
         );
         break;
         

@@ -38,7 +38,6 @@ class BranchQuestionsScreenState extends State<BranchQuestionsScreen> {
     
     final nextQuestion = QuestionRepository.questions.firstWhere(
       (q) => q.id == nextQuestionId,
-      orElse: () => Question(id: '', text: '', answerType: AnswerType.text),
     );
     
     return nextQuestion.id.isEmpty || nextQuestion.rootQuestionId != widget.rootQuestionId;
@@ -62,7 +61,7 @@ class BranchQuestionsScreenState extends State<BranchQuestionsScreen> {
 
   bool _validateCurrentAnswer() {
     final answers = _answersMap[_currentQuestion.text] ?? [];
-    if (answers.isEmpty && _currentQuestion.answerType != AnswerType.text) {
+    if (answers.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please select at least one option")),
       );

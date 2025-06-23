@@ -197,5 +197,33 @@
   "pleaseSelectAtLeastOneOption": "Por favor, selecciona al menos una opción",
   "questionnaireCompleted": "¡Has completado el cuestionario!",
   "clearAllSelections": "Borrar todas las selecciones",
-  "selectedCount": "Seleccionado ({count})"
+  "selectedCount": "Seleccionado ({count})",
+
+  "reviewAnswersTitle": "Revisa tus respuestas",
+  "reviewAnswersLetsFind": "¡Vamos a encontrarlo!",
+
+  "reviewNoAnswer": "Sin respuesta",
+  "reviewNoAnswersToDisplay": "No hay respuestas que mostrar",
+  "reviewAnswerUpdatedSuccessfully": "Respuesta actualizada con éxito",
+
+  "uploadCvTitle": "Agrega tu CV",
+  "uploadCvOneLastStep": "Un último paso",
+  "uploadCvDescription": "Sube tu CV para ayudarnos a conectarte con prácticas relevantes",
+  "uploadCvHelpInfo": "Esto nos ayuda a entender mejor tus habilidades y experiencia",
+  "uploadCvUploadPdf": "Sube tu CV (PDF)",
+  "uploadCvSkipForNow": "Omitir por ahora",
+  "uploadCvLetsGetIt": "¡Vamos!",
+  "uploadCvReadyToUpload": "CV listo para subir",
+  "uploadCvChooseDifferentFile": "Elegir un archivo diferente",
+  "uploadCvPleaseUploadFirst": "Por favor sube tu CV primero",
+  "uploadCvFailedToPick": "Error al seleccionar archivo de CV",
+  "uploadCvSuccessfullySaved": "CV guardado exitosamente",
+  "uploadCvFailedToSave": "Error al guardar CV",
+
+  "processingFindingOpportunities": "Encontrando las oportunidades perfectas para ti...",
+  "processingAnalyzingProfile": "Estamos analizando tu perfil para conectarte con los mejores trabajos",
+  "processingFailedToProcess": "No se pudieron procesar tus datos. Por favor inténtalo de nuevo.",
+  "processingErrorOccurred": "Ocurrió un error: {error}",
+  "processingTryAgain": "Intentar de nuevo",
+  "processingGoBack": "Volver"
 }

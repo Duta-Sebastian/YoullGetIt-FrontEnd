@@ -554,4 +554,78 @@ class AppLocalizationsRo extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Selectat ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Revizuiește răspunsurile tale';
+
+  @override
+  String get reviewAnswersLetsFind => 'Să-l găsim!';
+
+  @override
+  String get reviewNoAnswer => 'Fără răspuns';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'Nu există răspunsuri de afișat';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Răspuns actualizat cu succes';
+
+  @override
+  String get uploadCvTitle => 'Adaugă CV-ul tău';
+
+  @override
+  String get uploadCvOneLastStep => 'Un ultim pas';
+
+  @override
+  String get uploadCvDescription => 'Încarcă CV-ul tău pentru a ne ajuta să te conectăm cu stagii relevante';
+
+  @override
+  String get uploadCvHelpInfo => 'Aceasta ne ajută să înțelegem mai bine abilitățile și experiența ta';
+
+  @override
+  String get uploadCvUploadPdf => 'Încarcă CV-ul tău (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Sari pentru moment';
+
+  @override
+  String get uploadCvLetsGetIt => 'Să începem';
+
+  @override
+  String get uploadCvReadyToUpload => 'CV gata pentru încărcare';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Alege un fișier diferit';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Te rog încarcă mai întâi CV-ul';
+
+  @override
+  String get uploadCvFailedToPick => 'Nu s-a putut selecta fișierul CV';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'CV salvat cu succes';
+
+  @override
+  String get uploadCvFailedToSave => 'Nu s-a putut salva CV-ul';
+
+  @override
+  String get processingFindingOpportunities => 'Găsim oportunitățile perfecte pentru tine...';
+
+  @override
+  String get processingAnalyzingProfile => 'Analizăm profilul tău pentru a te conecta cu cele mai bune joburi';
+
+  @override
+  String get processingFailedToProcess => 'Nu s-au putut procesa datele tale. Te rog încearcă din nou.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'A apărut o eroare: $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Încearcă din nou';
+
+  @override
+  String get processingGoBack => 'Înapoi';
 }

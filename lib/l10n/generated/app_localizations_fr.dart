@@ -554,4 +554,78 @@ class AppLocalizationsFr extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Sélectionné ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Vérifiez vos réponses';
+
+  @override
+  String get reviewAnswersLetsFind => 'Trouvons-le !';
+
+  @override
+  String get reviewNoAnswer => 'Aucune réponse';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'Aucune réponse à afficher';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Réponse mise à jour avec succès';
+
+  @override
+  String get uploadCvTitle => 'Ajoutez votre CV';
+
+  @override
+  String get uploadCvOneLastStep => 'Une dernière étape';
+
+  @override
+  String get uploadCvDescription => 'Téléchargez votre CV pour nous aider à vous associer avec des stages pertinents';
+
+  @override
+  String get uploadCvHelpInfo => 'Cela nous aide à mieux comprendre vos compétences et votre expérience';
+
+  @override
+  String get uploadCvUploadPdf => 'Téléchargez votre CV (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Passer pour l\'instant';
+
+  @override
+  String get uploadCvLetsGetIt => 'Allons-y';
+
+  @override
+  String get uploadCvReadyToUpload => 'CV prêt à télécharger';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Choisir un fichier différent';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Veuillez d\'abord télécharger votre CV';
+
+  @override
+  String get uploadCvFailedToPick => 'Impossible de sélectionner le fichier CV';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'CV enregistré avec succès';
+
+  @override
+  String get uploadCvFailedToSave => 'Impossible d\'enregistrer le CV';
+
+  @override
+  String get processingFindingOpportunities => 'Nous trouvons les opportunités parfaites pour vous...';
+
+  @override
+  String get processingAnalyzingProfile => 'Nous analysons votre profil pour vous associer aux meilleurs emplois';
+
+  @override
+  String get processingFailedToProcess => 'Impossible de traiter vos données. Veuillez réessayer.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'Une erreur s\'est produite : $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Réessayer';
+
+  @override
+  String get processingGoBack => 'Retour';
 }

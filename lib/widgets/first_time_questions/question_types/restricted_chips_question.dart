@@ -475,7 +475,7 @@ class _SelectionBottomSheetState extends State<_SelectionBottomSheet> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: TextField(
               controller: _searchController,
-              autofocus: widget.initialSearchText.isEmpty,
+              autofocus: false,
               decoration: InputDecoration(
                 hintText: hintText,
                 prefixIcon: Icon(Icons.search, color: Color(0xFFFFDE15)),

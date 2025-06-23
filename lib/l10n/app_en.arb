@@ -197,5 +197,33 @@
   "pleaseSelectAtLeastOneOption": "Please select at least one option",
   "questionnaireCompleted": "You've completed the questionnaire!",
   "clearAllSelections": "Clear all selections",
-  "selectedCount": "Selected ({count})"
+  "selectedCount": "Selected ({count})",
+
+  "reviewAnswersTitle": "Review your answers",
+  "reviewAnswersLetsFind": "Let's find it!",
+
+  "reviewNoAnswer": "No answer",
+  "reviewNoAnswersToDisplay": "No answers to display",
+  "reviewAnswerUpdatedSuccessfully": "Answer updated successfully",
+
+  "uploadCvTitle": "Add Your CV",
+  "uploadCvOneLastStep": "One last step",
+  "uploadCvDescription": "Upload your CV to help us match you with relevant internships",
+  "uploadCvHelpInfo": "This helps us understand your skills and experience better",
+  "uploadCvUploadPdf": "Upload your CV (PDF)",
+  "uploadCvSkipForNow": "Skip it for now",
+  "uploadCvLetsGetIt": "Let's Get It",
+  "uploadCvReadyToUpload": "CV ready to upload",
+  "uploadCvChooseDifferentFile": "Choose a different file",
+  "uploadCvPleaseUploadFirst": "Please upload your CV first",
+  "uploadCvFailedToPick": "Failed to pick CV file",
+  "uploadCvSuccessfullySaved": "CV successfully saved",
+  "uploadCvFailedToSave": "Failed to save CV",
+
+  "processingFindingOpportunities": "Finding the perfect opportunities for you...",
+  "processingAnalyzingProfile": "We're analyzing your profile to match you with the best jobs",
+  "processingFailedToProcess": "Failed to process your data. Please try again.",
+  "processingErrorOccurred": "An error occurred: {error}",
+  "processingTryAgain": "Try Again",
+  "processingGoBack": "Go Back"
 }

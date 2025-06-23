@@ -8,7 +8,7 @@ import 'package:youllgetit_flutter/data/question_repository.dart';
 class QuestionWrapper extends StatefulWidget {
   final int currentQuestionIndex;
   final int totalQuestions;
-  final Function(int) onQuestionIndexChanged;
+  final Function(int, String) onQuestionIndexChanged;
   final Function(String) onQuestionTextUpdated;
   final Function(Map<String, List<String>>)? onFinish;
   final Function(QuestionWrapperState)? onStateReady;
@@ -109,8 +109,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
     final l10n = AppLocalizations.of(context)!;
     
-    if ((answersMap[currentQuestion.text] ?? []).isEmpty &&
-        currentQuestion.answerType != AnswerType.text) {
+    if ((answersMap[currentQuestion.text] ?? []).isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -190,10 +189,11 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       _navigationStackIndex++;
       final nextQuestionId = _navigationStack[_navigationStackIndex];
       final newIndex = QuestionRepository.questions.indexWhere((q) => q.id == nextQuestionId);
+      final newQuestionId = QuestionRepository.questions[newIndex].id;
       
       if (newIndex != -1) {
         setState(() {
-          widget.onQuestionIndexChanged(newIndex);
+          widget.onQuestionIndexChanged(newIndex, newQuestionId);
           _isLoading = false;
         });
       }
@@ -217,10 +217,10 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       _navigationStackIndex--;
       final prevQuestionId = _navigationStack[_navigationStackIndex];
       final prevIndex = QuestionRepository.questions.indexWhere((q) => q.id == prevQuestionId);
-      
+      final newQuestionId = QuestionRepository.questions[prevIndex].id;
       if (prevIndex != -1) {
         setState(() {
-          widget.onQuestionIndexChanged(prevIndex);
+          widget.onQuestionIndexChanged(prevIndex, newQuestionId);
           _isLoading = false;
         });
       }
@@ -285,28 +285,18 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
     final questionText = currentQuestion.text;
 
-    if (currentQuestion.answerType == AnswerType.text) {
-      setState(() {
-        if (text.isNotEmpty) {
-          answersMap[questionText] = [text];
-        } else {
-          answersMap.remove(questionText);
-        }
-      });
-    } else {
-      setState(() {
-        final currentAnswers = answersMap[questionText] ?? [];
-        final filteredAnswers = currentAnswers.where(
-          (answer) => (currentQuestion.options ?? []).contains(answer)
-        ).toList();
-        
-        if (text.isNotEmpty) {
-          filteredAnswers.add(text);
-        }
-        
-        answersMap[questionText] = filteredAnswers;
-      });
-    }
+    setState(() {
+      final currentAnswers = answersMap[questionText] ?? [];
+      final filteredAnswers = currentAnswers.where(
+        (answer) => (currentQuestion.options ?? []).contains(answer)
+      ).toList();
+      
+      if (text.isNotEmpty) {
+        filteredAnswers.add(text);
+      }
+      
+      answersMap[questionText] = filteredAnswers;
+    });
   }
 
   // Public getters for parent to access state

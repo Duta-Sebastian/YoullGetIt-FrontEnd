@@ -554,4 +554,78 @@ class AppLocalizationsDe extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Ausgewählt ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Überprüfen Sie Ihre Antworten';
+
+  @override
+  String get reviewAnswersLetsFind => 'Lass es uns finden!';
+
+  @override
+  String get reviewNoAnswer => 'Keine Antwort';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'Keine Antworten anzuzeigen';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Antwort erfolgreich aktualisiert';
+
+  @override
+  String get uploadCvTitle => 'Fügen Sie Ihren Lebenslauf hinzu';
+
+  @override
+  String get uploadCvOneLastStep => 'Ein letzter Schritt';
+
+  @override
+  String get uploadCvDescription => 'Laden Sie Ihren Lebenslauf hoch, damit wir Sie mit relevanten Praktika zusammenbringen können';
+
+  @override
+  String get uploadCvHelpInfo => 'Dies hilft uns, Ihre Fähigkeiten und Erfahrungen besser zu verstehen';
+
+  @override
+  String get uploadCvUploadPdf => 'Laden Sie Ihren Lebenslauf hoch (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Vorerst überspringen';
+
+  @override
+  String get uploadCvLetsGetIt => 'Los geht\'s';
+
+  @override
+  String get uploadCvReadyToUpload => 'Lebenslauf bereit zum Hochladen';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Eine andere Datei wählen';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Bitte laden Sie zuerst Ihren Lebenslauf hoch';
+
+  @override
+  String get uploadCvFailedToPick => 'Lebenslauf-Datei konnte nicht ausgewählt werden';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'Lebenslauf erfolgreich gespeichert';
+
+  @override
+  String get uploadCvFailedToSave => 'Lebenslauf konnte nicht gespeichert werden';
+
+  @override
+  String get processingFindingOpportunities => 'Wir finden die perfekten Möglichkeiten für Sie...';
+
+  @override
+  String get processingAnalyzingProfile => 'Wir analysieren Ihr Profil, um Sie mit den besten Jobs zu verbinden';
+
+  @override
+  String get processingFailedToProcess => 'Ihre Daten konnten nicht verarbeitet werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'Ein Fehler ist aufgetreten: $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Erneut versuchen';
+
+  @override
+  String get processingGoBack => 'Zurück';
 }

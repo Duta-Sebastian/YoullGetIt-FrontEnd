@@ -554,4 +554,78 @@ class AppLocalizationsIt extends AppLocalizations {
   String selectedCount(Object count) {
     return 'Selezionato ($count)';
   }
+
+  @override
+  String get reviewAnswersTitle => 'Rivedi le tue risposte';
+
+  @override
+  String get reviewAnswersLetsFind => 'Troviamolo!';
+
+  @override
+  String get reviewNoAnswer => 'Nessuna risposta';
+
+  @override
+  String get reviewNoAnswersToDisplay => 'Nessuna risposta da mostrare';
+
+  @override
+  String get reviewAnswerUpdatedSuccessfully => 'Risposta aggiornata con successo';
+
+  @override
+  String get uploadCvTitle => 'Aggiungi il tuo CV';
+
+  @override
+  String get uploadCvOneLastStep => 'Un ultimo passo';
+
+  @override
+  String get uploadCvDescription => 'Carica il tuo CV per aiutarci a collegarti con stage pertinenti';
+
+  @override
+  String get uploadCvHelpInfo => 'Questo ci aiuta a comprendere meglio le tue competenze ed esperienza';
+
+  @override
+  String get uploadCvUploadPdf => 'Carica il tuo CV (PDF)';
+
+  @override
+  String get uploadCvSkipForNow => 'Salta per ora';
+
+  @override
+  String get uploadCvLetsGetIt => 'Andiamo';
+
+  @override
+  String get uploadCvReadyToUpload => 'CV pronto per il caricamento';
+
+  @override
+  String get uploadCvChooseDifferentFile => 'Scegli un file diverso';
+
+  @override
+  String get uploadCvPleaseUploadFirst => 'Per favore carica prima il tuo CV';
+
+  @override
+  String get uploadCvFailedToPick => 'Impossibile selezionare il file CV';
+
+  @override
+  String get uploadCvSuccessfullySaved => 'CV salvato con successo';
+
+  @override
+  String get uploadCvFailedToSave => 'Impossibile salvare il CV';
+
+  @override
+  String get processingFindingOpportunities => 'Stiamo trovando le opportunità perfette per te...';
+
+  @override
+  String get processingAnalyzingProfile => 'Stiamo analizzando il tuo profilo per abbinarti ai migliori lavori';
+
+  @override
+  String get processingFailedToProcess => 'Impossibile elaborare i tuoi dati. Riprova.';
+
+  @override
+  String processingErrorOccurred(Object error) {
+    return 'Si è verificato un errore: $error';
+  }
+
+  @override
+  String get processingTryAgain => 'Riprova';
+
+  @override
+  String get processingGoBack => 'Torna indietro';
 }

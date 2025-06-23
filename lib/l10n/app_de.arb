@@ -198,5 +198,33 @@
   "pleaseSelectAtLeastOneOption": "Bitte wählen Sie mindestens eine Option aus",
   "questionnaireCompleted": "Sie haben den Fragebogen abgeschlossen!",
   "clearAllSelections": "Alle Auswahlen löschen",
-  "selectedCount": "Ausgewählt ({count})"
+  "selectedCount": "Ausgewählt ({count})",
+
+  "reviewAnswersTitle": "Überprüfen Sie Ihre Antworten",
+  "reviewAnswersLetsFind": "Lass es uns finden!",
+
+  "reviewNoAnswer": "Keine Antwort",
+  "reviewNoAnswersToDisplay": "Keine Antworten anzuzeigen",
+  "reviewAnswerUpdatedSuccessfully": "Antwort erfolgreich aktualisiert",
+
+  "uploadCvTitle": "Fügen Sie Ihren Lebenslauf hinzu",
+  "uploadCvOneLastStep": "Ein letzter Schritt",
+  "uploadCvDescription": "Laden Sie Ihren Lebenslauf hoch, damit wir Sie mit relevanten Praktika zusammenbringen können",
+  "uploadCvHelpInfo": "Dies hilft uns, Ihre Fähigkeiten und Erfahrungen besser zu verstehen",
+  "uploadCvUploadPdf": "Laden Sie Ihren Lebenslauf hoch (PDF)",
+  "uploadCvSkipForNow": "Vorerst überspringen",
+  "uploadCvLetsGetIt": "Los geht's",
+  "uploadCvReadyToUpload": "Lebenslauf bereit zum Hochladen",
+  "uploadCvChooseDifferentFile": "Eine andere Datei wählen",
+  "uploadCvPleaseUploadFirst": "Bitte laden Sie zuerst Ihren Lebenslauf hoch",
+  "uploadCvFailedToPick": "Lebenslauf-Datei konnte nicht ausgewählt werden",
+  "uploadCvSuccessfullySaved": "Lebenslauf erfolgreich gespeichert",
+  "uploadCvFailedToSave": "Lebenslauf konnte nicht gespeichert werden",
+
+  "processingFindingOpportunities": "Wir finden die perfekten Möglichkeiten für Sie...",
+  "processingAnalyzingProfile": "Wir analysieren Ihr Profil, um Sie mit den besten Jobs zu verbinden",
+  "processingFailedToProcess": "Ihre Daten konnten nicht verarbeitet werden. Bitte versuchen Sie es erneut.",
+  "processingErrorOccurred": "Ein Fehler ist aufgetreten: {error}",
+  "processingTryAgain": "Erneut versuchen",
+  "processingGoBack": "Zurück"
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:youllgetit_flutter/data/question_repository.dart';
 
 class ProgressBar extends StatelessWidget {
-  final int currentQuestionIndex;
+  final String currentQuestionId;
   final int totalQuestions;
 
   const ProgressBar({
     super.key,
-    required this.currentQuestionIndex,
+    required this.currentQuestionId,
     required this.totalQuestions,
   });
 
@@ -96,61 +95,14 @@ class ProgressBar extends StatelessWidget {
     );
   }
   
-  int _getCurrentStepIndex() {
-    if (currentQuestionIndex >= QuestionRepository.questions.length) {
-      return _steps.length - 1;
-    }
-    
-    final currentQuestion = QuestionRepository.questions[currentQuestionIndex];
-    final currentQuestionId = currentQuestion.id;
-    
-    // Find which step contains the current question
+  int _getCurrentStepIndex() {    
     for (int i = 0; i < _steps.length; i++) {
       if (_steps[i].questionIds.contains(currentQuestionId)) {
         return i;
       }
-      
-      // Also check for sub-questions (like q2_yes_1)
-      for (String stepQuestionId in _steps[i].questionIds) {
-        if (currentQuestionId.startsWith(stepQuestionId)) {
-          return i;
-        }
-      }
     }
     
-    // Fallback: calculate based on question position
-    final totalRootQuestions = _countRootQuestions();
-    final currentRootIndex = _getCurrentRootIndex();
-    final progressRatio = totalRootQuestions > 0 
-        ? currentRootIndex / totalRootQuestions 
-        : 0.0;
-    
-    return (progressRatio * (_steps.length - 1)).round();
-  }
-  
-  int _countRootQuestions() {
-    final rootQuestions = QuestionRepository.questions
-        .where((q) => RegExp(r'^q\d+$').hasMatch(q.id))
-        .toList();
-    
-    return rootQuestions.length;
-  }
-  
-  int _getCurrentRootIndex() {
-    if (currentQuestionIndex >= QuestionRepository.questions.length) {
-      return 0;
-    }
-    
-    final currentQuestion = QuestionRepository.questions[currentQuestionIndex];
-    
-    final rootId = currentQuestion.rootQuestionId ?? currentQuestion.id;
-    final match = RegExp(r'^q(\d+)').firstMatch(rootId);
-    
-    if (match != null) {
-      final rootNumber = int.tryParse(match.group(1) ?? '0') ?? 0;
-      return rootNumber;
-    }
-    
+    debugPrint('Question $currentQuestionId not found in any step, defaulting to step 0');
     return 0;
   }
 }

@@ -1,6 +1,5 @@
 enum AnswerType {
   checkbox,
-  text,
   radio,
   languages,
   restrictedChips,

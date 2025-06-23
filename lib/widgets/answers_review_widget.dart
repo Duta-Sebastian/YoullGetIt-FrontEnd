@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 import 'package:youllgetit_flutter/screens/edit_question_screen.dart';
 
 class AnswersReviewWidget extends StatefulWidget {
@@ -42,9 +44,41 @@ class AnswersReviewWidgetState extends State<AnswersReviewWidget> {
     return [];
   }
 
-  String _formatAnswers(List<String> answers) {
-    if (answers.isEmpty) return 'No answer';
+  String _formatAnswers(List<String> answers, AppLocalizations localizations, String questionText) {
+    if (answers.isEmpty) return localizations.reviewNoAnswer;
+    
+    // Try to get the question to apply translations to answer options
+    final question = QuestionRepository.getQuestionByText(questionText);
+    if (question != null && question.options != null) {
+      // Translate the answer options if they match question options
+      final translatedAnswers = answers.map((answer) {
+        final originalIndex = question.options!.indexOf(answer);
+        if (originalIndex != -1) {
+          final translatedOptions = QuestionTranslationService.getTranslatedOptions(
+            question.id, 
+            question.options!, 
+            localizations
+          );
+          if (originalIndex < translatedOptions.length) {
+            return translatedOptions[originalIndex];
+          }
+        }
+        return answer; // Return original if not found in options
+      }).toList();
+      
+      return translatedAnswers.join(', ');
+    }
+    
     return answers.join(', ');
+  }
+
+  String _getTranslatedQuestionText(String questionText, AppLocalizations localizations) {
+    // Try to get the question and translate it
+    final question = QuestionRepository.getQuestionByText(questionText);
+    if (question != null) {
+      return QuestionTranslationService.getTranslatedQuestionText(question.id, localizations);
+    }
+    return questionText; // Fallback to original text
   }
 
   void _editQuestion(String questionText) async {
@@ -68,11 +102,12 @@ class AnswersReviewWidgetState extends State<AnswersReviewWidget> {
       widget.onAnswersUpdated?.call(_answersMap);
 
       if (mounted) {
+        final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Answer updated successfully'),
+          SnackBar(
+            content: Text(localizations.reviewAnswerUpdatedSuccessfully),
             backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -85,11 +120,13 @@ class AnswersReviewWidgetState extends State<AnswersReviewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_answersMap.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No answers to display',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+          localizations.reviewNoAnswersToDisplay,
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
       );
     }
@@ -102,7 +139,8 @@ class AnswersReviewWidgetState extends State<AnswersReviewWidget> {
         final entry = sortedEntries[index];
         final questionText = entry.key;
         final answers = entry.value;
-        final formattedAnswers = _formatAnswers(answers);
+        final translatedQuestionText = _getTranslatedQuestionText(questionText, localizations);
+        final formattedAnswers = _formatAnswers(answers, localizations, questionText);
 
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -123,7 +161,7 @@ class AnswersReviewWidgetState extends State<AnswersReviewWidget> {
                     children: [
                       Expanded(
                         child: Text(
-                          questionText,
+                          translatedQuestionText,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

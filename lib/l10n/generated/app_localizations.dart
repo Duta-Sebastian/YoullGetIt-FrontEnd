@@ -1190,6 +1190,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected ({count})'**
   String selectedCount(Object count);
+
+  /// No description provided for @reviewAnswersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your answers'**
+  String get reviewAnswersTitle;
+
+  /// No description provided for @reviewAnswersLetsFind.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s find it!'**
+  String get reviewAnswersLetsFind;
+
+  /// No description provided for @reviewNoAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer'**
+  String get reviewNoAnswer;
+
+  /// No description provided for @reviewNoAnswersToDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers to display'**
+  String get reviewNoAnswersToDisplay;
+
+  /// No description provided for @reviewAnswerUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer updated successfully'**
+  String get reviewAnswerUpdatedSuccessfully;
+
+  /// No description provided for @uploadCvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Your CV'**
+  String get uploadCvTitle;
+
+  /// No description provided for @uploadCvOneLastStep.
+  ///
+  /// In en, this message translates to:
+  /// **'One last step'**
+  String get uploadCvOneLastStep;
+
+  /// No description provided for @uploadCvDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your CV to help us match you with relevant internships'**
+  String get uploadCvDescription;
+
+  /// No description provided for @uploadCvHelpInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us understand your skills and experience better'**
+  String get uploadCvHelpInfo;
+
+  /// No description provided for @uploadCvUploadPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your CV (PDF)'**
+  String get uploadCvUploadPdf;
+
+  /// No description provided for @uploadCvSkipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip it for now'**
+  String get uploadCvSkipForNow;
+
+  /// No description provided for @uploadCvLetsGetIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Get It'**
+  String get uploadCvLetsGetIt;
+
+  /// No description provided for @uploadCvReadyToUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'CV ready to upload'**
+  String get uploadCvReadyToUpload;
+
+  /// No description provided for @uploadCvChooseDifferentFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a different file'**
+  String get uploadCvChooseDifferentFile;
+
+  /// No description provided for @uploadCvPleaseUploadFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Please upload your CV first'**
+  String get uploadCvPleaseUploadFirst;
+
+  /// No description provided for @uploadCvFailedToPick.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick CV file'**
+  String get uploadCvFailedToPick;
+
+  /// No description provided for @uploadCvSuccessfullySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'CV successfully saved'**
+  String get uploadCvSuccessfullySaved;
+
+  /// No description provided for @uploadCvFailedToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save CV'**
+  String get uploadCvFailedToSave;
+
+  /// No description provided for @processingFindingOpportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding the perfect opportunities for you...'**
+  String get processingFindingOpportunities;
+
+  /// No description provided for @processingAnalyzingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re analyzing your profile to match you with the best jobs'**
+  String get processingAnalyzingProfile;
+
+  /// No description provided for @processingFailedToProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to process your data. Please try again.'**
+  String get processingFailedToProcess;
+
+  /// No description provided for @processingErrorOccurred.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred: {error}'**
+  String processingErrorOccurred(Object error);
+
+  /// No description provided for @processingTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get processingTryAgain;
+
+  /// No description provided for @processingGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get processingGoBack;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -75,7 +75,6 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
           // Check if the branch question exists
           final branchQuestion = QuestionRepository.questions.firstWhere(
             (q) => q.id == branchQuestionId,
-            orElse: () => Question(id: '', text: '', answerType: AnswerType.text),
           );
           if (branchQuestion.id.isNotEmpty) {
             return true; // Found at least one valid branch with questions
