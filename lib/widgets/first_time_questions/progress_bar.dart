@@ -1,4 +1,4 @@
-import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 
 class ProgressBar extends StatelessWidget {
@@ -11,93 +11,121 @@ class ProgressBar extends StatelessWidget {
     required this.totalQuestions,
   });
 
+  // Define the question groups and their labels
+  static const List<_ProgressStep> _steps = [
+    _ProgressStep(
+      label: 'Education',
+      description: 'Your studies',
+      questionIds: ['q1', 'q2', 'q2_yes_1', 'q2_yes_2', 'q2_no', 'q3'],
+    ),
+    _ProgressStep(
+      label: 'Field',
+      description: 'Area of study',
+      questionIds: ['q4', 'q4_eng', 'q4_it', 'q5'],
+    ),
+    _ProgressStep(
+      label: 'Experience',
+      description: 'Work history',
+      questionIds: ['q6', 'q7'],
+    ),
+    _ProgressStep(
+      label: 'Skills',
+      description: 'Your abilities',
+      questionIds: ['q8', 'q9', 'q10'],
+    ),
+    _ProgressStep(
+      label: 'Preferences',
+      description: 'Internship details',
+      questionIds: ['q11', 'q12', 'q13', 'q14', 'q15'],
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final totalRootQuestions = _countRootQuestions();
-    final currentRootIndex = _getCurrentRootIndex();
+    final currentStepIndex = _getCurrentStepIndex();
     
-    // Calculate progress ratio
-    final progressRatio = totalRootQuestions > 0 
-        ? (currentRootIndex) / totalRootQuestions 
-        : 0.0;
-
     return Container(
       height: 24,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          // Inset shadow for depth
-          BoxShadow(
-            color: Colors.grey.shade400,
-            offset: const Offset(0, 2),
-            blurRadius: 4,
-            spreadRadius: -1,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(2),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Stack(
-            children: [
-              // Main amber progress fill
-              FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: progressRatio,
-                child: Container(
-                  height: 20,
+      margin: EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: List.generate(_steps.length, (index) {
+          final isCompleted = index < currentStepIndex;
+          final isCurrent = index == currentStepIndex;
+          
+          return Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Progress line for this step
+                Container(
+                  height: 8,
+                  margin: EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.amber,
-                        Colors.amber,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x4DFFC107), // Colors.amber with 0.3 opacity equivalent
-                        offset: const Offset(0, 1),
-                        blurRadius: 2,
-                      ),
-                    ],
+                    color: isCompleted || isCurrent
+                        ? Color(0xFFFFDE15)
+                        : Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-              ),
-              
-              // Top glossy highlight
-              if (progressRatio > 0)
-                FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: progressRatio,
-                  child: Container(
-                    height: 20,
-                    padding: const EdgeInsets.fromLTRB(1, 1, 1, 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0x99FFFFFF), // Colors.white with 0.6 opacity equivalent
-                            Color(0x33FFFFFF), // Colors.white with 0.2 opacity equivalent
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
-                        borderRadius: BorderRadius.circular(9),
-                      ),
+                
+                SizedBox(height: 4),
+                
+                // Step label
+                Flexible(
+                  child: Text(
+                    _steps[index].label,
+                    style: TextStyle(
+                      fontSize: 8,
+                      fontWeight: isCurrent || isCompleted 
+                          ? FontWeight.w600 
+                          : FontWeight.w400,
+                      color: isCurrent || isCompleted 
+                          ? Colors.black87 
+                          : Colors.grey[600],
                     ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-            ],
-          ),
-        ),
+              ],
+            ),
+          );
+        }),
       ),
     );
+  }
+  
+  int _getCurrentStepIndex() {
+    if (currentQuestionIndex >= QuestionRepository.questions.length) {
+      return _steps.length - 1;
+    }
+    
+    final currentQuestion = QuestionRepository.questions[currentQuestionIndex];
+    final currentQuestionId = currentQuestion.id;
+    
+    // Find which step contains the current question
+    for (int i = 0; i < _steps.length; i++) {
+      if (_steps[i].questionIds.contains(currentQuestionId)) {
+        return i;
+      }
+      
+      // Also check for sub-questions (like q2_yes_1)
+      for (String stepQuestionId in _steps[i].questionIds) {
+        if (currentQuestionId.startsWith(stepQuestionId)) {
+          return i;
+        }
+      }
+    }
+    
+    // Fallback: calculate based on question position
+    final totalRootQuestions = _countRootQuestions();
+    final currentRootIndex = _getCurrentRootIndex();
+    final progressRatio = totalRootQuestions > 0 
+        ? currentRootIndex / totalRootQuestions 
+        : 0.0;
+    
+    return (progressRatio * (_steps.length - 1)).round();
   }
   
   int _countRootQuestions() {
@@ -125,4 +153,16 @@ class ProgressBar extends StatelessWidget {
     
     return 0;
   }
+}
+
+class _ProgressStep {
+  final String label;
+  final String description;
+  final List<String> questionIds;
+  
+  const _ProgressStep({
+    required this.label,
+    required this.description,
+    required this.questionIds,
+  });
 }

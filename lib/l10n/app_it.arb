@@ -107,6 +107,7 @@
   "hintSearchAndSelect": "Cerca e seleziona",
   "hintTypeAnswer": "Scrivi la tua risposta qui",
   "hintOtherSpecify": "Altro, specifica",
+  "hintChipsEmptyList": "Nessun elemento selezionato",
   
   "countryAny": "Qualsiasi",
   "countryAlbania": "Albania",
@@ -188,5 +189,13 @@
   "languageSpanish": "Spagnolo",
   "languageSwedish": "Svedese",
   "languageTurkish": "Turco",
-  "languageUkrainian": "Ucraino"
+  "languageUkrainian": "Ucraino",
+
+  "restrictedChipsNoMatches": "Nessuna corrispondenza trovata",
+  "restrictedChipsStartTyping": "Inizia a digitare per cercare...",
+
+  "pleaseSelectAtLeastOneOption": "Seleziona almeno un'opzione",
+  "questionnaireCompleted": "Hai completato il questionario!",
+  "clearAllSelections": "Cancella tutte le selezioni",
+  "selectedCount": "Selezionato ({count})"
 }

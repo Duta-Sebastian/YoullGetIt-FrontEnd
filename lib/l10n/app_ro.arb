@@ -189,5 +189,14 @@
   "hintSelectMultiple": "Selectează toate care se aplică",
   "hintSearchAndSelect": "Caută și selectează",
   "hintTypeAnswer": "Scrie răspunsul aici",
-  "hintOtherSpecify": "Altul, specifică"
+  "hintOtherSpecify": "Altul, specifică",
+  "hintChipsEmptyList": "Niciun element selectat",
+
+  "restrictedChipsNoMatches": "Nu s-au găsit rezultate",
+  "restrictedChipsStartTyping": "Începeți să tastați pentru a căuta...",
+
+  "pleaseSelectAtLeastOneOption": "Vă rugăm să selectați cel puțin o opțiune",
+  "questionnaireCompleted": "Ați completat chestionarul!",
+  "clearAllSelections": "Șterge toate selecțiile",
+  "selectedCount": "Selectat ({count})"
 }

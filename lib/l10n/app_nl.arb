@@ -107,6 +107,7 @@
   "hintSearchAndSelect": "Zoeken en selecteren",
   "hintTypeAnswer": "Typ hier je antwoord",
   "hintOtherSpecify": "Anders, specificeer",
+  "hintChipsEmptyList": "Geen items geselecteerd",
   
   "countryAny": "Elke",
   "countryAlbania": "Albanië",
@@ -188,5 +189,13 @@
   "languageSpanish": "Spaans",
   "languageSwedish": "Zweeds",
   "languageTurkish": "Turks",
-  "languageUkrainian": "Oekraïens"
+  "languageUkrainian": "Oekraïens",
+
+  "restrictedChipsNoMatches": "Geen overeenkomsten gevonden",
+  "restrictedChipsStartTyping": "Begin met typen om te zoeken...",
+
+  "pleaseSelectAtLeastOneOption": "Selecteer ten minste één optie",
+  "questionnaireCompleted": "Je hebt de vragenlijst voltooid!",
+  "clearAllSelections": "Wis alle selecties",
+  "selectedCount": "Geselecteerd ({count})"
 }

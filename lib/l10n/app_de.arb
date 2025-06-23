@@ -189,5 +189,14 @@
   "hintSelectMultiple": "Alle zutreffenden auswählen",
   "hintSearchAndSelect": "Suchen und auswählen",
   "hintTypeAnswer": "Antwort hier eingeben",
-  "hintOtherSpecify": "Andere, spezifizieren"
+  "hintOtherSpecify": "Andere, spezifizieren",
+  "hintChipsEmptyList": "Keine Elemente ausgewählt",
+
+  "restrictedChipsNoMatches": "Keine Übereinstimmungen gefunden",
+  "restrictedChipsStartTyping": "Tippen Sie, um zu suchen...",
+
+  "pleaseSelectAtLeastOneOption": "Bitte wählen Sie mindestens eine Option aus",
+  "questionnaireCompleted": "Sie haben den Fragebogen abgeschlossen!",
+  "clearAllSelections": "Alle Auswahlen löschen",
+  "selectedCount": "Ausgewählt ({count})"
 }

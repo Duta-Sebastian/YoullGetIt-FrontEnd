@@ -188,5 +188,14 @@
   "languageSpanish": "Español",
   "languageSwedish": "Sueco",
   "languageTurkish": "Turco",
-  "languageUkrainian": "Ucraniano"
+  "languageUkrainian": "Ucraniano",
+  "hintChipsEmptyList": "Ningún elemento seleccionado",
+
+  "restrictedChipsNoMatches": "No se encontraron coincidencias",
+  "restrictedChipsStartTyping": "Comienza a escribir para buscar...",
+
+  "pleaseSelectAtLeastOneOption": "Por favor, selecciona al menos una opción",
+  "questionnaireCompleted": "¡Has completado el cuestionario!",
+  "clearAllSelections": "Borrar todas las selecciones",
+  "selectedCount": "Seleccionado ({count})"
 }

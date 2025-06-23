@@ -189,5 +189,14 @@
   "hintSelectMultiple": "Sélectionnez toutes les options applicables",
   "hintSearchAndSelect": "Rechercher et sélectionner",
   "hintTypeAnswer": "Tapez votre réponse ici",
-  "hintOtherSpecify": "Autre, spécifiez"
+  "hintOtherSpecify": "Autre, spécifiez",
+  "hintChipsEmptyList": "Aucun élément sélectionné",
+
+  "restrictedChipsNoMatches": "Aucune correspondance trouvée",
+  "restrictedChipsStartTyping": "Commencez à taper pour rechercher...",
+
+  "pleaseSelectAtLeastOneOption": "Veuillez sélectionner au moins une option",
+  "questionnaireCompleted": "Vous avez terminé le questionnaire !",
+  "clearAllSelections": "Effacer toutes les sélections",
+  "selectedCount": "Sélectionné ({count})"
 }

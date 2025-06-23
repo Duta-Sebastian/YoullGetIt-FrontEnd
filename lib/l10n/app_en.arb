@@ -188,5 +188,14 @@
   "hintSelectMultiple": "Select all that apply",
   "hintSearchAndSelect": "Search and select",
   "hintTypeAnswer": "Type your answer here",
-  "hintOtherSpecify": "Other, specify"
+  "hintOtherSpecify": "Other, specify",
+  "hintChipsEmptyList": "No items selected",
+
+  "restrictedChipsNoMatches": "No matches found",
+  "restrictedChipsStartTyping": "Start typing to search...",
+
+  "pleaseSelectAtLeastOneOption": "Please select at least one option",
+  "questionnaireCompleted": "You've completed the questionnaire!",
+  "clearAllSelections": "Clear all selections",
+  "selectedCount": "Selected ({count})"
 }

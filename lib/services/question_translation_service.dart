@@ -1,4 +1,4 @@
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class QuestionTranslationService {
   static String getTranslatedQuestionText(String questionId, AppLocalizations l10n) {
@@ -29,7 +29,7 @@ class QuestionTranslationService {
   static List<String> getTranslatedOptions(String questionId, List<String> originalOptions, AppLocalizations l10n) {
     switch (questionId) {
       case 'q1': // Study level
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Highschool': return l10n.optionHighschool;
             case 'Bachelor': return l10n.optionBachelor;
@@ -41,7 +41,7 @@ class QuestionTranslationService {
 
       case 'q2': // Still student
       case 'q15': // Consider traineeships
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Yes': return l10n.optionYes;
             case 'No': return l10n.optionNo;
@@ -51,7 +51,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q2_yes_1': // What year
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case '1st Year': return l10n.optionFirstYear;
             case '2nd Year': return l10n.optionSecondYear;
@@ -62,7 +62,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q3': // University type
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Research': return l10n.optionResearch;
             case 'Applied': return l10n.optionApplied;
@@ -73,7 +73,7 @@ class QuestionTranslationService {
       case 'q4': // Study field
       case 'q5': // Other specializations
       case 'q7': // Other fields
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Engineering': return l10n.optionEngineering;
             case 'IT & Data Science': return l10n.optionItDataScience;
@@ -89,7 +89,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q4_eng': // Engineering type
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Mechanical': return l10n.optionMechanical;
             case 'Electrical': return l10n.optionElectrical;
@@ -101,7 +101,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q4_it': // IT area
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Software Development & Debugging': return l10n.optionSoftwareDevelopment;
             case 'Full-stack Development': return l10n.optionFullStackDevelopment;
@@ -116,7 +116,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q6': // Prior experience
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Yes, internship': return l10n.optionYesInternship;
             case 'Yes, part-time job': return l10n.optionYesPartTime;
@@ -127,13 +127,13 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q10': // Languages
-        return originalOptions.map((option) => _translateLanguage(option, l10n)).toList();
+        return originalOptions.map<String>((option) => _translateLanguage(option, l10n)).toList();
 
       case 'q11': // Countries
-        return originalOptions.map((option) => _translateCountry(option, l10n)).toList();
+        return originalOptions.map<String>((option) => _translateCountry(option, l10n)).toList();
 
       case 'q12': // Availability
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Anytime': return l10n.optionAnytime;
             case 'Summer': return l10n.optionSummer;
@@ -145,7 +145,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q13': // Internship length
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case '1-3 months': return l10n.optionOneToThreeMonths;
             case '3-6 months': return l10n.optionThreeToSixMonths;
@@ -156,7 +156,7 @@ class QuestionTranslationService {
         }).toList();
 
       case 'q14': // Visa requirement
-        return originalOptions.map((option) {
+        return originalOptions.map<String>((option) {
           switch (option) {
             case 'Yes, for EU/EEA and UK': return l10n.optionYesEuUk;
             case 'Yes, for EU/EEA': return l10n.optionYesEu;
