@@ -225,5 +225,36 @@
   "processingFailedToProcess": "Failed to process your data. Please try again.",
   "processingErrorOccurred": "An error occurred: {error}",
   "processingTryAgain": "Try Again",
-  "processingGoBack": "Go Back"
+  "processingGoBack": "Go Back",
+
+  "greeting": "Hi",
+  "internshipSearchQuestion": "In search for an internship?",
+
+  "profileUploadCvTitle": "Upload your CV",
+  "uploadCvSubtitle": "and get more accurate recommendations",
+  "cvUploadSuccess": "Your CV has been successfully uploaded!",
+  "cvUpdateSuccess": "CV updated successfully",
+  "cvSaveSuccess": "CV saved successfully",
+  "cvRemoveSuccess": "CV removed successfully",
+  "cvRetrieveError": "Failed to retrieve saved CV",
+  "cvPickError": "Failed to pick CV",
+  "cvUpdateError": "Failed to update CV",
+  "cvSaveError": "Failed to save CV",
+  "cvRemoveError": "Failed to remove CV",
+  "documentPreviewNotSupported": "Document preview not supported",
+  "replaceCvTooltip": "Replace CV",
+  "deleteCvTooltip": "Delete CV",
+  "uploadCvButtonText": "Upload CV",
+
+  "questionSave": "Save",
+  "buttonSave": "Save", 
+  "editAnswerTitle": "Edit Answer",
+
+  "xyzFormulaTitle": "We recommend using the XYZ formula when writing your CV",
+  "xyzFormulaQuestion": "What is the XYZ formula?",
+  "xyzFormulaDescription": "A resume-writing technique used to showcase accomplishments in a clear and impactful way",
+  "xyzFormulaFormula": "Accomplished [X] as measured by [Y] by doing [Z]",
+  "xyzFormulaExampleLabel": "Example:",
+  "xyzFormulaExampleText": "Increased sales (X = achievement) by 25% (Y = metric) by launching a new line of business in Q1 (Z = action)",
+  "xyzFormulaTip": "Use this formula to make your achievements stand out in your CV"
 }

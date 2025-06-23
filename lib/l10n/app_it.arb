@@ -225,5 +225,36 @@
   "processingFailedToProcess": "Impossibile elaborare i tuoi dati. Riprova.",
   "processingErrorOccurred": "Si è verificato un errore: {error}",
   "processingTryAgain": "Riprova",
-  "processingGoBack": "Torna indietro"
+  "processingGoBack": "Torna indietro",
+
+  "greeting": "Ciao",
+  "internshipSearchQuestion": "Cerchi un tirocinio?",
+
+  "profileUploadCvTitle": "Carica il tuo CV",
+  "uploadCvSubtitle": "e ottieni raccomandazioni più accurate",
+  "cvUploadSuccess": "Il tuo CV è stato caricato con successo!",
+  "cvUpdateSuccess": "CV aggiornato con successo",
+  "cvSaveSuccess": "CV salvato con successo",
+  "cvRemoveSuccess": "CV rimosso con successo",
+  "cvRetrieveError": "Errore nel recuperare il CV salvato",
+  "cvPickError": "Errore nella selezione del CV",
+  "cvUpdateError": "Errore nell'aggiornamento del CV",
+  "cvSaveError": "Errore nel salvare il CV",
+  "cvRemoveError": "Errore nella rimozione del CV",
+  "documentPreviewNotSupported": "Anteprima documento non supportata",
+  "replaceCvTooltip": "Sostituisci CV",
+  "deleteCvTooltip": "Elimina CV",
+  "uploadCvButtonText": "Carica CV",
+
+  "questionSave": "Salva",
+  "buttonSave": "Salva",
+  "editAnswerTitle": "Modifica risposta",
+
+  "xyzFormulaTitle": "Consigliamo di utilizzare la formula XYZ quando scrivi il tuo CV",
+  "xyzFormulaQuestion": "Cos'è la formula XYZ?",
+  "xyzFormulaDescription": "Una tecnica di scrittura del curriculum utilizzata per mostrare i risultati in modo chiaro e d'impatto",
+  "xyzFormulaFormula": "Realizzato [X] misurato da [Y] facendo [Z]",
+  "xyzFormulaExampleLabel": "Esempio:",
+  "xyzFormulaExampleText": "Aumento delle vendite (X = risultato) del 25% (Y = metrica) lanciando una nuova linea di business nel Q1 (Z = azione)",
+  "xyzFormulaTip": "Usa questa formula per far risaltare i tuoi risultati nel tuo CV"
 }

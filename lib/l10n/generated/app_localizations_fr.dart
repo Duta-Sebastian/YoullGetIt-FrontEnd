@@ -628,4 +628,85 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Retour';
+
+  @override
+  String get greeting => 'Salut';
+
+  @override
+  String get internshipSearchQuestion => 'À la recherche d\'un stage ?';
+
+  @override
+  String get profileUploadCvTitle => 'Téléchargez votre CV';
+
+  @override
+  String get uploadCvSubtitle => 'et obtenez des recommandations plus précises';
+
+  @override
+  String get cvUploadSuccess => 'Votre CV a été téléchargé avec succès !';
+
+  @override
+  String get cvUpdateSuccess => 'CV mis à jour avec succès';
+
+  @override
+  String get cvSaveSuccess => 'CV sauvegardé avec succès';
+
+  @override
+  String get cvRemoveSuccess => 'CV supprimé avec succès';
+
+  @override
+  String get cvRetrieveError => 'Échec de récupération du CV sauvegardé';
+
+  @override
+  String get cvPickError => 'Échec de sélection du CV';
+
+  @override
+  String get cvUpdateError => 'Échec de mise à jour du CV';
+
+  @override
+  String get cvSaveError => 'Échec de sauvegarde du CV';
+
+  @override
+  String get cvRemoveError => 'Échec de suppression du CV';
+
+  @override
+  String get documentPreviewNotSupported => 'Aperçu du document non pris en charge';
+
+  @override
+  String get replaceCvTooltip => 'Remplacer le CV';
+
+  @override
+  String get deleteCvTooltip => 'Supprimer le CV';
+
+  @override
+  String get uploadCvButtonText => 'Télécharger CV';
+
+  @override
+  String get questionSave => 'Sauvegarder';
+
+  @override
+  String get buttonSave => 'Sauvegarder';
+
+  @override
+  String get editAnswerTitle => 'Modifier la réponse';
+
+  @override
+  String get xyzFormulaTitle => 'Nous recommandons d\'utiliser la formule XYZ lors de la rédaction de votre CV';
+
+  @override
+  String get xyzFormulaQuestion => 'Qu\'est-ce que la formule XYZ ?';
+
+  @override
+  String get xyzFormulaDescription => 'Une technique de rédaction de CV utilisée pour présenter les réalisations de manière claire et percutante';
+
+  @override
+  String get xyzFormulaFormula => 'Accompli [X] mesuré par [Y] en faisant [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Exemple:';
+
+  @override
+  String get xyzFormulaExampleText => 'Augmentation des ventes (X = réalisation) de 25% (Y = métrique) en lançant une nouvelle ligne d\'affaires au T1 (Z = action)';
+
+  @override
+  String get xyzFormulaTip => 'Utilisez cette formule pour faire ressortir vos réalisations dans votre CV';
 }

@@ -628,4 +628,85 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Înapoi';
+
+  @override
+  String get greeting => 'Salut';
+
+  @override
+  String get internshipSearchQuestion => 'Cauți un stagiu de practică?';
+
+  @override
+  String get profileUploadCvTitle => 'Încarcă-ți CV-ul';
+
+  @override
+  String get uploadCvSubtitle => 'și primește recomandări mai precise';
+
+  @override
+  String get cvUploadSuccess => 'CV-ul tău a fost încărcat cu succes!';
+
+  @override
+  String get cvUpdateSuccess => 'CV actualizat cu succes';
+
+  @override
+  String get cvSaveSuccess => 'CV salvat cu succes';
+
+  @override
+  String get cvRemoveSuccess => 'CV eliminat cu succes';
+
+  @override
+  String get cvRetrieveError => 'Eroare la recuperarea CV-ului salvat';
+
+  @override
+  String get cvPickError => 'Eroare la selectarea CV-ului';
+
+  @override
+  String get cvUpdateError => 'Eroare la actualizarea CV-ului';
+
+  @override
+  String get cvSaveError => 'Eroare la salvarea CV-ului';
+
+  @override
+  String get cvRemoveError => 'Eroare la eliminarea CV-ului';
+
+  @override
+  String get documentPreviewNotSupported => 'Previzualizarea documentului nu este suportată';
+
+  @override
+  String get replaceCvTooltip => 'Înlocuiește CV-ul';
+
+  @override
+  String get deleteCvTooltip => 'Șterge CV-ul';
+
+  @override
+  String get uploadCvButtonText => 'Încarcă CV';
+
+  @override
+  String get questionSave => 'Salvează';
+
+  @override
+  String get buttonSave => 'Salvează';
+
+  @override
+  String get editAnswerTitle => 'Editează răspunsul';
+
+  @override
+  String get xyzFormulaTitle => 'Recomandăm să folosești formula XYZ când îți scrii CV-ul';
+
+  @override
+  String get xyzFormulaQuestion => 'Ce este formula XYZ?';
+
+  @override
+  String get xyzFormulaDescription => 'O tehnică de scriere a CV-ului folosită pentru a prezenta realizările într-un mod clar și impactant';
+
+  @override
+  String get xyzFormulaFormula => 'Am realizat [X] măsurat prin [Y] făcând [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Exemplu:';
+
+  @override
+  String get xyzFormulaExampleText => 'Am crescut vânzările (X = realizare) cu 25% (Y = metrică) prin lansarea unei noi linii de afaceri în T1 (Z = acțiune)';
+
+  @override
+  String get xyzFormulaTip => 'Folosește această formulă pentru a-ți evidenția realizările în CV';
 }

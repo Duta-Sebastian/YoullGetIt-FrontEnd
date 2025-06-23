@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
+import 'package:youllgetit_flutter/widgets/profile/XYZ_formula.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_section.dart';
 import 'package:youllgetit_flutter/widgets/profile/profile_header.dart';
 
@@ -22,6 +23,14 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Color(0xFFFFDE15),
+        statusBarIconBrightness: Brightness.dark,
+      ));
+    });
+
     _fetchUsername();
 
     _userUpdateSubscription = NotificationManager.instance.onUserUpdated.listen((_) {
@@ -33,6 +42,13 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void dispose() {
     _userUpdateSubscription?.cancel();
+    
+    // Restore to default when leaving the screen
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+    ));
+    
     super.dispose();
   }
 
@@ -52,8 +68,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         _username = username;
         _isLoading = false;
       });
-    } 
-    catch (e) {
+    } catch (e) {
       if (!mounted) {
         return;
       }
@@ -85,33 +100,41 @@ class ProfileScreenState extends State<ProfileScreen> {
         );
       });
     }
-
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ProfileHeader(
-                      username: _username ?? 'Guest',
-                      onUsernameChanged: refreshProfile,
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Full-width header with no padding
+                  ProfileHeader(
+                    username: _username ?? 'Guest',
+                    onUsernameChanged: refreshProfile,
+                  ),
+                  // Content with padding
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView(
+                              children: [
+                                CVUploadSection(),
+                                SizedBox(height: 24),
+                                XYZFormulaWidget()
+                              ]
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Divider(),
-                    Expanded(
-                      child: ListView(
-                          children: [
-                            CVUploadSection(),
-                            SizedBox(height: 24),
-                          ]
-                        ),
-                    )
-                  ],
-                ),
-        ),
+                  ),
+                ],
+              ),
       ),
     );
   }

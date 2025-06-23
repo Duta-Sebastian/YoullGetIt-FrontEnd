@@ -226,5 +226,36 @@
   "processingFailedToProcess": "Ihre Daten konnten nicht verarbeitet werden. Bitte versuchen Sie es erneut.",
   "processingErrorOccurred": "Ein Fehler ist aufgetreten: {error}",
   "processingTryAgain": "Erneut versuchen",
-  "processingGoBack": "Zurück"
+  "processingGoBack": "Zurück",
+
+  "greeting": "Hallo",
+  "internshipSearchQuestion": "Auf der Suche nach einem Praktikum?",
+
+  "profileUploadCvTitle": "Laden Sie Ihren Lebenslauf hoch",
+  "uploadCvSubtitle": "und erhalten Sie genauere Empfehlungen",
+  "cvUploadSuccess": "Ihr Lebenslauf wurde erfolgreich hochgeladen!",
+  "cvUpdateSuccess": "Lebenslauf erfolgreich aktualisiert",
+  "cvSaveSuccess": "Lebenslauf erfolgreich gespeichert",
+  "cvRemoveSuccess": "Lebenslauf erfolgreich entfernt",
+  "cvRetrieveError": "Fehler beim Abrufen des gespeicherten Lebenslaufs",
+  "cvPickError": "Fehler beim Auswählen des Lebenslaufs",
+  "cvUpdateError": "Fehler beim Aktualisieren des Lebenslaufs",
+  "cvSaveError": "Fehler beim Speichern des Lebenslaufs",
+  "cvRemoveError": "Fehler beim Entfernen des Lebenslaufs",
+  "documentPreviewNotSupported": "Dokumentvorschau nicht unterstützt",
+  "replaceCvTooltip": "Lebenslauf ersetzen",
+  "deleteCvTooltip": "Lebenslauf löschen",
+  "uploadCvButtonText": "CV hochladen",
+
+  "questionSave": "Speichern",
+  "buttonSave": "Speichern",
+  "editAnswerTitle": "Antwort bearbeiten",
+
+  "xyzFormulaTitle": "Wir empfehlen die Verwendung der XYZ-Formel beim Schreiben Ihres Lebenslaufs",
+  "xyzFormulaQuestion": "Was ist die XYZ-Formel?",
+  "xyzFormulaDescription": "Eine Lebenslauf-Schreibtechnik, die verwendet wird, um Erfolge auf klare und wirkungsvolle Weise zu präsentieren",
+  "xyzFormulaFormula": "Erreicht [X] gemessen an [Y] durch [Z]",
+  "xyzFormulaExampleLabel": "Beispiel:",
+  "xyzFormulaExampleText": "Umsatzsteigerung (X = Leistung) um 25% (Y = Kennzahl) durch Einführung einer neuen Geschäftslinie in Q1 (Z = Aktion)",
+  "xyzFormulaTip": "Verwenden Sie diese Formel, um Ihre Erfolge in Ihrem Lebenslauf hervorzuheben"
 }

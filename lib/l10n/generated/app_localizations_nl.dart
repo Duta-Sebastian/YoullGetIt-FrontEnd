@@ -628,4 +628,85 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Ga terug';
+
+  @override
+  String get greeting => 'Hoi';
+
+  @override
+  String get internshipSearchQuestion => 'Op zoek naar een stage?';
+
+  @override
+  String get profileUploadCvTitle => 'Upload je CV';
+
+  @override
+  String get uploadCvSubtitle => 'en krijg meer nauwkeurige aanbevelingen';
+
+  @override
+  String get cvUploadSuccess => 'Je CV is succesvol geüpload!';
+
+  @override
+  String get cvUpdateSuccess => 'CV succesvol bijgewerkt';
+
+  @override
+  String get cvSaveSuccess => 'CV succesvol opgeslagen';
+
+  @override
+  String get cvRemoveSuccess => 'CV succesvol verwijderd';
+
+  @override
+  String get cvRetrieveError => 'Fout bij het ophalen van opgeslagen CV';
+
+  @override
+  String get cvPickError => 'Fout bij het selecteren van CV';
+
+  @override
+  String get cvUpdateError => 'Fout bij het bijwerken van CV';
+
+  @override
+  String get cvSaveError => 'Fout bij het opslaan van CV';
+
+  @override
+  String get cvRemoveError => 'Fout bij het verwijderen van CV';
+
+  @override
+  String get documentPreviewNotSupported => 'Documentvoorbeeld niet ondersteund';
+
+  @override
+  String get replaceCvTooltip => 'CV vervangen';
+
+  @override
+  String get deleteCvTooltip => 'CV verwijderen';
+
+  @override
+  String get uploadCvButtonText => 'CV uploaden';
+
+  @override
+  String get questionSave => 'Opslaan';
+
+  @override
+  String get buttonSave => 'Opslaan';
+
+  @override
+  String get editAnswerTitle => 'Antwoord bewerken';
+
+  @override
+  String get xyzFormulaTitle => 'We raden aan de XYZ-formule te gebruiken bij het schrijven van je CV';
+
+  @override
+  String get xyzFormulaQuestion => 'Wat is de XYZ-formule?';
+
+  @override
+  String get xyzFormulaDescription => 'Een CV-schrijftechniek die wordt gebruikt om prestaties op een duidelijke en impactvolle manier te tonen';
+
+  @override
+  String get xyzFormulaFormula => 'Behaald [X] gemeten door [Y] door het doen van [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Voorbeeld:';
+
+  @override
+  String get xyzFormulaExampleText => 'Verkoop verhoogd (X = prestatie) met 25% (Y = meetwaarde) door het lanceren van een nieuwe bedrijfslijn in Q1 (Z = actie)';
+
+  @override
+  String get xyzFormulaTip => 'Gebruik deze formule om je prestaties te laten opvallen in je CV';
 }

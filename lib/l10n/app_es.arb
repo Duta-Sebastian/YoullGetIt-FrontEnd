@@ -225,5 +225,36 @@
   "processingFailedToProcess": "No se pudieron procesar tus datos. Por favor inténtalo de nuevo.",
   "processingErrorOccurred": "Ocurrió un error: {error}",
   "processingTryAgain": "Intentar de nuevo",
-  "processingGoBack": "Volver"
+  "processingGoBack": "Volver",
+
+  "greeting": "Hola",
+  "internshipSearchQuestion": "¿Buscas una pasantía?",
+
+  "profileUploadCvTitle": "Sube tu CV",
+  "uploadCvSubtitle": "y obtén recomendaciones más precisas",
+  "cvUploadSuccess": "¡Tu CV ha sido subido exitosamente!",
+  "cvUpdateSuccess": "CV actualizado exitosamente",
+  "cvSaveSuccess": "CV guardado exitosamente",
+  "cvRemoveSuccess": "CV eliminado exitosamente",
+  "cvRetrieveError": "Error al recuperar el CV guardado",
+  "cvPickError": "Error al seleccionar el CV",
+  "cvUpdateError": "Error al actualizar el CV",
+  "cvSaveError": "Error al guardar el CV",
+  "cvRemoveError": "Error al eliminar el CV",
+  "documentPreviewNotSupported": "Vista previa del documento no compatible",
+  "replaceCvTooltip": "Reemplazar CV",
+  "deleteCvTooltip": "Eliminar CV",
+  "uploadCvButtonText": "Subir CV",
+
+  "questionSave": "Guardar",
+  "buttonSave": "Guardar",
+  "editAnswerTitle": "Editar respuesta",
+
+  "xyzFormulaTitle": "Recomendamos usar la fórmula XYZ al escribir tu CV",
+  "xyzFormulaQuestion": "¿Qué es la fórmula XYZ?",
+  "xyzFormulaDescription": "Una técnica de redacción de currículum utilizada para mostrar logros de manera clara e impactante",
+  "xyzFormulaFormula": "Logré [X] medido por [Y] haciendo [Z]",
+  "xyzFormulaExampleLabel": "Ejemplo:",
+  "xyzFormulaExampleText": "Aumenté las ventas (X = logro) en un 25% (Y = métrica) lanzando una nueva línea de negocio en Q1 (Z = acción)",
+  "xyzFormulaTip": "Usa esta fórmula para destacar tus logros en tu CV"
 }

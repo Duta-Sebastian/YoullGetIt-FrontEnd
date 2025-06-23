@@ -628,4 +628,85 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Go Back';
+
+  @override
+  String get greeting => 'Hi';
+
+  @override
+  String get internshipSearchQuestion => 'In search for an internship?';
+
+  @override
+  String get profileUploadCvTitle => 'Upload your CV';
+
+  @override
+  String get uploadCvSubtitle => 'and get more accurate recommendations';
+
+  @override
+  String get cvUploadSuccess => 'Your CV has been successfully uploaded!';
+
+  @override
+  String get cvUpdateSuccess => 'CV updated successfully';
+
+  @override
+  String get cvSaveSuccess => 'CV saved successfully';
+
+  @override
+  String get cvRemoveSuccess => 'CV removed successfully';
+
+  @override
+  String get cvRetrieveError => 'Failed to retrieve saved CV';
+
+  @override
+  String get cvPickError => 'Failed to pick CV';
+
+  @override
+  String get cvUpdateError => 'Failed to update CV';
+
+  @override
+  String get cvSaveError => 'Failed to save CV';
+
+  @override
+  String get cvRemoveError => 'Failed to remove CV';
+
+  @override
+  String get documentPreviewNotSupported => 'Document preview not supported';
+
+  @override
+  String get replaceCvTooltip => 'Replace CV';
+
+  @override
+  String get deleteCvTooltip => 'Delete CV';
+
+  @override
+  String get uploadCvButtonText => 'Upload CV';
+
+  @override
+  String get questionSave => 'Save';
+
+  @override
+  String get buttonSave => 'Save';
+
+  @override
+  String get editAnswerTitle => 'Edit Answer';
+
+  @override
+  String get xyzFormulaTitle => 'We recommend using the XYZ formula when writing your CV';
+
+  @override
+  String get xyzFormulaQuestion => 'What is the XYZ formula?';
+
+  @override
+  String get xyzFormulaDescription => 'A resume-writing technique used to showcase accomplishments in a clear and impactful way';
+
+  @override
+  String get xyzFormulaFormula => 'Accomplished [X] as measured by [Y] by doing [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Example:';
+
+  @override
+  String get xyzFormulaExampleText => 'Increased sales (X = achievement) by 25% (Y = metric) by launching a new line of business in Q1 (Z = action)';
+
+  @override
+  String get xyzFormulaTip => 'Use this formula to make your achievements stand out in your CV';
 }

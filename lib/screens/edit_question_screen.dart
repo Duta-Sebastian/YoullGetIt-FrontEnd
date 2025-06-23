@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/screens/branch_question_screen.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';
 
 class EditQuestionScreen extends StatefulWidget {
@@ -49,10 +51,11 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
 
   bool _validateAnswers() {
     if (_selectedAnswers.isEmpty) {
+      final localizations = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please provide at least one answer"),
-          backgroundColor: Colors.red,
+        SnackBar(
+          content: Text(localizations.pleaseSelectAtLeastOneOption),
+          backgroundColor: Color(0xFFFFDE15),
         ),
       );
       return false;
@@ -203,6 +206,12 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final translatedQuestionText = QuestionTranslationService.getTranslatedQuestionText(
+      widget.question.id, 
+      localizations
+    );
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -213,21 +222,8 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Edit Answer'),
+        title: Text(localizations.editAnswerTitle),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: _saveChanges,
-            child: Text(
-              _hasNewBranches ? 'Next' : 'Save',
-              style: const TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -244,7 +240,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                   border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: Text(
-                  widget.question.text,
+                  translatedQuestionText,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -270,7 +266,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                 child: ElevatedButton(
                   onPressed: _saveChanges,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber.shade600,
+                    backgroundColor: const Color(0xFFFFDE15), // Yellow button
                     foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -278,7 +274,9 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                     ),
                   ),
                   child: Text(
-                    _hasNewBranches ? 'Next' : 'Save Changes',
+                    _hasNewBranches 
+                        ? localizations.questionsNext 
+                        : localizations.questionSave,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

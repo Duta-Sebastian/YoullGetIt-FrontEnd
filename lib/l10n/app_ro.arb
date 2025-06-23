@@ -226,5 +226,36 @@
   "processingFailedToProcess": "Nu s-au putut procesa datele tale. Te rog încearcă din nou.",
   "processingErrorOccurred": "A apărut o eroare: {error}",
   "processingTryAgain": "Încearcă din nou",
-  "processingGoBack": "Înapoi"
+  "processingGoBack": "Înapoi",
+
+  "greeting": "Salut",
+  "internshipSearchQuestion": "Cauți un stagiu de practică?",
+
+  "profileUploadCvTitle": "Încarcă-ți CV-ul",
+  "uploadCvSubtitle": "și primește recomandări mai precise",
+  "cvUploadSuccess": "CV-ul tău a fost încărcat cu succes!",
+  "cvUpdateSuccess": "CV actualizat cu succes",
+  "cvSaveSuccess": "CV salvat cu succes",
+  "cvRemoveSuccess": "CV eliminat cu succes",
+  "cvRetrieveError": "Eroare la recuperarea CV-ului salvat",
+  "cvPickError": "Eroare la selectarea CV-ului",
+  "cvUpdateError": "Eroare la actualizarea CV-ului",
+  "cvSaveError": "Eroare la salvarea CV-ului",
+  "cvRemoveError": "Eroare la eliminarea CV-ului",
+  "documentPreviewNotSupported": "Previzualizarea documentului nu este suportată",
+  "replaceCvTooltip": "Înlocuiește CV-ul",
+  "deleteCvTooltip": "Șterge CV-ul",
+  "uploadCvButtonText": "Încarcă CV",
+
+  "questionSave": "Salvează",
+  "buttonSave": "Salvează",
+  "editAnswerTitle": "Editează răspunsul",
+
+  "xyzFormulaTitle": "Recomandăm să folosești formula XYZ când îți scrii CV-ul",
+  "xyzFormulaQuestion": "Ce este formula XYZ?",
+  "xyzFormulaDescription": "O tehnică de scriere a CV-ului folosită pentru a prezenta realizările într-un mod clar și impactant",
+  "xyzFormulaFormula": "Am realizat [X] măsurat prin [Y] făcând [Z]",
+  "xyzFormulaExampleLabel": "Exemplu:",
+  "xyzFormulaExampleText": "Am crescut vânzările (X = realizare) cu 25% (Y = metrică) prin lansarea unei noi linii de afaceri în T1 (Z = acțiune)",
+  "xyzFormulaTip": "Folosește această formulă pentru a-ți evidenția realizările în CV"
 }

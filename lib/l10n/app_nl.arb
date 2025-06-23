@@ -225,5 +225,36 @@
   "processingFailedToProcess": "Kon je gegevens niet verwerken. Probeer het opnieuw.",
   "processingErrorOccurred": "Er is een fout opgetreden: {error}",
   "processingTryAgain": "Probeer opnieuw",
-  "processingGoBack": "Ga terug"
+  "processingGoBack": "Ga terug",
+
+  "greeting": "Hoi",
+  "internshipSearchQuestion": "Op zoek naar een stage?",
+
+  "profileUploadCvTitle": "Upload je CV",
+  "uploadCvSubtitle": "en krijg meer nauwkeurige aanbevelingen",
+  "cvUploadSuccess": "Je CV is succesvol geüpload!",
+  "cvUpdateSuccess": "CV succesvol bijgewerkt",
+  "cvSaveSuccess": "CV succesvol opgeslagen",
+  "cvRemoveSuccess": "CV succesvol verwijderd",
+  "cvRetrieveError": "Fout bij het ophalen van opgeslagen CV",
+  "cvPickError": "Fout bij het selecteren van CV",
+  "cvUpdateError": "Fout bij het bijwerken van CV",
+  "cvSaveError": "Fout bij het opslaan van CV",
+  "cvRemoveError": "Fout bij het verwijderen van CV",
+  "documentPreviewNotSupported": "Documentvoorbeeld niet ondersteund",
+  "replaceCvTooltip": "CV vervangen",
+  "deleteCvTooltip": "CV verwijderen",
+  "uploadCvButtonText": "CV uploaden",
+
+  "questionSave": "Opslaan",
+  "buttonSave": "Opslaan",
+  "editAnswerTitle": "Antwoord bewerken",
+
+  "xyzFormulaTitle": "We raden aan de XYZ-formule te gebruiken bij het schrijven van je CV",
+  "xyzFormulaQuestion": "Wat is de XYZ-formule?",
+  "xyzFormulaDescription": "Een CV-schrijftechniek die wordt gebruikt om prestaties op een duidelijke en impactvolle manier te tonen",
+  "xyzFormulaFormula": "Behaald [X] gemeten door [Y] door het doen van [Z]",
+  "xyzFormulaExampleLabel": "Voorbeeld:",
+  "xyzFormulaExampleText": "Verkoop verhoogd (X = prestatie) met 25% (Y = meetwaarde) door het lanceren van een nieuwe bedrijfslijn in Q1 (Z = actie)",
+  "xyzFormulaTip": "Gebruik deze formule om je prestaties te laten opvallen in je CV"
 }

@@ -628,4 +628,85 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Volver';
+
+  @override
+  String get greeting => 'Hola';
+
+  @override
+  String get internshipSearchQuestion => '¿Buscas una pasantía?';
+
+  @override
+  String get profileUploadCvTitle => 'Sube tu CV';
+
+  @override
+  String get uploadCvSubtitle => 'y obtén recomendaciones más precisas';
+
+  @override
+  String get cvUploadSuccess => '¡Tu CV ha sido subido exitosamente!';
+
+  @override
+  String get cvUpdateSuccess => 'CV actualizado exitosamente';
+
+  @override
+  String get cvSaveSuccess => 'CV guardado exitosamente';
+
+  @override
+  String get cvRemoveSuccess => 'CV eliminado exitosamente';
+
+  @override
+  String get cvRetrieveError => 'Error al recuperar el CV guardado';
+
+  @override
+  String get cvPickError => 'Error al seleccionar el CV';
+
+  @override
+  String get cvUpdateError => 'Error al actualizar el CV';
+
+  @override
+  String get cvSaveError => 'Error al guardar el CV';
+
+  @override
+  String get cvRemoveError => 'Error al eliminar el CV';
+
+  @override
+  String get documentPreviewNotSupported => 'Vista previa del documento no compatible';
+
+  @override
+  String get replaceCvTooltip => 'Reemplazar CV';
+
+  @override
+  String get deleteCvTooltip => 'Eliminar CV';
+
+  @override
+  String get uploadCvButtonText => 'Subir CV';
+
+  @override
+  String get questionSave => 'Guardar';
+
+  @override
+  String get buttonSave => 'Guardar';
+
+  @override
+  String get editAnswerTitle => 'Editar respuesta';
+
+  @override
+  String get xyzFormulaTitle => 'Recomendamos usar la fórmula XYZ al escribir tu CV';
+
+  @override
+  String get xyzFormulaQuestion => '¿Qué es la fórmula XYZ?';
+
+  @override
+  String get xyzFormulaDescription => 'Una técnica de redacción de currículum utilizada para mostrar logros de manera clara e impactante';
+
+  @override
+  String get xyzFormulaFormula => 'Logré [X] medido por [Y] haciendo [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Ejemplo:';
+
+  @override
+  String get xyzFormulaExampleText => 'Aumenté las ventas (X = logro) en un 25% (Y = métrica) lanzando una nueva línea de negocio en Q1 (Z = acción)';
+
+  @override
+  String get xyzFormulaTip => 'Usa esta fórmula para destacar tus logros en tu CV';
 }

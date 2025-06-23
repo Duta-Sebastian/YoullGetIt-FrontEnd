@@ -226,5 +226,36 @@
   "processingFailedToProcess": "Impossible de traiter vos données. Veuillez réessayer.",
   "processingErrorOccurred": "Une erreur s'est produite : {error}",
   "processingTryAgain": "Réessayer",
-  "processingGoBack": "Retour"
+  "processingGoBack": "Retour",
+
+  "greeting": "Salut",
+  "internshipSearchQuestion": "À la recherche d'un stage ?",
+
+  "profileUploadCvTitle": "Téléchargez votre CV",
+  "uploadCvSubtitle": "et obtenez des recommandations plus précises",
+  "cvUploadSuccess": "Votre CV a été téléchargé avec succès !",
+  "cvUpdateSuccess": "CV mis à jour avec succès",
+  "cvSaveSuccess": "CV sauvegardé avec succès",
+  "cvRemoveSuccess": "CV supprimé avec succès",
+  "cvRetrieveError": "Échec de récupération du CV sauvegardé",
+  "cvPickError": "Échec de sélection du CV",
+  "cvUpdateError": "Échec de mise à jour du CV",
+  "cvSaveError": "Échec de sauvegarde du CV",
+  "cvRemoveError": "Échec de suppression du CV",
+  "documentPreviewNotSupported": "Aperçu du document non pris en charge",
+  "replaceCvTooltip": "Remplacer le CV",
+  "deleteCvTooltip": "Supprimer le CV",
+  "uploadCvButtonText": "Télécharger CV",
+
+  "questionSave": "Sauvegarder",
+  "buttonSave": "Sauvegarder",
+  "editAnswerTitle": "Modifier la réponse",
+
+  "xyzFormulaTitle": "Nous recommandons d'utiliser la formule XYZ lors de la rédaction de votre CV",
+  "xyzFormulaQuestion": "Qu'est-ce que la formule XYZ ?",
+  "xyzFormulaDescription": "Une technique de rédaction de CV utilisée pour présenter les réalisations de manière claire et percutante",
+  "xyzFormulaFormula": "Accompli [X] mesuré par [Y] en faisant [Z]",
+  "xyzFormulaExampleLabel": "Exemple:",
+  "xyzFormulaExampleText": "Augmentation des ventes (X = réalisation) de 25% (Y = métrique) en lançant une nouvelle ligne d'affaires au T1 (Z = action)",
+  "xyzFormulaTip": "Utilisez cette formule pour faire ressortir vos réalisations dans votre CV"
 }

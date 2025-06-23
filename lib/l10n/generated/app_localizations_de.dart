@@ -628,4 +628,85 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get processingGoBack => 'Zurück';
+
+  @override
+  String get greeting => 'Hallo';
+
+  @override
+  String get internshipSearchQuestion => 'Auf der Suche nach einem Praktikum?';
+
+  @override
+  String get profileUploadCvTitle => 'Laden Sie Ihren Lebenslauf hoch';
+
+  @override
+  String get uploadCvSubtitle => 'und erhalten Sie genauere Empfehlungen';
+
+  @override
+  String get cvUploadSuccess => 'Ihr Lebenslauf wurde erfolgreich hochgeladen!';
+
+  @override
+  String get cvUpdateSuccess => 'Lebenslauf erfolgreich aktualisiert';
+
+  @override
+  String get cvSaveSuccess => 'Lebenslauf erfolgreich gespeichert';
+
+  @override
+  String get cvRemoveSuccess => 'Lebenslauf erfolgreich entfernt';
+
+  @override
+  String get cvRetrieveError => 'Fehler beim Abrufen des gespeicherten Lebenslaufs';
+
+  @override
+  String get cvPickError => 'Fehler beim Auswählen des Lebenslaufs';
+
+  @override
+  String get cvUpdateError => 'Fehler beim Aktualisieren des Lebenslaufs';
+
+  @override
+  String get cvSaveError => 'Fehler beim Speichern des Lebenslaufs';
+
+  @override
+  String get cvRemoveError => 'Fehler beim Entfernen des Lebenslaufs';
+
+  @override
+  String get documentPreviewNotSupported => 'Dokumentvorschau nicht unterstützt';
+
+  @override
+  String get replaceCvTooltip => 'Lebenslauf ersetzen';
+
+  @override
+  String get deleteCvTooltip => 'Lebenslauf löschen';
+
+  @override
+  String get uploadCvButtonText => 'CV hochladen';
+
+  @override
+  String get questionSave => 'Speichern';
+
+  @override
+  String get buttonSave => 'Speichern';
+
+  @override
+  String get editAnswerTitle => 'Antwort bearbeiten';
+
+  @override
+  String get xyzFormulaTitle => 'Wir empfehlen die Verwendung der XYZ-Formel beim Schreiben Ihres Lebenslaufs';
+
+  @override
+  String get xyzFormulaQuestion => 'Was ist die XYZ-Formel?';
+
+  @override
+  String get xyzFormulaDescription => 'Eine Lebenslauf-Schreibtechnik, die verwendet wird, um Erfolge auf klare und wirkungsvolle Weise zu präsentieren';
+
+  @override
+  String get xyzFormulaFormula => 'Erreicht [X] gemessen an [Y] durch [Z]';
+
+  @override
+  String get xyzFormulaExampleLabel => 'Beispiel:';
+
+  @override
+  String get xyzFormulaExampleText => 'Umsatzsteigerung (X = Leistung) um 25% (Y = Kennzahl) durch Einführung einer neuen Geschäftslinie in Q1 (Z = Aktion)';
+
+  @override
+  String get xyzFormulaTip => 'Verwenden Sie diese Formel, um Ihre Erfolge in Ihrem Lebenslauf hervorzuheben';
 }

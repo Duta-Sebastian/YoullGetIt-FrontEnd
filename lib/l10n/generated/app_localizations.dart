@@ -1334,6 +1334,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go Back'**
   String get processingGoBack;
+
+  /// No description provided for @greeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi'**
+  String get greeting;
+
+  /// No description provided for @internshipSearchQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'In search for an internship?'**
+  String get internshipSearchQuestion;
+
+  /// No description provided for @profileUploadCvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your CV'**
+  String get profileUploadCvTitle;
+
+  /// No description provided for @uploadCvSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'and get more accurate recommendations'**
+  String get uploadCvSubtitle;
+
+  /// No description provided for @cvUploadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your CV has been successfully uploaded!'**
+  String get cvUploadSuccess;
+
+  /// No description provided for @cvUpdateSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CV updated successfully'**
+  String get cvUpdateSuccess;
+
+  /// No description provided for @cvSaveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CV saved successfully'**
+  String get cvSaveSuccess;
+
+  /// No description provided for @cvRemoveSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'CV removed successfully'**
+  String get cvRemoveSuccess;
+
+  /// No description provided for @cvRetrieveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to retrieve saved CV'**
+  String get cvRetrieveError;
+
+  /// No description provided for @cvPickError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick CV'**
+  String get cvPickError;
+
+  /// No description provided for @cvUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update CV'**
+  String get cvUpdateError;
+
+  /// No description provided for @cvSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save CV'**
+  String get cvSaveError;
+
+  /// No description provided for @cvRemoveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to remove CV'**
+  String get cvRemoveError;
+
+  /// No description provided for @documentPreviewNotSupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Document preview not supported'**
+  String get documentPreviewNotSupported;
+
+  /// No description provided for @replaceCvTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace CV'**
+  String get replaceCvTooltip;
+
+  /// No description provided for @deleteCvTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete CV'**
+  String get deleteCvTooltip;
+
+  /// No description provided for @uploadCvButtonText.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload CV'**
+  String get uploadCvButtonText;
+
+  /// No description provided for @questionSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get questionSave;
+
+  /// No description provided for @buttonSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get buttonSave;
+
+  /// No description provided for @editAnswerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Answer'**
+  String get editAnswerTitle;
+
+  /// No description provided for @xyzFormulaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We recommend using the XYZ formula when writing your CV'**
+  String get xyzFormulaTitle;
+
+  /// No description provided for @xyzFormulaQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the XYZ formula?'**
+  String get xyzFormulaQuestion;
+
+  /// No description provided for @xyzFormulaDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'A resume-writing technique used to showcase accomplishments in a clear and impactful way'**
+  String get xyzFormulaDescription;
+
+  /// No description provided for @xyzFormulaFormula.
+  ///
+  /// In en, this message translates to:
+  /// **'Accomplished [X] as measured by [Y] by doing [Z]'**
+  String get xyzFormulaFormula;
+
+  /// No description provided for @xyzFormulaExampleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Example:'**
+  String get xyzFormulaExampleLabel;
+
+  /// No description provided for @xyzFormulaExampleText.
+  ///
+  /// In en, this message translates to:
+  /// **'Increased sales (X = achievement) by 25% (Y = metric) by launching a new line of business in Q1 (Z = action)'**
+  String get xyzFormulaExampleText;
+
+  /// No description provided for @xyzFormulaTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this formula to make your achievements stand out in your CV'**
+  String get xyzFormulaTip;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

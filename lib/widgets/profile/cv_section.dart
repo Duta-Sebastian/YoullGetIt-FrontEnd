@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
@@ -88,7 +89,8 @@ class CVUploadSectionState extends State<CVUploadSection> {
     } catch (e) {
       debugPrint('Error retrieving saved CV: $e');
       if (mounted) {
-        _showSnackBar('Failed to retrieve saved CV: $e');
+        final localizations = AppLocalizations.of(context)!;
+        _showSnackBar('${localizations.cvRetrieveError}: $e');
         setState(() {
           _isLoading = false;
         });
@@ -97,6 +99,8 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Future<void> _pickCV() async {
+    final localizations = AppLocalizations.of(context)!;
+    
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -108,12 +112,16 @@ class CVUploadSectionState extends State<CVUploadSection> {
       }
     } catch (e) {
       debugPrint('Error picking CV: $e');
-      _showSnackBar('Failed to pick CV: $e');
+      if (mounted) {
+        _showSnackBar('${localizations.cvPickError}: $e');
+      }
     }
   }
 
   // New method for editing/replacing CV directly
   Future<void> _editCV() async {
+    final localizations = AppLocalizations.of(context)!;
+    
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -122,15 +130,21 @@ class CVUploadSectionState extends State<CVUploadSection> {
 
       if (result != null && result.files.single.path != null) {
         await _savePDF(File(result.files.single.path!));
-        _showSnackBar('CV updated successfully');
+        if (mounted) {
+          _showSnackBar(localizations.cvUpdateSuccess);
+        }
       }
     } catch (e) {
       debugPrint('Error updating CV: $e');
-      _showSnackBar('Failed to update CV: $e');
+      if (mounted) {
+        _showSnackBar('${localizations.cvUpdateError}: $e');
+      }
     }
   }
 
   Future<void> _savePDF(File sourceFile) async {
+    final localizations = AppLocalizations.of(context)!;
+    
     try {
       // Read the PDF file
       final Uint8List cvBytes = await sourceFile.readAsBytes();
@@ -170,19 +184,22 @@ class CVUploadSectionState extends State<CVUploadSection> {
           _isUploaded = true;
           _isLoading = false;
         });
+        _showSnackBar(localizations.cvSaveSuccess);
       }
-
-      _showSnackBar('CV saved successfully');
     } catch (e) {
       debugPrint('Error saving PDF: $e');
-      _showSnackBar('Failed to save CV: $e');
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        _showSnackBar('${localizations.cvSaveError}: $e');
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _removeCV() async {
+    final localizations = AppLocalizations.of(context)!;
+    
     try {
       // Delete from database
       await DatabaseManager.deleteCV();
@@ -193,12 +210,13 @@ class CVUploadSectionState extends State<CVUploadSection> {
           _cvFile = null;
           _isUploaded = false;
         });
+        _showSnackBar(localizations.cvRemoveSuccess);
       }
-
-      _showSnackBar('CV removed successfully');
     } catch (e) {
       debugPrint('Error removing CV: $e');
-      _showSnackBar('Failed to remove CV: $e');
+      if (mounted) {
+        _showSnackBar('${localizations.cvRemoveError}: $e');
+      }
     }
   }
 
@@ -221,11 +239,13 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Widget _buildUploadSection() {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Upload your CV',
+          localizations.profileUploadCvTitle,
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -233,7 +253,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
           ),
         ),
         Text(
-          'and get more accurate recommendations',
+          localizations.uploadCvSubtitle,
           style: TextStyle(
             color: Color.fromRGBO(187, 185, 185, 1)
           ),
@@ -248,7 +268,9 @@ class CVUploadSectionState extends State<CVUploadSection> {
   }
 
   Widget _buildUploadedView() {
+    final localizations = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -257,7 +279,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
           children: [
             SizedBox(width: 8),
             Text(
-              'Your CV has been successfully uploaded!',
+              localizations.cvUploadSuccess,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -286,7 +308,7 @@ class CVUploadSectionState extends State<CVUploadSection> {
                     canShowScrollHead: false,
                     canShowScrollStatus: false,
                   )
-                : Text('Document preview not supported'),
+                : Text(localizations.documentPreviewNotSupported),
             ),
           ),
         ),
@@ -294,14 +316,14 @@ class CVUploadSectionState extends State<CVUploadSection> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-              icon: const Icon(Icons.edit, color: Colors.blue),
+              icon: const Icon(Icons.edit, color: Color(0xFFFFDE15)),
               onPressed: _editCV,
-              tooltip: 'Replace CV',
+              tooltip: localizations.replaceCvTooltip,
             ),
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),
               onPressed: _removeCV,
-              tooltip: 'Delete CV',
+              tooltip: localizations.deleteCvTooltip,
             ),
           ],
         ),
