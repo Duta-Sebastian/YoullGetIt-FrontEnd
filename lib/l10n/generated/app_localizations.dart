@@ -3212,6 +3212,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid date'**
   String get invalidDate;
+
+  /// No description provided for @jobCartTabLiked.
+  ///
+  /// In en, this message translates to:
+  /// **'Liked'**
+  String get jobCartTabLiked;
+
+  /// No description provided for @jobCartTabToApply.
+  ///
+  /// In en, this message translates to:
+  /// **'To Apply'**
+  String get jobCartTabToApply;
+
+  /// No description provided for @jobCartTabApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied'**
+  String get jobCartTabApplied;
+
+  /// No description provided for @jobCartYourJobCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Job Cart'**
+  String get jobCartYourJobCart;
+
+  /// No description provided for @jobCartRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get jobCartRefresh;
+
+  /// No description provided for @jobCartLoadingJobCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your job cart...'**
+  String get jobCartLoadingJobCart;
+
+  /// No description provided for @jobCartPotentialOpportunities.
+  ///
+  /// In en, this message translates to:
+  /// **'potential opportunities'**
+  String get jobCartPotentialOpportunities;
+
+  /// No description provided for @jobCartApplicationsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'applications remaining'**
+  String get jobCartApplicationsRemaining;
+
+  /// No description provided for @jobCartApplicationsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'applications completed'**
+  String get jobCartApplicationsCompleted;
+
+  /// No description provided for @jobCartPotentialOpportunity.
+  ///
+  /// In en, this message translates to:
+  /// **'potential opportunity'**
+  String get jobCartPotentialOpportunity;
+
+  /// No description provided for @jobCartApplicationRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'application remaining'**
+  String get jobCartApplicationRemaining;
+
+  /// No description provided for @jobCartApplicationCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'application completed'**
+  String get jobCartApplicationCompleted;
+
+  /// No description provided for @jobCartNoLikedJobs.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t liked any jobs yet'**
+  String get jobCartNoLikedJobs;
+
+  /// No description provided for @jobCartNoApplicationsToComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'No applications to complete'**
+  String get jobCartNoApplicationsToComplete;
+
+  /// No description provided for @jobCartNoCompletedApplications.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t completed any applications'**
+  String get jobCartNoCompletedApplications;
+
+  /// No description provided for @jobCartNoJobsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No jobs found'**
+  String get jobCartNoJobsFound;
+
+  /// No description provided for @jobCartStartBrowsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Start browsing jobs to build your collection'**
+  String get jobCartStartBrowsing;
+
+  /// No description provided for @jobCartMoveJobsToStage.
+  ///
+  /// In en, this message translates to:
+  /// **'Move jobs to this stage to see them here'**
+  String get jobCartMoveJobsToStage;
+
+  /// No description provided for @jobCartRemoveJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Job'**
+  String get jobCartRemoveJob;
+
+  /// No description provided for @jobCartRemoveJobConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this job from your list?'**
+  String get jobCartRemoveJobConfirm;
+
+  /// No description provided for @jobCartCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get jobCartCancel;
+
+  /// No description provided for @jobCartRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get jobCartRemove;
+
+  /// No description provided for @jobCartJobRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{jobName} removed'**
+  String jobCartJobRemoved(String jobName);
+
+  /// No description provided for @jobCartUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'UNDO'**
+  String get jobCartUndo;
+
+  /// No description provided for @jobCartViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get jobCartViewDetails;
+
+  /// No description provided for @jobCartMoveBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Move back'**
+  String get jobCartMoveBack;
+
+  /// No description provided for @jobCartMoveForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Move forward'**
+  String get jobCartMoveForward;
+
+  /// No description provided for @jobCartHowItWorksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How Your Job Cart Works'**
+  String get jobCartHowItWorksTitle;
+
+  /// No description provided for @jobCartHowItWorksMinimized.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to learn how your Job Cart works'**
+  String get jobCartHowItWorksMinimized;
+
+  /// No description provided for @jobCartHowItWorksDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Job Cart helps you organize your job search:'**
+  String get jobCartHowItWorksDescription;
+
+  /// No description provided for @jobCartHowItWorksLikedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential Opportunities'**
+  String get jobCartHowItWorksLikedTitle;
+
+  /// No description provided for @jobCartHowItWorksLikedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs you\'ve liked and want to explore further'**
+  String get jobCartHowItWorksLikedDesc;
+
+  /// No description provided for @jobCartHowItWorksToApplyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications Remaining'**
+  String get jobCartHowItWorksToApplyTitle;
+
+  /// No description provided for @jobCartHowItWorksToApplyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs you\'re ready to apply for'**
+  String get jobCartHowItWorksToApplyDesc;
+
+  /// No description provided for @jobCartHowItWorksAppliedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications Completed'**
+  String get jobCartHowItWorksAppliedTitle;
+
+  /// No description provided for @jobCartHowItWorksAppliedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Jobs you\'ve already applied to'**
+  String get jobCartHowItWorksAppliedDesc;
+
+  /// No description provided for @jobCartHowItWorksTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left on any job to remove it from your cart'**
+  String get jobCartHowItWorksTip;
+
+  /// No description provided for @jobCartExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand'**
+  String get jobCartExpand;
+
+  /// No description provided for @jobCartMinimize.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimize'**
+  String get jobCartMinimize;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

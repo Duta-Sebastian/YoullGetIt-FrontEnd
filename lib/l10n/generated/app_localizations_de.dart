@@ -1609,4 +1609,123 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get invalidDate => 'Ungültiges Datum';
+
+  @override
+  String get jobCartTabLiked => 'Gefällt mir';
+
+  @override
+  String get jobCartTabToApply => 'Bewerben';
+
+  @override
+  String get jobCartTabApplied => 'Beworben';
+
+  @override
+  String get jobCartYourJobCart => 'Ihr Job-Warenkorb';
+
+  @override
+  String get jobCartRefresh => 'Aktualisieren';
+
+  @override
+  String get jobCartLoadingJobCart => 'Job-Warenkorb wird geladen...';
+
+  @override
+  String get jobCartPotentialOpportunities => 'potenzielle Möglichkeiten';
+
+  @override
+  String get jobCartApplicationsRemaining => 'verbleibende Bewerbungen';
+
+  @override
+  String get jobCartApplicationsCompleted => 'abgeschlossene Bewerbungen';
+
+  @override
+  String get jobCartPotentialOpportunity => 'potenzielle Möglichkeit';
+
+  @override
+  String get jobCartApplicationRemaining => 'verbleibende Bewerbung';
+
+  @override
+  String get jobCartApplicationCompleted => 'abgeschlossene Bewerbung';
+
+  @override
+  String get jobCartNoLikedJobs => 'Sie haben noch keine Jobs geliked';
+
+  @override
+  String get jobCartNoApplicationsToComplete => 'Keine Bewerbungen zu vervollständigen';
+
+  @override
+  String get jobCartNoCompletedApplications => 'Sie haben noch keine Bewerbungen abgeschlossen';
+
+  @override
+  String get jobCartNoJobsFound => 'Keine Jobs gefunden';
+
+  @override
+  String get jobCartStartBrowsing => 'Beginnen Sie mit dem Durchsuchen von Jobs, um Ihre Sammlung aufzubauen';
+
+  @override
+  String get jobCartMoveJobsToStage => 'Verschieben Sie Jobs in diese Phase, um sie hier zu sehen';
+
+  @override
+  String get jobCartRemoveJob => 'Job entfernen';
+
+  @override
+  String get jobCartRemoveJobConfirm => 'Sind Sie sicher, dass Sie diesen Job aus Ihrer Liste entfernen möchten?';
+
+  @override
+  String get jobCartCancel => 'Abbrechen';
+
+  @override
+  String get jobCartRemove => 'Entfernen';
+
+  @override
+  String jobCartJobRemoved(String jobName) {
+    return '$jobName entfernt';
+  }
+
+  @override
+  String get jobCartUndo => 'RÜCKGÄNGIG';
+
+  @override
+  String get jobCartViewDetails => 'Details anzeigen';
+
+  @override
+  String get jobCartMoveBack => 'Zurück bewegen';
+
+  @override
+  String get jobCartMoveForward => 'Vorwärts bewegen';
+
+  @override
+  String get jobCartHowItWorksTitle => 'Wie Ihr Job-Warenkorb funktioniert';
+
+  @override
+  String get jobCartHowItWorksMinimized => 'Tippen Sie, um zu erfahren, wie Ihr Job-Warenkorb funktioniert';
+
+  @override
+  String get jobCartHowItWorksDescription => 'Ihr Job-Warenkorb hilft Ihnen bei der Organisation Ihrer Jobsuche:';
+
+  @override
+  String get jobCartHowItWorksLikedTitle => 'Potenzielle Möglichkeiten';
+
+  @override
+  String get jobCartHowItWorksLikedDesc => 'Jobs, die Ihnen gefallen und die Sie weiter erkunden möchten';
+
+  @override
+  String get jobCartHowItWorksToApplyTitle => 'Verbleibende Bewerbungen';
+
+  @override
+  String get jobCartHowItWorksToApplyDesc => 'Jobs, für die Sie bereit sind, sich zu bewerben';
+
+  @override
+  String get jobCartHowItWorksAppliedTitle => 'Abgeschlossene Bewerbungen';
+
+  @override
+  String get jobCartHowItWorksAppliedDesc => 'Jobs, für die Sie sich bereits beworben haben';
+
+  @override
+  String get jobCartHowItWorksTip => 'Wischen Sie nach links auf jeden Job, um ihn aus Ihrem Warenkorb zu entfernen';
+
+  @override
+  String get jobCartExpand => 'Erweitern';
+
+  @override
+  String get jobCartMinimize => 'Minimieren';
 }

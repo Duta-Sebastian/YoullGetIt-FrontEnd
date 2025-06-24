@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
@@ -24,14 +25,6 @@ class JobListItem extends StatelessWidget {
   }
 
   Widget _buildJobCard(BuildContext context) {
-    // Removed match score for now
-    // This can be uncommented if match score is needed in the future
-    // int? matchScore;
-
-    // if (job.matchScore != null) {
-    //   matchScore = (job.matchScore! * 100).toInt();
-    // }
-    
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -112,17 +105,17 @@ class JobListItem extends StatelessWidget {
                             // Company info
                             Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.business_center_outlined,
                                   size: 14,
-                                  color: const Color(0xFF6B7280),
+                                  color: Color(0xFF6B7280),
                                 ),
                                 const SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
                                     job.companyName,
-                                    style: TextStyle(
-                                      color: const Color(0xFF6B7280),
+                                    style: const TextStyle(
+                                      color: Color(0xFF6B7280),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -153,7 +146,7 @@ class JobListItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              _getStatusText(),
+                              _getStatusText(context),
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -165,38 +158,6 @@ class JobListItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  // Hide match score for now
-                  // Uncomment if needed in the future
-                  // if (matchScore != null)
-                  //   Container(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  //     decoration: BoxDecoration(
-                  //       color: _getScoreColor(matchScore),
-                  //       borderRadius: BorderRadius.circular(12),
-                  //     ),
-                  //     child: Row(
-                  //       mainAxisSize: MainAxisSize.min,
-                  //       children: [
-                  //         const Icon(
-                  //           Icons.bolt,
-                  //           size: 14,
-                  //           color: Colors.white,
-                  //         ),
-                  //         const SizedBox(width: 4),
-                  //         Text(
-                  //           "Match Score: $matchScore%",
-                  //           style: const TextStyle(
-                  //             fontSize: 12,
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
                   
                   const SizedBox(height: 16),
                   const Divider(height: 1),
@@ -213,6 +174,8 @@ class JobListItem extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -222,22 +185,24 @@ class JobListItem extends StatelessWidget {
             _navigateToJobDetailPage(context, job);
           },
           icon: const Icon(Icons.visibility_outlined, size: 16),
-          label: const Text('View Details'),
+          label: Text(localizations.jobCartViewDetails),
           style: OutlinedButton.styleFrom(
             foregroundColor: const Color(0xFF6B7280),
-            side: BorderSide(color: const Color(0xFFD1D5DB)),
+            side: const BorderSide(color: Color(0xFFD1D5DB)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           ),
         ),
-        _buildStatusControlButtons(),
+        _buildStatusControlButtons(context),
       ],
     );
   }
 
-  Widget _buildStatusControlButtons() {
+  Widget _buildStatusControlButtons(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Row(
       children: [
         if (jobStatus != JobStatus.liked) 
@@ -264,7 +229,7 @@ class JobListItem extends StatelessWidget {
               padding: EdgeInsets.zero,
               minimumSize: const Size(36, 36),
             ),
-            tooltip: 'Move back',
+            tooltip: localizations.jobCartMoveBack,
           ),
         
         if (jobStatus != JobStatus.applied)
@@ -294,7 +259,7 @@ class JobListItem extends StatelessWidget {
               padding: EdgeInsets.zero,
               minimumSize: const Size(36, 36),
             ),
-            tooltip: 'Move forward',
+            tooltip: localizations.jobCartMoveForward,
           ),
       ],
     );
@@ -339,18 +304,6 @@ class JobListItem extends StatelessWidget {
     }
   }
 
-  // Color _getScoreColor(int score) {
-  //   if (score >= 90) {
-  //     return const Color(0xFF22C55E);
-  //   } else if (score >= 80) {
-  //     return const Color(0xFF3B82F6);
-  //   } else if (score >= 70) {
-  //     return const Color(0xFFFBBF24);
-  //   } else {
-  //     return const Color(0xFFEF4444);
-  //   }
-  // }
-
   Color _getStatusColor() {
     switch (jobStatus) {
       case JobStatus.liked:
@@ -368,14 +321,16 @@ class JobListItem extends StatelessWidget {
     return Colors.white;
   }
 
-  String _getStatusText() {
+  String _getStatusText(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     switch (jobStatus) {
       case JobStatus.liked:
-        return "Liked";
+        return localizations.jobCartTabLiked;
       case JobStatus.toApply:
-        return "To Apply";
+        return localizations.jobCartTabToApply;
       case JobStatus.applied:
-        return "Applied";
+        return localizations.jobCartTabApplied;
       default:
         return "";
     }

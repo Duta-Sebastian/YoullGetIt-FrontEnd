@@ -1609,4 +1609,123 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get invalidDate => 'Ongeldige datum';
+
+  @override
+  String get jobCartTabLiked => 'Geliked';
+
+  @override
+  String get jobCartTabToApply => 'Solliciteren';
+
+  @override
+  String get jobCartTabApplied => 'Gesolliciteerd';
+
+  @override
+  String get jobCartYourJobCart => 'Uw banen winkelwagen';
+
+  @override
+  String get jobCartRefresh => 'Vernieuwen';
+
+  @override
+  String get jobCartLoadingJobCart => 'Uw banen winkelwagen laden...';
+
+  @override
+  String get jobCartPotentialOpportunities => 'potentiële kansen';
+
+  @override
+  String get jobCartApplicationsRemaining => 'resterende sollicitaties';
+
+  @override
+  String get jobCartApplicationsCompleted => 'voltooide sollicitaties';
+
+  @override
+  String get jobCartPotentialOpportunity => 'potentiële kans';
+
+  @override
+  String get jobCartApplicationRemaining => 'resterende sollicitatie';
+
+  @override
+  String get jobCartApplicationCompleted => 'voltooide sollicitatie';
+
+  @override
+  String get jobCartNoLikedJobs => 'U heeft nog geen banen geliked';
+
+  @override
+  String get jobCartNoApplicationsToComplete => 'Geen sollicitaties om te voltooien';
+
+  @override
+  String get jobCartNoCompletedApplications => 'U heeft nog geen sollicitaties voltooid';
+
+  @override
+  String get jobCartNoJobsFound => 'Geen banen gevonden';
+
+  @override
+  String get jobCartStartBrowsing => 'Begin met bladeren door banen om uw collectie op te bouwen';
+
+  @override
+  String get jobCartMoveJobsToStage => 'Verplaats banen naar deze fase om ze hier te zien';
+
+  @override
+  String get jobCartRemoveJob => 'Baan verwijderen';
+
+  @override
+  String get jobCartRemoveJobConfirm => 'Weet u zeker dat u deze baan uit uw lijst wilt verwijderen?';
+
+  @override
+  String get jobCartCancel => 'Annuleren';
+
+  @override
+  String get jobCartRemove => 'Verwijderen';
+
+  @override
+  String jobCartJobRemoved(String jobName) {
+    return '$jobName verwijderd';
+  }
+
+  @override
+  String get jobCartUndo => 'ONGEDAAN MAKEN';
+
+  @override
+  String get jobCartViewDetails => 'Details bekijken';
+
+  @override
+  String get jobCartMoveBack => 'Terug verplaatsen';
+
+  @override
+  String get jobCartMoveForward => 'Vooruit verplaatsen';
+
+  @override
+  String get jobCartHowItWorksTitle => 'Hoe uw banen winkelwagen werkt';
+
+  @override
+  String get jobCartHowItWorksMinimized => 'Tik om te leren hoe uw banen winkelwagen werkt';
+
+  @override
+  String get jobCartHowItWorksDescription => 'Uw banen winkelwagen helpt u bij het organiseren van uw baan zoektocht:';
+
+  @override
+  String get jobCartHowItWorksLikedTitle => 'Potentiële kansen';
+
+  @override
+  String get jobCartHowItWorksLikedDesc => 'Banen die u heeft geliked en verder wilt verkennen';
+
+  @override
+  String get jobCartHowItWorksToApplyTitle => 'Resterende sollicitaties';
+
+  @override
+  String get jobCartHowItWorksToApplyDesc => 'Banen waarvoor u klaar bent om te solliciteren';
+
+  @override
+  String get jobCartHowItWorksAppliedTitle => 'Voltooide sollicitaties';
+
+  @override
+  String get jobCartHowItWorksAppliedDesc => 'Banen waarvoor u al heeft gesolliciteerd';
+
+  @override
+  String get jobCartHowItWorksTip => 'Veeg naar links op elke baan om deze uit uw winkelwagen te verwijderen';
+
+  @override
+  String get jobCartExpand => 'Uitbreiden';
+
+  @override
+  String get jobCartMinimize => 'Minimaliseren';
 }

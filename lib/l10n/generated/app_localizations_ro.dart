@@ -1610,4 +1610,123 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get invalidDate => 'Dată invalidă';
+
+  @override
+  String get jobCartTabLiked => 'Apreciate';
+
+  @override
+  String get jobCartTabToApply => 'De aplicat';
+
+  @override
+  String get jobCartTabApplied => 'Aplicate';
+
+  @override
+  String get jobCartYourJobCart => 'Coșul tău de joburi';
+
+  @override
+  String get jobCartRefresh => 'Reîmprospătează';
+
+  @override
+  String get jobCartLoadingJobCart => 'Se încarcă coșul de joburi...';
+
+  @override
+  String get jobCartPotentialOpportunities => 'oportunități potențiale';
+
+  @override
+  String get jobCartApplicationsRemaining => 'aplicații rămase';
+
+  @override
+  String get jobCartApplicationsCompleted => 'aplicații completate';
+
+  @override
+  String get jobCartPotentialOpportunity => 'oportunitate potențială';
+
+  @override
+  String get jobCartApplicationRemaining => 'aplicație rămasă';
+
+  @override
+  String get jobCartApplicationCompleted => 'aplicație completată';
+
+  @override
+  String get jobCartNoLikedJobs => 'Nu ai apreciat încă niciun job';
+
+  @override
+  String get jobCartNoApplicationsToComplete => 'Nu ai aplicații de completat';
+
+  @override
+  String get jobCartNoCompletedApplications => 'Nu ai completat încă nicio aplicație';
+
+  @override
+  String get jobCartNoJobsFound => 'Nu s-au găsit joburi';
+
+  @override
+  String get jobCartStartBrowsing => 'Începe să navighezi prin joburi pentru a-ți construi colecția';
+
+  @override
+  String get jobCartMoveJobsToStage => 'Mută joburile în această etapă pentru a le vedea aici';
+
+  @override
+  String get jobCartRemoveJob => 'Elimină jobul';
+
+  @override
+  String get jobCartRemoveJobConfirm => 'Ești sigur că vrei să elimini acest job din lista ta?';
+
+  @override
+  String get jobCartCancel => 'Anulează';
+
+  @override
+  String get jobCartRemove => 'Elimină';
+
+  @override
+  String jobCartJobRemoved(String jobName) {
+    return '$jobName eliminat';
+  }
+
+  @override
+  String get jobCartUndo => 'ANULEAZĂ';
+
+  @override
+  String get jobCartViewDetails => 'Vezi detalii';
+
+  @override
+  String get jobCartMoveBack => 'Mută înapoi';
+
+  @override
+  String get jobCartMoveForward => 'Mută înainte';
+
+  @override
+  String get jobCartHowItWorksTitle => 'Cum funcționează coșul tău de joburi';
+
+  @override
+  String get jobCartHowItWorksMinimized => 'Atinge pentru a afla cum funcționează coșul de joburi';
+
+  @override
+  String get jobCartHowItWorksDescription => 'Coșul de joburi te ajută să îți organizezi căutarea de locuri de muncă:';
+
+  @override
+  String get jobCartHowItWorksLikedTitle => 'Oportunități potențiale';
+
+  @override
+  String get jobCartHowItWorksLikedDesc => 'Joburi pe care le-ai apreciat și vrei să le explorezi mai mult';
+
+  @override
+  String get jobCartHowItWorksToApplyTitle => 'Aplicații rămase';
+
+  @override
+  String get jobCartHowItWorksToApplyDesc => 'Joburi pentru care ești gata să aplici';
+
+  @override
+  String get jobCartHowItWorksAppliedTitle => 'Aplicații completate';
+
+  @override
+  String get jobCartHowItWorksAppliedDesc => 'Joburi pentru care ai aplicat deja';
+
+  @override
+  String get jobCartHowItWorksTip => 'Glisează spre stânga pe orice job pentru a-l elimina din coș';
+
+  @override
+  String get jobCartExpand => 'Extinde';
+
+  @override
+  String get jobCartMinimize => 'Minimizează';
 }

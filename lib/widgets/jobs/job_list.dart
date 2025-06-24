@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_list_item.dart';
@@ -29,6 +30,7 @@ class JobList extends StatelessWidget {
   }
 
   Widget _buildJobListItem(BuildContext context, int index) {
+    final localizations = AppLocalizations.of(context)!;
     final job = jobs[index];
     final jobStatus = jobStatuses[job.feedbackId] ?? JobStatus.liked;
     
@@ -48,14 +50,14 @@ class JobList extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    title: const Text('Remove Job'),
-                    content: const Text('Are you sure you want to remove this job from your list?'),
+                    title: Text(localizations.jobCartRemoveJob),
+                    content: Text(localizations.jobCartRemoveJobConfirm),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(
+                        child: Text(
+                          localizations.jobCartCancel,
+                          style: const TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w600,
                           ),
@@ -70,7 +72,7 @@ class JobList extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text('Remove'),
+                        child: Text(localizations.jobCartRemove),
                       ),
                     ],
                   );
@@ -87,12 +89,12 @@ class JobList extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.delete_outlined, size: 24),
-                SizedBox(height: 4),
+              children: [
+                const Icon(Icons.delete_outlined, size: 24),
+                const SizedBox(height: 4),
                 Text(
-                  'Remove',
-                  style: TextStyle(
+                  localizations.jobCartRemove,
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),

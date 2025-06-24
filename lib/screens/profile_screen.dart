@@ -125,7 +125,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 CVUploadSection(),
                                 SizedBox(height: 24),
-                                XYZFormulaWidget()
+                                XyzFormulaWidget()
                               ]
                             ),
                           ),

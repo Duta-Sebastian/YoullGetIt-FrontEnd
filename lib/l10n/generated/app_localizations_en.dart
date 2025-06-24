@@ -1609,4 +1609,123 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidDate => 'Invalid date';
+
+  @override
+  String get jobCartTabLiked => 'Liked';
+
+  @override
+  String get jobCartTabToApply => 'To Apply';
+
+  @override
+  String get jobCartTabApplied => 'Applied';
+
+  @override
+  String get jobCartYourJobCart => 'Your Job Cart';
+
+  @override
+  String get jobCartRefresh => 'Refresh';
+
+  @override
+  String get jobCartLoadingJobCart => 'Loading your job cart...';
+
+  @override
+  String get jobCartPotentialOpportunities => 'potential opportunities';
+
+  @override
+  String get jobCartApplicationsRemaining => 'applications remaining';
+
+  @override
+  String get jobCartApplicationsCompleted => 'applications completed';
+
+  @override
+  String get jobCartPotentialOpportunity => 'potential opportunity';
+
+  @override
+  String get jobCartApplicationRemaining => 'application remaining';
+
+  @override
+  String get jobCartApplicationCompleted => 'application completed';
+
+  @override
+  String get jobCartNoLikedJobs => 'You haven\'t liked any jobs yet';
+
+  @override
+  String get jobCartNoApplicationsToComplete => 'No applications to complete';
+
+  @override
+  String get jobCartNoCompletedApplications => 'You haven\'t completed any applications';
+
+  @override
+  String get jobCartNoJobsFound => 'No jobs found';
+
+  @override
+  String get jobCartStartBrowsing => 'Start browsing jobs to build your collection';
+
+  @override
+  String get jobCartMoveJobsToStage => 'Move jobs to this stage to see them here';
+
+  @override
+  String get jobCartRemoveJob => 'Remove Job';
+
+  @override
+  String get jobCartRemoveJobConfirm => 'Are you sure you want to remove this job from your list?';
+
+  @override
+  String get jobCartCancel => 'Cancel';
+
+  @override
+  String get jobCartRemove => 'Remove';
+
+  @override
+  String jobCartJobRemoved(String jobName) {
+    return '$jobName removed';
+  }
+
+  @override
+  String get jobCartUndo => 'UNDO';
+
+  @override
+  String get jobCartViewDetails => 'View Details';
+
+  @override
+  String get jobCartMoveBack => 'Move back';
+
+  @override
+  String get jobCartMoveForward => 'Move forward';
+
+  @override
+  String get jobCartHowItWorksTitle => 'How Your Job Cart Works';
+
+  @override
+  String get jobCartHowItWorksMinimized => 'Tap to learn how your Job Cart works';
+
+  @override
+  String get jobCartHowItWorksDescription => 'Your Job Cart helps you organize your job search:';
+
+  @override
+  String get jobCartHowItWorksLikedTitle => 'Potential Opportunities';
+
+  @override
+  String get jobCartHowItWorksLikedDesc => 'Jobs you\'ve liked and want to explore further';
+
+  @override
+  String get jobCartHowItWorksToApplyTitle => 'Applications Remaining';
+
+  @override
+  String get jobCartHowItWorksToApplyDesc => 'Jobs you\'re ready to apply for';
+
+  @override
+  String get jobCartHowItWorksAppliedTitle => 'Applications Completed';
+
+  @override
+  String get jobCartHowItWorksAppliedDesc => 'Jobs you\'ve already applied to';
+
+  @override
+  String get jobCartHowItWorksTip => 'Swipe left on any job to remove it from your cart';
+
+  @override
+  String get jobCartExpand => 'Expand';
+
+  @override
+  String get jobCartMinimize => 'Minimize';
 }

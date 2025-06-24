@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class ChecklistCard extends StatefulWidget {
   const ChecklistCard({super.key});
@@ -35,8 +36,6 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
       parent: _controller,
       curve: Curves.fastOutSlowIn,
     );
-    
-    
     
     _loadMinimizedState();
   }
@@ -79,9 +78,11 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 16,
         vertical: 8,
       ),
@@ -131,7 +132,9 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        _isMinimized ? 'Tap to learn how your Job Cart works' : 'How Your Job Cart Works',
+                        _isMinimized 
+                          ? localizations.jobCartHowItWorksMinimized 
+                          : localizations.jobCartHowItWorksTitle,
                         style: TextStyle(
                           fontSize: _isMinimized ? 14 : 16,
                           fontWeight: FontWeight.bold,
@@ -148,7 +151,7 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
                         ),
                       ),
                       onPressed: _toggleMinimized,
-                      tooltip: _isMinimized ? 'Expand' : 'Minimize',
+                      tooltip: _isMinimized ? localizations.jobCartExpand : localizations.jobCartMinimize,
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(
                         minWidth: _isMinimized ? 28 : 32,
@@ -169,9 +172,9 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
                       const SizedBox(height: 16),
                       
                       // Explanation section
-                      const Text(
-                        'Your Job Cart helps you organize your job search:',
-                        style: TextStyle(
+                      Text(
+                        localizations.jobCartHowItWorksDescription,
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -180,22 +183,22 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
                       
                       _buildExplanationItem(
                         icon: Icons.thumb_up_outlined,
-                        title: 'Potential Opportunities',
-                        description: 'Jobs you\'ve liked and want to explore further',
+                        title: localizations.jobCartHowItWorksLikedTitle,
+                        description: localizations.jobCartHowItWorksLikedDesc,
                         color: Colors.amber.shade600,
                       ),
                       
                       _buildExplanationItem(
                         icon: Icons.edit_document,
-                        title: 'Applications Remaining',
-                        description: 'Jobs you\'re ready to apply for',
+                        title: localizations.jobCartHowItWorksToApplyTitle,
+                        description: localizations.jobCartHowItWorksToApplyDesc,
                         color: Colors.blue.shade600,
                       ),
                       
                       _buildExplanationItem(
                         icon: Icons.check_circle_outline,
-                        title: 'Applications Completed',
-                        description: 'Jobs you\'ve already applied to',
+                        title: localizations.jobCartHowItWorksAppliedTitle,
+                        description: localizations.jobCartHowItWorksAppliedDesc,
                         color: Colors.green.shade600,
                       ),
                       
@@ -213,7 +216,7 @@ class _ChecklistCardState extends State<ChecklistCard> with SingleTickerProvider
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              'Swipe left on any job to remove it from your cart',
+                              localizations.jobCartHowItWorksTip,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.amber.shade700,

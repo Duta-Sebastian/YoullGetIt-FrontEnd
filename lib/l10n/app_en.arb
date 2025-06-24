@@ -703,5 +703,52 @@
   "invalidDate": "Invalid date",
   "@invalidDate": {
     "description": "Text when date format is invalid"
-  }
+  },
+
+  "jobCartTabLiked": "Liked",
+  "jobCartTabToApply": "To Apply", 
+  "jobCartTabApplied": "Applied",
+  "jobCartYourJobCart": "Your Job Cart",
+  "jobCartRefresh": "Refresh",
+  "jobCartLoadingJobCart": "Loading your job cart...",
+  "jobCartPotentialOpportunities": "potential opportunities",
+  "jobCartApplicationsRemaining": "applications remaining",
+  "jobCartApplicationsCompleted": "applications completed",
+  "jobCartPotentialOpportunity": "potential opportunity",
+  "jobCartApplicationRemaining": "application remaining", 
+  "jobCartApplicationCompleted": "application completed",
+  "jobCartNoLikedJobs": "You haven't liked any jobs yet",
+  "jobCartNoApplicationsToComplete": "No applications to complete",
+  "jobCartNoCompletedApplications": "You haven't completed any applications",
+  "jobCartNoJobsFound": "No jobs found",
+  "jobCartStartBrowsing": "Start browsing jobs to build your collection",
+  "jobCartMoveJobsToStage": "Move jobs to this stage to see them here",
+  "jobCartRemoveJob": "Remove Job",
+  "jobCartRemoveJobConfirm": "Are you sure you want to remove this job from your list?",
+  "jobCartCancel": "Cancel",
+  "jobCartRemove": "Remove",
+  "jobCartJobRemoved": "{jobName} removed",
+  "@jobCartJobRemoved": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      }
+    }
+  },
+  "jobCartUndo": "UNDO",
+  "jobCartViewDetails": "View Details",
+  "jobCartMoveBack": "Move back",
+  "jobCartMoveForward": "Move forward",
+  "jobCartHowItWorksTitle": "How Your Job Cart Works",
+  "jobCartHowItWorksMinimized": "Tap to learn how your Job Cart works",
+  "jobCartHowItWorksDescription": "Your Job Cart helps you organize your job search:",
+  "jobCartHowItWorksLikedTitle": "Potential Opportunities",
+  "jobCartHowItWorksLikedDesc": "Jobs you've liked and want to explore further",
+  "jobCartHowItWorksToApplyTitle": "Applications Remaining", 
+  "jobCartHowItWorksToApplyDesc": "Jobs you're ready to apply for",
+  "jobCartHowItWorksAppliedTitle": "Applications Completed",
+  "jobCartHowItWorksAppliedDesc": "Jobs you've already applied to",
+  "jobCartHowItWorksTip": "Swipe left on any job to remove it from your cart",
+  "jobCartExpand": "Expand",
+  "jobCartMinimize": "Minimize"
 }
