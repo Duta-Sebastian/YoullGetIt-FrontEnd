@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/utils/app_rating_helper.dart';
 import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/auth_section.dart';
@@ -25,13 +26,14 @@ class SettingsPage extends ConsumerStatefulWidget {
 class SettingsPageState extends ConsumerState<SettingsPage> {
 
   Future<void> _launchURL() async {
-    final Uri url = Uri.parse('https://youllgetit.eu/feedback');
+    final Uri url = Uri.parse('https://youllgetit.eu/contact');
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
       if (mounted) {
+        final localizations = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not launch https://youllgetit.eu/feedback')),
+          SnackBar(content: Text(localizations.settingsPageCouldNotLaunch('https://youllgetit.eu/contact'))),
         );
       }
     }
@@ -39,6 +41,8 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
   
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,7 +51,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('Settings'),
+        title: Text(localizations.settingsPageSettings),
       ),
       body: Column(
         children: [
@@ -59,7 +63,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.person,
-                  title: 'User settings',
+                  title: localizations.settingsPageUserSettings,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -74,7 +78,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.language, 
-                  title: 'Language',
+                  title: localizations.settingsPageLanguage,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -86,7 +90,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.privacy_tip, 
-                  title: 'Privacy Policy',
+                  title: localizations.settingsPagePrivacyPolicy,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -98,7 +102,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.document_scanner, 
-                  title: 'Terms of Use',
+                  title: localizations.settingsPageTermsOfUse,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -111,7 +115,7 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.policy, 
-                  title: 'GDPR Policy',
+                  title: localizations.settingsPageGdprPolicy,
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -124,13 +128,13 @@ class SettingsPageState extends ConsumerState<SettingsPage> {
                 _buildSettingsItem(
                   context, 
                   icon: Icons.feedback, 
-                  title: 'Feedback',
+                  title: localizations.settingsPageFeedback,
                   onTap: _launchURL,
                 ),
                 _buildSettingsItem(
                   context, 
                   icon: Icons.star, 
-                  title: 'Rate Us',
+                  title: localizations.settingsPageRateUs,
                   onTap: () {
                     AppRatingHelper.requestRating(context);
                   },

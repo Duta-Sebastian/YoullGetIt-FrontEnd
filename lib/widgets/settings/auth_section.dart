@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 
 class AuthSection extends ConsumerWidget {
@@ -11,6 +12,7 @@ class AuthSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
+    final localizations = AppLocalizations.of(context)!;
 
     return Container(
       margin: EdgeInsets.all(16),
@@ -35,8 +37,8 @@ class AuthSection extends ConsumerWidget {
                 SizedBox(height: 12),
                 Text(
                   authState.isLoggedIn && authState.credentials?.user.email != null
-                    ? '${authState.credentials!.user.email}!' 
-                    : 'Save your progress!',
+                    ? localizations.settingsPageSignedInAs(authState.credentials!.user.email!) 
+                    : localizations.settingsPageSaveProgressTitle,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -66,7 +68,7 @@ class AuthSection extends ConsumerWidget {
                 ),
               ),
               child: Text(
-                authState.isLoggedIn ? 'Sign Out' : 'Sign In or Create Account',
+                authState.isLoggedIn ? localizations.settingsPageSignOut : localizations.settingsPageSignIn,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -77,8 +79,8 @@ class AuthSection extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               authState.isLoggedIn 
-                ? 'You are signed in' 
-                : '*You are currently in Guest Mode',
+                ? localizations.settingsPageYouAreSignedIn 
+                : localizations.settingsPageGuestMode,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 12,

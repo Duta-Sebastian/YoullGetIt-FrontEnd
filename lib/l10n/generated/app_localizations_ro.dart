@@ -709,4 +709,595 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get xyzFormulaTip => 'Folosește această formulă pentru a-ți evidenția realizările în CV';
+
+  @override
+  String get settingsPageSettings => 'Setări';
+
+  @override
+  String get settingsPageUserSettings => 'Setări utilizator';
+
+  @override
+  String get settingsPageLanguage => 'Limba';
+
+  @override
+  String get settingsPagePrivacyPolicy => 'Politica de confidențialitate';
+
+  @override
+  String get settingsPageTermsOfUse => 'Termeni de utilizare';
+
+  @override
+  String get settingsPageGdprPolicy => 'Politica GDPR';
+
+  @override
+  String get settingsPageFeedback => 'Feedback';
+
+  @override
+  String get settingsPageRateUs => 'Evaluează-ne';
+
+  @override
+  String get settingsPageUsername => 'Nume de utilizator';
+
+  @override
+  String get settingsPageNoUsernameSet => 'Nu este setat un nume de utilizator';
+
+  @override
+  String get settingsPageEnterUsername => 'Introduceți numele de utilizator';
+
+  @override
+  String get settingsPageSaveProgressTitle => 'Salvează-ți progresul!';
+
+  @override
+  String settingsPageSignedInAs(String email) {
+    return '$email!';
+  }
+
+  @override
+  String get settingsPageSignIn => 'Conectare sau creare cont';
+
+  @override
+  String get settingsPageSignOut => 'Deconectare';
+
+  @override
+  String get settingsPageYouAreSignedIn => 'Ești conectat';
+
+  @override
+  String get settingsPageGuestMode => '*Ești în modul vizitator';
+
+  @override
+  String get settingsPageQuestions => 'Întrebări';
+
+  @override
+  String get settingsPageReviewAnsweredQuestions => 'Revizuiește întrebările răspunse';
+
+  @override
+  String get settingsPageTapToViewAnswers => 'Atinge pentru a vedea răspunsurile tale';
+
+  @override
+  String get settingsPageDangerZone => 'Zona de pericol';
+
+  @override
+  String get settingsPageDeleteAllData => 'Șterge toate datele';
+
+  @override
+  String get settingsPageActionCannotBeUndone => 'Această acțiune nu poate fi anulată';
+
+  @override
+  String get settingsPageDeleteAllDataConfirm => 'Ștergi toate datele?';
+
+  @override
+  String get settingsPageDeleteAllDataMessage => 'Această acțiune nu poate fi anulată. Vei fi redirecționat către ecranul de bun venit.';
+
+  @override
+  String get settingsPageCancel => 'Anulare';
+
+  @override
+  String get settingsPageDeleteAll => 'Șterge tot';
+
+  @override
+  String get settingsPageUsernameCannotBeEmpty => 'Numele de utilizator nu poate fi gol';
+
+  @override
+  String get settingsPageUsernameUpdatedSuccessfully => 'Numele de utilizator a fost actualizat cu succes';
+
+  @override
+  String get settingsPageFailedToUpdateUsername => 'Nu s-a putut actualiza numele de utilizator';
+
+  @override
+  String settingsPageErrorDeletingData(String error) {
+    return 'Eroare la ștergerea datelor: $error';
+  }
+
+  @override
+  String get settingsPageSave => 'Salvează';
+
+  @override
+  String get settingsPageEdit => 'Editează';
+
+  @override
+  String get settingsPageEditUsername => 'Editează numele de utilizator';
+
+  @override
+  String get settingsPageTapToSaveOrCancel => 'Atinge ✓ pentru a salva sau ✗ pentru a anula';
+
+  @override
+  String settingsPageCouldNotLaunch(String url) {
+    return 'Nu s-a putut deschide $url';
+  }
+
+  @override
+  String get settingsGDPRPageTitle => 'Politica GDPR';
+
+  @override
+  String get settingsGDPRPageCommitment => 'Angajamentul Nostru pentru Conformitatea GDPR';
+
+  @override
+  String get settingsGDPRPageCommitmentText => 'La you\'ll get it, ne angajăm să asigurăm confidențialitatea și protecția datelor dumneavoastră personale în conformitate cu Regulamentul General privind Protecția Datelor (GDPR) și legile române relevante de protecție a datelor.';
+
+  @override
+  String get settingsGDPRPageDataSubjectRights => 'Drepturile Persoanei Vizate';
+
+  @override
+  String get settingsGDPRPageDataSubjectRightsText => 'Sub GDPR, aveți următoarele drepturi:';
+
+  @override
+  String get settingsGDPRPageRightToInformation => 'Dreptul la Informare: Primiți informații clare despre modul în care vă folosim datele.';
+
+  @override
+  String get settingsGDPRPageRightOfAccess => 'Dreptul de Acces: Obțineți confirmarea că vă prelucrăm datele și accesați datele dumneavoastră personale.';
+
+  @override
+  String get settingsGDPRPageRightToRectification => 'Dreptul la Rectificare: Corectați datele personale inexacte sau completați-le dacă sunt incomplete.';
+
+  @override
+  String get settingsGDPRPageRightToErasure => 'Dreptul la Ștergere: Solicitați ștergerea datelor dumneavoastră personale în anumite circumstanțe.';
+
+  @override
+  String get settingsGDPRPageRightToRestriction => 'Dreptul la Restricționarea Prelucrării: Solicitați restricționarea prelucrării în anumite circumstanțe.';
+
+  @override
+  String get settingsGDPRPageRightToDataPortability => 'Dreptul la Portabilitatea Datelor: Primiți datele dumneavoastră personale într-un format structurat, utilizat în mod obișnuit și citibil automat.';
+
+  @override
+  String get settingsGDPRPageRightToObject => 'Dreptul la Opoziție: Vă opuneți prelucrării bazate pe interese legitime sau marketing direct.';
+
+  @override
+  String get settingsGDPRPageRightAutomatedDecision => 'Drepturile Legate de Luarea Deciziilor Automatizate și Profilare: Să nu fiți supus deciziilor bazate exclusiv pe prelucrarea automatizată care produc efecte juridice.';
+
+  @override
+  String get settingsGDPRPageExerciseRights => 'Pentru a exercita aceste drepturi, vă rugăm să ne contactați la ';
+
+  @override
+  String get settingsGDPRPageDataProtectionOfficer => 'Responsabil cu Protecția Datelor';
+
+  @override
+  String get settingsGDPRPageContactUsAt => 'Contactați-ne la:';
+
+  @override
+  String get settingsGDPRPageCompanyName => 'YOU\'LL GET IT S.R.L.';
+
+  @override
+  String get settingsGDPRPageRegNo => 'Nr. Reg.: J2025027781008';
+
+  @override
+  String get settingsGDPRPageCUI => 'CUI: 51649682';
+
+  @override
+  String get settingsGDPRPageEUID => 'EUID: ROONRC.J2025027781008';
+
+  @override
+  String get settingsGDPRPageContactInformation => 'Informații de Contact';
+
+  @override
+  String get settingsGDPRPageContactUsText => 'Dacă aveți întrebări despre conformitatea noastră GDPR, vă rugăm să contactați: Email: ';
+
+  @override
+  String get settingsGDPRPageLastUpdated => 'Ultima actualizare: 9 aprilie 2025';
+
+  @override
+  String get settingsPrivacyPolicyPageTitle => 'Politica de Confidențialitate';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroduction => 'Introducere';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroductionText => 'La you\'ll get it, respectăm confidențialitatea dumneavoastră și ne angajăm să vă protejăm datele personale. Această Politică de Confidențialitate explică modul în care colectăm, utilizăm și protejăm informațiile dumneavoastră atunci când utilizați aplicația noastră mobilă și site-ul web (în mod colectiv, \"Platforma\").';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroductionText2 => 'Vă încurajăm să citiți cu atenție această Politică de Confidențialitate pentru a înțelege practicile noastre cu privire la datele dumneavoastră personale.';
+
+  @override
+  String get settingsPrivacyPolicyPageInformationWeCollect => 'Informațiile pe Care le Colectăm';
+
+  @override
+  String get settingsPrivacyPolicyPageInformationWeCollectText => 'Putem colecta următoarele tipuri de informații:';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalData => 'Date Personale';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalDataText => 'Informații care vă identifică sau pot fi folosite pentru a vă identifica direct sau indirect, cum ar fi:';
+
+  @override
+  String get settingsPrivacyPolicyPageContactInfo => 'Informații de contact (nume, adresă de email, număr de telefon)';
+
+  @override
+  String get settingsPrivacyPolicyPageAccountCredentials => 'Credențiale de cont (nume de utilizator, parolă)';
+
+  @override
+  String get settingsPrivacyPolicyPageProfileInfo => 'Informații de profil (fotografie de profil, preferințe)';
+
+  @override
+  String get settingsPrivacyPolicyPageDeviceInfo => 'Informații despre dispozitiv (ID dispozitiv, adresă IP, sistem de operare)';
+
+  @override
+  String get settingsPrivacyPolicyPageLocationData => 'Date de locație (cu consimțământul dumneavoastră)';
+
+  @override
+  String get settingsPrivacyPolicyPageUsageData => 'Date de utilizare (modul în care interacționați cu Platforma noastră)';
+
+  @override
+  String get settingsPrivacyPolicyPageNonPersonalData => 'Date Non-Personale';
+
+  @override
+  String get settingsPrivacyPolicyPageNonPersonalDataText => 'Informații care nu vă identifică direct, cum ar fi:';
+
+  @override
+  String get settingsPrivacyPolicyPageAnonymousStats => 'Statistici de utilizare anonime și analize';
+
+  @override
+  String get settingsPrivacyPolicyPageDemographicInfo => 'Informații demografice';
+
+  @override
+  String get settingsPrivacyPolicyPageAggregatedBehavior => 'Comportament agregat al utilizatorilor';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeCollect => 'Cum Colectăm Informațiile';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeCollectText => 'Colectăm informații prin:';
+
+  @override
+  String get settingsPrivacyPolicyPageDirectInteractions => 'Interacțiuni directe (când vă înregistrați, ne contactați sau folosiți serviciile noastre)';
+
+  @override
+  String get settingsPrivacyPolicyPageAutomatedTech => 'Tehnologii automatizate (cookie-uri, jurnale de server, unelte de analiză)';
+
+  @override
+  String get settingsPrivacyPolicyPageThirdPartySources => 'Surse terțe (când este permis de lege)';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeUse => 'Cum Folosim Informațiile Dumneavoastră';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeUseText => 'Folosim informațiile dumneavoastră în următoarele scopuri:';
+
+  @override
+  String get settingsPrivacyPolicyPageProvideServices => 'Pentru a furniza și menține serviciile noastre';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalize => 'Pentru a personaliza experiența dumneavoastră';
+
+  @override
+  String get settingsPrivacyPolicyPageCommunicate => 'Pentru a comunica cu dumneavoastră despre serviciile noastre';
+
+  @override
+  String get settingsPrivacyPolicyPageProcessPayments => 'Pentru a procesa plăți și tranzacții';
+
+  @override
+  String get settingsPrivacyPolicyPageImprove => 'Pentru a îmbunătăți Platforma noastră și a dezvolta noi funcționalități';
+
+  @override
+  String get settingsPrivacyPolicyPageAnalyze => 'Pentru a analiza tiparele de utilizare și a rula analize';
+
+  @override
+  String get settingsPrivacyPolicyPageDetectIssues => 'Pentru a detecta, preveni și aborda probleme tehnice sau de securitate';
+
+  @override
+  String get settingsPrivacyPolicyPageComplyLegal => 'Pentru a respecta obligațiile legale';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalBasis => 'Baza Legală pentru Prelucrare';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalBasisText => 'Prelucrăm datele dumneavoastră personale pe următoarele baze legale:';
+
+  @override
+  String get settingsPrivacyPolicyPageYourConsent => 'Consimțământul dumneavoastră';
+
+  @override
+  String get settingsPrivacyPolicyPageContractPerformance => 'Executarea unui contract cu dumneavoastră';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalCompliance => 'Respectarea obligațiilor legale';
+
+  @override
+  String get settingsPrivacyPolicyPageLegitimateInterests => 'Interesele noastre legitime (care nu prevalează asupra drepturilor și libertăților dumneavoastră fundamentale)';
+
+  @override
+  String get settingsPrivacyPolicyPageInfoSharing => 'Partajarea și Divulgarea Informațiilor';
+
+  @override
+  String get settingsPrivacyPolicyPageInfoSharingText => 'Putem partaja informațiile dumneavoastră cu:';
+
+  @override
+  String get settingsPrivacyPolicyPageServiceProviders => 'Furnizori de servicii care ne ajută să livrăm serviciile noastre';
+
+  @override
+  String get settingsPrivacyPolicyPageBusinessPartners => 'Parteneri de afaceri cu consimțământul dumneavoastră';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalAuthorities => 'Autorități legale când este cerut de lege';
+
+  @override
+  String get settingsPrivacyPolicyPageAffiliatedCompanies => 'Companii afiliate din cadrul grupului nostru corporativ';
+
+  @override
+  String get settingsPrivacyPolicyPageSuccessorEntity => 'O entitate succesor în cazul unei fuziuni, achiziții sau tranzacții similare';
+
+  @override
+  String get settingsPrivacyPolicyPageNoSelling => 'Nu vindem datele dumneavoastră personale către terți.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataSecurity => 'Securitatea Datelor';
+
+  @override
+  String get settingsPrivacyPolicyPageDataSecurityText => 'Implementăm măsuri tehnice și organizaționale adecvate pentru a vă proteja datele personale împotriva accesului neautorizat, alterării, divulgării sau distrugerii. Cu toate acestea, nicio metodă de transmisie prin internet sau stocare electronică nu este 100% sigură, astfel că nu putem garanta securitatea absolută.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataRetention => 'Păstrarea Datelor';
+
+  @override
+  String get settingsPrivacyPolicyPageDataRetentionText => 'Păstrăm datele dumneavoastră personale doar atât timp cât este necesar pentru a îndeplini scopurile pentru care au fost colectate, inclusiv pentru cerințe legale, contabile sau de raportare. Când determinăm perioada de păstrare adecvată, luăm în considerare cantitatea, natura și sensibilitatea datelor, riscul potențial de daună din utilizarea neautorizată sau divulgarea, și scopurile pentru care prelucrăm datele.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataProtectionRights => 'Drepturile Dumneavoastră de Protecție a Datelor';
+
+  @override
+  String get settingsPrivacyPolicyPageDataProtectionRightsText => 'Sub legile aplicabile de protecție a datelor, puteți avea următoarele drepturi:';
+
+  @override
+  String get settingsPrivacyPolicyPageRightAccess => 'Dreptul de a accesa datele dumneavoastră personale';
+
+  @override
+  String get settingsPrivacyPolicyPageRightRectify => 'Dreptul de a rectifica datele inexacte sau incomplete';
+
+  @override
+  String get settingsPrivacyPolicyPageRightErasure => 'Dreptul la ștergere (\"dreptul de a fi uitat\")';
+
+  @override
+  String get settingsPrivacyPolicyPageRightRestrict => 'Dreptul de a restricționa prelucrarea';
+
+  @override
+  String get settingsPrivacyPolicyPageRightPortability => 'Dreptul la portabilitatea datelor';
+
+  @override
+  String get settingsPrivacyPolicyPageRightObject => 'Dreptul de a vă opune prelucrării';
+
+  @override
+  String get settingsPrivacyPolicyPageRightWithdraw => 'Dreptul de a retrage consimțământul';
+
+  @override
+  String get settingsPrivacyPolicyPageRightComplaint => 'Dreptul de a depune o plângere la o autoritate de supraveghere';
+
+  @override
+  String get settingsPrivacyPolicyPageExerciseRights => 'Pentru a exercita aceste drepturi, vă rugăm să ne contactați folosind informațiile furnizate la sfârșitul acestei Politici de Confidențialitate.';
+
+  @override
+  String get settingsPrivacyPolicyPageChildrensPrivacy => 'Confidențialitatea Copiilor';
+
+  @override
+  String get settingsPrivacyPolicyPageChildrensPrivacyText => 'Platforma noastră nu este destinată copiilor sub 16 ani. Nu colectăm în mod conștient date personale de la copii sub 16 ani. Dacă aflăm că am colectat date personale de la un copil sub 16 ani, vom lua măsuri pentru a șterge acele informații cât mai repede posibil. Dacă credeți că am putea avea informații de la sau despre un copil sub 16 ani, vă rugăm să ne contactați.';
+
+  @override
+  String get settingsPrivacyPolicyPageCookies => 'Cookie-uri și Tehnologii de Urmărire';
+
+  @override
+  String get settingsPrivacyPolicyPageCookiesText => 'Folosim cookie-uri și tehnologii similare de urmărire pentru a colecta informații despre activitățile dumneavoastră de navigare și pentru a vă aminti preferințele. Puteți instrui browserul să refuze toate cookie-urile sau să indice când se trimite un cookie. Cu toate acestea, dacă nu acceptați cookie-urile, este posibil să nu puteți folosi unele părți ale Platformei noastre.';
+
+  @override
+  String get settingsPrivacyPolicyPageInternationalTransfers => 'Transferuri Internaționale de Date';
+
+  @override
+  String get settingsPrivacyPolicyPageInternationalTransfersText => 'Datele dumneavoastră personale pot fi transferate către și prelucrate în țări altele decât țara în care locuiți. Aceste țări pot avea legi de protecție a datelor diferite de țara dumneavoastră. Când transferăm datele dumneavoastră la nivel internațional, luăm măsuri pentru a ne asigura că sunt implementate garanții adecvate pentru a vă proteja datele și pentru a vă asigura că vă puteți exercita drepturile în mod eficient.';
+
+  @override
+  String get settingsPrivacyPolicyPageChanges => 'Modificări la Această Politică de Confidențialitate';
+
+  @override
+  String get settingsPrivacyPolicyPageChangesText => 'Putem actualiza Politica noastră de Confidențialitate din când în când. Vă vom notifica despre orice modificări prin postarea noii Politici de Confidențialitate pe această pagină și actualizarea datei \"Ultima actualizare\". Vi se recomandă să revizuiți periodic această Politică de Confidențialitate pentru orice modificări.';
+
+  @override
+  String get settingsPrivacyPolicyPageContactUs => 'Contactați-ne';
+
+  @override
+  String get settingsPrivacyPolicyPageContactUsText => 'Dacă aveți întrebări despre această Politică de Confidențialitate, vă rugăm să ne contactați la ';
+
+  @override
+  String get settingsPrivacyPolicyPageCompanyInformation => 'Informații despre Companie';
+
+  @override
+  String get settingsPrivacyPolicyPageCompanyName => 'YOU\'LL GET IT S.R.L.';
+
+  @override
+  String get settingsPrivacyPolicyPageRegNo => 'Nr. Reg.: J2025027781008';
+
+  @override
+  String get settingsPrivacyPolicyPageCUI => 'CUI: 51649682';
+
+  @override
+  String get settingsPrivacyPolicyPageEUID => 'EUID: ROONRC.J2025027781008';
+
+  @override
+  String get settingsPrivacyPolicyPageEmail => 'Email: ';
+
+  @override
+  String get settingsPrivacyPolicyPageLastUpdated => 'Ultima actualizare: 9 aprilie 2025';
+
+  @override
+  String get settingsTermsOfServicePageTitle => 'Termeni și Condiții';
+
+  @override
+  String get settingsTermsOfServicePageIntroduction => 'Introducere';
+
+  @override
+  String get settingsTermsOfServicePageIntroductionText => 'Acești Termeni și Condiții (\"Termeni\") guvernează accesul și utilizarea site-ului web și aplicației mobile you\'ll get it (în mod colectiv, \"Platforma\"). Vă rugăm să citiți cu atenție acești Termeni înainte de a utiliza Platforma noastră.';
+
+  @override
+  String get settingsTermsOfServicePageAcceptanceOfTerms => 'Acceptarea Termenilor';
+
+  @override
+  String get settingsTermsOfServicePageAcceptanceOfTermsText => 'Prin accesarea sau utilizarea Platformei noastre, sunteți de acord să fiți legat de acești Termeni. Dacă nu sunteți de acord cu acești Termeni, nu trebuie să accesați sau să utilizați Platforma noastră.';
+
+  @override
+  String get settingsTermsOfServicePageEligibility => 'Eligibilitate';
+
+  @override
+  String get settingsTermsOfServicePageEligibilityText => 'Trebuie să aveți cel puțin 16 ani pentru a utiliza Platforma noastră. Prin utilizarea Platformei noastre, declarați și garantați că îndepliniți această cerință.';
+
+  @override
+  String get settingsTermsOfServicePageAccountRegistration => 'Înregistrarea Contului';
+
+  @override
+  String get settingsTermsOfServicePageAccountRegistrationText => 'Pentru a accesa anumite funcții ale Platformei noastre, trebuie să vă înregistrați pentru un cont. Când vă înregistrați, sunteți de acord să:';
+
+  @override
+  String get settingsTermsOfServicePageProvideAccurateInfo => 'Furnizați informații precise, actuale și complete';
+
+  @override
+  String get settingsTermsOfServicePageMaintainAccountInfo => 'Mențineți și actualizați prompt informațiile contului dumneavoastră';
+
+  @override
+  String get settingsTermsOfServicePageKeepPasswordSecure => 'Păstrați parola sigură și confidențială';
+
+  @override
+  String get settingsTermsOfServicePageBeResponsible => 'Fiți responsabil pentru toate activitățile care au loc sub contul dumneavoastră';
+
+  @override
+  String get settingsTermsOfServicePageDisableAccount => 'Ne rezervăm dreptul de a dezactiva orice cont dacă credem că ați încălcat acești Termeni.';
+
+  @override
+  String get settingsTermsOfServicePagePlatformUse => 'Utilizarea Platformei și Restricții';
+
+  @override
+  String get settingsTermsOfServicePagePlatformUseText => 'Puteți utiliza Platforma noastră doar în scopuri legale și în conformitate cu acești Termeni. Sunteți de acord să nu:';
+
+  @override
+  String get settingsTermsOfServicePageNoViolateLaws => 'Utilizați Platforma în orice mod care încalcă legile sau reglementările aplicabile';
+
+  @override
+  String get settingsTermsOfServicePageNoImpersonate => 'Vă dați drept o persoană sau entitate sau să prezentați fals afilierea dumneavoastră';
+
+  @override
+  String get settingsTermsOfServicePageNoRestrictUse => 'Să vă angajați în orice comportament care restricționează sau inhibă utilizarea Platformei de către oricine';
+
+  @override
+  String get settingsTermsOfServicePageNoUnauthorizedAccess => 'Să încercați să obțineți acces neautorizat la orice parte a Platformei';
+
+  @override
+  String get settingsTermsOfServicePageNoAutomatedDevices => 'Să utilizați roboți, spider-e sau alte dispozitive automatizate pentru a accesa Platforma, cu excepția motoarelor de căutare și arhivelor publice';
+
+  @override
+  String get settingsTermsOfServicePageNoUnsolicitedComms => 'Să utilizați Platforma pentru a trimite comunicări nesolicitate';
+
+  @override
+  String get settingsTermsOfServicePageNoHarvestInfo => 'Să colectați adrese de email sau alte informații de contact';
+
+  @override
+  String get settingsTermsOfServicePageNoCommercialUse => 'Să utilizați Platforma în orice scop comercial care nu este aprobat în mod expres de noi';
+
+  @override
+  String get settingsTermsOfServicePageIntellectualProperty => 'Drepturi de Proprietate Intelectuală';
+
+  @override
+  String get settingsTermsOfServicePageIntellectualPropertyText => 'Platforma și conținutul, caracteristicile și funcționalitatea acesteia sunt deținute de you\'ll get it și sunt protejate de drepturi de autor, mărci comerciale și alte legi de proprietate intelectuală.';
+
+  @override
+  String get settingsTermsOfServicePageUserContent => 'Conținut Utilizator';
+
+  @override
+  String get settingsTermsOfServicePageUserContentText => 'Păstrați orice drepturi pe care le-ați putea avea în conținutul pe care îl trimiteți pe Platformă (\"Conținut Utilizator\"). Prin trimiterea Conținutului Utilizator, ne acordați o licență mondială, non-exclusivă, fără taxe pentru a utiliza, reproduce, modifica, adapta, publica, traduce, distribui și afișa acest Conținut Utilizator.';
+
+  @override
+  String get settingsTermsOfServicePageRepresentWarrant => 'Declarați și garantați că:';
+
+  @override
+  String get settingsTermsOfServicePageOwnRights => 'Dețineți sau aveți drepturile necesare asupra Conținutului dumneavoastră Utilizator';
+
+  @override
+  String get settingsTermsOfServicePageNoViolateRights => 'Conținutul dumneavoastră Utilizator nu încalcă drepturile vreunei terțe părți';
+
+  @override
+  String get settingsTermsOfServicePageCompliesTerms => 'Conținutul dumneavoastră Utilizator respectă acești Termeni și legile aplicabile';
+
+  @override
+  String get settingsTermsOfServicePageRemoveContent => 'Ne rezervăm dreptul de a elimina orice Conținut Utilizator care încalcă acești Termeni sau pe care îl considerăm inadecvat.';
+
+  @override
+  String get settingsTermsOfServicePageThirdPartyLinks => 'Link-uri și Conținut de la Terți';
+
+  @override
+  String get settingsTermsOfServicePageThirdPartyLinksText => 'Platforma poate conține link-uri către site-uri web sau servicii ale terților. Nu controlăm sau aprobăm aceste site-uri web sau servicii și nu suntem responsabili pentru conținutul, politicile de confidențialitate sau practicile acestora.';
+
+  @override
+  String get settingsTermsOfServicePageDisclaimer => 'Declinarea Garanțiilor';
+
+  @override
+  String get settingsTermsOfServicePageDisclaimerText => 'PLATFORMA ESTE FURNIZATĂ \"CA ATARE\" ȘI \"DUPĂ CUM ESTE DISPONIBILĂ\" FĂRĂ GARANȚII DE ORICE FEL, EXPRESE SAU IMPLICITE. ÎN MĂSURA MAXIMĂ PERMISĂ DE LEGE, DECLINĂM TOATE GARANȚIILE, INCLUSIV GARANȚIILE IMPLICITE DE VANDABILITATE, ADECVARE PENTRU UN SCOP ANUME ȘI NEÎNCĂLCARE.';
+
+  @override
+  String get settingsTermsOfServicePageLimitationLiability => 'Limitarea Răspunderii';
+
+  @override
+  String get settingsTermsOfServicePageLimitationLiabilityText => 'ÎN MĂSURA MAXIMĂ PERMISĂ DE LEGE, you\'ll get it NU VA FI RĂSPUNZĂTOR PENTRU ORICE DAUNE INDIRECTE, INCIDENTALE, SPECIALE, CONSECUTIVE SAU PUNITIVE CARE DECURG DIN SAU SE REFERĂ LA UTILIZAREA DUMNEAVOASTRĂ A PLATFORMEI.';
+
+  @override
+  String get settingsTermsOfServicePageIndemnification => 'Despăgubire';
+
+  @override
+  String get settingsTermsOfServicePageIndemnificationText => 'Sunteți de acord să despăgubiți și să păstrați inofensiv you\'ll get it și ofițerii, directorii, angajații și agenții săi de și împotriva oricăror revendicări, răspunderi, daune, pierderi și cheltuieli care decurg din sau se referă la utilizarea dumneavoastră a Platformei sau încălcarea acestor Termeni.';
+
+  @override
+  String get settingsTermsOfServicePageGoverningLaw => 'Legea Aplicabilă';
+
+  @override
+  String get settingsTermsOfServicePageGoverningLawText => 'Acești Termeni vor fi guvernați și interpretați în conformitate cu legile României, fără a ține cont de dispozițiile sale privind conflictul de legi.';
+
+  @override
+  String get settingsTermsOfServicePageDisputeResolution => 'Rezolvarea Disputelor';
+
+  @override
+  String get settingsTermsOfServicePageDisputeResolutionText => 'Orice dispută care decurge din sau se referă la acești Termeni sau Platformă va fi rezolvată de instanțele României.';
+
+  @override
+  String get settingsTermsOfServicePageChangesToTerms => 'Modificări la Acești Termeni';
+
+  @override
+  String get settingsTermsOfServicePageChangesToTermsText => 'Putem actualiza acești Termeni din când în când. Versiunea actualizată va fi indicată printr-o dată \"Ultima actualizare\" actualizată.';
+
+  @override
+  String get settingsTermsOfServicePageTermination => 'Încetare';
+
+  @override
+  String get settingsTermsOfServicePageTerminationText => 'Putem înceta sau suspenda accesul dumneavoastră la Platformă imediat, fără notificare prealabilă sau răspundere, din orice motiv, inclusiv dacă încălcați acești Termeni.';
+
+  @override
+  String get settingsTermsOfServicePageSeverability => 'Separabilitate';
+
+  @override
+  String get settingsTermsOfServicePageSeverabilityText => 'Dacă orice dispoziție a acestor Termeni este considerată nevalidă sau inaplicabilă, acea dispoziție va fi eliminată și dispozițiile rămase vor fi aplicate.';
+
+  @override
+  String get settingsTermsOfServicePageEntireAgreement => 'Acordul Întreg';
+
+  @override
+  String get settingsTermsOfServicePageEntireAgreementText => 'Acești Termeni constituie acordul întreg între dumneavoastră și you\'ll get it cu privire la Platformă.';
+
+  @override
+  String get settingsTermsOfServicePageContactUs => 'Contactați-ne';
+
+  @override
+  String get settingsTermsOfServicePageContactUsText => 'Dacă aveți întrebări despre acești Termeni, vă rugăm să ne contactați la ';
+
+  @override
+  String get settingsTermsOfServicePageLastUpdated => 'Ultima actualizare: 9 aprilie 2025';
 }

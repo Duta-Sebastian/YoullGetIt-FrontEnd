@@ -1496,6 +1496,1176 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use this formula to make your achievements stand out in your CV'**
   String get xyzFormulaTip;
+
+  /// No description provided for @settingsPageSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsPageSettings;
+
+  /// No description provided for @settingsPageUserSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'User settings'**
+  String get settingsPageUserSettings;
+
+  /// No description provided for @settingsPageLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsPageLanguage;
+
+  /// No description provided for @settingsPagePrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get settingsPagePrivacyPolicy;
+
+  /// No description provided for @settingsPageTermsOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use'**
+  String get settingsPageTermsOfUse;
+
+  /// No description provided for @settingsPageGdprPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'GDPR Policy'**
+  String get settingsPageGdprPolicy;
+
+  /// No description provided for @settingsPageFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get settingsPageFeedback;
+
+  /// No description provided for @settingsPageRateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get settingsPageRateUs;
+
+  /// No description provided for @settingsPageUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get settingsPageUsername;
+
+  /// No description provided for @settingsPageNoUsernameSet.
+  ///
+  /// In en, this message translates to:
+  /// **'No username set'**
+  String get settingsPageNoUsernameSet;
+
+  /// No description provided for @settingsPageEnterUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter username'**
+  String get settingsPageEnterUsername;
+
+  /// No description provided for @settingsPageSaveProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your progress!'**
+  String get settingsPageSaveProgressTitle;
+
+  /// No description provided for @settingsPageSignedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'{email}!'**
+  String settingsPageSignedInAs(String email);
+
+  /// No description provided for @settingsPageSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In or Create Account'**
+  String get settingsPageSignIn;
+
+  /// No description provided for @settingsPageSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get settingsPageSignOut;
+
+  /// No description provided for @settingsPageYouAreSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You are signed in'**
+  String get settingsPageYouAreSignedIn;
+
+  /// No description provided for @settingsPageGuestMode.
+  ///
+  /// In en, this message translates to:
+  /// **'*You are currently in Guest Mode'**
+  String get settingsPageGuestMode;
+
+  /// No description provided for @settingsPageQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions'**
+  String get settingsPageQuestions;
+
+  /// No description provided for @settingsPageReviewAnsweredQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Review answered questions'**
+  String get settingsPageReviewAnsweredQuestions;
+
+  /// No description provided for @settingsPageTapToViewAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view your answers'**
+  String get settingsPageTapToViewAnswers;
+
+  /// No description provided for @settingsPageDangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger Zone'**
+  String get settingsPageDangerZone;
+
+  /// No description provided for @settingsPageDeleteAllData.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data'**
+  String get settingsPageDeleteAllData;
+
+  /// No description provided for @settingsPageActionCannotBeUndone.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone'**
+  String get settingsPageActionCannotBeUndone;
+
+  /// No description provided for @settingsPageDeleteAllDataConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data?'**
+  String get settingsPageDeleteAllDataConfirm;
+
+  /// No description provided for @settingsPageDeleteAllDataMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. You will be returned to the welcome screen.'**
+  String get settingsPageDeleteAllDataMessage;
+
+  /// No description provided for @settingsPageCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get settingsPageCancel;
+
+  /// No description provided for @settingsPageDeleteAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete All'**
+  String get settingsPageDeleteAll;
+
+  /// No description provided for @settingsPageUsernameCannotBeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Username cannot be empty'**
+  String get settingsPageUsernameCannotBeEmpty;
+
+  /// No description provided for @settingsPageUsernameUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Username updated successfully'**
+  String get settingsPageUsernameUpdatedSuccessfully;
+
+  /// No description provided for @settingsPageFailedToUpdateUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update username'**
+  String get settingsPageFailedToUpdateUsername;
+
+  /// No description provided for @settingsPageErrorDeletingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting data: {error}'**
+  String settingsPageErrorDeletingData(String error);
+
+  /// No description provided for @settingsPageSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get settingsPageSave;
+
+  /// No description provided for @settingsPageEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get settingsPageEdit;
+
+  /// No description provided for @settingsPageEditUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit username'**
+  String get settingsPageEditUsername;
+
+  /// No description provided for @settingsPageTapToSaveOrCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap ✓ to save or ✗ to cancel'**
+  String get settingsPageTapToSaveOrCancel;
+
+  /// No description provided for @settingsPageCouldNotLaunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch {url}'**
+  String settingsPageCouldNotLaunch(String url);
+
+  /// No description provided for @settingsGDPRPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'GDPR Policy'**
+  String get settingsGDPRPageTitle;
+
+  /// No description provided for @settingsGDPRPageCommitment.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Commitment to GDPR Compliance'**
+  String get settingsGDPRPageCommitment;
+
+  /// No description provided for @settingsGDPRPageCommitmentText.
+  ///
+  /// In en, this message translates to:
+  /// **'At you\'ll get it, we are committed to ensuring the privacy and protection of your personal data in compliance with the General Data Protection Regulation (GDPR) and relevant Romanian data protection laws.'**
+  String get settingsGDPRPageCommitmentText;
+
+  /// No description provided for @settingsGDPRPageDataSubjectRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Subject Rights'**
+  String get settingsGDPRPageDataSubjectRights;
+
+  /// No description provided for @settingsGDPRPageDataSubjectRightsText.
+  ///
+  /// In en, this message translates to:
+  /// **'Under the GDPR, you have the following rights:'**
+  String get settingsGDPRPageDataSubjectRightsText;
+
+  /// No description provided for @settingsGDPRPageRightToInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Information: Receive clear information about how we use your data.'**
+  String get settingsGDPRPageRightToInformation;
+
+  /// No description provided for @settingsGDPRPageRightOfAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Right of Access: Obtain confirmation that we are processing your data and access your personal data.'**
+  String get settingsGDPRPageRightOfAccess;
+
+  /// No description provided for @settingsGDPRPageRightToRectification.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Rectification: Have inaccurate personal data corrected or completed if incomplete.'**
+  String get settingsGDPRPageRightToRectification;
+
+  /// No description provided for @settingsGDPRPageRightToErasure.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Erasure: Request deletion of your personal data in certain circumstances.'**
+  String get settingsGDPRPageRightToErasure;
+
+  /// No description provided for @settingsGDPRPageRightToRestriction.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Restriction of Processing: Request restriction of processing in certain circumstances.'**
+  String get settingsGDPRPageRightToRestriction;
+
+  /// No description provided for @settingsGDPRPageRightToDataPortability.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Data Portability: Receive your personal data in a structured, commonly used, machine-readable format.'**
+  String get settingsGDPRPageRightToDataPortability;
+
+  /// No description provided for @settingsGDPRPageRightToObject.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to Object: Object to processing based on legitimate interests or direct marketing.'**
+  String get settingsGDPRPageRightToObject;
+
+  /// No description provided for @settingsGDPRPageRightAutomatedDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'Rights Related to Automated Decision Making and Profiling: Not be subject to decisions based solely on automated processing that produce legal effects.'**
+  String get settingsGDPRPageRightAutomatedDecision;
+
+  /// No description provided for @settingsGDPRPageExerciseRights.
+  ///
+  /// In en, this message translates to:
+  /// **'To exercise these rights, please contact us at '**
+  String get settingsGDPRPageExerciseRights;
+
+  /// No description provided for @settingsGDPRPageDataProtectionOfficer.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Protection Officer'**
+  String get settingsGDPRPageDataProtectionOfficer;
+
+  /// No description provided for @settingsGDPRPageContactUsAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact us at:'**
+  String get settingsGDPRPageContactUsAt;
+
+  /// No description provided for @settingsGDPRPageCompanyName.
+  ///
+  /// In en, this message translates to:
+  /// **'YOU\'LL GET IT S.R.L.'**
+  String get settingsGDPRPageCompanyName;
+
+  /// No description provided for @settingsGDPRPageRegNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reg. No: J2025027781008'**
+  String get settingsGDPRPageRegNo;
+
+  /// No description provided for @settingsGDPRPageCUI.
+  ///
+  /// In en, this message translates to:
+  /// **'CUI: 51649682'**
+  String get settingsGDPRPageCUI;
+
+  /// No description provided for @settingsGDPRPageEUID.
+  ///
+  /// In en, this message translates to:
+  /// **'EUID: ROONRC.J2025027781008'**
+  String get settingsGDPRPageEUID;
+
+  /// No description provided for @settingsGDPRPageContactInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Information'**
+  String get settingsGDPRPageContactInformation;
+
+  /// No description provided for @settingsGDPRPageContactUsText.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have any questions about our GDPR compliance, please contact: Email: '**
+  String get settingsGDPRPageContactUsText;
+
+  /// No description provided for @settingsGDPRPageLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated: April 9, 2025'**
+  String get settingsGDPRPageLastUpdated;
+
+  /// No description provided for @settingsPrivacyPolicyPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get settingsPrivacyPolicyPageTitle;
+
+  /// No description provided for @settingsPrivacyPolicyPageIntroduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Introduction'**
+  String get settingsPrivacyPolicyPageIntroduction;
+
+  /// No description provided for @settingsPrivacyPolicyPageIntroductionText.
+  ///
+  /// In en, this message translates to:
+  /// **'At you\'ll get it, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our mobile application and website (collectively, the \"Platform\").'**
+  String get settingsPrivacyPolicyPageIntroductionText;
+
+  /// No description provided for @settingsPrivacyPolicyPageIntroductionText2.
+  ///
+  /// In en, this message translates to:
+  /// **'We encourage you to read this Privacy Policy carefully to understand our practices regarding your personal data.'**
+  String get settingsPrivacyPolicyPageIntroductionText2;
+
+  /// No description provided for @settingsPrivacyPolicyPageInformationWeCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'Information We Collect'**
+  String get settingsPrivacyPolicyPageInformationWeCollect;
+
+  /// No description provided for @settingsPrivacyPolicyPageInformationWeCollectText.
+  ///
+  /// In en, this message translates to:
+  /// **'We may collect the following types of information:'**
+  String get settingsPrivacyPolicyPageInformationWeCollectText;
+
+  /// No description provided for @settingsPrivacyPolicyPagePersonalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Data'**
+  String get settingsPrivacyPolicyPagePersonalData;
+
+  /// No description provided for @settingsPrivacyPolicyPagePersonalDataText.
+  ///
+  /// In en, this message translates to:
+  /// **'Information that identifies you or can be used to identify you directly or indirectly, such as:'**
+  String get settingsPrivacyPolicyPagePersonalDataText;
+
+  /// No description provided for @settingsPrivacyPolicyPageContactInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact information (name, email address, phone number)'**
+  String get settingsPrivacyPolicyPageContactInfo;
+
+  /// No description provided for @settingsPrivacyPolicyPageAccountCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Account credentials (username, password)'**
+  String get settingsPrivacyPolicyPageAccountCredentials;
+
+  /// No description provided for @settingsPrivacyPolicyPageProfileInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile information (profile picture, preferences)'**
+  String get settingsPrivacyPolicyPageProfileInfo;
+
+  /// No description provided for @settingsPrivacyPolicyPageDeviceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Device information (device ID, IP address, operating system)'**
+  String get settingsPrivacyPolicyPageDeviceInfo;
+
+  /// No description provided for @settingsPrivacyPolicyPageLocationData.
+  ///
+  /// In en, this message translates to:
+  /// **'Location data (with your consent)'**
+  String get settingsPrivacyPolicyPageLocationData;
+
+  /// No description provided for @settingsPrivacyPolicyPageUsageData.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage data (how you interact with our Platform)'**
+  String get settingsPrivacyPolicyPageUsageData;
+
+  /// No description provided for @settingsPrivacyPolicyPageNonPersonalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Personal Data'**
+  String get settingsPrivacyPolicyPageNonPersonalData;
+
+  /// No description provided for @settingsPrivacyPolicyPageNonPersonalDataText.
+  ///
+  /// In en, this message translates to:
+  /// **'Information that does not directly identify you, such as:'**
+  String get settingsPrivacyPolicyPageNonPersonalDataText;
+
+  /// No description provided for @settingsPrivacyPolicyPageAnonymousStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Anonymous usage statistics and analytics'**
+  String get settingsPrivacyPolicyPageAnonymousStats;
+
+  /// No description provided for @settingsPrivacyPolicyPageDemographicInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Demographic information'**
+  String get settingsPrivacyPolicyPageDemographicInfo;
+
+  /// No description provided for @settingsPrivacyPolicyPageAggregatedBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Aggregated user behavior'**
+  String get settingsPrivacyPolicyPageAggregatedBehavior;
+
+  /// No description provided for @settingsPrivacyPolicyPageHowWeCollect.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Collect Information'**
+  String get settingsPrivacyPolicyPageHowWeCollect;
+
+  /// No description provided for @settingsPrivacyPolicyPageHowWeCollectText.
+  ///
+  /// In en, this message translates to:
+  /// **'We collect information through:'**
+  String get settingsPrivacyPolicyPageHowWeCollectText;
+
+  /// No description provided for @settingsPrivacyPolicyPageDirectInteractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct interactions (when you register, contact us, or use our services)'**
+  String get settingsPrivacyPolicyPageDirectInteractions;
+
+  /// No description provided for @settingsPrivacyPolicyPageAutomatedTech.
+  ///
+  /// In en, this message translates to:
+  /// **'Automated technologies (cookies, server logs, analytics tools)'**
+  String get settingsPrivacyPolicyPageAutomatedTech;
+
+  /// No description provided for @settingsPrivacyPolicyPageThirdPartySources.
+  ///
+  /// In en, this message translates to:
+  /// **'Third-party sources (when permitted by law)'**
+  String get settingsPrivacyPolicyPageThirdPartySources;
+
+  /// No description provided for @settingsPrivacyPolicyPageHowWeUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Use Your Information'**
+  String get settingsPrivacyPolicyPageHowWeUse;
+
+  /// No description provided for @settingsPrivacyPolicyPageHowWeUseText.
+  ///
+  /// In en, this message translates to:
+  /// **'We use your information for the following purposes:'**
+  String get settingsPrivacyPolicyPageHowWeUseText;
+
+  /// No description provided for @settingsPrivacyPolicyPageProvideServices.
+  ///
+  /// In en, this message translates to:
+  /// **'To provide and maintain our services'**
+  String get settingsPrivacyPolicyPageProvideServices;
+
+  /// No description provided for @settingsPrivacyPolicyPagePersonalize.
+  ///
+  /// In en, this message translates to:
+  /// **'To personalize your experience'**
+  String get settingsPrivacyPolicyPagePersonalize;
+
+  /// No description provided for @settingsPrivacyPolicyPageCommunicate.
+  ///
+  /// In en, this message translates to:
+  /// **'To communicate with you about our services'**
+  String get settingsPrivacyPolicyPageCommunicate;
+
+  /// No description provided for @settingsPrivacyPolicyPageProcessPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'To process payments and transactions'**
+  String get settingsPrivacyPolicyPageProcessPayments;
+
+  /// No description provided for @settingsPrivacyPolicyPageImprove.
+  ///
+  /// In en, this message translates to:
+  /// **'To improve our Platform and develop new features'**
+  String get settingsPrivacyPolicyPageImprove;
+
+  /// No description provided for @settingsPrivacyPolicyPageAnalyze.
+  ///
+  /// In en, this message translates to:
+  /// **'To analyze usage patterns and run analytics'**
+  String get settingsPrivacyPolicyPageAnalyze;
+
+  /// No description provided for @settingsPrivacyPolicyPageDetectIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'To detect, prevent, and address technical or security issues'**
+  String get settingsPrivacyPolicyPageDetectIssues;
+
+  /// No description provided for @settingsPrivacyPolicyPageComplyLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'To comply with legal obligations'**
+  String get settingsPrivacyPolicyPageComplyLegal;
+
+  /// No description provided for @settingsPrivacyPolicyPageLegalBasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Basis for Processing'**
+  String get settingsPrivacyPolicyPageLegalBasis;
+
+  /// No description provided for @settingsPrivacyPolicyPageLegalBasisText.
+  ///
+  /// In en, this message translates to:
+  /// **'We process your personal data on the following legal grounds:'**
+  String get settingsPrivacyPolicyPageLegalBasisText;
+
+  /// No description provided for @settingsPrivacyPolicyPageYourConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your consent'**
+  String get settingsPrivacyPolicyPageYourConsent;
+
+  /// No description provided for @settingsPrivacyPolicyPageContractPerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance of a contract with you'**
+  String get settingsPrivacyPolicyPageContractPerformance;
+
+  /// No description provided for @settingsPrivacyPolicyPageLegalCompliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Compliance with legal obligations'**
+  String get settingsPrivacyPolicyPageLegalCompliance;
+
+  /// No description provided for @settingsPrivacyPolicyPageLegitimateInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Our legitimate interests (which do not override your fundamental rights and freedoms)'**
+  String get settingsPrivacyPolicyPageLegitimateInterests;
+
+  /// No description provided for @settingsPrivacyPolicyPageInfoSharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Information Sharing and Disclosure'**
+  String get settingsPrivacyPolicyPageInfoSharing;
+
+  /// No description provided for @settingsPrivacyPolicyPageInfoSharingText.
+  ///
+  /// In en, this message translates to:
+  /// **'We may share your information with:'**
+  String get settingsPrivacyPolicyPageInfoSharingText;
+
+  /// No description provided for @settingsPrivacyPolicyPageServiceProviders.
+  ///
+  /// In en, this message translates to:
+  /// **'Service providers who help us deliver our services'**
+  String get settingsPrivacyPolicyPageServiceProviders;
+
+  /// No description provided for @settingsPrivacyPolicyPageBusinessPartners.
+  ///
+  /// In en, this message translates to:
+  /// **'Business partners with your consent'**
+  String get settingsPrivacyPolicyPageBusinessPartners;
+
+  /// No description provided for @settingsPrivacyPolicyPageLegalAuthorities.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal authorities when required by law'**
+  String get settingsPrivacyPolicyPageLegalAuthorities;
+
+  /// No description provided for @settingsPrivacyPolicyPageAffiliatedCompanies.
+  ///
+  /// In en, this message translates to:
+  /// **'Affiliated companies within our corporate group'**
+  String get settingsPrivacyPolicyPageAffiliatedCompanies;
+
+  /// No description provided for @settingsPrivacyPolicyPageSuccessorEntity.
+  ///
+  /// In en, this message translates to:
+  /// **'A successor entity in the event of a merger, acquisition, or similar transaction'**
+  String get settingsPrivacyPolicyPageSuccessorEntity;
+
+  /// No description provided for @settingsPrivacyPolicyPageNoSelling.
+  ///
+  /// In en, this message translates to:
+  /// **'We do not sell your personal data to third parties.'**
+  String get settingsPrivacyPolicyPageNoSelling;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Security'**
+  String get settingsPrivacyPolicyPageDataSecurity;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataSecurityText.
+  ///
+  /// In en, this message translates to:
+  /// **'We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure, so we cannot guarantee absolute security.'**
+  String get settingsPrivacyPolicyPageDataSecurityText;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataRetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Retention'**
+  String get settingsPrivacyPolicyPageDataRetention;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataRetentionText.
+  ///
+  /// In en, this message translates to:
+  /// **'We retain your personal data only for as long as necessary to fulfill the purposes for which it was collected, including for legal, accounting, or reporting requirements. When determining the appropriate retention period, we consider the amount, nature, and sensitivity of the data, the potential risk of harm from unauthorized use or disclosure, and the purposes for which we process the data.'**
+  String get settingsPrivacyPolicyPageDataRetentionText;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataProtectionRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Data Protection Rights'**
+  String get settingsPrivacyPolicyPageDataProtectionRights;
+
+  /// No description provided for @settingsPrivacyPolicyPageDataProtectionRightsText.
+  ///
+  /// In en, this message translates to:
+  /// **'Under applicable data protection laws, you may have the following rights:'**
+  String get settingsPrivacyPolicyPageDataProtectionRightsText;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to access your personal data'**
+  String get settingsPrivacyPolicyPageRightAccess;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightRectify.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to rectify inaccurate or incomplete data'**
+  String get settingsPrivacyPolicyPageRightRectify;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightErasure.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to erasure (the \"right to be forgotten\")'**
+  String get settingsPrivacyPolicyPageRightErasure;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightRestrict.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to restrict processing'**
+  String get settingsPrivacyPolicyPageRightRestrict;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightPortability.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to data portability'**
+  String get settingsPrivacyPolicyPageRightPortability;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightObject.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to object to processing'**
+  String get settingsPrivacyPolicyPageRightObject;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightWithdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to withdraw consent'**
+  String get settingsPrivacyPolicyPageRightWithdraw;
+
+  /// No description provided for @settingsPrivacyPolicyPageRightComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to lodge a complaint with a supervisory authority'**
+  String get settingsPrivacyPolicyPageRightComplaint;
+
+  /// No description provided for @settingsPrivacyPolicyPageExerciseRights.
+  ///
+  /// In en, this message translates to:
+  /// **'To exercise these rights, please contact us using the information provided at the end of this Privacy Policy.'**
+  String get settingsPrivacyPolicyPageExerciseRights;
+
+  /// No description provided for @settingsPrivacyPolicyPageChildrensPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Children\'s Privacy'**
+  String get settingsPrivacyPolicyPageChildrensPrivacy;
+
+  /// No description provided for @settingsPrivacyPolicyPageChildrensPrivacyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Platform is not intended for children under 16 years of age. We do not knowingly collect personal data from children under 16. If we learn that we have collected personal data from a child under 16, we will take steps to delete that information as quickly as possible. If you believe we might have any information from or about a child under 16, please contact us.'**
+  String get settingsPrivacyPolicyPageChildrensPrivacyText;
+
+  /// No description provided for @settingsPrivacyPolicyPageCookies.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookies and Tracking Technologies'**
+  String get settingsPrivacyPolicyPageCookies;
+
+  /// No description provided for @settingsPrivacyPolicyPageCookiesText.
+  ///
+  /// In en, this message translates to:
+  /// **'We use cookies and similar tracking technologies to collect information about your browsing activities and to remember your preferences. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Platform.'**
+  String get settingsPrivacyPolicyPageCookiesText;
+
+  /// No description provided for @settingsPrivacyPolicyPageInternationalTransfers.
+  ///
+  /// In en, this message translates to:
+  /// **'International Data Transfers'**
+  String get settingsPrivacyPolicyPageInternationalTransfers;
+
+  /// No description provided for @settingsPrivacyPolicyPageInternationalTransfersText.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal data may be transferred to and processed in countries other than the country in which you reside. These countries may have different data protection laws than your country. When we transfer your data internationally, we take measures to ensure that appropriate safeguards are in place to protect your data and to ensure that you can exercise your rights effectively.'**
+  String get settingsPrivacyPolicyPageInternationalTransfersText;
+
+  /// No description provided for @settingsPrivacyPolicyPageChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes to This Privacy Policy'**
+  String get settingsPrivacyPolicyPageChanges;
+
+  /// No description provided for @settingsPrivacyPolicyPageChangesText.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last Updated\" date. You are advised to review this Privacy Policy periodically for any changes.'**
+  String get settingsPrivacyPolicyPageChangesText;
+
+  /// No description provided for @settingsPrivacyPolicyPageContactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get settingsPrivacyPolicyPageContactUs;
+
+  /// No description provided for @settingsPrivacyPolicyPageContactUsText.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have any questions about this Privacy Policy, please contact us at '**
+  String get settingsPrivacyPolicyPageContactUsText;
+
+  /// No description provided for @settingsPrivacyPolicyPageCompanyInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Information'**
+  String get settingsPrivacyPolicyPageCompanyInformation;
+
+  /// No description provided for @settingsPrivacyPolicyPageCompanyName.
+  ///
+  /// In en, this message translates to:
+  /// **'YOU\'LL GET IT S.R.L.'**
+  String get settingsPrivacyPolicyPageCompanyName;
+
+  /// No description provided for @settingsPrivacyPolicyPageRegNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reg. No: J2025027781008'**
+  String get settingsPrivacyPolicyPageRegNo;
+
+  /// No description provided for @settingsPrivacyPolicyPageCUI.
+  ///
+  /// In en, this message translates to:
+  /// **'CUI: 51649682'**
+  String get settingsPrivacyPolicyPageCUI;
+
+  /// No description provided for @settingsPrivacyPolicyPageEUID.
+  ///
+  /// In en, this message translates to:
+  /// **'EUID: ROONRC.J2025027781008'**
+  String get settingsPrivacyPolicyPageEUID;
+
+  /// No description provided for @settingsPrivacyPolicyPageEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email: '**
+  String get settingsPrivacyPolicyPageEmail;
+
+  /// No description provided for @settingsPrivacyPolicyPageLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated: April 9, 2025'**
+  String get settingsPrivacyPolicyPageLastUpdated;
+
+  /// No description provided for @settingsTermsOfServicePageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get settingsTermsOfServicePageTitle;
+
+  /// No description provided for @settingsTermsOfServicePageIntroduction.
+  ///
+  /// In en, this message translates to:
+  /// **'Introduction'**
+  String get settingsTermsOfServicePageIntroduction;
+
+  /// No description provided for @settingsTermsOfServicePageIntroductionText.
+  ///
+  /// In en, this message translates to:
+  /// **'These Terms of Service (\"Terms\") govern your access to and use of you\'ll get it\'s website and mobile application (collectively, the \"Platform\"). Please read these Terms carefully before using our Platform.'**
+  String get settingsTermsOfServicePageIntroductionText;
+
+  /// No description provided for @settingsTermsOfServicePageAcceptanceOfTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Acceptance of Terms'**
+  String get settingsTermsOfServicePageAcceptanceOfTerms;
+
+  /// No description provided for @settingsTermsOfServicePageAcceptanceOfTermsText.
+  ///
+  /// In en, this message translates to:
+  /// **'By accessing or using our Platform, you agree to be bound by these Terms. If you do not agree to these Terms, you must not access or use our Platform.'**
+  String get settingsTermsOfServicePageAcceptanceOfTermsText;
+
+  /// No description provided for @settingsTermsOfServicePageEligibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Eligibility'**
+  String get settingsTermsOfServicePageEligibility;
+
+  /// No description provided for @settingsTermsOfServicePageEligibilityText.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least 16 years old to use our Platform. By using our Platform, you represent and warrant that you meet this requirement.'**
+  String get settingsTermsOfServicePageEligibilityText;
+
+  /// No description provided for @settingsTermsOfServicePageAccountRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Registration'**
+  String get settingsTermsOfServicePageAccountRegistration;
+
+  /// No description provided for @settingsTermsOfServicePageAccountRegistrationText.
+  ///
+  /// In en, this message translates to:
+  /// **'To access certain features of our Platform, you must register for an account. When you register, you agree to:'**
+  String get settingsTermsOfServicePageAccountRegistrationText;
+
+  /// No description provided for @settingsTermsOfServicePageProvideAccurateInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide accurate, current, and complete information'**
+  String get settingsTermsOfServicePageProvideAccurateInfo;
+
+  /// No description provided for @settingsTermsOfServicePageMaintainAccountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain and promptly update your account information'**
+  String get settingsTermsOfServicePageMaintainAccountInfo;
+
+  /// No description provided for @settingsTermsOfServicePageKeepPasswordSecure.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your password secure and confidential'**
+  String get settingsTermsOfServicePageKeepPasswordSecure;
+
+  /// No description provided for @settingsTermsOfServicePageBeResponsible.
+  ///
+  /// In en, this message translates to:
+  /// **'Be responsible for all activities that occur under your account'**
+  String get settingsTermsOfServicePageBeResponsible;
+
+  /// No description provided for @settingsTermsOfServicePageDisableAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'We reserve the right to disable any account if we believe you have violated these Terms.'**
+  String get settingsTermsOfServicePageDisableAccount;
+
+  /// No description provided for @settingsTermsOfServicePagePlatformUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform Use and Restrictions'**
+  String get settingsTermsOfServicePagePlatformUse;
+
+  /// No description provided for @settingsTermsOfServicePagePlatformUseText.
+  ///
+  /// In en, this message translates to:
+  /// **'You may use our Platform only for lawful purposes and in accordance with these Terms. You agree not to:'**
+  String get settingsTermsOfServicePagePlatformUseText;
+
+  /// No description provided for @settingsTermsOfServicePageNoViolateLaws.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Platform in any way that violates applicable laws or regulations'**
+  String get settingsTermsOfServicePageNoViolateLaws;
+
+  /// No description provided for @settingsTermsOfServicePageNoImpersonate.
+  ///
+  /// In en, this message translates to:
+  /// **'Impersonate any person or entity or misrepresent your affiliation'**
+  String get settingsTermsOfServicePageNoImpersonate;
+
+  /// No description provided for @settingsTermsOfServicePageNoRestrictUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Engage in any conduct that restricts or inhibits anyone\'s use of the Platform'**
+  String get settingsTermsOfServicePageNoRestrictUse;
+
+  /// No description provided for @settingsTermsOfServicePageNoUnauthorizedAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Attempt to gain unauthorized access to any part of the Platform'**
+  String get settingsTermsOfServicePageNoUnauthorizedAccess;
+
+  /// No description provided for @settingsTermsOfServicePageNoAutomatedDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Use any robot, spider, or other automated device to access the Platform except for search engines and public archives'**
+  String get settingsTermsOfServicePageNoAutomatedDevices;
+
+  /// No description provided for @settingsTermsOfServicePageNoUnsolicitedComms.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Platform to send unsolicited communications'**
+  String get settingsTermsOfServicePageNoUnsolicitedComms;
+
+  /// No description provided for @settingsTermsOfServicePageNoHarvestInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Harvest or collect email addresses or other contact information'**
+  String get settingsTermsOfServicePageNoHarvestInfo;
+
+  /// No description provided for @settingsTermsOfServicePageNoCommercialUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the Platform for any commercial purpose not expressly approved by us'**
+  String get settingsTermsOfServicePageNoCommercialUse;
+
+  /// No description provided for @settingsTermsOfServicePageIntellectualProperty.
+  ///
+  /// In en, this message translates to:
+  /// **'Intellectual Property Rights'**
+  String get settingsTermsOfServicePageIntellectualProperty;
+
+  /// No description provided for @settingsTermsOfServicePageIntellectualPropertyText.
+  ///
+  /// In en, this message translates to:
+  /// **'The Platform and its content, features, and functionality are owned by you\'ll get it and are protected by copyright, trademark, and other intellectual property laws.'**
+  String get settingsTermsOfServicePageIntellectualPropertyText;
+
+  /// No description provided for @settingsTermsOfServicePageUserContent.
+  ///
+  /// In en, this message translates to:
+  /// **'User Content'**
+  String get settingsTermsOfServicePageUserContent;
+
+  /// No description provided for @settingsTermsOfServicePageUserContentText.
+  ///
+  /// In en, this message translates to:
+  /// **'You retain any rights you may have in content you submit to the Platform (\"User Content\"). By submitting User Content, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, translate, distribute, and display such User Content.'**
+  String get settingsTermsOfServicePageUserContentText;
+
+  /// No description provided for @settingsTermsOfServicePageRepresentWarrant.
+  ///
+  /// In en, this message translates to:
+  /// **'You represent and warrant that:'**
+  String get settingsTermsOfServicePageRepresentWarrant;
+
+  /// No description provided for @settingsTermsOfServicePageOwnRights.
+  ///
+  /// In en, this message translates to:
+  /// **'You own or have the necessary rights to your User Content'**
+  String get settingsTermsOfServicePageOwnRights;
+
+  /// No description provided for @settingsTermsOfServicePageNoViolateRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Your User Content does not violate the rights of any third party'**
+  String get settingsTermsOfServicePageNoViolateRights;
+
+  /// No description provided for @settingsTermsOfServicePageCompliesTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Your User Content complies with these Terms and applicable laws'**
+  String get settingsTermsOfServicePageCompliesTerms;
+
+  /// No description provided for @settingsTermsOfServicePageRemoveContent.
+  ///
+  /// In en, this message translates to:
+  /// **'We reserve the right to remove any User Content that violates these Terms or that we find objectionable.'**
+  String get settingsTermsOfServicePageRemoveContent;
+
+  /// No description provided for @settingsTermsOfServicePageThirdPartyLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Third-Party Links and Content'**
+  String get settingsTermsOfServicePageThirdPartyLinks;
+
+  /// No description provided for @settingsTermsOfServicePageThirdPartyLinksText.
+  ///
+  /// In en, this message translates to:
+  /// **'The Platform may contain links to third-party websites or services. We do not control or endorse these websites or services and are not responsible for their content, privacy policies, or practices.'**
+  String get settingsTermsOfServicePageThirdPartyLinksText;
+
+  /// No description provided for @settingsTermsOfServicePageDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer of Warranties'**
+  String get settingsTermsOfServicePageDisclaimer;
+
+  /// No description provided for @settingsTermsOfServicePageDisclaimerText.
+  ///
+  /// In en, this message translates to:
+  /// **'THE PLATFORM IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.'**
+  String get settingsTermsOfServicePageDisclaimerText;
+
+  /// No description provided for @settingsTermsOfServicePageLimitationLiability.
+  ///
+  /// In en, this message translates to:
+  /// **'Limitation of Liability'**
+  String get settingsTermsOfServicePageLimitationLiability;
+
+  /// No description provided for @settingsTermsOfServicePageLimitationLiabilityText.
+  ///
+  /// In en, this message translates to:
+  /// **'TO THE FULLEST EXTENT PERMITTED BY LAW, you\'ll get it SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATING TO YOUR USE OF THE PLATFORM.'**
+  String get settingsTermsOfServicePageLimitationLiabilityText;
+
+  /// No description provided for @settingsTermsOfServicePageIndemnification.
+  ///
+  /// In en, this message translates to:
+  /// **'Indemnification'**
+  String get settingsTermsOfServicePageIndemnification;
+
+  /// No description provided for @settingsTermsOfServicePageIndemnificationText.
+  ///
+  /// In en, this message translates to:
+  /// **'You agree to indemnify and hold harmless you\'ll get it and its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses arising out of or relating to your use of the Platform or violation of these Terms.'**
+  String get settingsTermsOfServicePageIndemnificationText;
+
+  /// No description provided for @settingsTermsOfServicePageGoverningLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'Governing Law'**
+  String get settingsTermsOfServicePageGoverningLaw;
+
+  /// No description provided for @settingsTermsOfServicePageGoverningLawText.
+  ///
+  /// In en, this message translates to:
+  /// **'These Terms shall be governed by and construed in accordance with the laws of Romania, without regard to its conflict of law provisions.'**
+  String get settingsTermsOfServicePageGoverningLawText;
+
+  /// No description provided for @settingsTermsOfServicePageDisputeResolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispute Resolution'**
+  String get settingsTermsOfServicePageDisputeResolution;
+
+  /// No description provided for @settingsTermsOfServicePageDisputeResolutionText.
+  ///
+  /// In en, this message translates to:
+  /// **'Any dispute arising out of or relating to these Terms or the Platform shall be resolved by the courts of Romania.'**
+  String get settingsTermsOfServicePageDisputeResolutionText;
+
+  /// No description provided for @settingsTermsOfServicePageChangesToTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes to These Terms'**
+  String get settingsTermsOfServicePageChangesToTerms;
+
+  /// No description provided for @settingsTermsOfServicePageChangesToTermsText.
+  ///
+  /// In en, this message translates to:
+  /// **'We may update these Terms from time to time. The updated version will be indicated by an updated \"Last Updated\" date.'**
+  String get settingsTermsOfServicePageChangesToTermsText;
+
+  /// No description provided for @settingsTermsOfServicePageTermination.
+  ///
+  /// In en, this message translates to:
+  /// **'Termination'**
+  String get settingsTermsOfServicePageTermination;
+
+  /// No description provided for @settingsTermsOfServicePageTerminationText.
+  ///
+  /// In en, this message translates to:
+  /// **'We may terminate or suspend your access to the Platform immediately, without prior notice or liability, for any reason, including if you breach these Terms.'**
+  String get settingsTermsOfServicePageTerminationText;
+
+  /// No description provided for @settingsTermsOfServicePageSeverability.
+  ///
+  /// In en, this message translates to:
+  /// **'Severability'**
+  String get settingsTermsOfServicePageSeverability;
+
+  /// No description provided for @settingsTermsOfServicePageSeverabilityText.
+  ///
+  /// In en, this message translates to:
+  /// **'If any provision of these Terms is held to be invalid or unenforceable, such provision shall be struck and the remaining provisions shall be enforced.'**
+  String get settingsTermsOfServicePageSeverabilityText;
+
+  /// No description provided for @settingsTermsOfServicePageEntireAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Entire Agreement'**
+  String get settingsTermsOfServicePageEntireAgreement;
+
+  /// No description provided for @settingsTermsOfServicePageEntireAgreementText.
+  ///
+  /// In en, this message translates to:
+  /// **'These Terms constitute the entire agreement between you and you\'ll get it regarding the Platform.'**
+  String get settingsTermsOfServicePageEntireAgreementText;
+
+  /// No description provided for @settingsTermsOfServicePageContactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get settingsTermsOfServicePageContactUs;
+
+  /// No description provided for @settingsTermsOfServicePageContactUsText.
+  ///
+  /// In en, this message translates to:
+  /// **'If you have any questions about these Terms, please contact us at '**
+  String get settingsTermsOfServicePageContactUsText;
+
+  /// No description provided for @settingsTermsOfServicePageLastUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Updated: April 9, 2025'**
+  String get settingsTermsOfServicePageLastUpdated;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

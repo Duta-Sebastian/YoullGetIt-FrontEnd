@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/view_answers_screen.dart';
@@ -27,11 +28,6 @@ class _UserSettingsState extends State<UserSettings> {
   );
   static const _usernameStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
   static const _textFieldStyle = TextStyle(fontSize: 16);
-  static const _inputDecoration = InputDecoration(
-    border: InputBorder.none,
-    hintText: "Enter username",
-    isDense: true,
-  );
 
   final TextEditingController _usernameController = TextEditingController();
   final FocusNode _usernameFocus = FocusNode();
@@ -53,8 +49,9 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   void _loadCurrentUsername() {
+    final localizations = AppLocalizations.of(context)!;
     setState(() {
-      _currentUsername = widget.currentUsername ?? 'No username set';
+      _currentUsername = widget.currentUsername ?? localizations.settingsPageNoUsernameSet;
       _usernameController.text = _currentUsername ?? '';
     });
   }
@@ -75,10 +72,11 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   void _saveUsername() async {
+    final localizations = AppLocalizations.of(context)!;
     String newUsername = _usernameController.text.trim();
     
     if (newUsername.isEmpty) {
-      _showErrorMessage('Username cannot be empty');
+      _showErrorMessage(localizations.settingsPageUsernameCannotBeEmpty);
       _cancelEditing();
       return;
     }
@@ -106,14 +104,14 @@ class _UserSettingsState extends State<UserSettings> {
           _isLoading = false;
         });
         widget.onUsernameChanged();
-        _showSuccessMessage('Username updated successfully');
+        _showSuccessMessage(localizations.settingsPageUsernameUpdatedSuccessfully);
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
-        _showErrorMessage('Failed to update username');
+        _showErrorMessage(localizations.settingsPageFailedToUpdateUsername);
         _cancelEditing();
       }
     }
@@ -140,16 +138,18 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   void _confirmDeleteData() {
+    final localizations = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        title: const Text("Delete all data?"),
-        content: const Text("This action cannot be undone. You will be returned to the welcome screen."),
+        title: Text(localizations.settingsPageDeleteAllDataConfirm),
+        content: Text(localizations.settingsPageDeleteAllDataMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text(localizations.settingsPageCancel),
           ),
           TextButton(
             onPressed: () async {
@@ -168,13 +168,13 @@ class _UserSettingsState extends State<UserSettings> {
               } catch (e) {
                 scaffoldMessenger.showSnackBar(
                   SnackBar(
-                    content: Text('Error deleting data: $e'),
+                    content: Text(localizations.settingsPageErrorDeletingData(e.toString())),
                     backgroundColor: Colors.red,
                   ),
                 );
               }
             },
-            child: const Text("Delete All", style: TextStyle(color: Colors.red)),
+            child: Text(localizations.settingsPageDeleteAll, style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -183,6 +183,8 @@ class _UserSettingsState extends State<UserSettings> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -191,7 +193,7 @@ class _UserSettingsState extends State<UserSettings> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text('User Settings'),
+        title: Text(localizations.settingsPageUserSettings),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -199,7 +201,7 @@ class _UserSettingsState extends State<UserSettings> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Username", 
+              localizations.settingsPageUsername, 
               style: _titleStyle
             ),
             const SizedBox(height: 12),
@@ -225,12 +227,16 @@ class _UserSettingsState extends State<UserSettings> {
                                 controller: _usernameController,
                                 focusNode: _usernameFocus,
                                 enabled: !_isLoading,
-                                decoration: _inputDecoration,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: localizations.settingsPageEnterUsername,
+                                  isDense: true,
+                                ),
                                 style: _textFieldStyle,
                                 onSubmitted: (_) => _saveUsername(),
                               )
                             : Text(
-                                _currentUsername ?? 'No username set',
+                                _currentUsername ?? localizations.settingsPageNoUsernameSet,
                                 style: _usernameStyle,
                               ),
                         ),
@@ -247,12 +253,12 @@ class _UserSettingsState extends State<UserSettings> {
                               IconButton(
                                 icon: const Icon(Icons.check, color: Colors.green),
                                 onPressed: _saveUsername,
-                                tooltip: 'Save',
+                                tooltip: localizations.settingsPageSave,
                               ),
                               IconButton(
                                 icon: const Icon(Icons.close, color: Colors.red),
                                 onPressed: _cancelEditing,
-                                tooltip: 'Cancel',
+                                tooltip: localizations.settingsPageCancel,
                               ),
                             ],
                           )
@@ -260,7 +266,7 @@ class _UserSettingsState extends State<UserSettings> {
                           IconButton(
                             icon: const Icon(Icons.edit, color: Colors.blue),
                             onPressed: _startEditing,
-                            tooltip: 'Edit username',
+                            tooltip: localizations.settingsPageEditUsername,
                           ),
                       ],
                     ),
@@ -268,7 +274,7 @@ class _UserSettingsState extends State<UserSettings> {
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, left: 36),
                         child: Text(
-                          'Tap ✓ to save or ✗ to cancel',
+                          localizations.settingsPageTapToSaveOrCancel,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -284,7 +290,7 @@ class _UserSettingsState extends State<UserSettings> {
 
             // Questions Section
             Text(
-              "Questions", 
+              localizations.settingsPageQuestions, 
               style: _titleStyle
             ),
             
@@ -298,8 +304,8 @@ class _UserSettingsState extends State<UserSettings> {
               ),
               child: ListTile(
                 leading: const Icon(Icons.question_answer, color: Colors.blue),
-                title: const Text("Review answered questions"),
-                subtitle: const Text("Tap to view your answers"),
+                title: Text(localizations.settingsPageReviewAnsweredQuestions),
+                subtitle: Text(localizations.settingsPageTapToViewAnswers),
                 splashColor: Colors.transparent,
                 onTap: () async {
                   Navigator.of(context).push(
@@ -314,7 +320,7 @@ class _UserSettingsState extends State<UserSettings> {
             const SizedBox(height: 32),
             // Danger Zone
             Text(
-              "Danger Zone", 
+              localizations.settingsPageDangerZone, 
               style: _dangerTitleStyle
             ),
             const SizedBox(height: 12),
@@ -326,8 +332,8 @@ class _UserSettingsState extends State<UserSettings> {
               ),
               child: ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
-                title: const Text("Delete all data"),
-                subtitle: const Text("This action cannot be undone"),
+                title: Text(localizations.settingsPageDeleteAllData),
+                subtitle: Text(localizations.settingsPageActionCannotBeUndone),
                 onTap: _confirmDeleteData,
               ),
             ),

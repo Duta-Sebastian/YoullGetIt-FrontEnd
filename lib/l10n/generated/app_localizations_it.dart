@@ -709,4 +709,595 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get xyzFormulaTip => 'Usa questa formula per far risaltare i tuoi risultati nel tuo CV';
+
+  @override
+  String get settingsPageSettings => 'Impostazioni';
+
+  @override
+  String get settingsPageUserSettings => 'Impostazioni utente';
+
+  @override
+  String get settingsPageLanguage => 'Lingua';
+
+  @override
+  String get settingsPagePrivacyPolicy => 'Informativa sulla privacy';
+
+  @override
+  String get settingsPageTermsOfUse => 'Termini di utilizzo';
+
+  @override
+  String get settingsPageGdprPolicy => 'Politica GDPR';
+
+  @override
+  String get settingsPageFeedback => 'Feedback';
+
+  @override
+  String get settingsPageRateUs => 'Valutaci';
+
+  @override
+  String get settingsPageUsername => 'Nome utente';
+
+  @override
+  String get settingsPageNoUsernameSet => 'Nessun nome utente impostato';
+
+  @override
+  String get settingsPageEnterUsername => 'Inserisci nome utente';
+
+  @override
+  String get settingsPageSaveProgressTitle => 'Salva i tuoi progressi!';
+
+  @override
+  String settingsPageSignedInAs(String email) {
+    return '$email!';
+  }
+
+  @override
+  String get settingsPageSignIn => 'Accedi o crea account';
+
+  @override
+  String get settingsPageSignOut => 'Esci';
+
+  @override
+  String get settingsPageYouAreSignedIn => 'Hai effettuato l\'accesso';
+
+  @override
+  String get settingsPageGuestMode => '*Sei attualmente in modalità ospite';
+
+  @override
+  String get settingsPageQuestions => 'Domande';
+
+  @override
+  String get settingsPageReviewAnsweredQuestions => 'Rivedi domande risposte';
+
+  @override
+  String get settingsPageTapToViewAnswers => 'Tocca per vedere le tue risposte';
+
+  @override
+  String get settingsPageDangerZone => 'Zona pericolosa';
+
+  @override
+  String get settingsPageDeleteAllData => 'Elimina tutti i dati';
+
+  @override
+  String get settingsPageActionCannotBeUndone => 'Questa azione non può essere annullata';
+
+  @override
+  String get settingsPageDeleteAllDataConfirm => 'Eliminare tutti i dati?';
+
+  @override
+  String get settingsPageDeleteAllDataMessage => 'Questa azione non può essere annullata. Verrai riportato alla schermata di benvenuto.';
+
+  @override
+  String get settingsPageCancel => 'Annulla';
+
+  @override
+  String get settingsPageDeleteAll => 'Elimina tutto';
+
+  @override
+  String get settingsPageUsernameCannotBeEmpty => 'Il nome utente non può essere vuoto';
+
+  @override
+  String get settingsPageUsernameUpdatedSuccessfully => 'Nome utente aggiornato con successo';
+
+  @override
+  String get settingsPageFailedToUpdateUsername => 'Impossibile aggiornare il nome utente';
+
+  @override
+  String settingsPageErrorDeletingData(String error) {
+    return 'Errore durante l\'eliminazione dei dati: $error';
+  }
+
+  @override
+  String get settingsPageSave => 'Salva';
+
+  @override
+  String get settingsPageEdit => 'Modifica';
+
+  @override
+  String get settingsPageEditUsername => 'Modifica nome utente';
+
+  @override
+  String get settingsPageTapToSaveOrCancel => 'Tocca ✓ per salvare o ✗ per annullare';
+
+  @override
+  String settingsPageCouldNotLaunch(String url) {
+    return 'Impossibile aprire $url';
+  }
+
+  @override
+  String get settingsGDPRPageTitle => 'Politica GDPR';
+
+  @override
+  String get settingsGDPRPageCommitment => 'Il Nostro Impegno per la Conformità GDPR';
+
+  @override
+  String get settingsGDPRPageCommitmentText => 'In you\'ll get it, ci impegniamo a garantire la privacy e la protezione dei tuoi dati personali in conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR) e le relative leggi rumene sulla protezione dei dati.';
+
+  @override
+  String get settingsGDPRPageDataSubjectRights => 'Diritti dell\'Interessato';
+
+  @override
+  String get settingsGDPRPageDataSubjectRightsText => 'Sotto il GDPR, hai i seguenti diritti:';
+
+  @override
+  String get settingsGDPRPageRightToInformation => 'Diritto all\'Informazione: Ricevere informazioni chiare su come utilizziamo i tuoi dati.';
+
+  @override
+  String get settingsGDPRPageRightOfAccess => 'Diritto di Accesso: Ottenere conferma che stiamo elaborando i tuoi dati e accedere ai tuoi dati personali.';
+
+  @override
+  String get settingsGDPRPageRightToRectification => 'Diritto di Rettifica: Far correggere dati personali inesatti o completarli se incompleti.';
+
+  @override
+  String get settingsGDPRPageRightToErasure => 'Diritto alla Cancellazione: Richiedere la cancellazione dei tuoi dati personali in certe circostanze.';
+
+  @override
+  String get settingsGDPRPageRightToRestriction => 'Diritto alla Limitazione del Trattamento: Richiedere la limitazione del trattamento in certe circostanze.';
+
+  @override
+  String get settingsGDPRPageRightToDataPortability => 'Diritto alla Portabilità dei Dati: Ricevere i tuoi dati personali in un formato strutturato, di uso comune e leggibile da dispositivo.';
+
+  @override
+  String get settingsGDPRPageRightToObject => 'Diritto di Opposizione: Opporsi al trattamento basato su interessi legittimi o marketing diretto.';
+
+  @override
+  String get settingsGDPRPageRightAutomatedDecision => 'Diritti Relativi al Processo Decisionale Automatizzato e alla Profilazione: Non essere soggetto a decisioni basate esclusivamente su trattamento automatizzato che producono effetti legali.';
+
+  @override
+  String get settingsGDPRPageExerciseRights => 'Per esercitare questi diritti, ti preghiamo di contattarci a ';
+
+  @override
+  String get settingsGDPRPageDataProtectionOfficer => 'Responsabile della Protezione dei Dati';
+
+  @override
+  String get settingsGDPRPageContactUsAt => 'Contattaci a:';
+
+  @override
+  String get settingsGDPRPageCompanyName => 'YOU\'LL GET IT S.R.L.';
+
+  @override
+  String get settingsGDPRPageRegNo => 'N. Reg.: J2025027781008';
+
+  @override
+  String get settingsGDPRPageCUI => 'CUI: 51649682';
+
+  @override
+  String get settingsGDPRPageEUID => 'EUID: ROONRC.J2025027781008';
+
+  @override
+  String get settingsGDPRPageContactInformation => 'Informazioni di Contatto';
+
+  @override
+  String get settingsGDPRPageContactUsText => 'Se hai domande sulla nostra conformità GDPR, ti preghiamo di contattare: Email: ';
+
+  @override
+  String get settingsGDPRPageLastUpdated => 'Ultimo aggiornamento: 9 aprile 2025';
+
+  @override
+  String get settingsPrivacyPolicyPageTitle => 'Politica sulla Privacy';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroduction => 'Introduzione';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroductionText => 'In you\'ll get it, rispettiamo la tua privacy e ci impegniamo a proteggere i tuoi dati personali. Questa Politica sulla Privacy spiega come raccogliamo, utilizziamo e proteggiamo le tue informazioni quando usi la nostra applicazione mobile e il sito web (collettivamente, la \"Piattaforma\").';
+
+  @override
+  String get settingsPrivacyPolicyPageIntroductionText2 => 'Ti incoraggiamo a leggere attentamente questa Politica sulla Privacy per comprendere le nostre pratiche riguardo ai tuoi dati personali.';
+
+  @override
+  String get settingsPrivacyPolicyPageInformationWeCollect => 'Informazioni che Raccogliamo';
+
+  @override
+  String get settingsPrivacyPolicyPageInformationWeCollectText => 'Potremmo raccogliere i seguenti tipi di informazioni:';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalData => 'Dati Personali';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalDataText => 'Informazioni che ti identificano o possono essere utilizzate per identificarti direttamente o indirettamente, come:';
+
+  @override
+  String get settingsPrivacyPolicyPageContactInfo => 'Informazioni di contatto (nome, indirizzo email, numero di telefono)';
+
+  @override
+  String get settingsPrivacyPolicyPageAccountCredentials => 'Credenziali dell\'account (nome utente, password)';
+
+  @override
+  String get settingsPrivacyPolicyPageProfileInfo => 'Informazioni del profilo (foto del profilo, preferenze)';
+
+  @override
+  String get settingsPrivacyPolicyPageDeviceInfo => 'Informazioni del dispositivo (ID del dispositivo, indirizzo IP, sistema operativo)';
+
+  @override
+  String get settingsPrivacyPolicyPageLocationData => 'Dati di posizione (con il tuo consenso)';
+
+  @override
+  String get settingsPrivacyPolicyPageUsageData => 'Dati di utilizzo (come interagisci con la nostra Piattaforma)';
+
+  @override
+  String get settingsPrivacyPolicyPageNonPersonalData => 'Dati Non Personali';
+
+  @override
+  String get settingsPrivacyPolicyPageNonPersonalDataText => 'Informazioni che non ti identificano direttamente, come:';
+
+  @override
+  String get settingsPrivacyPolicyPageAnonymousStats => 'Statistiche di utilizzo anonime e analisi';
+
+  @override
+  String get settingsPrivacyPolicyPageDemographicInfo => 'Informazioni demografiche';
+
+  @override
+  String get settingsPrivacyPolicyPageAggregatedBehavior => 'Comportamento utente aggregato';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeCollect => 'Come Raccogliamo le Informazioni';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeCollectText => 'Raccogliamo informazioni tramite:';
+
+  @override
+  String get settingsPrivacyPolicyPageDirectInteractions => 'Interazioni dirette (quando ti registri, ci contatti o usi i nostri servizi)';
+
+  @override
+  String get settingsPrivacyPolicyPageAutomatedTech => 'Tecnologie automatizzate (cookie, log del server, strumenti di analisi)';
+
+  @override
+  String get settingsPrivacyPolicyPageThirdPartySources => 'Fonti di terze parti (quando consentito dalla legge)';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeUse => 'Come Utilizziamo le Tue Informazioni';
+
+  @override
+  String get settingsPrivacyPolicyPageHowWeUseText => 'Utilizziamo le tue informazioni per i seguenti scopi:';
+
+  @override
+  String get settingsPrivacyPolicyPageProvideServices => 'Per fornire e mantenere i nostri servizi';
+
+  @override
+  String get settingsPrivacyPolicyPagePersonalize => 'Per personalizzare la tua esperienza';
+
+  @override
+  String get settingsPrivacyPolicyPageCommunicate => 'Per comunicare con te sui nostri servizi';
+
+  @override
+  String get settingsPrivacyPolicyPageProcessPayments => 'Per elaborare pagamenti e transazioni';
+
+  @override
+  String get settingsPrivacyPolicyPageImprove => 'Per migliorare la nostra Piattaforma e sviluppare nuove funzionalità';
+
+  @override
+  String get settingsPrivacyPolicyPageAnalyze => 'Per analizzare i pattern di utilizzo ed eseguire analisi';
+
+  @override
+  String get settingsPrivacyPolicyPageDetectIssues => 'Per rilevare, prevenire e affrontare problemi tecnici o di sicurezza';
+
+  @override
+  String get settingsPrivacyPolicyPageComplyLegal => 'Per rispettare gli obblighi legali';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalBasis => 'Base Legale per il Trattamento';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalBasisText => 'Trattiamo i tuoi dati personali sui seguenti fondamenti legali:';
+
+  @override
+  String get settingsPrivacyPolicyPageYourConsent => 'Il tuo consenso';
+
+  @override
+  String get settingsPrivacyPolicyPageContractPerformance => 'Esecuzione di un contratto con te';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalCompliance => 'Rispetto degli obblighi legali';
+
+  @override
+  String get settingsPrivacyPolicyPageLegitimateInterests => 'I nostri interessi legittimi (che non prevalgono sui tuoi diritti e libertà fondamentali)';
+
+  @override
+  String get settingsPrivacyPolicyPageInfoSharing => 'Condivisione e Divulgazione delle Informazioni';
+
+  @override
+  String get settingsPrivacyPolicyPageInfoSharingText => 'Potremmo condividere le tue informazioni con:';
+
+  @override
+  String get settingsPrivacyPolicyPageServiceProviders => 'Fornitori di servizi che ci aiutano a erogare i nostri servizi';
+
+  @override
+  String get settingsPrivacyPolicyPageBusinessPartners => 'Partner commerciali con il tuo consenso';
+
+  @override
+  String get settingsPrivacyPolicyPageLegalAuthorities => 'Autorità legali quando richiesto dalla legge';
+
+  @override
+  String get settingsPrivacyPolicyPageAffiliatedCompanies => 'Aziende affiliate all\'interno del nostro gruppo aziendale';
+
+  @override
+  String get settingsPrivacyPolicyPageSuccessorEntity => 'Un\'entità successore nel caso di fusione, acquisizione o transazione simile';
+
+  @override
+  String get settingsPrivacyPolicyPageNoSelling => 'Non vendiamo i tuoi dati personali a terze parti.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataSecurity => 'Sicurezza dei Dati';
+
+  @override
+  String get settingsPrivacyPolicyPageDataSecurityText => 'Implementiamo misure tecniche e organizzative appropriate per proteggere i tuoi dati personali contro accesso non autorizzato, alterazione, divulgazione o distruzione. Tuttavia, nessun metodo di trasmissione su Internet o archiviazione elettronica è sicuro al 100%, quindi non possiamo garantire sicurezza assoluta.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataRetention => 'Conservazione dei Dati';
+
+  @override
+  String get settingsPrivacyPolicyPageDataRetentionText => 'Conserviamo i tuoi dati personali solo per il tempo necessario a soddisfare gli scopi per cui sono stati raccolti, inclusi i requisiti legali, contabili o di reporting. Nel determinare il periodo di conservazione appropriato, consideriamo la quantità, natura e sensibilità dei dati, il rischio potenziale di danno dall\'uso non autorizzato o divulgazione, e gli scopi per cui trattiamo i dati.';
+
+  @override
+  String get settingsPrivacyPolicyPageDataProtectionRights => 'I Tuoi Diritti di Protezione dei Dati';
+
+  @override
+  String get settingsPrivacyPolicyPageDataProtectionRightsText => 'Sotto le leggi di protezione dei dati applicabili, potresti avere i seguenti diritti:';
+
+  @override
+  String get settingsPrivacyPolicyPageRightAccess => 'Diritto di accedere ai tuoi dati personali';
+
+  @override
+  String get settingsPrivacyPolicyPageRightRectify => 'Diritto di rettificare dati inesatti o incompleti';
+
+  @override
+  String get settingsPrivacyPolicyPageRightErasure => 'Diritto alla cancellazione (il \"diritto all\'oblio\")';
+
+  @override
+  String get settingsPrivacyPolicyPageRightRestrict => 'Diritto di limitare il trattamento';
+
+  @override
+  String get settingsPrivacyPolicyPageRightPortability => 'Diritto alla portabilità dei dati';
+
+  @override
+  String get settingsPrivacyPolicyPageRightObject => 'Diritto di opporsi al trattamento';
+
+  @override
+  String get settingsPrivacyPolicyPageRightWithdraw => 'Diritto di ritirare il consenso';
+
+  @override
+  String get settingsPrivacyPolicyPageRightComplaint => 'Diritto di presentare reclamo presso un\'autorità di controllo';
+
+  @override
+  String get settingsPrivacyPolicyPageExerciseRights => 'Per esercitare questi diritti, ti preghiamo di contattarci utilizzando le informazioni fornite alla fine di questa Politica sulla Privacy.';
+
+  @override
+  String get settingsPrivacyPolicyPageChildrensPrivacy => 'Privacy dei Minori';
+
+  @override
+  String get settingsPrivacyPolicyPageChildrensPrivacyText => 'La nostra Piattaforma non è destinata a minori di 16 anni di età. Non raccogliamo consapevolmente dati personali da minori di 16 anni. Se veniamo a conoscenza di aver raccolto dati personali da un minore di 16 anni, prenderemo provvedimenti per eliminare tali informazioni il più rapidamente possibile. Se credi che potremmo avere informazioni di o su un minore di 16 anni, ti preghiamo di contattarci.';
+
+  @override
+  String get settingsPrivacyPolicyPageCookies => 'Cookie e Tecnologie di Tracciamento';
+
+  @override
+  String get settingsPrivacyPolicyPageCookiesText => 'Utilizziamo cookie e tecnologie di tracciamento simili per raccogliere informazioni sulle tue attività di navigazione e ricordare le tue preferenze. Puoi istruire il tuo browser a rifiutare tutti i cookie o indicare quando viene inviato un cookie. Tuttavia, se non accetti i cookie, potresti non essere in grado di utilizzare alcune parti della nostra Piattaforma.';
+
+  @override
+  String get settingsPrivacyPolicyPageInternationalTransfers => 'Trasferimenti Internazionali di Dati';
+
+  @override
+  String get settingsPrivacyPolicyPageInternationalTransfersText => 'I tuoi dati personali potrebbero essere trasferiti ed elaborati in paesi diversi da quello in cui risiedi. Questi paesi potrebbero avere leggi di protezione dei dati diverse dal tuo paese. Quando trasferiamo i tuoi dati internazionalmente, adottiamo misure per garantire che siano in atto salvaguardie appropriate per proteggere i tuoi dati e assicurare che tu possa esercitare i tuoi diritti efficacemente.';
+
+  @override
+  String get settingsPrivacyPolicyPageChanges => 'Modifiche a Questa Politica sulla Privacy';
+
+  @override
+  String get settingsPrivacyPolicyPageChangesText => 'Potremmo aggiornare la nostra Politica sulla Privacy di tanto in tanto. Ti informeremo di eventuali modifiche pubblicando la nuova Politica sulla Privacy su questa pagina e aggiornando la data \"Ultimo aggiornamento\". Ti consigliamo di rivedere periodicamente questa Politica sulla Privacy per eventuali modifiche.';
+
+  @override
+  String get settingsPrivacyPolicyPageContactUs => 'Contattaci';
+
+  @override
+  String get settingsPrivacyPolicyPageContactUsText => 'Se hai domande su questa Politica sulla Privacy, ti preghiamo di contattarci a ';
+
+  @override
+  String get settingsPrivacyPolicyPageCompanyInformation => 'Informazioni dell\'Azienda';
+
+  @override
+  String get settingsPrivacyPolicyPageCompanyName => 'YOU\'LL GET IT S.R.L.';
+
+  @override
+  String get settingsPrivacyPolicyPageRegNo => 'N. Reg.: J2025027781008';
+
+  @override
+  String get settingsPrivacyPolicyPageCUI => 'CUI: 51649682';
+
+  @override
+  String get settingsPrivacyPolicyPageEUID => 'EUID: ROONRC.J2025027781008';
+
+  @override
+  String get settingsPrivacyPolicyPageEmail => 'Email: ';
+
+  @override
+  String get settingsPrivacyPolicyPageLastUpdated => 'Ultimo aggiornamento: 9 aprile 2025';
+
+  @override
+  String get settingsTermsOfServicePageTitle => 'Termini di Servizio';
+
+  @override
+  String get settingsTermsOfServicePageIntroduction => 'Introduzione';
+
+  @override
+  String get settingsTermsOfServicePageIntroductionText => 'Questi Termini di Servizio (\"Termini\") governano il vostro accesso e utilizzo del sito web e dell\'applicazione mobile di you\'ll get it (collettivamente, la \"Piattaforma\"). Vi preghiamo di leggere attentamente questi Termini prima di utilizzare la nostra Piattaforma.';
+
+  @override
+  String get settingsTermsOfServicePageAcceptanceOfTerms => 'Accettazione dei Termini';
+
+  @override
+  String get settingsTermsOfServicePageAcceptanceOfTermsText => 'Accedendo o utilizzando la nostra Piattaforma, accettate di essere vincolati da questi Termini. Se non accettate questi Termini, non dovete accedere o utilizzare la nostra Piattaforma.';
+
+  @override
+  String get settingsTermsOfServicePageEligibility => 'Idoneità';
+
+  @override
+  String get settingsTermsOfServicePageEligibilityText => 'Dovete avere almeno 16 anni per utilizzare la nostra Piattaforma. Utilizzando la nostra Piattaforma, dichiarate e garantite di soddisfare questo requisito.';
+
+  @override
+  String get settingsTermsOfServicePageAccountRegistration => 'Registrazione Account';
+
+  @override
+  String get settingsTermsOfServicePageAccountRegistrationText => 'Per accedere a certe funzionalità della nostra Piattaforma, dovete registrarvi per un account. Quando vi registrate, accettate di:';
+
+  @override
+  String get settingsTermsOfServicePageProvideAccurateInfo => 'Fornire informazioni accurate, aggiornate e complete';
+
+  @override
+  String get settingsTermsOfServicePageMaintainAccountInfo => 'Mantenere e aggiornare prontamente le informazioni del vostro account';
+
+  @override
+  String get settingsTermsOfServicePageKeepPasswordSecure => 'Mantenere la vostra password sicura e riservata';
+
+  @override
+  String get settingsTermsOfServicePageBeResponsible => 'Essere responsabili di tutte le attività che si verificano sotto il vostro account';
+
+  @override
+  String get settingsTermsOfServicePageDisableAccount => 'Ci riserviamo il diritto di disabilitare qualsiasi account se crediamo che abbiate violato questi Termini.';
+
+  @override
+  String get settingsTermsOfServicePagePlatformUse => 'Uso della Piattaforma e Restrizioni';
+
+  @override
+  String get settingsTermsOfServicePagePlatformUseText => 'Potete utilizzare la nostra Piattaforma solo per scopi legali e in accordo con questi Termini. Accettate di non:';
+
+  @override
+  String get settingsTermsOfServicePageNoViolateLaws => 'Utilizzare la Piattaforma in qualsiasi modo che violi leggi o regolamenti applicabili';
+
+  @override
+  String get settingsTermsOfServicePageNoImpersonate => 'Impersonare qualsiasi persona o entità o rappresentare falsamente la vostra affiliazione';
+
+  @override
+  String get settingsTermsOfServicePageNoRestrictUse => 'Intraprendere qualsiasi condotta che restringa o inibisca l\'uso della Piattaforma da parte di chiunque';
+
+  @override
+  String get settingsTermsOfServicePageNoUnauthorizedAccess => 'Tentare di ottenere accesso non autorizzato a qualsiasi parte della Piattaforma';
+
+  @override
+  String get settingsTermsOfServicePageNoAutomatedDevices => 'Utilizzare robot, spider o altri dispositivi automatizzati per accedere alla Piattaforma eccetto per motori di ricerca e archivi pubblici';
+
+  @override
+  String get settingsTermsOfServicePageNoUnsolicitedComms => 'Utilizzare la Piattaforma per inviare comunicazioni non richieste';
+
+  @override
+  String get settingsTermsOfServicePageNoHarvestInfo => 'Raccogliere indirizzi email o altre informazioni di contatto';
+
+  @override
+  String get settingsTermsOfServicePageNoCommercialUse => 'Utilizzare la Piattaforma per qualsiasi scopo commerciale non espressamente approvato da noi';
+
+  @override
+  String get settingsTermsOfServicePageIntellectualProperty => 'Diritti di Proprietà Intellettuale';
+
+  @override
+  String get settingsTermsOfServicePageIntellectualPropertyText => 'La Piattaforma e il suo contenuto, caratteristiche e funzionalità sono di proprietà di you\'ll get it e sono protetti da copyright, marchi commerciali e altre leggi sulla proprietà intellettuale.';
+
+  @override
+  String get settingsTermsOfServicePageUserContent => 'Contenuto Utente';
+
+  @override
+  String get settingsTermsOfServicePageUserContentText => 'Mantenete tutti i diritti che potreste avere nel contenuto che inviate alla Piattaforma (\"Contenuto Utente\"). Inviando Contenuto Utente, ci concedete una licenza mondiale, non esclusiva e gratuita per utilizzare, riprodurre, modificare, adattare, pubblicare, tradurre, distribuire e visualizzare tale Contenuto Utente.';
+
+  @override
+  String get settingsTermsOfServicePageRepresentWarrant => 'Dichiarate e garantite che:';
+
+  @override
+  String get settingsTermsOfServicePageOwnRights => 'Possedete o avete i diritti necessari sul vostro Contenuto Utente';
+
+  @override
+  String get settingsTermsOfServicePageNoViolateRights => 'Il vostro Contenuto Utente non viola i diritti di terze parti';
+
+  @override
+  String get settingsTermsOfServicePageCompliesTerms => 'Il vostro Contenuto Utente è conforme a questi Termini e alle leggi applicabili';
+
+  @override
+  String get settingsTermsOfServicePageRemoveContent => 'Ci riserviamo il diritto di rimuovere qualsiasi Contenuto Utente che violi questi Termini o che troviamo discutibile.';
+
+  @override
+  String get settingsTermsOfServicePageThirdPartyLinks => 'Collegamenti e Contenuto di Terze Parti';
+
+  @override
+  String get settingsTermsOfServicePageThirdPartyLinksText => 'La Piattaforma può contenere collegamenti a siti web o servizi di terze parti. Non controlliamo né approviamo questi siti web o servizi e non siamo responsabili per il loro contenuto, politiche sulla privacy o pratiche.';
+
+  @override
+  String get settingsTermsOfServicePageDisclaimer => 'Esclusione di Garanzie';
+
+  @override
+  String get settingsTermsOfServicePageDisclaimerText => 'LA PIATTAFORMA È FORNITA \"COSÌ COM\'È\" E \"COME DISPONIBILE\" SENZA GARANZIE DI ALCUN TIPO, ESPLICITE O IMPLICITE. NELLA MASSIMA MISURA CONSENTITA DALLA LEGGE, ESCLUDIAMO TUTTE LE GARANZIE, INCLUSE LE GARANZIE IMPLICITE DI COMMERCIABILITÀ, IDONEITÀ PER UN SCOPO PARTICOLARE E NON VIOLAZIONE.';
+
+  @override
+  String get settingsTermsOfServicePageLimitationLiability => 'Limitazione di Responsabilità';
+
+  @override
+  String get settingsTermsOfServicePageLimitationLiabilityText => 'NELLA MASSIMA MISURA CONSENTITA DALLA LEGGE, you\'ll get it NON SARÀ RESPONSABILE PER DANNI INDIRETTI, INCIDENTALI, SPECIALI, CONSEQUENZIALI O PUNITIVI DERIVANTI DA O RELATIVI AL VOSTRO USO DELLA PIATTAFORMA.';
+
+  @override
+  String get settingsTermsOfServicePageIndemnification => 'Indennizzo';
+
+  @override
+  String get settingsTermsOfServicePageIndemnificationText => 'Accettate di indennizzare e tenere indenne you\'ll get it e i suoi funzionari, direttori, dipendenti e agenti da e contro qualsiasi reclamo, responsabilità, danno, perdita e spesa derivante da o relativa al vostro uso della Piattaforma o violazione di questi Termini.';
+
+  @override
+  String get settingsTermsOfServicePageGoverningLaw => 'Legge Applicabile';
+
+  @override
+  String get settingsTermsOfServicePageGoverningLawText => 'Questi Termini saranno governati e interpretati in accordo con le leggi della Romania, senza riguardo alle sue disposizioni sui conflitti di legge.';
+
+  @override
+  String get settingsTermsOfServicePageDisputeResolution => 'Risoluzione delle Controversie';
+
+  @override
+  String get settingsTermsOfServicePageDisputeResolutionText => 'Qualsiasi controversia derivante da o relativa a questi Termini o alla Piattaforma sarà risolta dai tribunali della Romania.';
+
+  @override
+  String get settingsTermsOfServicePageChangesToTerms => 'Modifiche a Questi Termini';
+
+  @override
+  String get settingsTermsOfServicePageChangesToTermsText => 'Possiamo aggiornare questi Termini di tanto in tanto. La versione aggiornata sarà indicata da una data \"Ultimo aggiornamento\" aggiornata.';
+
+  @override
+  String get settingsTermsOfServicePageTermination => 'Terminazione';
+
+  @override
+  String get settingsTermsOfServicePageTerminationText => 'Possiamo terminare o sospendere il vostro accesso alla Piattaforma immediatamente, senza preavviso o responsabilità, per qualsiasi motivo, incluso se violate questi Termini.';
+
+  @override
+  String get settingsTermsOfServicePageSeverability => 'Divisibilità';
+
+  @override
+  String get settingsTermsOfServicePageSeverabilityText => 'Se qualsiasi disposizione di questi Termini è ritenuta invalida o inapplicabile, tale disposizione sarà eliminata e le disposizioni rimanenti saranno applicate.';
+
+  @override
+  String get settingsTermsOfServicePageEntireAgreement => 'Accordo Completo';
+
+  @override
+  String get settingsTermsOfServicePageEntireAgreementText => 'Questi Termini costituiscono l\'accordo completo tra voi e you\'ll get it riguardo alla Piattaforma.';
+
+  @override
+  String get settingsTermsOfServicePageContactUs => 'Contattateci';
+
+  @override
+  String get settingsTermsOfServicePageContactUsText => 'Se avete domande su questi Termini, vi preghiamo di contattarci a ';
+
+  @override
+  String get settingsTermsOfServicePageLastUpdated => 'Ultimo aggiornamento: 9 aprile 2025';
 }
