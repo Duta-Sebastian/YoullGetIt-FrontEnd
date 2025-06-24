@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:youllgetit_flutter/models/job_card/job_deadline_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_location_model.dart';
@@ -89,6 +87,8 @@ class JobCardModel {
         return field.map((item) => item.toString()).toList();
       }
     }
+
+    debugPrint(getStringList(json['required_degree']).toString());
     
     return JobCardModel(
       feedbackId: json['feedback_id'] ?? "",
@@ -118,8 +118,6 @@ class JobCardModel {
 
   static List<JobCardModel> jobCardModelListFactory(List<dynamic> jobsData){
     return jobsData.map((job) {
-      const encoder = JsonEncoder.withIndent('  ');
-      debugPrint(encoder.convert(job["internship"]));
       return JobCardModel.fromJson(job["internship"]);
     }).toList().reversed.toList();
   }

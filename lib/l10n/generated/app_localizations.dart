@@ -2672,6 +2672,546 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deleting data...'**
   String get settingsPageDeletingData;
+
+  /// No description provided for @jobCardSwiperWaitingForConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for internet connection...'**
+  String get jobCardSwiperWaitingForConnection;
+
+  /// No description provided for @jobCardSwiperRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get jobCardSwiperRetry;
+
+  /// No description provided for @jobCardSwiperLoadingRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading job recommendations...'**
+  String get jobCardSwiperLoadingRecommendations;
+
+  /// No description provided for @jobCardSwiperOfflineNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Some features may be limited.'**
+  String get jobCardSwiperOfflineNotice;
+
+  /// No description provided for @jobCardDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline:'**
+  String get jobCardDeadline;
+
+  /// No description provided for @jobCardJobDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Details'**
+  String get jobCardJobDetails;
+
+  /// No description provided for @jobCardMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get jobCardMonths;
+
+  /// No description provided for @jobCardEducationRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Education Requirements'**
+  String get jobCardEducationRequirements;
+
+  /// No description provided for @jobCardRequiredLanguages.
+  ///
+  /// In en, this message translates to:
+  /// **'Required Languages'**
+  String get jobCardRequiredLanguages;
+
+  /// No description provided for @jobCardVisaSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa Support'**
+  String get jobCardVisaSupport;
+
+  /// No description provided for @jobCardRelatedFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Related Fields'**
+  String get jobCardRelatedFields;
+
+  /// No description provided for @jobCardTapToSeeSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to see skills'**
+  String get jobCardTapToSeeSkills;
+
+  /// No description provided for @jobCardSkillsRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills & Requirements'**
+  String get jobCardSkillsRequirements;
+
+  /// No description provided for @jobCardTechnicalSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Skills'**
+  String get jobCardTechnicalSkills;
+
+  /// No description provided for @jobCardSoftSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Soft Skills'**
+  String get jobCardSoftSkills;
+
+  /// No description provided for @jobCardNiceToHave.
+  ///
+  /// In en, this message translates to:
+  /// **'Nice-to-Have'**
+  String get jobCardNiceToHave;
+
+  /// No description provided for @jobCardTapToSeeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to see details'**
+  String get jobCardTapToSeeDetails;
+
+  /// No description provided for @jobCardNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get jobCardNotSpecified;
+
+  /// No description provided for @jobCardInvalidDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date'**
+  String get jobCardInvalidDate;
+
+  /// No description provided for @jobCardNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get jobCardNotAvailable;
+
+  /// No description provided for @jobCardNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get jobCardNotFound;
+
+  /// No description provided for @workModeRemote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remote'**
+  String get workModeRemote;
+
+  /// No description provided for @workModeHybrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Hybrid'**
+  String get workModeHybrid;
+
+  /// No description provided for @workModeOnSite.
+  ///
+  /// In en, this message translates to:
+  /// **'On-site'**
+  String get workModeOnSite;
+
+  /// No description provided for @jobSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Job Search'**
+  String get jobSearchTitle;
+
+  /// No description provided for @jobSearchScrollToDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll to discover more jobs'**
+  String get jobSearchScrollToDiscover;
+
+  /// No description provided for @jobSearchNoInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get jobSearchNoInternetConnection;
+
+  /// No description provided for @jobSearchNoJobsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No jobs found'**
+  String get jobSearchNoJobsFound;
+
+  /// No description provided for @jobSearchCheckConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your connection and try again'**
+  String get jobSearchCheckConnection;
+
+  /// No description provided for @jobSearchTryAdjustingFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your filters or search query'**
+  String get jobSearchTryAdjustingFilters;
+
+  /// No description provided for @jobSearchRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get jobSearchRetry;
+
+  /// No description provided for @jobSearchResetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Filters'**
+  String get jobSearchResetFilters;
+
+  /// No description provided for @jobSearchOfflineNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Search functionality is limited.'**
+  String get jobSearchOfflineNotice;
+
+  /// No description provided for @jobSearchNoInternetSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network and try again.'**
+  String get jobSearchNoInternetSnackbar;
+
+  /// No description provided for @jobSearchErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading jobs: {error}'**
+  String jobSearchErrorLoading(String error);
+
+  /// No description provided for @jobSearchAddedToFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'{jobName} added to favorites'**
+  String jobSearchAddedToFavorites(String jobName);
+
+  /// No description provided for @jobFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Jobs'**
+  String get jobFiltersTitle;
+
+  /// No description provided for @jobFiltersResetAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset All'**
+  String get jobFiltersResetAll;
+
+  /// No description provided for @jobFiltersSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get jobFiltersSearch;
+
+  /// No description provided for @jobFiltersSearchPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search jobs, titles...'**
+  String get jobFiltersSearchPlaceholder;
+
+  /// No description provided for @jobFiltersCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get jobFiltersCompany;
+
+  /// No description provided for @jobFiltersCompanyPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter company name'**
+  String get jobFiltersCompanyPlaceholder;
+
+  /// No description provided for @jobFiltersLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get jobFiltersLocation;
+
+  /// No description provided for @jobFiltersLocationPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter location/country'**
+  String get jobFiltersLocationPlaceholder;
+
+  /// No description provided for @jobFiltersDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get jobFiltersDuration;
+
+  /// No description provided for @jobFiltersField.
+  ///
+  /// In en, this message translates to:
+  /// **'Field'**
+  String get jobFiltersField;
+
+  /// No description provided for @jobFiltersWorkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Mode'**
+  String get jobFiltersWorkMode;
+
+  /// No description provided for @jobFiltersSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Skills'**
+  String get jobFiltersSkills;
+
+  /// No description provided for @jobFiltersApplyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get jobFiltersApplyFilters;
+
+  /// No description provided for @jobFiltersSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get jobFiltersSelected;
+
+  /// No description provided for @jobListItemKeySkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Key Skills:'**
+  String get jobListItemKeySkills;
+
+  /// No description provided for @jobListItemRelatedFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Related Fields:'**
+  String get jobListItemRelatedFields;
+
+  /// No description provided for @jobListItemViewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get jobListItemViewDetails;
+
+  /// No description provided for @jobListItemSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get jobListItemSave;
+
+  /// No description provided for @jobListItemNotSpecified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get jobListItemNotSpecified;
+
+  /// No description provided for @jobListItemInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid'**
+  String get jobListItemInvalid;
+
+  /// No description provided for @jobListItemExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get jobListItemExpired;
+
+  /// No description provided for @jobListItemToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get jobListItemToday;
+
+  /// No description provided for @jobListItemTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get jobListItemTomorrow;
+
+  /// No description provided for @jobListItemDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}d left'**
+  String jobListItemDaysLeft(String days);
+
+  /// Title for the job details page
+  ///
+  /// In en, this message translates to:
+  /// **'Job Details'**
+  String get jobDetails;
+
+  /// Tooltip for opening job in browser
+  ///
+  /// In en, this message translates to:
+  /// **'Open in browser'**
+  String get openInBrowser;
+
+  /// Label for job location
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// Label for application deadline
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get deadline;
+
+  /// Label for work mode (remote, hybrid, onsite)
+  ///
+  /// In en, this message translates to:
+  /// **'Work Mode'**
+  String get workMode;
+
+  /// Label for salary information
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get salary;
+
+  /// Label for job duration
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// Duration in months
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 month} other{{count} months}}'**
+  String monthsCount(int count);
+
+  /// Label for time commitment
+  ///
+  /// In en, this message translates to:
+  /// **'Time Commitment'**
+  String get timeCommitment;
+
+  /// Label for internship season
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get season;
+
+  /// Label for visa assistance
+  ///
+  /// In en, this message translates to:
+  /// **'Visa Help'**
+  String get visaHelp;
+
+  /// Title for the job details section
+  ///
+  /// In en, this message translates to:
+  /// **'Job Details'**
+  String get jobDetailsTitle;
+
+  /// Title for education requirements section
+  ///
+  /// In en, this message translates to:
+  /// **'Education Requirements'**
+  String get educationRequirements;
+
+  /// Label for required degree
+  ///
+  /// In en, this message translates to:
+  /// **'Required Degree'**
+  String get requiredDegree;
+
+  /// Label for allowed graduation years
+  ///
+  /// In en, this message translates to:
+  /// **'Graduation Years'**
+  String get graduationYears;
+
+  /// Title for skills section
+  ///
+  /// In en, this message translates to:
+  /// **'Skills & Qualifications'**
+  String get skillsAndQualifications;
+
+  /// Label for technical/hard skills
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Skills'**
+  String get technicalSkills;
+
+  /// Label for soft skills
+  ///
+  /// In en, this message translates to:
+  /// **'Soft Skills'**
+  String get softSkills;
+
+  /// Label for required languages
+  ///
+  /// In en, this message translates to:
+  /// **'Languages'**
+  String get languages;
+
+  /// Label for nice-to-have skills
+  ///
+  /// In en, this message translates to:
+  /// **'Nice-to-Have'**
+  String get niceToHave;
+
+  /// Title for job description section
+  ///
+  /// In en, this message translates to:
+  /// **'Job Description'**
+  String get jobDescription;
+
+  /// Title for requirements section
+  ///
+  /// In en, this message translates to:
+  /// **'Requirements'**
+  String get requirements;
+
+  /// Button text for applying to job
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Now'**
+  String get applyNow;
+
+  /// Text when deadline is not specified
+  ///
+  /// In en, this message translates to:
+  /// **'Not specified'**
+  String get notSpecified;
+
+  /// Text when deadline has passed
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get expired;
+
+  /// Text when deadline is today
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Text when deadline is tomorrow
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// Text for deadline in X days
+  ///
+  /// In en, this message translates to:
+  /// **'In {count} days'**
+  String inDays(int count);
+
+  /// Format for month and day
+  ///
+  /// In en, this message translates to:
+  /// **'{month, select, 1{Jan} 2{Feb} 3{Mar} 4{Apr} 5{May} 6{Jun} 7{Jul} 8{Aug} 9{Sep} 10{Oct} 11{Nov} 12{Dec} other{}} {day}'**
+  String monthDay(String month, String day);
+
+  /// Text when date format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid date'**
+  String get invalidDate;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

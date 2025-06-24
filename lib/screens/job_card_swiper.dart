@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
@@ -20,6 +21,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
   
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final jobsState = ref.watch(activeJobsProvider);
     final List<JobCardModel> activeJobs = jobsState.jobs;
     final bool isLoading = jobsState.isLoading;
@@ -49,8 +51,8 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               ),
               const SizedBox(height: 20),
               if (!isConnected)
-                const Text(
-                  "Waiting for internet connection...",
+                Text(
+                  localizations.jobCardSwiperWaitingForConnection,
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               if (isConnected)
@@ -59,7 +61,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                     ref.read(activeJobsProvider.notifier).resetJobs()
                   },
                   icon: Icon(Icons.restore_rounded),
-                  label: Text("Retry"),
+                  label: Text(localizations.jobCardSwiperRetry),
                 )
             ],
           ),
@@ -69,7 +71,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
     
     if (isLoading || activeJobs.isEmpty) {
       debugPrint('JobCardSwiper: Showing loading state');
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: Colors.white,
         body: Center(
           child: Column(
@@ -77,7 +79,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
             children: [
               CircularProgressIndicator(color: Colors.amber,),
               SizedBox(height: 20),
-              Text("Loading job recommendations...", selectionColor: Colors.amber,)
+              Text(localizations.jobCardSwiperLoadingRecommendations, selectionColor: Colors.amber,)
             ],
           ),
         ),
@@ -103,7 +105,7 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "You're offline. Some features may be limited.",
+                      localizations.jobCardSwiperOfflineNotice,
                       style: TextStyle(fontSize: 12, color: const Color.fromRGBO(252, 245, 203, 1)),
                     ),
                   ),

@@ -1303,4 +1303,310 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPageDeletingData => 'Deleting data...';
+
+  @override
+  String get jobCardSwiperWaitingForConnection => 'Waiting for internet connection...';
+
+  @override
+  String get jobCardSwiperRetry => 'Retry';
+
+  @override
+  String get jobCardSwiperLoadingRecommendations => 'Loading job recommendations...';
+
+  @override
+  String get jobCardSwiperOfflineNotice => 'You\'re offline. Some features may be limited.';
+
+  @override
+  String get jobCardDeadline => 'Deadline:';
+
+  @override
+  String get jobCardJobDetails => 'Job Details';
+
+  @override
+  String get jobCardMonths => 'months';
+
+  @override
+  String get jobCardEducationRequirements => 'Education Requirements';
+
+  @override
+  String get jobCardRequiredLanguages => 'Required Languages';
+
+  @override
+  String get jobCardVisaSupport => 'Visa Support';
+
+  @override
+  String get jobCardRelatedFields => 'Related Fields';
+
+  @override
+  String get jobCardTapToSeeSkills => 'Tap to see skills';
+
+  @override
+  String get jobCardSkillsRequirements => 'Skills & Requirements';
+
+  @override
+  String get jobCardTechnicalSkills => 'Technical Skills';
+
+  @override
+  String get jobCardSoftSkills => 'Soft Skills';
+
+  @override
+  String get jobCardNiceToHave => 'Nice-to-Have';
+
+  @override
+  String get jobCardTapToSeeDetails => 'Tap to see details';
+
+  @override
+  String get jobCardNotSpecified => 'Not specified';
+
+  @override
+  String get jobCardInvalidDate => 'Invalid date';
+
+  @override
+  String get jobCardNotAvailable => 'N/A';
+
+  @override
+  String get jobCardNotFound => 'Not found';
+
+  @override
+  String get workModeRemote => 'Remote';
+
+  @override
+  String get workModeHybrid => 'Hybrid';
+
+  @override
+  String get workModeOnSite => 'On-site';
+
+  @override
+  String get jobSearchTitle => 'Job Search';
+
+  @override
+  String get jobSearchScrollToDiscover => 'Scroll to discover more jobs';
+
+  @override
+  String get jobSearchNoInternetConnection => 'No internet connection';
+
+  @override
+  String get jobSearchNoJobsFound => 'No jobs found';
+
+  @override
+  String get jobSearchCheckConnection => 'Please check your connection and try again';
+
+  @override
+  String get jobSearchTryAdjustingFilters => 'Try adjusting your filters or search query';
+
+  @override
+  String get jobSearchRetry => 'Retry';
+
+  @override
+  String get jobSearchResetFilters => 'Reset Filters';
+
+  @override
+  String get jobSearchOfflineNotice => 'You\'re offline. Search functionality is limited.';
+
+  @override
+  String get jobSearchNoInternetSnackbar => 'No internet connection. Please check your network and try again.';
+
+  @override
+  String jobSearchErrorLoading(String error) {
+    return 'Error loading jobs: $error';
+  }
+
+  @override
+  String jobSearchAddedToFavorites(String jobName) {
+    return '$jobName added to favorites';
+  }
+
+  @override
+  String get jobFiltersTitle => 'Filter Jobs';
+
+  @override
+  String get jobFiltersResetAll => 'Reset All';
+
+  @override
+  String get jobFiltersSearch => 'Search';
+
+  @override
+  String get jobFiltersSearchPlaceholder => 'Search jobs, titles...';
+
+  @override
+  String get jobFiltersCompany => 'Company';
+
+  @override
+  String get jobFiltersCompanyPlaceholder => 'Enter company name';
+
+  @override
+  String get jobFiltersLocation => 'Location';
+
+  @override
+  String get jobFiltersLocationPlaceholder => 'Enter location/country';
+
+  @override
+  String get jobFiltersDuration => 'Duration';
+
+  @override
+  String get jobFiltersField => 'Field';
+
+  @override
+  String get jobFiltersWorkMode => 'Work Mode';
+
+  @override
+  String get jobFiltersSkills => 'Skills';
+
+  @override
+  String get jobFiltersApplyFilters => 'Apply Filters';
+
+  @override
+  String get jobFiltersSelected => 'Selected';
+
+  @override
+  String get jobListItemKeySkills => 'Key Skills:';
+
+  @override
+  String get jobListItemRelatedFields => 'Related Fields:';
+
+  @override
+  String get jobListItemViewDetails => 'View Details';
+
+  @override
+  String get jobListItemSave => 'Save';
+
+  @override
+  String get jobListItemNotSpecified => 'Not specified';
+
+  @override
+  String get jobListItemInvalid => 'Invalid';
+
+  @override
+  String get jobListItemExpired => 'Expired';
+
+  @override
+  String get jobListItemToday => 'Today';
+
+  @override
+  String get jobListItemTomorrow => 'Tomorrow';
+
+  @override
+  String jobListItemDaysLeft(String days) {
+    return '${days}d left';
+  }
+
+  @override
+  String get jobDetails => 'Job Details';
+
+  @override
+  String get openInBrowser => 'Open in browser';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get deadline => 'Deadline';
+
+  @override
+  String get workMode => 'Work Mode';
+
+  @override
+  String get salary => 'Salary';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String monthsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count months',
+      one: '1 month',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeCommitment => 'Time Commitment';
+
+  @override
+  String get season => 'Season';
+
+  @override
+  String get visaHelp => 'Visa Help';
+
+  @override
+  String get jobDetailsTitle => 'Job Details';
+
+  @override
+  String get educationRequirements => 'Education Requirements';
+
+  @override
+  String get requiredDegree => 'Required Degree';
+
+  @override
+  String get graduationYears => 'Graduation Years';
+
+  @override
+  String get skillsAndQualifications => 'Skills & Qualifications';
+
+  @override
+  String get technicalSkills => 'Technical Skills';
+
+  @override
+  String get softSkills => 'Soft Skills';
+
+  @override
+  String get languages => 'Languages';
+
+  @override
+  String get niceToHave => 'Nice-to-Have';
+
+  @override
+  String get jobDescription => 'Job Description';
+
+  @override
+  String get requirements => 'Requirements';
+
+  @override
+  String get applyNow => 'Apply Now';
+
+  @override
+  String get notSpecified => 'Not specified';
+
+  @override
+  String get expired => 'Expired';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String inDays(int count) {
+    return 'In $count days';
+  }
+
+  @override
+  String monthDay(String month, String day) {
+    String _temp0 = intl.Intl.selectLogic(
+      month,
+      {
+        '1': 'Jan',
+        '2': 'Feb',
+        '3': 'Mar',
+        '4': 'Apr',
+        '5': 'May',
+        '6': 'Jun',
+        '7': 'Jul',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec',
+        'other': '',
+      },
+    );
+    return '$_temp0 $day';
+  }
+
+  @override
+  String get invalidDate => 'Invalid date';
 }

@@ -474,5 +474,234 @@
   "settingsTermsOfServicePageContactUs": "Contact Us",
   "settingsTermsOfServicePageContactUsText": "If you have any questions about these Terms, please contact us at ",
   "settingsTermsOfServicePageLastUpdated": "Last Updated: April 9, 2025",
-  "settingsPageDeletingData": "Deleting data..."
+  "settingsPageDeletingData": "Deleting data...",
+
+  "jobCardSwiperWaitingForConnection": "Waiting for internet connection...",
+  "jobCardSwiperRetry": "Retry",
+  "jobCardSwiperLoadingRecommendations": "Loading job recommendations...",
+  "jobCardSwiperOfflineNotice": "You're offline. Some features may be limited.",
+  "jobCardDeadline": "Deadline:",
+  "jobCardJobDetails": "Job Details",
+  "jobCardMonths": "months",
+  "jobCardEducationRequirements": "Education Requirements",
+  "jobCardRequiredLanguages": "Required Languages", 
+  "jobCardVisaSupport": "Visa Support",
+  "jobCardRelatedFields": "Related Fields",
+  "jobCardTapToSeeSkills": "Tap to see skills",
+  "jobCardSkillsRequirements": "Skills & Requirements",
+  "jobCardTechnicalSkills": "Technical Skills",
+  "jobCardSoftSkills": "Soft Skills",
+  "jobCardNiceToHave": "Nice-to-Have",
+  "jobCardTapToSeeDetails": "Tap to see details",
+  "jobCardNotSpecified": "Not specified",
+  "jobCardInvalidDate": "Invalid date",
+  "jobCardNotAvailable": "N/A",
+  "jobCardNotFound": "Not found",
+
+  "workModeRemote": "Remote",
+  "workModeHybrid": "Hybrid", 
+  "workModeOnSite": "On-site",
+
+  "jobSearchTitle": "Job Search",
+  "jobSearchScrollToDiscover": "Scroll to discover more jobs",
+  "jobSearchNoInternetConnection": "No internet connection",
+  "jobSearchNoJobsFound": "No jobs found",
+  "jobSearchCheckConnection": "Please check your connection and try again",
+  "jobSearchTryAdjustingFilters": "Try adjusting your filters or search query",
+  "jobSearchRetry": "Retry",
+  "jobSearchResetFilters": "Reset Filters",
+  "jobSearchOfflineNotice": "You're offline. Search functionality is limited.",
+  "jobSearchNoInternetSnackbar": "No internet connection. Please check your network and try again.",
+  "jobSearchErrorLoading": "Error loading jobs: {error}",
+  "@jobSearchErrorLoading": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "jobSearchAddedToFavorites": "{jobName} added to favorites",
+  "@jobSearchAddedToFavorites": {
+    "placeholders": {
+      "jobName": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "jobFiltersTitle": "Filter Jobs",
+  "jobFiltersResetAll": "Reset All",
+  "jobFiltersSearch": "Search",
+  "jobFiltersSearchPlaceholder": "Search jobs, titles...",
+  "jobFiltersCompany": "Company",
+  "jobFiltersCompanyPlaceholder": "Enter company name",
+  "jobFiltersLocation": "Location",
+  "jobFiltersLocationPlaceholder": "Enter location/country",
+  "jobFiltersDuration": "Duration",
+  "jobFiltersField": "Field",
+  "jobFiltersWorkMode": "Work Mode",
+  "jobFiltersSkills": "Skills",
+  "jobFiltersApplyFilters": "Apply Filters",
+  "jobFiltersSelected": "Selected",
+  
+  "jobListItemKeySkills": "Key Skills:",
+  "jobListItemRelatedFields": "Related Fields:",
+  "jobListItemViewDetails": "View Details",
+  "jobListItemSave": "Save",
+  "jobListItemNotSpecified": "Not specified",
+  "jobListItemInvalid": "Invalid",
+  "jobListItemExpired": "Expired",
+  "jobListItemToday": "Today",
+  "jobListItemTomorrow": "Tomorrow",
+  "jobListItemDaysLeft": "{days}d left",
+  "@jobListItemDaysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+
+   "jobDetails": "Job Details",
+  "@jobDetails": {
+    "description": "Title for the job details page"
+  },
+  "openInBrowser": "Open in browser",
+  "@openInBrowser": {
+    "description": "Tooltip for opening job in browser"
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Label for job location"
+  },
+  "deadline": "Deadline",
+  "@deadline": {
+    "description": "Label for application deadline"
+  },
+  "workMode": "Work Mode",
+  "@workMode": {
+    "description": "Label for work mode (remote, hybrid, onsite)"
+  },
+  "salary": "Salary",
+  "@salary": {
+    "description": "Label for salary information"
+  },
+  "duration": "Duration",
+  "@duration": {
+    "description": "Label for job duration"
+  },
+  "monthsCount": "{count, plural, =1{1 month} other{{count} months}}",
+  "@monthsCount": {
+    "description": "Duration in months",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "timeCommitment": "Time Commitment",
+  "@timeCommitment": {
+    "description": "Label for time commitment"
+  },
+  "season": "Season",
+  "@season": {
+    "description": "Label for internship season"
+  },
+  "visaHelp": "Visa Help",
+  "@visaHelp": {
+    "description": "Label for visa assistance"
+  },
+  "jobDetailsTitle": "Job Details",
+  "@jobDetailsTitle": {
+    "description": "Title for the job details section"
+  },
+  "educationRequirements": "Education Requirements",
+  "@educationRequirements": {
+    "description": "Title for education requirements section"
+  },
+  "requiredDegree": "Required Degree",
+  "@requiredDegree": {
+    "description": "Label for required degree"
+  },
+  "graduationYears": "Graduation Years",
+  "@graduationYears": {
+    "description": "Label for allowed graduation years"
+  },
+  "skillsAndQualifications": "Skills & Qualifications",
+  "@skillsAndQualifications": {
+    "description": "Title for skills section"
+  },
+  "technicalSkills": "Technical Skills",
+  "@technicalSkills": {
+    "description": "Label for technical/hard skills"
+  },
+  "softSkills": "Soft Skills",
+  "@softSkills": {
+    "description": "Label for soft skills"
+  },
+  "languages": "Languages",
+  "@languages": {
+    "description": "Label for required languages"
+  },
+  "niceToHave": "Nice-to-Have",
+  "@niceToHave": {
+    "description": "Label for nice-to-have skills"
+  },
+  "jobDescription": "Job Description",
+  "@jobDescription": {
+    "description": "Title for job description section"
+  },
+  "requirements": "Requirements",
+  "@requirements": {
+    "description": "Title for requirements section"
+  },
+  "applyNow": "Apply Now",
+  "@applyNow": {
+    "description": "Button text for applying to job"
+  },
+  "notSpecified": "Not specified",
+  "@notSpecified": {
+    "description": "Text when deadline is not specified"
+  },
+  "expired": "Expired",
+  "@expired": {
+    "description": "Text when deadline has passed"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Text when deadline is today"
+  },
+  "tomorrow": "Tomorrow",
+  "@tomorrow": {
+    "description": "Text when deadline is tomorrow"
+  },
+  "inDays": "In {count} days",
+  "@inDays": {
+    "description": "Text for deadline in X days",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "monthDay": "{month, select, 1{Jan} 2{Feb} 3{Mar} 4{Apr} 5{May} 6{Jun} 7{Jul} 8{Aug} 9{Sep} 10{Oct} 11{Nov} 12{Dec} other{}} {day}",
+  "@monthDay": {
+    "description": "Format for month and day",
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "3"
+      },
+      "day": {
+        "type": "String",
+        "example": "15"
+      }
+    }
+  },
+  "invalidDate": "Invalid date",
+  "@invalidDate": {
+    "description": "Text when date format is invalid"
+  }
 }

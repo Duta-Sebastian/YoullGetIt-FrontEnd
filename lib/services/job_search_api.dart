@@ -68,7 +68,7 @@ class JobSearchAPI {
       if (response.statusCode == 200) {
         // DECODE WITH UTF-8 EXPLICITLY
         final String responseBody = utf8.decode(response.bodyBytes);
-        debugPrint('JobSearchAPI: Response body: $responseBody');
+        // debugPrint('JobSearchAPI: Response body: $responseBody');
         final jobs = JobCardModel.jobCardModelListFactory(json.decode(responseBody) as List<dynamic>);
 
         final bool hasMorePages = jobs.length >= pageSize;

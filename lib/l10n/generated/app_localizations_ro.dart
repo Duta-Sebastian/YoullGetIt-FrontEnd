@@ -1303,4 +1303,311 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsPageDeletingData => 'Ștergere date...';
+
+  @override
+  String get jobCardSwiperWaitingForConnection => 'Se așteaptă conexiunea la internet...';
+
+  @override
+  String get jobCardSwiperRetry => 'Încearcă din nou';
+
+  @override
+  String get jobCardSwiperLoadingRecommendations => 'Se încarcă recomandările de joburi...';
+
+  @override
+  String get jobCardSwiperOfflineNotice => 'Ești offline. Unele funcții pot fi limitate.';
+
+  @override
+  String get jobCardDeadline => 'Termen limită:';
+
+  @override
+  String get jobCardJobDetails => 'Detalii Job';
+
+  @override
+  String get jobCardMonths => 'luni';
+
+  @override
+  String get jobCardEducationRequirements => 'Cerințe Educaționale';
+
+  @override
+  String get jobCardRequiredLanguages => 'Limbi Necesare';
+
+  @override
+  String get jobCardVisaSupport => 'Suport Viză';
+
+  @override
+  String get jobCardRelatedFields => 'Domenii Conexe';
+
+  @override
+  String get jobCardTapToSeeSkills => 'Atinge pentru a vedea abilitățile';
+
+  @override
+  String get jobCardSkillsRequirements => 'Abilități și Cerințe';
+
+  @override
+  String get jobCardTechnicalSkills => 'Abilități Tehnice';
+
+  @override
+  String get jobCardSoftSkills => 'Abilități Sociale';
+
+  @override
+  String get jobCardNiceToHave => 'De Dorit';
+
+  @override
+  String get jobCardTapToSeeDetails => 'Atinge pentru a vedea detaliile';
+
+  @override
+  String get jobCardNotSpecified => 'Nespecificat';
+
+  @override
+  String get jobCardInvalidDate => 'Dată invalidă';
+
+  @override
+  String get jobCardNotAvailable => 'N/A';
+
+  @override
+  String get jobCardNotFound => 'Nu a fost găsit';
+
+  @override
+  String get workModeRemote => 'La distanță';
+
+  @override
+  String get workModeHybrid => 'Hibrid';
+
+  @override
+  String get workModeOnSite => 'La birou';
+
+  @override
+  String get jobSearchTitle => 'Căutare Locuri de Muncă';
+
+  @override
+  String get jobSearchScrollToDiscover => 'Derulează pentru a descoperi mai multe locuri de muncă';
+
+  @override
+  String get jobSearchNoInternetConnection => 'Fără conexiune la internet';
+
+  @override
+  String get jobSearchNoJobsFound => 'Nu s-au găsit locuri de muncă';
+
+  @override
+  String get jobSearchCheckConnection => 'Te rugăm să verifici conexiunea și să încerci din nou';
+
+  @override
+  String get jobSearchTryAdjustingFilters => 'Încearcă să ajustezi filtrele sau termenul de căutare';
+
+  @override
+  String get jobSearchRetry => 'Încearcă din nou';
+
+  @override
+  String get jobSearchResetFilters => 'Resetează Filtrele';
+
+  @override
+  String get jobSearchOfflineNotice => 'Ești offline. Funcționalitatea de căutare este limitată.';
+
+  @override
+  String get jobSearchNoInternetSnackbar => 'Fără conexiune la internet. Te rugăm să verifici rețeaua și să încerci din nou.';
+
+  @override
+  String jobSearchErrorLoading(String error) {
+    return 'Eroare la încărcarea locurilor de muncă: $error';
+  }
+
+  @override
+  String jobSearchAddedToFavorites(String jobName) {
+    return '$jobName adăugat la favorite';
+  }
+
+  @override
+  String get jobFiltersTitle => 'Filtrează Locurile de Muncă';
+
+  @override
+  String get jobFiltersResetAll => 'Resetează Tot';
+
+  @override
+  String get jobFiltersSearch => 'Caută';
+
+  @override
+  String get jobFiltersSearchPlaceholder => 'Caută locuri de muncă, titluri...';
+
+  @override
+  String get jobFiltersCompany => 'Companie';
+
+  @override
+  String get jobFiltersCompanyPlaceholder => 'Introdu numele companiei';
+
+  @override
+  String get jobFiltersLocation => 'Locația';
+
+  @override
+  String get jobFiltersLocationPlaceholder => 'Introdu locația/țara';
+
+  @override
+  String get jobFiltersDuration => 'Durata';
+
+  @override
+  String get jobFiltersField => 'Domeniu';
+
+  @override
+  String get jobFiltersWorkMode => 'Mod de Lucru';
+
+  @override
+  String get jobFiltersSkills => 'Abilități';
+
+  @override
+  String get jobFiltersApplyFilters => 'Aplică Filtrele';
+
+  @override
+  String get jobFiltersSelected => 'Selectat';
+
+  @override
+  String get jobListItemKeySkills => 'Abilități Cheie:';
+
+  @override
+  String get jobListItemRelatedFields => 'Domenii Conexe:';
+
+  @override
+  String get jobListItemViewDetails => 'Vezi Detaliile';
+
+  @override
+  String get jobListItemSave => 'Salvează';
+
+  @override
+  String get jobListItemNotSpecified => 'Nespecificat';
+
+  @override
+  String get jobListItemInvalid => 'Invalid';
+
+  @override
+  String get jobListItemExpired => 'Expirat';
+
+  @override
+  String get jobListItemToday => 'Astăzi';
+
+  @override
+  String get jobListItemTomorrow => 'Mâine';
+
+  @override
+  String jobListItemDaysLeft(String days) {
+    return '${days}z rămase';
+  }
+
+  @override
+  String get jobDetails => 'Detalii Job';
+
+  @override
+  String get openInBrowser => 'Deschide în browser';
+
+  @override
+  String get location => 'Locație';
+
+  @override
+  String get deadline => 'Termen limită';
+
+  @override
+  String get workMode => 'Mod de Lucru';
+
+  @override
+  String get salary => 'Salariu';
+
+  @override
+  String get duration => 'Durată';
+
+  @override
+  String monthsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count luni',
+      few: '$count luni',
+      one: '1 lună',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeCommitment => 'Angajament de Timp';
+
+  @override
+  String get season => 'Sezon';
+
+  @override
+  String get visaHelp => 'Ajutor Viză';
+
+  @override
+  String get jobDetailsTitle => 'Detalii Job';
+
+  @override
+  String get educationRequirements => 'Cerințe Educaționale';
+
+  @override
+  String get requiredDegree => 'Diplomă Necesară';
+
+  @override
+  String get graduationYears => 'Ani de Absolvire';
+
+  @override
+  String get skillsAndQualifications => 'Abilități & Calificări';
+
+  @override
+  String get technicalSkills => 'Abilități Tehnice';
+
+  @override
+  String get softSkills => 'Abilități Sociale';
+
+  @override
+  String get languages => 'Limbi';
+
+  @override
+  String get niceToHave => 'Dorit';
+
+  @override
+  String get jobDescription => 'Descrierea Job-ului';
+
+  @override
+  String get requirements => 'Cerințe';
+
+  @override
+  String get applyNow => 'Aplică Acum';
+
+  @override
+  String get notSpecified => 'Nespecificat';
+
+  @override
+  String get expired => 'Expirat';
+
+  @override
+  String get today => 'Astăzi';
+
+  @override
+  String get tomorrow => 'Mâine';
+
+  @override
+  String inDays(int count) {
+    return 'În $count zile';
+  }
+
+  @override
+  String monthDay(String month, String day) {
+    String _temp0 = intl.Intl.selectLogic(
+      month,
+      {
+        '1': 'Ian',
+        '2': 'Feb',
+        '3': 'Mar',
+        '4': 'Apr',
+        '5': 'Mai',
+        '6': 'Iun',
+        '7': 'Iul',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Noi',
+        '12': 'Dec',
+        'other': '',
+      },
+    );
+    return '$_temp0 $day';
+  }
+
+  @override
+  String get invalidDate => 'Dată invalidă';
 }

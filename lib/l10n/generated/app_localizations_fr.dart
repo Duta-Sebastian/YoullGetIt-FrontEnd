@@ -1303,4 +1303,310 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsPageDeletingData => 'Suppression des données...';
+
+  @override
+  String get jobCardSwiperWaitingForConnection => 'En attente de connexion internet...';
+
+  @override
+  String get jobCardSwiperRetry => 'Réessayer';
+
+  @override
+  String get jobCardSwiperLoadingRecommendations => 'Chargement des recommandations d\'emploi...';
+
+  @override
+  String get jobCardSwiperOfflineNotice => 'Vous êtes hors ligne. Certaines fonctionnalités peuvent être limitées.';
+
+  @override
+  String get jobCardDeadline => 'Date limite :';
+
+  @override
+  String get jobCardJobDetails => 'Détails du Poste';
+
+  @override
+  String get jobCardMonths => 'mois';
+
+  @override
+  String get jobCardEducationRequirements => 'Exigences Éducatives';
+
+  @override
+  String get jobCardRequiredLanguages => 'Langues Requises';
+
+  @override
+  String get jobCardVisaSupport => 'Support Visa';
+
+  @override
+  String get jobCardRelatedFields => 'Domaines Connexes';
+
+  @override
+  String get jobCardTapToSeeSkills => 'Touchez pour voir les compétences';
+
+  @override
+  String get jobCardSkillsRequirements => 'Compétences et Exigences';
+
+  @override
+  String get jobCardTechnicalSkills => 'Compétences Techniques';
+
+  @override
+  String get jobCardSoftSkills => 'Compétences Relationnelles';
+
+  @override
+  String get jobCardNiceToHave => 'Souhaitable';
+
+  @override
+  String get jobCardTapToSeeDetails => 'Touchez pour voir les détails';
+
+  @override
+  String get jobCardNotSpecified => 'Non spécifié';
+
+  @override
+  String get jobCardInvalidDate => 'Date invalide';
+
+  @override
+  String get jobCardNotAvailable => 'N/A';
+
+  @override
+  String get jobCardNotFound => 'Non trouvé';
+
+  @override
+  String get workModeRemote => 'À distance';
+
+  @override
+  String get workModeHybrid => 'Hybride';
+
+  @override
+  String get workModeOnSite => 'Sur site';
+
+  @override
+  String get jobSearchTitle => 'Recherche d\'Emploi';
+
+  @override
+  String get jobSearchScrollToDiscover => 'Faites défiler pour découvrir plus d\'emplois';
+
+  @override
+  String get jobSearchNoInternetConnection => 'Pas de connexion internet';
+
+  @override
+  String get jobSearchNoJobsFound => 'Aucun emploi trouvé';
+
+  @override
+  String get jobSearchCheckConnection => 'Veuillez vérifier votre connexion et réessayer';
+
+  @override
+  String get jobSearchTryAdjustingFilters => 'Essayez d\'ajuster vos filtres ou votre requête de recherche';
+
+  @override
+  String get jobSearchRetry => 'Réessayer';
+
+  @override
+  String get jobSearchResetFilters => 'Réinitialiser les Filtres';
+
+  @override
+  String get jobSearchOfflineNotice => 'Vous êtes hors ligne. La fonctionnalité de recherche est limitée.';
+
+  @override
+  String get jobSearchNoInternetSnackbar => 'Pas de connexion internet. Veuillez vérifier votre réseau et réessayer.';
+
+  @override
+  String jobSearchErrorLoading(String error) {
+    return 'Erreur lors du chargement des emplois: $error';
+  }
+
+  @override
+  String jobSearchAddedToFavorites(String jobName) {
+    return '$jobName ajouté aux favoris';
+  }
+
+  @override
+  String get jobFiltersTitle => 'Filtrer les Emplois';
+
+  @override
+  String get jobFiltersResetAll => 'Tout Réinitialiser';
+
+  @override
+  String get jobFiltersSearch => 'Rechercher';
+
+  @override
+  String get jobFiltersSearchPlaceholder => 'Rechercher emplois, titres...';
+
+  @override
+  String get jobFiltersCompany => 'Entreprise';
+
+  @override
+  String get jobFiltersCompanyPlaceholder => 'Entrez le nom de l\'entreprise';
+
+  @override
+  String get jobFiltersLocation => 'Localisation';
+
+  @override
+  String get jobFiltersLocationPlaceholder => 'Entrez localisation/pays';
+
+  @override
+  String get jobFiltersDuration => 'Durée';
+
+  @override
+  String get jobFiltersField => 'Domaine';
+
+  @override
+  String get jobFiltersWorkMode => 'Mode de Travail';
+
+  @override
+  String get jobFiltersSkills => 'Compétences';
+
+  @override
+  String get jobFiltersApplyFilters => 'Appliquer les Filtres';
+
+  @override
+  String get jobFiltersSelected => 'Sélectionné';
+
+  @override
+  String get jobListItemKeySkills => 'Compétences Clés:';
+
+  @override
+  String get jobListItemRelatedFields => 'Domaines Connexes:';
+
+  @override
+  String get jobListItemViewDetails => 'Voir les Détails';
+
+  @override
+  String get jobListItemSave => 'Sauvegarder';
+
+  @override
+  String get jobListItemNotSpecified => 'Non spécifié';
+
+  @override
+  String get jobListItemInvalid => 'Invalide';
+
+  @override
+  String get jobListItemExpired => 'Expiré';
+
+  @override
+  String get jobListItemToday => 'Aujourd\'hui';
+
+  @override
+  String get jobListItemTomorrow => 'Demain';
+
+  @override
+  String jobListItemDaysLeft(String days) {
+    return '${days}j restants';
+  }
+
+  @override
+  String get jobDetails => 'Détails de l\'Emploi';
+
+  @override
+  String get openInBrowser => 'Ouvrir dans le navigateur';
+
+  @override
+  String get location => 'Localisation';
+
+  @override
+  String get deadline => 'Date limite';
+
+  @override
+  String get workMode => 'Mode de Travail';
+
+  @override
+  String get salary => 'Salaire';
+
+  @override
+  String get duration => 'Durée';
+
+  @override
+  String monthsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count mois',
+      one: '1 mois',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeCommitment => 'Engagement Temporel';
+
+  @override
+  String get season => 'Saison';
+
+  @override
+  String get visaHelp => 'Aide Visa';
+
+  @override
+  String get jobDetailsTitle => 'Détails de l\'Emploi';
+
+  @override
+  String get educationRequirements => 'Exigences Éducatives';
+
+  @override
+  String get requiredDegree => 'Diplôme Requis';
+
+  @override
+  String get graduationYears => 'Années de Diplôme';
+
+  @override
+  String get skillsAndQualifications => 'Compétences et Qualifications';
+
+  @override
+  String get technicalSkills => 'Compétences Techniques';
+
+  @override
+  String get softSkills => 'Compétences Relationnelles';
+
+  @override
+  String get languages => 'Langues';
+
+  @override
+  String get niceToHave => 'Souhaitable';
+
+  @override
+  String get jobDescription => 'Description du Poste';
+
+  @override
+  String get requirements => 'Exigences';
+
+  @override
+  String get applyNow => 'Postuler Maintenant';
+
+  @override
+  String get notSpecified => 'Non spécifié';
+
+  @override
+  String get expired => 'Expiré';
+
+  @override
+  String get today => 'Aujourd\'hui';
+
+  @override
+  String get tomorrow => 'Demain';
+
+  @override
+  String inDays(int count) {
+    return 'Dans $count jours';
+  }
+
+  @override
+  String monthDay(String month, String day) {
+    String _temp0 = intl.Intl.selectLogic(
+      month,
+      {
+        '1': 'Jan',
+        '2': 'Fév',
+        '3': 'Mar',
+        '4': 'Avr',
+        '5': 'Mai',
+        '6': 'Jun',
+        '7': 'Jul',
+        '8': 'Aoû',
+        '9': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Déc',
+        'other': '',
+      },
+    );
+    return '$_temp0 $day';
+  }
+
+  @override
+  String get invalidDate => 'Date invalide';
 }

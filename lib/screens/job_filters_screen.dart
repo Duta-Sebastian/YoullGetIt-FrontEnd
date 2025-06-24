@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class JobFiltersScreen extends StatefulWidget {
   final String? initialQuery;
@@ -29,21 +30,11 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _companyController = TextEditingController();
 
-  List<String>       _selectedDurations = [];
+  List<String> _selectedDurations = [];
   List<String> _selectedFields = [];
   List<String> _selectedWorkModes = [];
   List<String> _selectedSkills = [];
 
-  final List<String> _workModeOptions = ['Remote', 'Hybrid', 'On-site'];
-  final List<String> _fieldOptions = ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
-                  'Political Science & Public Administration', 'Sales & Business Administration', 
-                  'Arts & Culture', 'Biology, Chemistry, & Life Sciences'];
-  final List<Map<String, dynamic>> _durationOptions = [
-    {'label': '1-3 months', 'icon': Icons.schedule, 'value': '1-3'},
-    {'label': '3-6 months', 'icon': Icons.timer, 'value': '3-6'},
-    {'label': '6-12 months', 'icon': Icons.timer_10, 'value': '6-12'},
-    {'label': '12+ months', 'icon': Icons.timelapse, 'value': '12+'},
-  ];
   // TODO : Add more skills when we know what skills we will use in the questionnaire
   // For now, we will use a test list of skills
   final List<String> _skillOptions = [
@@ -73,7 +64,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     if (widget.initialDurations != null) {
       for (String durationValue in widget.initialDurations!) {
         // Find the label that corresponds to this value
-        final matchingOption = _durationOptions.firstWhere(
+        final matchingOption = _getDurationOptions().firstWhere(
           (option) => option['value'] == durationValue,
           orElse: () => {},
         );
@@ -90,6 +81,35 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _locationController.dispose();
     _companyController.dispose();
     super.dispose();
+  }
+
+  List<Map<String, dynamic>> _getDurationOptions() {
+    final localizations = AppLocalizations.of(context)!;
+    return [
+      {'label': localizations.optionOneToThreeMonths, 'icon': Icons.schedule, 'value': '1-3'},
+      {'label': localizations.optionThreeToSixMonths, 'icon': Icons.timer, 'value': '3-6'},
+      {'label': localizations.optionSixToTwelveMonths, 'icon': Icons.timer_10, 'value': '6-12'},
+      {'label': localizations.optionMoreThanTwelveMonths, 'icon': Icons.timelapse, 'value': '12+'},
+    ];
+  }
+
+  List<String> _getWorkModeOptions() {
+    final localizations = AppLocalizations.of(context)!;
+    return [localizations.workModeRemote, localizations.workModeHybrid, localizations.workModeOnSite];
+  }
+
+  List<String> _getFieldOptions() {
+    final localizations = AppLocalizations.of(context)!;
+    return [
+      localizations.optionEngineering, 
+      localizations.optionItDataScience, 
+      localizations.optionMarketingCommunication, 
+      localizations.optionFinanceEconomics, 
+      localizations.optionPoliticalScience, 
+      localizations.optionSalesBusiness, 
+      localizations.optionArtsCulture, 
+      localizations.optionBiologyChemistry
+    ];
   }
 
   void _toggleWorkMode(String mode) {
@@ -148,7 +168,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     // Convert selected duration labels to API values
     List<String> durationValues = [];
     for (String selectedLabel in _selectedDurations) {
-      final selectedOption = _durationOptions.firstWhere(
+      final selectedOption = _getDurationOptions().firstWhere(
         (option) => option['label'] == selectedLabel,
         orElse: () => {},
       );
@@ -168,7 +188,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     });
   }
 
-  Widget _buildDurationCard(Map<String, dynamic> duration) {
+  Widget _buildDurationCard(Map<String, dynamic> duration, AppLocalizations localizations) {
     final bool isSelected = _selectedDurations.contains(duration['label']);
     final Color selectedColor = Color(0xFFFFDE15);
     
@@ -239,9 +259,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   color: selectedColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
-                  'Selected',
-                  style: TextStyle(
+                child: Text(
+                  localizations.jobFiltersSelected,
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -256,21 +276,23 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Filter Jobs',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        title: Text(
+          localizations.jobFiltersTitle,
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         actions: [
           TextButton(
             onPressed: _resetFilters,
             child: Text(
-              'Reset All',
+              localizations.jobFiltersResetAll,
               style: TextStyle(
                 color: Colors.red.shade700,
                 fontWeight: FontWeight.bold,
@@ -292,9 +314,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Search query
-                  const Text(
-                    'Search',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersSearch,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -303,7 +325,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'Search jobs, titles...',
+                      hintText: localizations.jobFiltersSearchPlaceholder,
                       prefixIcon: const Icon(Icons.search),
                       filled: true,
                       fillColor: Colors.grey.shade100,
@@ -318,9 +340,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   const SizedBox(height: 24),
                   
                   // Company filter
-                  const Text(
-                    'Company',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersCompany,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -329,7 +351,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   TextField(
                     controller: _companyController,
                     decoration: InputDecoration(
-                      hintText: 'Enter company name',
+                      hintText: localizations.jobFiltersCompanyPlaceholder,
                       prefixIcon: const Icon(Icons.business),
                       filled: true,
                       fillColor: Colors.grey.shade100,
@@ -344,9 +366,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   const SizedBox(height: 24),
                   
                   // Location filter
-                  const Text(
-                    'Location',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersLocation,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -355,7 +377,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   TextField(
                     controller: _locationController,
                     decoration: InputDecoration(
-                      hintText: 'Enter location/country',
+                      hintText: localizations.jobFiltersLocationPlaceholder,
                       prefixIcon: const Icon(Icons.location_on_outlined),
                       filled: true,
                       fillColor: Colors.grey.shade100,
@@ -369,9 +391,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   
                   const SizedBox(height: 24),
                   
-                  const Text(
-                    'Duration',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersDuration,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -386,18 +408,18 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
-                    itemCount: _durationOptions.length,
+                    itemCount: _getDurationOptions().length,
                     itemBuilder: (context, index) {
-                      return _buildDurationCard(_durationOptions[index]);
+                      return _buildDurationCard(_getDurationOptions()[index], localizations);
                     },
                   ),
                   
                   const SizedBox(height: 24),
                   
                   // Field filter
-                  const Text(
-                    'Field',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersField,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -406,7 +428,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: _fieldOptions.map((field) {
+                    children: _getFieldOptions().map((field) {
                       final bool isSelected = _selectedFields.contains(field);
                       return FilterChip(
                         label: Text(field),
@@ -431,9 +453,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   const SizedBox(height: 24),
                   
                   // Work mode filter
-                  const Text(
-                    'Work Mode',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersWorkMode,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -442,7 +464,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
-                    children: _workModeOptions.map((mode) {
+                    children: _getWorkModeOptions().map((mode) {
                       final bool isSelected = _selectedWorkModes.contains(mode);
                       return FilterChip(
                         label: Text(mode),
@@ -467,9 +489,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   const SizedBox(height: 24),
                   
                   // Skills filter
-                  const Text(
-                    'Skills',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobFiltersSkills,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -531,9 +553,9 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  'Apply Filters',
-                  style: TextStyle(
+                child: Text(
+                  localizations.jobFiltersApplyFilters,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),

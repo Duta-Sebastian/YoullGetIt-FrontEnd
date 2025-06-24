@@ -1303,4 +1303,310 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsPageDeletingData => 'Gegevens verwijderen...';
+
+  @override
+  String get jobCardSwiperWaitingForConnection => 'Wachten op internetverbinding...';
+
+  @override
+  String get jobCardSwiperRetry => 'Opnieuw proberen';
+
+  @override
+  String get jobCardSwiperLoadingRecommendations => 'Baanaanbevelingen laden...';
+
+  @override
+  String get jobCardSwiperOfflineNotice => 'Je bent offline. Sommige functies kunnen beperkt zijn.';
+
+  @override
+  String get jobCardDeadline => 'Deadline:';
+
+  @override
+  String get jobCardJobDetails => 'Baandetails';
+
+  @override
+  String get jobCardMonths => 'maanden';
+
+  @override
+  String get jobCardEducationRequirements => 'Opleidingseisen';
+
+  @override
+  String get jobCardRequiredLanguages => 'Vereiste Talen';
+
+  @override
+  String get jobCardVisaSupport => 'Visa Ondersteuning';
+
+  @override
+  String get jobCardRelatedFields => 'Gerelateerde Velden';
+
+  @override
+  String get jobCardTapToSeeSkills => 'Tik om vaardigheden te zien';
+
+  @override
+  String get jobCardSkillsRequirements => 'Vaardigheden & Vereisten';
+
+  @override
+  String get jobCardTechnicalSkills => 'Technische Vaardigheden';
+
+  @override
+  String get jobCardSoftSkills => 'Zachte Vaardigheden';
+
+  @override
+  String get jobCardNiceToHave => 'Gewenst';
+
+  @override
+  String get jobCardTapToSeeDetails => 'Tik om details te zien';
+
+  @override
+  String get jobCardNotSpecified => 'Niet gespecificeerd';
+
+  @override
+  String get jobCardInvalidDate => 'Ongeldige datum';
+
+  @override
+  String get jobCardNotAvailable => 'N/A';
+
+  @override
+  String get jobCardNotFound => 'Niet gevonden';
+
+  @override
+  String get workModeRemote => 'Op afstand';
+
+  @override
+  String get workModeHybrid => 'Hybride';
+
+  @override
+  String get workModeOnSite => 'Op locatie';
+
+  @override
+  String get jobSearchTitle => 'Vacature Zoeken';
+
+  @override
+  String get jobSearchScrollToDiscover => 'Scroll om meer vacatures te ontdekken';
+
+  @override
+  String get jobSearchNoInternetConnection => 'Geen internetverbinding';
+
+  @override
+  String get jobSearchNoJobsFound => 'Geen vacatures gevonden';
+
+  @override
+  String get jobSearchCheckConnection => 'Controleer je verbinding en probeer opnieuw';
+
+  @override
+  String get jobSearchTryAdjustingFilters => 'Probeer je filters of zoekquery aan te passen';
+
+  @override
+  String get jobSearchRetry => 'Opnieuw proberen';
+
+  @override
+  String get jobSearchResetFilters => 'Filters Resetten';
+
+  @override
+  String get jobSearchOfflineNotice => 'Je bent offline. Zoekfunctionaliteit is beperkt.';
+
+  @override
+  String get jobSearchNoInternetSnackbar => 'Geen internetverbinding. Controleer je netwerk en probeer opnieuw.';
+
+  @override
+  String jobSearchErrorLoading(String error) {
+    return 'Fout bij het laden van vacatures: $error';
+  }
+
+  @override
+  String jobSearchAddedToFavorites(String jobName) {
+    return '$jobName toegevoegd aan favorieten';
+  }
+
+  @override
+  String get jobFiltersTitle => 'Vacatures Filteren';
+
+  @override
+  String get jobFiltersResetAll => 'Alles Resetten';
+
+  @override
+  String get jobFiltersSearch => 'Zoeken';
+
+  @override
+  String get jobFiltersSearchPlaceholder => 'Zoek vacatures, titels...';
+
+  @override
+  String get jobFiltersCompany => 'Bedrijf';
+
+  @override
+  String get jobFiltersCompanyPlaceholder => 'Voer bedrijfsnaam in';
+
+  @override
+  String get jobFiltersLocation => 'Locatie';
+
+  @override
+  String get jobFiltersLocationPlaceholder => 'Voer locatie/land in';
+
+  @override
+  String get jobFiltersDuration => 'Duur';
+
+  @override
+  String get jobFiltersField => 'Vakgebied';
+
+  @override
+  String get jobFiltersWorkMode => 'Werkmodus';
+
+  @override
+  String get jobFiltersSkills => 'Vaardigheden';
+
+  @override
+  String get jobFiltersApplyFilters => 'Filters Toepassen';
+
+  @override
+  String get jobFiltersSelected => 'Geselecteerd';
+
+  @override
+  String get jobListItemKeySkills => 'Belangrijke Vaardigheden:';
+
+  @override
+  String get jobListItemRelatedFields => 'Gerelateerde Vakgebieden:';
+
+  @override
+  String get jobListItemViewDetails => 'Bekijk Details';
+
+  @override
+  String get jobListItemSave => 'Opslaan';
+
+  @override
+  String get jobListItemNotSpecified => 'Niet gespecificeerd';
+
+  @override
+  String get jobListItemInvalid => 'Ongeldig';
+
+  @override
+  String get jobListItemExpired => 'Verlopen';
+
+  @override
+  String get jobListItemToday => 'Vandaag';
+
+  @override
+  String get jobListItemTomorrow => 'Morgen';
+
+  @override
+  String jobListItemDaysLeft(String days) {
+    return '${days}d over';
+  }
+
+  @override
+  String get jobDetails => 'Baan Details';
+
+  @override
+  String get openInBrowser => 'Openen in browser';
+
+  @override
+  String get location => 'Locatie';
+
+  @override
+  String get deadline => 'Deadline';
+
+  @override
+  String get workMode => 'Werkwijze';
+
+  @override
+  String get salary => 'Salaris';
+
+  @override
+  String get duration => 'Duur';
+
+  @override
+  String monthsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count maanden',
+      one: '1 maand',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get timeCommitment => 'Tijdsbesteding';
+
+  @override
+  String get season => 'Seizoen';
+
+  @override
+  String get visaHelp => 'Visum Hulp';
+
+  @override
+  String get jobDetailsTitle => 'Baan Details';
+
+  @override
+  String get educationRequirements => 'Onderwijsvereisten';
+
+  @override
+  String get requiredDegree => 'Vereiste Diploma';
+
+  @override
+  String get graduationYears => 'Afstudeerjaren';
+
+  @override
+  String get skillsAndQualifications => 'Vaardigheden & Kwalificaties';
+
+  @override
+  String get technicalSkills => 'Technische Vaardigheden';
+
+  @override
+  String get softSkills => 'Sociale Vaardigheden';
+
+  @override
+  String get languages => 'Talen';
+
+  @override
+  String get niceToHave => 'Wenselijk';
+
+  @override
+  String get jobDescription => 'Baanbeschrijving';
+
+  @override
+  String get requirements => 'Vereisten';
+
+  @override
+  String get applyNow => 'Nu Solliciteren';
+
+  @override
+  String get notSpecified => 'Niet gespecificeerd';
+
+  @override
+  String get expired => 'Verlopen';
+
+  @override
+  String get today => 'Vandaag';
+
+  @override
+  String get tomorrow => 'Morgen';
+
+  @override
+  String inDays(int count) {
+    return 'Over $count dagen';
+  }
+
+  @override
+  String monthDay(String month, String day) {
+    String _temp0 = intl.Intl.selectLogic(
+      month,
+      {
+        '1': 'Jan',
+        '2': 'Feb',
+        '3': 'Maa',
+        '4': 'Apr',
+        '5': 'Mei',
+        '6': 'Jun',
+        '7': 'Jul',
+        '8': 'Aug',
+        '9': 'Sep',
+        '10': 'Okt',
+        '11': 'Nov',
+        '12': 'Dec',
+        'other': '',
+      },
+    );
+    return '$_temp0 $day';
+  }
+
+  @override
+  String get invalidDate => 'Ongeldige datum';
 }
