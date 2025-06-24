@@ -1300,4 +1300,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsTermsOfServicePageLastUpdated => 'Laatst bijgewerkt: 9 april 2025';
+
+  @override
+  String get settingsPageDeletingData => 'Gegevens verwijderen...';
 }

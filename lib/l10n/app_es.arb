@@ -452,5 +452,6 @@
   "settingsTermsOfServicePageEntireAgreementText": "Estos Términos constituyen el acuerdo completo entre usted y you'll get it con respecto a la Plataforma.",
   "settingsTermsOfServicePageContactUs": "Contáctenos",
   "settingsTermsOfServicePageContactUsText": "Si tiene alguna pregunta sobre estos Términos, por favor contáctenos en ",
-  "settingsTermsOfServicePageLastUpdated": "Última actualización: 9 de abril de 2025"
+  "settingsTermsOfServicePageLastUpdated": "Última actualización: 9 de abril de 2025",
+  "settingsPageDeletingData": "Eliminando datos..."
 }

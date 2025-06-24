@@ -473,5 +473,6 @@
   "settingsTermsOfServicePageEntireAgreementText": "These Terms constitute the entire agreement between you and you'll get it regarding the Platform.",
   "settingsTermsOfServicePageContactUs": "Contact Us",
   "settingsTermsOfServicePageContactUsText": "If you have any questions about these Terms, please contact us at ",
-  "settingsTermsOfServicePageLastUpdated": "Last Updated: April 9, 2025"
+  "settingsTermsOfServicePageLastUpdated": "Last Updated: April 9, 2025",
+  "settingsPageDeletingData": "Deleting data..."
 }

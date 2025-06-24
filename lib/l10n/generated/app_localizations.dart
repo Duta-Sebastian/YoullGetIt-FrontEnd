@@ -2666,6 +2666,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last Updated: April 9, 2025'**
   String get settingsTermsOfServicePageLastUpdated;
+
+  /// No description provided for @settingsPageDeletingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting data...'**
+  String get settingsPageDeletingData;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

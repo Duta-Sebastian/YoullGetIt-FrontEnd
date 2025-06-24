@@ -453,5 +453,6 @@
   "settingsTermsOfServicePageEntireAgreementText": "Ces Conditions constituent l'accord intégral entre vous et you'll get it concernant la Plateforme.",
   "settingsTermsOfServicePageContactUs": "Nous Contacter",
   "settingsTermsOfServicePageContactUsText": "Si vous avez des questions sur ces Conditions, veuillez nous contacter à ",
-  "settingsTermsOfServicePageLastUpdated": "Dernière mise à jour : 9 avril 2025"
+  "settingsTermsOfServicePageLastUpdated": "Dernière mise à jour : 9 avril 2025",
+  "settingsPageDeletingData": "Suppression des données..."
 }

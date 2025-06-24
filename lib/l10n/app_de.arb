@@ -453,5 +453,6 @@
   "settingsTermsOfServicePageEntireAgreementText": "Diese Bedingungen stellen die gesamte Vereinbarung zwischen Ihnen und you'll get it bezüglich der Plattform dar.",
   "settingsTermsOfServicePageContactUs": "Kontaktieren Sie uns",
   "settingsTermsOfServicePageContactUsText": "Wenn Sie Fragen zu diesen Bedingungen haben, kontaktieren Sie uns bitte unter ",
-  "settingsTermsOfServicePageLastUpdated": "Zuletzt aktualisiert: 9. April 2025"
+  "settingsTermsOfServicePageLastUpdated": "Zuletzt aktualisiert: 9. April 2025",
+  "settingsPageDeletingData": "Daten werden gelöscht..."
 }

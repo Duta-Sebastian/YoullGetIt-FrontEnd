@@ -1300,4 +1300,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get settingsTermsOfServicePageLastUpdated => 'Ultima actualizare: 9 aprilie 2025';
+
+  @override
+  String get settingsPageDeletingData => 'Ștergere date...';
 }
