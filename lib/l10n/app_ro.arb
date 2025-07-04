@@ -590,5 +590,24 @@
   "jobCartHowItWorksAppliedDesc": "Joburi pentru care ai aplicat deja",
   "jobCartHowItWorksTip": "Glisează spre stânga pe orice job pentru a-l elimina din coș",
   "jobCartExpand": "Extinde",
-  "jobCartMinimize": "Minimizează"
+  "jobCartMinimize": "Minimizează",
+
+  "internshipMessage": "Să ne asigurăm că vei obține acel stagiu adaptat experienței tale.",
+
+  "choiceScreenTitle": "Dar mai întâi, alege opțiunea care ți se potrivește cel mai bine",
+  "choiceScreenFastAccess": "Obține Acces Rapid",
+  "choiceScreenFastAccessDesc": "1 minut, 5 întrebări",
+  "choiceScreenHigherAccuracy": "Obține Precizie Mai Mare",
+  "choiceScreenHigherAccuracyDesc": "3-5 minute, 15 întrebări",
+
+  "upgradeToFullTitle": "Treceți la chestionarul complet",
+  "upgradeToFullContent": "Aceasta va trece la chestionarul detaliat pentru o potrivire mai bună a locurilor de muncă. Răspunsurile dumneavoastră actuale vor fi păstrate.",
+  "upgradeSwitch": "Schimbă",
+  "questionNotAvailableInMode": "Această întrebare nu este disponibilă în modul {mode}.",
+  "noAnswersForMode": "Nu există răspunsuri de afișat pentru {mode}.",
+  "switchToSeeAllAnswers": "Treceți la {mode} pentru a vedea toate răspunsurile.",
+  "showingAnswersFor": "Se afișează răspunsurile {mode}",
+  "completeQuestions": "Completați întrebările",
+
+  "shortQuestionnaireMode": "Modul chestionar rapid"
 }

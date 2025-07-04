@@ -589,5 +589,24 @@
   "jobCartHowItWorksAppliedDesc": "Banen waarvoor u al heeft gesolliciteerd",
   "jobCartHowItWorksTip": "Veeg naar links op elke baan om deze uit uw winkelwagen te verwijderen",
   "jobCartExpand": "Uitbreiden",
-  "jobCartMinimize": "Minimaliseren"
+  "jobCartMinimize": "Minimaliseren",
+
+  "internshipMessage": "Laten we ervoor zorgen dat je die stage krijgt die past bij jouw achtergrond.",
+
+  "choiceScreenTitle": "Maar kies eerst de optie die het beste bij je past",
+  "choiceScreenFastAccess": "Snelle Toegang",
+  "choiceScreenFastAccessDesc": "1 minuut, 5 vragen",
+  "choiceScreenHigherAccuracy": "Hogere Nauwkeurigheid",
+  "choiceScreenHigherAccuracyDesc": "3-5 minuten, 15 vragen",
+
+  "upgradeToFullTitle": "Overschakelen naar volledige vragenlijst",
+  "upgradeToFullContent": "Dit schakelt over naar de gedetailleerde vragenlijst voor betere baanmatching. Uw huidige antwoorden worden bewaard.",
+  "upgradeSwitch": "Wisselen",
+  "questionNotAvailableInMode": "Deze vraag is niet beschikbaar in {mode}-modus.",
+  "noAnswersForMode": "Geen antwoorden om weer te geven voor {mode}.",
+  "switchToSeeAllAnswers": "Schakel over naar {mode} om alle antwoorden te zien.",
+  "showingAnswersFor": "{mode} antwoorden tonen",
+  "completeQuestions": "Vragen voltooien",
+
+  "shortQuestionnaireMode": "Snelle vragenlijst modus"
 }

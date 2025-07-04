@@ -589,5 +589,23 @@
   "jobCartHowItWorksAppliedDesc": "Trabajos para los que ya has aplicado",
   "jobCartHowItWorksTip": "Desliza hacia la izquierda en cualquier trabajo para eliminarlo de tu carrito",
   "jobCartExpand": "Expandir",
-  "jobCartMinimize": "Minimizar"
+  "jobCartMinimize": "Minimizar",
+
+  "internshipMessage": "Asegurémonos de que consigas esa pasantía adaptada a tu experiencia.",
+
+  "choiceScreenTitle": "Pero primero, elige la opción que mejor te convenga",
+  "choiceScreenFastAccess": "Acceso Rápido",
+  "choiceScreenFastAccessDesc": "1 minuto, 5 preguntas",
+  "choiceScreenHigherAccuracy": "Mayor Precisión",
+  "choiceScreenHigherAccuracyDesc": "3-5 minutos, 15 preguntas",
+
+  "upgradeToFullTitle": "Cambiar al cuestionario completo",
+  "upgradeToFullContent": "Esto cambiará al cuestionario detallado para una mejor coincidencia de trabajo. Sus respuestas actuales se conservarán.",
+  "upgradeSwitch": "Cambiar",
+  "questionNotAvailableInMode": "Esta pregunta no está disponible en modo {mode}.",
+  "noAnswersForMode": "No hay respuestas que mostrar para {mode}.",
+  "switchToSeeAllAnswers": "Cambie a {mode} para ver todas las respuestas.",
+  "showingAnswersFor": "Mostrando respuestas de {mode}",
+  "completeQuestions": "Completar preguntas",
+  "shortQuestionnaireMode": "Modo cuestionario rápido"
 }

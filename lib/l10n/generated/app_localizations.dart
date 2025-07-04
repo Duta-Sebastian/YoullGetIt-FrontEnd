@@ -3446,6 +3446,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minimize'**
   String get jobCartMinimize;
+
+  /// No description provided for @internshipMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s make sure you\'ll get that internship tailored to your background.'**
+  String get internshipMessage;
+
+  /// No description provided for @choiceScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'But first, choose the option that suits you best'**
+  String get choiceScreenTitle;
+
+  /// No description provided for @choiceScreenFastAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Fast Access'**
+  String get choiceScreenFastAccess;
+
+  /// No description provided for @choiceScreenFastAccessDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'1 minute, 5 questions'**
+  String get choiceScreenFastAccessDesc;
+
+  /// No description provided for @choiceScreenHigherAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Higher Accuracy'**
+  String get choiceScreenHigherAccuracy;
+
+  /// No description provided for @choiceScreenHigherAccuracyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'3-5 minutes, 15 questions'**
+  String get choiceScreenHigherAccuracyDesc;
+
+  /// No description provided for @upgradeToFullTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Full Questionnaire'**
+  String get upgradeToFullTitle;
+
+  /// No description provided for @upgradeToFullContent.
+  ///
+  /// In en, this message translates to:
+  /// **'This will switch to the detailed questionnaire for better job matching. Your current answers will be preserved.'**
+  String get upgradeToFullContent;
+
+  /// No description provided for @upgradeSwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch'**
+  String get upgradeSwitch;
+
+  /// No description provided for @questionNotAvailableInMode.
+  ///
+  /// In en, this message translates to:
+  /// **'This question is not available in {mode} mode.'**
+  String questionNotAvailableInMode(String mode);
+
+  /// No description provided for @noAnswersForMode.
+  ///
+  /// In en, this message translates to:
+  /// **'No answers to display for {mode}.'**
+  String noAnswersForMode(String mode);
+
+  /// No description provided for @switchToSeeAllAnswers.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to {mode} to see all answers.'**
+  String switchToSeeAllAnswers(String mode);
+
+  /// No description provided for @showingAnswersFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {mode} answers'**
+  String showingAnswersFor(String mode);
+
+  /// No description provided for @completeQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Questions'**
+  String get completeQuestions;
+
+  /// Indicates user is in quick/short questionnaire mode
+  ///
+  /// In en, this message translates to:
+  /// **'Quick questionnaire mode'**
+  String get shortQuestionnaireMode;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

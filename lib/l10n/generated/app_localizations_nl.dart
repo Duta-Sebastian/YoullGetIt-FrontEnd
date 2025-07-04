@@ -1728,4 +1728,57 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get jobCartMinimize => 'Minimaliseren';
+
+  @override
+  String get internshipMessage => 'Laten we ervoor zorgen dat je die stage krijgt die past bij jouw achtergrond.';
+
+  @override
+  String get choiceScreenTitle => 'Maar kies eerst de optie die het beste bij je past';
+
+  @override
+  String get choiceScreenFastAccess => 'Snelle Toegang';
+
+  @override
+  String get choiceScreenFastAccessDesc => '1 minuut, 5 vragen';
+
+  @override
+  String get choiceScreenHigherAccuracy => 'Hogere Nauwkeurigheid';
+
+  @override
+  String get choiceScreenHigherAccuracyDesc => '3-5 minuten, 15 vragen';
+
+  @override
+  String get upgradeToFullTitle => 'Overschakelen naar volledige vragenlijst';
+
+  @override
+  String get upgradeToFullContent => 'Dit schakelt over naar de gedetailleerde vragenlijst voor betere baanmatching. Uw huidige antwoorden worden bewaard.';
+
+  @override
+  String get upgradeSwitch => 'Wisselen';
+
+  @override
+  String questionNotAvailableInMode(String mode) {
+    return 'Deze vraag is niet beschikbaar in $mode-modus.';
+  }
+
+  @override
+  String noAnswersForMode(String mode) {
+    return 'Geen antwoorden om weer te geven voor $mode.';
+  }
+
+  @override
+  String switchToSeeAllAnswers(String mode) {
+    return 'Schakel over naar $mode om alle antwoorden te zien.';
+  }
+
+  @override
+  String showingAnswersFor(String mode) {
+    return '$mode antwoorden tonen';
+  }
+
+  @override
+  String get completeQuestions => 'Vragen voltooien';
+
+  @override
+  String get shortQuestionnaireMode => 'Snelle vragenlijst modus';
 }

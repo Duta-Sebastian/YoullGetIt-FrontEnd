@@ -750,5 +750,55 @@
   "jobCartHowItWorksAppliedDesc": "Jobs you've already applied to",
   "jobCartHowItWorksTip": "Swipe left on any job to remove it from your cart",
   "jobCartExpand": "Expand",
-  "jobCartMinimize": "Minimize"
+  "jobCartMinimize": "Minimize",
+
+  "internshipMessage": "Let's make sure you'll get that internship tailored to your background.",
+
+  "choiceScreenTitle": "But first, choose the option that suits you best",
+  "choiceScreenFastAccess": "Get Fast Access",
+  "choiceScreenFastAccessDesc": "1 minute, 5 questions",
+  "choiceScreenHigherAccuracy": "Get Higher Accuracy",
+  "choiceScreenHigherAccuracyDesc": "3-5 minutes, 15 questions",
+
+  "upgradeToFullTitle": "Switch to Full Questionnaire",
+  "upgradeToFullContent": "This will switch to the detailed questionnaire for better job matching. Your current answers will be preserved.",
+  "upgradeSwitch": "Switch",
+  "questionNotAvailableInMode": "This question is not available in {mode} mode.",
+  "@questionNotAvailableInMode": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "noAnswersForMode": "No answers to display for {mode}.",
+  "@noAnswersForMode": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "switchToSeeAllAnswers": "Switch to {mode} to see all answers.",
+  "@switchToSeeAllAnswers": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "showingAnswersFor": "Showing {mode} answers",
+  "@showingAnswersFor": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "completeQuestions": "Complete Questions",
+
+  "shortQuestionnaireMode": "Quick questionnaire mode",
+  "@shortQuestionnaireMode": {
+    "description": "Indicates user is in quick/short questionnaire mode"
+  }
 }

@@ -1729,4 +1729,57 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get jobCartMinimize => 'Minimizează';
+
+  @override
+  String get internshipMessage => 'Să ne asigurăm că vei obține acel stagiu adaptat experienței tale.';
+
+  @override
+  String get choiceScreenTitle => 'Dar mai întâi, alege opțiunea care ți se potrivește cel mai bine';
+
+  @override
+  String get choiceScreenFastAccess => 'Obține Acces Rapid';
+
+  @override
+  String get choiceScreenFastAccessDesc => '1 minut, 5 întrebări';
+
+  @override
+  String get choiceScreenHigherAccuracy => 'Obține Precizie Mai Mare';
+
+  @override
+  String get choiceScreenHigherAccuracyDesc => '3-5 minute, 15 întrebări';
+
+  @override
+  String get upgradeToFullTitle => 'Treceți la chestionarul complet';
+
+  @override
+  String get upgradeToFullContent => 'Aceasta va trece la chestionarul detaliat pentru o potrivire mai bună a locurilor de muncă. Răspunsurile dumneavoastră actuale vor fi păstrate.';
+
+  @override
+  String get upgradeSwitch => 'Schimbă';
+
+  @override
+  String questionNotAvailableInMode(String mode) {
+    return 'Această întrebare nu este disponibilă în modul $mode.';
+  }
+
+  @override
+  String noAnswersForMode(String mode) {
+    return 'Nu există răspunsuri de afișat pentru $mode.';
+  }
+
+  @override
+  String switchToSeeAllAnswers(String mode) {
+    return 'Treceți la $mode pentru a vedea toate răspunsurile.';
+  }
+
+  @override
+  String showingAnswersFor(String mode) {
+    return 'Se afișează răspunsurile $mode';
+  }
+
+  @override
+  String get completeQuestions => 'Completați întrebările';
+
+  @override
+  String get shortQuestionnaireMode => 'Modul chestionar rapid';
 }

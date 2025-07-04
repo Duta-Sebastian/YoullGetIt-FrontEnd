@@ -10,11 +10,13 @@ import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 class RecommendationProcessingScreen extends ConsumerStatefulWidget {
   final bool withCv;
   final Map<String, dynamic> answers;
+  final bool isShortQuestionnaire;
 
   const RecommendationProcessingScreen({
     super.key,
     required this.withCv, 
-    required this.answers
+    required this.answers,
+    required this.isShortQuestionnaire,
   });
 
   @override
@@ -143,7 +145,7 @@ class _RecommendationProcessingScreenState extends ConsumerState<RecommendationP
       await Future.wait([
         ref.read(activeJobsProvider.notifier).fetchJobs(),
         setFirstTimeOpening(),
-        DatabaseManager.saveQuestionAnswers(widget.answers),
+        DatabaseManager.saveQuestionAnswers(widget.answers, widget.isShortQuestionnaire),
       ]);
     } catch (e) {
       // Log error but don't block navigation

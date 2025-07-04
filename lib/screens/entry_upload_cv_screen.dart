@@ -13,9 +13,12 @@ import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class EntryUploadCvScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> answers;
+  final bool isShortQuestionnaire;
+
   const EntryUploadCvScreen({
     super.key,
     required this.answers,
+    required this.isShortQuestionnaire,
   });
 
   @override
@@ -157,7 +160,8 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
       MaterialPageRoute(
         builder: (context) => RecommendationProcessingScreen(
           withCv: true,
-          answers: _answers
+          answers: _answers,
+          isShortQuestionnaire: widget.isShortQuestionnaire,
         ),
       ),
     );

@@ -8,6 +8,39 @@ class QuestionRepository {
   static Map<String, Question>? _textToQuestionCache;
   static Map<String, Question>? _idToQuestionCache;
 
+    static const Set<String> _shortPathSkips = {
+    'q2_yes_1',
+    'q2_yes_2',
+    'q3',
+    'q4_eng',
+    'q4_it',
+    'q5',
+    'q7',
+    'q15',
+  };
+
+  static bool shouldIncludeInPath(String questionId, bool isShortQuestionnaire) {
+    if (!isShortQuestionnaire) return true;
+    return !_shortPathSkips.contains(questionId);
+  }
+
+  static String? getNextQuestionId(Question question, bool isShortQuestionnaire) {
+    String? nextId = question.nextQuestionId;
+    
+    while (nextId != null && !shouldIncludeInPath(nextId, isShortQuestionnaire)) {
+      final nextQuestion = getQuestionById(nextId);
+      nextId = nextQuestion?.nextQuestionId;
+    }
+    
+    return nextId;
+  }
+
+  static int getQuestionsCount(bool isShortQuestionnaire) {
+    if (!isShortQuestionnaire) return _questionsCount;
+    
+    return _questions.where((q) => shouldIncludeInPath(q.id, isShortQuestionnaire)).length;
+  }
+
   static Future<void> initialize() async {
     final softSkills = await SkillsRepository.getSoftSkills();
     final hardSkills = await SkillsRepository.getHardSkills();

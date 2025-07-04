@@ -590,5 +590,24 @@
   "jobCartHowItWorksAppliedDesc": "Emplois pour lesquels vous avez déjà postulé",
   "jobCartHowItWorksTip": "Glissez vers la gauche sur n'importe quel emploi pour le supprimer de votre panier",
   "jobCartExpand": "Développer",
-  "jobCartMinimize": "Réduire"
+  "jobCartMinimize": "Réduire",
+
+  "internshipMessage": "Assurons-nous que tu obtiendras ce stage adapté à ton parcours.",
+
+  "choiceScreenTitle": "Mais d'abord, choisissez l'option qui vous convient le mieux",
+  "choiceScreenFastAccess": "Accès Rapide",
+  "choiceScreenFastAccessDesc": "1 minute, 5 questions",
+  "choiceScreenHigherAccuracy": "Précision Supérieure",
+  "choiceScreenHigherAccuracyDesc": "3-5 minutes, 15 questions",
+
+  "upgradeToFullTitle": "Passer au questionnaire complet",
+  "upgradeToFullContent": "Cela passera au questionnaire détaillé pour un meilleur appariement d'emploi. Vos réponses actuelles seront conservées.",
+  "upgradeSwitch": "Changer",
+  "questionNotAvailableInMode": "Cette question n'est pas disponible en mode {mode}.",
+  "noAnswersForMode": "Aucune réponse à afficher pour {mode}.",
+  "switchToSeeAllAnswers": "Passez à {mode} pour voir toutes les réponses.",
+  "showingAnswersFor": "Affichage des réponses {mode}",
+  "completeQuestions": "Compléter les questions",
+
+  "shortQuestionnaireMode": "Mode questionnaire rapide"
 }

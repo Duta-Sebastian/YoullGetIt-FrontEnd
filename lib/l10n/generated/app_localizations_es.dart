@@ -1728,4 +1728,57 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get jobCartMinimize => 'Minimizar';
+
+  @override
+  String get internshipMessage => 'Asegurémonos de que consigas esa pasantía adaptada a tu experiencia.';
+
+  @override
+  String get choiceScreenTitle => 'Pero primero, elige la opción que mejor te convenga';
+
+  @override
+  String get choiceScreenFastAccess => 'Acceso Rápido';
+
+  @override
+  String get choiceScreenFastAccessDesc => '1 minuto, 5 preguntas';
+
+  @override
+  String get choiceScreenHigherAccuracy => 'Mayor Precisión';
+
+  @override
+  String get choiceScreenHigherAccuracyDesc => '3-5 minutos, 15 preguntas';
+
+  @override
+  String get upgradeToFullTitle => 'Cambiar al cuestionario completo';
+
+  @override
+  String get upgradeToFullContent => 'Esto cambiará al cuestionario detallado para una mejor coincidencia de trabajo. Sus respuestas actuales se conservarán.';
+
+  @override
+  String get upgradeSwitch => 'Cambiar';
+
+  @override
+  String questionNotAvailableInMode(String mode) {
+    return 'Esta pregunta no está disponible en modo $mode.';
+  }
+
+  @override
+  String noAnswersForMode(String mode) {
+    return 'No hay respuestas que mostrar para $mode.';
+  }
+
+  @override
+  String switchToSeeAllAnswers(String mode) {
+    return 'Cambie a $mode para ver todas las respuestas.';
+  }
+
+  @override
+  String showingAnswersFor(String mode) {
+    return 'Mostrando respuestas de $mode';
+  }
+
+  @override
+  String get completeQuestions => 'Completar preguntas';
+
+  @override
+  String get shortQuestionnaireMode => 'Modo cuestionario rápido';
 }

@@ -10,12 +10,14 @@ class EditQuestionScreen extends StatefulWidget {
   final Question question;
   final List<String> currentAnswers;
   final Map<String, List<String>> allCurrentAnswers;
+  final bool isShortQuestionnaire; // NEW: Add path awareness
 
   const EditQuestionScreen({
     super.key,
     required this.question,
     required this.currentAnswers,
     required this.allCurrentAnswers,
+    required this.isShortQuestionnaire, // NEW: Required parameter
   });
 
   @override
@@ -25,6 +27,9 @@ class EditQuestionScreen extends StatefulWidget {
 class EditQuestionScreenState extends State<EditQuestionScreen> {
   late List<String> _selectedAnswers;
   late Map<String, List<String>> _updatedAnswersMap;
+
+  // NEW: Helper property for cleaner code
+  bool get isShortQuestionnaire => widget.isShortQuestionnaire;
 
   @override
   void initState() {
@@ -70,25 +75,28 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
     
     if (addedBranches.isEmpty || widget.question.nextQuestionMap == null) return false;
     
-    // Check if any of the added branches actually have questions
+    // Check if any of the added branches actually have questions that should be included in current path
     for (final branch in addedBranches) {
       if (widget.question.nextQuestionMap!.containsKey(branch)) {
         final branchQuestionId = widget.question.nextQuestionMap![branch];
         if (branchQuestionId != null && branchQuestionId.isNotEmpty) {
-          // Check if the branch question exists
-          final branchQuestion = QuestionRepository.questions.firstWhere(
-            (q) => q.id == branchQuestionId,
-          );
-          if (branchQuestion.id.isNotEmpty) {
-            return true; // Found at least one valid branch with questions
+          // NEW: Check if the branch question should be included in current path
+          if (QuestionRepository.shouldIncludeInPath(branchQuestionId, isShortQuestionnaire)) {
+            final branchQuestion = QuestionRepository.questions.firstWhere(
+              (q) => q.id == branchQuestionId,
+            );
+            if (branchQuestion.id.isNotEmpty) {
+              return true; // Found at least one valid branch with questions in current path
+            }
           }
         }
       }
     }
     
-    return false; // No valid branches with questions found
+    return false; // No valid branches with questions found in current path
   }
 
+  // UPDATED: Use path-aware navigation for branch questions
   List<String> _getBranchQuestionTexts(String rootQuestionText, String branch) {
     final branchQuestionTexts = <String>[];
     final rootQuestion = _getQuestionByText(rootQuestionText);
@@ -103,10 +111,14 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
       final currentQuestion = _getQuestionById(currentId);
       if (currentQuestion == null) break;
       
-      branchQuestionTexts.add(currentQuestion.text);
+      // NEW: Only include questions that should be in current path
+      if (QuestionRepository.shouldIncludeInPath(currentId, isShortQuestionnaire)) {
+        branchQuestionTexts.add(currentQuestion.text);
+      }
       
       if (currentQuestion.rootQuestionId == rootQuestion.id) {
-        currentId = currentQuestion.nextQuestionId;
+        // NEW: Use path-aware navigation
+        currentId = QuestionRepository.getNextQuestionId(currentQuestion, isShortQuestionnaire);
       } else {
         break;
       }
@@ -173,8 +185,12 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
     String? firstBranchQuestionId;
     for (final branch in addedBranches) {
       if (widget.question.nextQuestionMap!.containsKey(branch)) {
-        firstBranchQuestionId = widget.question.nextQuestionMap![branch];
-        break;
+        final branchId = widget.question.nextQuestionMap![branch];
+        // NEW: Only use branches that should be included in current path
+        if (branchId != null && QuestionRepository.shouldIncludeInPath(branchId, isShortQuestionnaire)) {
+          firstBranchQuestionId = branchId;
+          break;
+        }
       }
     }
     
@@ -194,6 +210,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
           startingQuestionIndex: branchQuestionIndex,
           initialAnswers: _updatedAnswersMap,
           rootQuestionId: widget.question.id,
+          isShortQuestionnaire: isShortQuestionnaire, // NEW: Pass path info
         ),
       ),
     );

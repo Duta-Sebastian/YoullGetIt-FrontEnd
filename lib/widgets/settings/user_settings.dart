@@ -426,13 +426,14 @@ class _UserSettingsState extends State<UserSettings> {
                     if (_usernameFocus.hasFocus) {
                       _usernameFocus.unfocus();
                     }
-                    
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ViewAnswersScreen(),
-                      ),
-                    );
-                  },
+                    if (context.mounted) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ViewAnswersScreen(),
+                        ),
+                      );
+                    }
+                  }
                 ),
               ),
 

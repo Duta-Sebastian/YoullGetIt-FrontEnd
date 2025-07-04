@@ -1728,4 +1728,57 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get jobCartMinimize => 'Minimieren';
+
+  @override
+  String get internshipMessage => 'Lass uns sicherstellen, dass du das Praktikum bekommst, das zu deinem Hintergrund passt.';
+
+  @override
+  String get choiceScreenTitle => 'Aber wählen Sie zuerst die Option, die am besten zu Ihnen passt';
+
+  @override
+  String get choiceScreenFastAccess => 'Schneller Zugang';
+
+  @override
+  String get choiceScreenFastAccessDesc => '1 Minute, 5 Fragen';
+
+  @override
+  String get choiceScreenHigherAccuracy => 'Höhere Genauigkeit';
+
+  @override
+  String get choiceScreenHigherAccuracyDesc => '3-5 Minuten, 15 Fragen';
+
+  @override
+  String get upgradeToFullTitle => 'Zum vollständigen Fragebogen wechseln';
+
+  @override
+  String get upgradeToFullContent => 'Dies wechselt zum detaillierten Fragebogen für bessere Job-Zuordnung. Ihre aktuellen Antworten werden beibehalten.';
+
+  @override
+  String get upgradeSwitch => 'Wechseln';
+
+  @override
+  String questionNotAvailableInMode(String mode) {
+    return 'Diese Frage ist im $mode-Modus nicht verfügbar.';
+  }
+
+  @override
+  String noAnswersForMode(String mode) {
+    return 'Keine Antworten für $mode anzuzeigen.';
+  }
+
+  @override
+  String switchToSeeAllAnswers(String mode) {
+    return 'Wechseln Sie zu $mode, um alle Antworten zu sehen.';
+  }
+
+  @override
+  String showingAnswersFor(String mode) {
+    return '$mode-Antworten anzeigen';
+  }
+
+  @override
+  String get completeQuestions => 'Fragen vervollständigen';
+
+  @override
+  String get shortQuestionnaireMode => 'Schneller Fragebogen-Modus';
 }

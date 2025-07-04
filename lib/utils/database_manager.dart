@@ -48,7 +48,8 @@ class DatabaseManager {
           CREATE TABLE question_answers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             answers_json TEXT NOT NULL,
-            last_changed DATETIME NOT NULL
+            last_changed DATETIME NOT NULL,
+            is_short_questionnaire INTEGER DEFAULT 0
           )
         ''');
       },
@@ -271,7 +272,7 @@ class DatabaseManager {
     return syncedCount;
   }
 
-  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers) async {
+  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers, bool isShortQuestionnaire) async {
     final answersJson = jsonEncode(answers);
 
     await _database.delete('question_answers');
@@ -279,7 +280,23 @@ class DatabaseManager {
     return await _database.insert('question_answers', {
       'answers_json': answersJson,
       'last_changed': DateTime.now().toUtc().toIso8601String(),
+      'is_short_questionnaire': isShortQuestionnaire ? 1 : 0,
     });
+  }
+
+  static Future<bool> isShortQuestionnaire() async {
+    final results = await _database.query(
+      'question_answers',
+      columns: ['is_short_questionnaire'],
+      orderBy: 'last_changed DESC',
+      limit: 1,
+    );
+
+    if (results.isEmpty) {
+      return false;
+    }
+
+    return results.first['is_short_questionnaire'] == 1;
   }
 
   static Future<Map<String, dynamic>?> getQuestionAnswersMap() async {

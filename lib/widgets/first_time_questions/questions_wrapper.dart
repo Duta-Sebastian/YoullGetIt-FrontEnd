@@ -12,6 +12,7 @@ class QuestionWrapper extends StatefulWidget {
   final Function(String) onQuestionTextUpdated;
   final Function(Map<String, List<String>>)? onFinish;
   final Function(QuestionWrapperState)? onStateReady;
+  final bool isShortQuestionnaire; // NEW: Add this parameter
 
   const QuestionWrapper({
     super.key,
@@ -21,6 +22,7 @@ class QuestionWrapper extends StatefulWidget {
     required this.onQuestionTextUpdated,
     this.onFinish,
     this.onStateReady,
+    required this.isShortQuestionnaire, // NEW: Make it required
   });
 
   @override
@@ -32,6 +34,9 @@ class QuestionWrapperState extends State<QuestionWrapper> {
   int _navigationStackIndex = 0;
   Map<String, List<String>> answersMap = {};
   bool _isLoading = false;
+
+  // NEW: Helper property for cleaner code
+  bool get isShortQuestionnaire => widget.isShortQuestionnaire;
 
   @override
   void initState() {
@@ -53,6 +58,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     return QuestionRepository.getQuestionById(id);
   }
 
+  // UPDATED: Add path filtering to route computation
   List<String> _computeRouteForRoot(Question root) {
     List<String> route = [];
     final selectedBranches = answersMap[root.text] ?? [];
@@ -66,21 +72,29 @@ class QuestionWrapperState extends State<QuestionWrapper> {
           
           if (question == null) break;
           
-          if (question.rootQuestionId == root.id) {
-            route.add(question.id);
-            currentId = question.nextQuestionId;
+          // NEW: Check if question should be included in current path
+          if (QuestionRepository.shouldIncludeInPath(currentId, isShortQuestionnaire)) {
+            if (question.rootQuestionId == root.id) {
+              route.add(question.id);
+              // NEW: Use path-aware next question lookup
+              currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
+            } else {
+              break;
+            }
           } else {
-            break;
+            // NEW: Skip this question and continue to next
+            currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
           }
         }
       }
     }
     
+    // NEW: Use path-aware next question lookup for main flow
     if (root.nextQuestionId != null) {
-      final nextQ = _getQuestionById(root.nextQuestionId!);
+      final nextId = QuestionRepository.getNextQuestionId(root, isShortQuestionnaire);
       
-      if (nextQ != null && (route.isEmpty || route.last != root.nextQuestionId)) {
-        route.add(root.nextQuestionId!);
+      if (nextId != null && (route.isEmpty || route.last != nextId)) {
+        route.add(nextId);
       }
     }
     
@@ -227,6 +241,7 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     }
   }
 
+  // UPDATED: Use path filtering when removing branch answers
   List<String> _getBranchQuestionTexts(String rootId, String branch) {
     final branchQuestionTexts = <String>[];
     final rootQuestion = _getQuestionById(rootId);
@@ -244,7 +259,8 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       if (question == null) break;
       
       branchQuestionTexts.add(question.text);
-      currentId = question.nextQuestionId;
+      // NEW: Use path-aware next question lookup
+      currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
     }
     
     return branchQuestionTexts;
@@ -302,8 +318,20 @@ class QuestionWrapperState extends State<QuestionWrapper> {
   // Public getters for parent to access state
   bool get canGoBack => _navigationStackIndex > 0;
   bool get isLoading => _isLoading;
-  bool get isLastQuestion => _navigationStackIndex == _navigationStack.length - 1 && 
-                             widget.currentQuestionIndex == QuestionRepository.questions.length - 1;
+  
+  // UPDATED: Dynamically determine if this is the last question based on available path
+  bool get isLastQuestion {
+    // Check if we're at the end of our navigation stack
+    if (_navigationStackIndex >= _navigationStack.length - 1) {
+      return true;
+    }
+    
+    // Check if the current question has no valid next question in this path
+    final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    final nextQuestionId = QuestionRepository.getNextQuestionId(currentQuestion, isShortQuestionnaire);
+    
+    return nextQuestionId == null;
+  }
 
   // Public methods for parent to control navigation
   Future<void> goToNextQuestion() => _goToNextQuestion();

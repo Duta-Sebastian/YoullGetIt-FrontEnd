@@ -589,5 +589,24 @@
   "jobCartHowItWorksAppliedDesc": "Lavori per cui hai già fatto domanda",
   "jobCartHowItWorksTip": "Scorri verso sinistra su qualsiasi lavoro per rimuoverlo dal tuo carrello",
   "jobCartExpand": "Espandi",
-  "jobCartMinimize": "Minimizza"
+  "jobCartMinimize": "Minimizza",
+
+  "internshipMessage": "Assicuriamoci che tu ottenga quello stage su misura per il tuo background.",
+
+  "choiceScreenTitle": "Ma prima, scegli l'opzione che fa per te",
+  "choiceScreenFastAccess": "Accesso Veloce",
+  "choiceScreenFastAccessDesc": "1 minuto, 5 domande",
+  "choiceScreenHigherAccuracy": "Maggiore Precisione",
+  "choiceScreenHigherAccuracyDesc": "3-5 minuti, 15 domande",
+
+  "upgradeToFullTitle": "Passa al questionario completo",
+  "upgradeToFullContent": "Questo passerà al questionario dettagliato per una migliore corrispondenza lavorativa. Le tue risposte attuali saranno conservate.",
+  "upgradeSwitch": "Cambia",
+  "questionNotAvailableInMode": "Questa domanda non è disponibile in modalità {mode}.",
+  "noAnswersForMode": "Nessuna risposta da mostrare per {mode}.",
+  "switchToSeeAllAnswers": "Passa a {mode} per vedere tutte le risposte.",
+  "showingAnswersFor": "Mostrando risposte {mode}",
+  "completeQuestions": "Completa domande",
+
+  "shortQuestionnaireMode": "Modalità questionario veloce"
 }

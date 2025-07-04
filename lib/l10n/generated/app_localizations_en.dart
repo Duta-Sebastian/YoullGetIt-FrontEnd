@@ -1728,4 +1728,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jobCartMinimize => 'Minimize';
+
+  @override
+  String get internshipMessage => 'Let\'s make sure you\'ll get that internship tailored to your background.';
+
+  @override
+  String get choiceScreenTitle => 'But first, choose the option that suits you best';
+
+  @override
+  String get choiceScreenFastAccess => 'Get Fast Access';
+
+  @override
+  String get choiceScreenFastAccessDesc => '1 minute, 5 questions';
+
+  @override
+  String get choiceScreenHigherAccuracy => 'Get Higher Accuracy';
+
+  @override
+  String get choiceScreenHigherAccuracyDesc => '3-5 minutes, 15 questions';
+
+  @override
+  String get upgradeToFullTitle => 'Switch to Full Questionnaire';
+
+  @override
+  String get upgradeToFullContent => 'This will switch to the detailed questionnaire for better job matching. Your current answers will be preserved.';
+
+  @override
+  String get upgradeSwitch => 'Switch';
+
+  @override
+  String questionNotAvailableInMode(String mode) {
+    return 'This question is not available in $mode mode.';
+  }
+
+  @override
+  String noAnswersForMode(String mode) {
+    return 'No answers to display for $mode.';
+  }
+
+  @override
+  String switchToSeeAllAnswers(String mode) {
+    return 'Switch to $mode to see all answers.';
+  }
+
+  @override
+  String showingAnswersFor(String mode) {
+    return 'Showing $mode answers';
+  }
+
+  @override
+  String get completeQuestions => 'Complete Questions';
+
+  @override
+  String get shortQuestionnaireMode => 'Quick questionnaire mode';
 }
