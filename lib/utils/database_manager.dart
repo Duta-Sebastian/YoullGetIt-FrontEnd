@@ -5,6 +5,7 @@ import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
+import 'package:youllgetit_flutter/models/question_sync_model.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
@@ -48,7 +49,8 @@ class DatabaseManager {
           CREATE TABLE question_answers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             answers_json TEXT NOT NULL,
-            last_changed DATETIME NOT NULL
+            last_changed DATETIME NOT NULL,
+            is_short_questionnaire INTEGER DEFAULT 0
           )
         ''');
       },
@@ -162,6 +164,43 @@ class DatabaseManager {
     });
   }
 
+  static Future<int> updateQuestions(QuestionSyncModel currentQuestions) async {
+    final QuestionSyncModel? oldQuestions = await _database.query('question_answers').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return QuestionSyncModel.fromJson(results);
+    });
+
+    if (oldQuestions == null) {
+      return _database.insert('question_answers', {
+        'answers_json': currentQuestions.questionJson,
+        'last_changed': currentQuestions.lastChanged!.toUtc().toIso8601String(),
+        'is_short_questionnaire': currentQuestions.isShortQuestionnaire ? 1 : 0
+      });
+    } else if (currentQuestions.lastChanged!.isAfter(oldQuestions.lastChanged!)) {
+      return _database.update('question_answers', {
+        'answers_json': currentQuestions.questionJson,
+        'last_changed': currentQuestions.lastChanged!.toUtc().toIso8601String(),
+        'is_short_questionnaire': currentQuestions.isShortQuestionnaire ? 1 : 0
+      });
+    }
+    return 0;
+  }
+
+  static Future<QuestionSyncModel?> getQuestions() async {
+    return await _database.query('question_answers').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return QuestionSyncModel(
+        questionJson: results.first['answers_json'] as String?,
+        lastChanged: DateTime.parse(results.first['last_changed'] as String),
+        isShortQuestionnaire: results.first['is_short_questionnaire'] == 1
+      );
+    });
+  }
+
   static Future<int> updateCV(CvModel cv) async {
     final Uint8List cvDataBytes = cv.cvData is Uint8List 
       ? cv.cvData as Uint8List 
@@ -271,7 +310,7 @@ class DatabaseManager {
     return syncedCount;
   }
 
-  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers) async {
+  static Future<int> saveQuestionAnswers(Map<String, dynamic> answers, bool isShortQuestionnaire) async {
     final answersJson = jsonEncode(answers);
 
     await _database.delete('question_answers');
@@ -279,7 +318,23 @@ class DatabaseManager {
     return await _database.insert('question_answers', {
       'answers_json': answersJson,
       'last_changed': DateTime.now().toUtc().toIso8601String(),
+      'is_short_questionnaire': isShortQuestionnaire ? 1 : 0,
     });
+  }
+
+  static Future<bool> isShortQuestionnaire() async {
+    final results = await _database.query(
+      'question_answers',
+      columns: ['is_short_questionnaire'],
+      orderBy: 'last_changed DESC',
+      limit: 1,
+    );
+
+    if (results.isEmpty) {
+      return false;
+    }
+
+    return results.first['is_short_questionnaire'] == 1;
   }
 
   static Future<Map<String, dynamic>?> getQuestionAnswersMap() async {

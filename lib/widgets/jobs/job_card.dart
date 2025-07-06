@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'dart:math';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_deadline_model.dart';
@@ -62,6 +63,8 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return GestureDetector(
       onTap: _flipCard,
       child: AnimatedBuilder(
@@ -77,7 +80,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
               transform: transform,
               child: Stack(
                 children: [
-                  _buildFront(),
+                  _buildFront(localizations),
                   if (widget.percentThresholdx != 0)
                     Positioned.fill(
                       child: Container(
@@ -112,7 +115,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 ..setEntry(3, 2, 0.001)
                 ..rotateY(pi)
                 ..rotateY(_animation.value),
-              child: _buildBack(),
+              child: _buildBack(localizations),
             );
           }
         },
@@ -120,7 +123,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildFront() {
+  Widget _buildFront(AppLocalizations localizations) {
     return _buildCard(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -143,29 +146,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         ],
                       ),
                     ),
-                    // if (widget.jobData.matchScore != null)
-                    //   Container(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    //     decoration: BoxDecoration(
-                    //       color: _getMatchScoreColor(widget.jobData.matchScore!),
-                    //       borderRadius: BorderRadius.circular(20),
-                    //       boxShadow: [
-                    //         BoxShadow(
-                    //           color: _getMatchScoreColor(widget.jobData.matchScore!).withAlpha(77),
-                    //           blurRadius: 4,
-                    //           offset: const Offset(0, 2),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //     child: Text(
-                    //       '${(widget.jobData.matchScore! * 100).round()}%',
-                    //       style: const TextStyle(
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.bold,
-                    //         fontSize: 12,
-                    //       ),
-                    //     ),
-                    //   ),
                   ],
                 ),
                 
@@ -197,7 +177,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         Icon(Icons.schedule_rounded, color: const Color(0xFF6B7280), size: 16),
                         const SizedBox(width: 4),
                         Text(
-                          'Deadline: ${_formatDeadline(widget.jobData.deadline!)}',
+                          '${localizations.jobCardDeadline} ${_formatDeadline(widget.jobData.deadline!, localizations)}',
                           style: _infoStyle.copyWith(
                             color: _isDeadlineSoon(widget.jobData.deadline!) ? const Color(0xFFEF4444) : const Color(0xFF6B7280),
                           ),
@@ -209,26 +189,26 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 const Divider(height: 24, thickness: 1),
                 
                 // Job Details
-                const Text("Job Details", style: _sectionStyle),
+                Text(localizations.jobCardJobDetails, style: _sectionStyle),
                 const SizedBox(height: 8),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     _buildChipWithIcon(
-                      widget.jobData.workMode.isEmpty ? "N/A" : widget.jobData.workMode,
+                      _localizeWorkMode(widget.jobData.workMode, localizations),
                       Icons.work_rounded,
                       const Color(0xFFA5B4FC), // Light blue
                       const Color(0xFF1F2937),
                     ),
                     _buildChipWithIcon(
-                      widget.jobData.expectedSalary.isEmpty ? "N/A" : widget.jobData.expectedSalary,
+                      widget.jobData.expectedSalary.isEmpty ? localizations.jobCardNotAvailable : widget.jobData.expectedSalary,
                       Icons.payments_rounded,
                       const Color(0xFFFBBF24), // Golden yellow
                       const Color(0xFF1F2937),
                     ),
                     _buildChipWithIcon(
-                      '${widget.jobData.durationInMonths} months',
+                      '${widget.jobData.durationInMonths} ${localizations.jobCardMonths}',
                       Icons.timer_rounded,
                       const Color(0xFF86EFAC), // Light green
                       const Color(0xFF1F2937),
@@ -247,13 +227,13 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 // Education Requirements
                 if (widget.jobData.requiredDegree.isNotEmpty) ...[
-                  const Text("Education Requirements", style: _sectionStyle),
+                  Text(localizations.jobCardEducationRequirements, style: _sectionStyle),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,
                     children: widget.jobData.requiredDegree.map((degree) => 
-                      _buildSimpleChip(degree, const Color(0xFFE879F9), const Color(0xFF1F2937)) // Light purple
+                      _buildSimpleChip(_localizeEducation(degree, localizations), const Color(0xFFE879F9), const Color(0xFF1F2937)) // Light purple
                     ).toList(),
                   ),
                   const SizedBox(height: 16),
@@ -261,7 +241,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 // Languages
                 if (widget.jobData.requiredSpokenLanguages.isNotEmpty) ...[
-                  const Text("Required Languages", style: _sectionStyle),
+                  Text(localizations.jobCardRequiredLanguages, style: _sectionStyle),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 6,
@@ -275,10 +255,10 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 // Visa Help
                 if (widget.jobData.visaHelp.isNotEmpty) ...[
-                  const Text("Visa Support", style: _sectionStyle),
+                  Text(localizations.jobCardVisaSupport, style: _sectionStyle),
                   const SizedBox(height: 8),
                   _buildChipWithIcon(
-                    widget.jobData.visaHelp,
+                    widget.jobData.visaHelp == "Not found" ? localizations.jobCardNotFound : widget.jobData.visaHelp,
                     Icons.flight_rounded,
                     widget.jobData.visaHelp != "Not found"? const Color(0xFF86EFAC) : const Color(0xFFFCA5A5),
                     const Color(0xFF1F2937),
@@ -288,13 +268,13 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 
                 // Related Fields
                 if (widget.jobData.relatedFields.isNotEmpty) ...[
-                  const Text("Related Fields", style: _sectionStyle),
+                  Text(localizations.jobCardRelatedFields, style: _sectionStyle),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 6,
                     runSpacing: 6,
                     children: widget.jobData.relatedFields.map((field) => 
-                      _buildSimpleChip(field, const Color(0xFFD1D5DB), const Color(0xFF1F2937)) // Light gray
+                      _buildSimpleChip(_localizeField(field, localizations), const Color(0xFFD1D5DB), const Color(0xFF1F2937)) // Light gray
                     ).toList(),
                   ),
                 ],
@@ -305,7 +285,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF3F4F6),
+                      color: const Color(0xFF81DCC4).withAlpha((0.1*225).toInt()),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -314,7 +294,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         Icon(Icons.flip_rounded, size: 16, color: const Color(0xFF6B7280)),
                         const SizedBox(width: 4),
                         Text(
-                          'Tap to see skills',
+                          localizations.jobCardTapToSeeSkills,
                           style: TextStyle(
                             fontSize: 12,
                             color: const Color(0xFF6B7280),
@@ -333,7 +313,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildBack() {
+  Widget _buildBack(AppLocalizations localizations) {
     return _buildCard(
       child: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
@@ -343,9 +323,9 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Header
             Row(
               children: [
-                Icon(Icons.psychology_rounded, color: const Color(0xFF374151), size: 24),
+                Icon(Icons.psychology_rounded, color: const Color(0xFF0D6B80), size: 24),
                 const SizedBox(width: 8),
-                const Text("Skills & Requirements", style: _headerStyle),
+                Text(localizations.jobCardSkillsRequirements, style: _headerStyle.copyWith(color: const Color(0xFF0D6B80))),
               ],
             ),
             
@@ -354,16 +334,16 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Hard Skills
             Row(
               children: [
-                Icon(Icons.build_rounded, color: const Color(0xFF6366F1), size: 20),
+                Icon(Icons.build_rounded, color: const Color(0xFF0D6B80), size: 20),
                 const SizedBox(width: 8),
-                const Text("Technical Skills", style: _skillHeaderStyle),
+                Text(localizations.jobCardTechnicalSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
               ],
             ),
             const SizedBox(height: 8),
             _buildWrappedChips(
-              widget.jobData.hardSkills.isEmpty ? ["N/A"] : widget.jobData.hardSkills,
-              const Color(0xFFA5B4FC),
-              const Color(0xFF1F2937),
+              widget.jobData.hardSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.hardSkills,
+              const Color(0xFF81DCC4),
+              const Color(0xFF0D6B80),
             ),
             
             const SizedBox(height: 20),
@@ -371,16 +351,16 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Soft Skills
             Row(
               children: [
-                Icon(Icons.people_rounded, color: const Color(0xFF22C55E), size: 20),
+                Icon(Icons.people_rounded, color: const Color(0xFF0D6B80), size: 20),
                 const SizedBox(width: 8),
-                const Text("Soft Skills", style: _skillHeaderStyle),
+                Text(localizations.jobCardSoftSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
               ],
             ),
             const SizedBox(height: 8),
             _buildWrappedChips(
-              widget.jobData.softSkills.isEmpty ? ["N/A"] : widget.jobData.softSkills,
-              const Color(0xFF86EFAC),
-              const Color(0xFF1F2937),
+              widget.jobData.softSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.softSkills,
+              const Color(0xFFB0E1EC),
+              const Color(0xFF0D6B80),
             ),
             
             const SizedBox(height: 20),
@@ -388,35 +368,17 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
             // Nice-to-Haves
             Row(
               children: [
-                Icon(Icons.star_rounded, color: const Color(0xFFF59E0B), size: 20),
+                Icon(Icons.star_rounded, color: const Color(0xFF0D6B80), size: 20),
                 const SizedBox(width: 8),
-                const Text("Nice-to-Have", style: _skillHeaderStyle),
+                Text(localizations.jobCardNiceToHave, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
               ],
             ),
             const SizedBox(height: 8),
             _buildWrappedChips(
-              widget.jobData.niceToHaves.isEmpty ? ["N/A"] : widget.jobData.niceToHaves,
-              const Color(0xFFFBBF24),
-              const Color(0xFF1F2937),
+              widget.jobData.niceToHaves.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.niceToHaves,
+              const Color(0xFF81DCC4).withAlpha((0.6*225).toInt()),
+              const Color(0xFF0D6B80),
             ),
-            
-            // Requirements section
-            // if (widget.jobData.requirements.isNotEmpty) ...[
-            //   const SizedBox(height: 20),
-            //   Row(
-            //     children: [
-            //       Icon(Icons.checklist_rounded, color: const Color(0xFF8B5CF6), size: 20),
-            //       const SizedBox(width: 8),
-            //       const Text("Requirements", style: _skillHeaderStyle),
-            //     ],
-            //   ),
-            //   const SizedBox(height: 8),
-            //   _buildWrappedChips(
-            //     widget.jobData.requirements,
-            //     const Color(0xFFE879F9),
-            //     const Color(0xFF1F2937),
-            //   ),
-            // ],
             
             // Back flip indicator
             const SizedBox(height: 20),
@@ -433,7 +395,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                     Icon(Icons.flip_rounded, size: 16, color: const Color(0xFF6B7280)),
                     const SizedBox(width: 4),
                     Text(
-                      'Tap to see details',
+                      localizations.jobCardTapToSeeDetails,
                       style: TextStyle(
                         fontSize: 12,
                         color: const Color(0xFF6B7280),
@@ -450,10 +412,83 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
-  String _formatDeadline(JobDeadline deadline) {
+  String _localizeWorkMode(String workMode, AppLocalizations localizations) {
+    switch (workMode.toLowerCase()) {
+      case 'remote':
+        return localizations.workModeRemote;
+      case 'hybrid':
+        return localizations.workModeHybrid;
+      case 'on-site':
+      case 'onsite':
+        return localizations.workModeOnSite;
+      case 'internship':
+        return localizations.optionYesInternship.replaceAll('Yes, ', '');
+      case 'part-time':
+        return localizations.optionYesPartTime.replaceAll('Yes, ', '');
+      default:
+        return workMode.isEmpty ? localizations.jobCardNotAvailable : workMode;
+    }
+  }
+
+  String _localizeEducation(String education, AppLocalizations localizations) {
+    switch (education.toLowerCase()) {
+      case 'bachelor':
+        return localizations.optionBachelor;
+      case 'master':
+        return localizations.optionMaster;
+      case 'phd':
+        return localizations.optionPhd;
+      case 'highschool':
+        return localizations.optionHighschool;
+      default:
+        return education;
+    }
+  }
+
+  String _localizeField(String field, AppLocalizations localizations) {
+    switch (field.toLowerCase()) {
+      case 'engineering':
+        return localizations.optionEngineering;
+      case 'it & data science':
+      case 'it and data science':
+        return localizations.optionItDataScience;
+      case 'marketing & communication':
+      case 'marketing and communication':
+        return localizations.optionMarketingCommunication;
+      case 'finance & economics':
+      case 'finance and economics':
+        return localizations.optionFinanceEconomics;
+      case 'political science':
+      case 'political science & public administration':
+        return localizations.optionPoliticalScience;
+      case 'sales & business administration':
+      case 'sales and business administration':
+        return localizations.optionSalesBusiness;
+      case 'arts & culture':
+      case 'arts and culture':
+        return localizations.optionArtsCulture;
+      case 'biology, chemistry, & life sciences':
+      case 'biology chemistry life sciences':
+        return localizations.optionBiologyChemistry;
+      case 'mechanical':
+        return localizations.optionMechanical;
+      case 'electrical':
+        return localizations.optionElectrical;
+      case 'aerospace':
+        return localizations.optionAerospace;
+      case 'civil':
+        return localizations.optionCivil;
+      case 'chemical':
+        return localizations.optionChemical;
+      default:
+        return field;
+    }
+  }
+
+  String _formatDeadline(JobDeadline deadline, AppLocalizations localizations) {
     // Handle empty or invalid dates
     if (deadline.month.isEmpty || deadline.day.isEmpty) {
-      return 'Not specified';
+      return localizations.jobCardNotSpecified;
     }
     
     try {
@@ -467,7 +502,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
       ];
       return '${monthNames[month]} $day';
     } catch (e) {
-      return 'Invalid date';
+      return localizations.jobCardInvalidDate;
     }
   }
 
@@ -496,13 +531,6 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
       return false;
     }
   }
-
-  // Color _getMatchScoreColor(double score) {
-  //   if (score >= 0.8) return const Color(0xFF22C55E);
-  //   if (score >= 0.6) return const Color(0xFF3B82F6);
-  //   if (score >= 0.4) return const Color(0xFFF59E0B);
-  //   return const Color(0xFFEF4444);
-  // }
 
   Color _calculateGlowColor(double threshold) {
     const Color positiveGlowBase = Color(0xFF86EFAC);

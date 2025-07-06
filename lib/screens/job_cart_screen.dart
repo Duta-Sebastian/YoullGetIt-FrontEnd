@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
@@ -66,13 +67,21 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   }
 
   String getTabTitle(int index, int jobCount) {
+    final localizations = AppLocalizations.of(context)!;
+    
     switch (index) {
       case 0:
-        return 'potential opportunitie${jobCount > 1 ? 's' : ''}';
+        return jobCount == 1 
+          ? localizations.jobCartPotentialOpportunity
+          : localizations.jobCartPotentialOpportunities;
       case 1:
-        return 'application${jobCount > 1 ? 's' : ''} remaining';
+        return jobCount == 1
+          ? localizations.jobCartApplicationRemaining
+          : localizations.jobCartApplicationsRemaining;
       case 2:
-        return 'applications${jobCount > 1 ? 's' : ''} completed';
+        return jobCount == 1
+          ? localizations.jobCartApplicationCompleted
+          : localizations.jobCartApplicationsCompleted;
       default:
         return '';
     }
@@ -106,6 +115,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   }
 
   void _handleRemove(JobCardModel job, JobStatus status) {
+    final localizations = AppLocalizations.of(context)!;
     final previousStatus = status;
     
     Future(() async {
@@ -116,9 +126,9 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.white,
-        content: Text('${job.roleName} removed'),
+        content: Text(localizations.jobCartJobRemoved(job.roleName)),
         action: SnackBarAction(
-          label: 'UNDO',
+          label: localizations.jobCartUndo,
           onPressed: () {
             DatabaseManager.insertJobCard(job);
             DatabaseManager.updateJobStatus(job.feedbackId, previousStatus);
@@ -153,6 +163,8 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_isLoading) {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -163,7 +175,7 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
               const CircularProgressIndicator(),
               const SizedBox(height: 16),
               Text(
-                'Loading your job cart...',
+                localizations.jobCartLoadingJobCart,
                 style: TextStyle(
                   color: Colors.grey.shade600,
                   fontSize: 16,
@@ -212,6 +224,8 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   }
   
   Widget _buildHeader(List<JobCardModel> filteredJobs) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
       decoration: BoxDecoration(
@@ -232,9 +246,9 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Your Job Cart',
-                    style: TextStyle(
+                  Text(
+                    localizations.jobCartYourJobCart,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       letterSpacing: -0.5,
@@ -271,15 +285,6 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
                   ),
                 ],
               ),
-              IconButton(
-                onPressed: _loadJobs,
-                icon: const Icon(Icons.refresh_rounded),
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.grey.shade100,
-                  foregroundColor: Colors.grey.shade700,
-                ),
-                tooltip: 'Refresh',
-              ),
             ],
           ),
         ],
@@ -288,39 +293,48 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
   }
   
   Widget _buildEmptyState() {
+    final localizations = AppLocalizations.of(context)!;
     String message;
+    String subtitle;
     IconData icon;
     
     switch (_selectedIndex) {
       case 0:
-        message = "You haven't liked any jobs yet";
+        message = localizations.jobCartNoLikedJobs;
+        subtitle = localizations.jobCartStartBrowsing;
         icon = Icons.thumb_up_outlined;
         break;
       case 1:
-        message = "No applications to complete";
+        message = localizations.jobCartNoApplicationsToComplete;
+        subtitle = localizations.jobCartMoveJobsToStage;
         icon = Icons.edit_document;
         break;
       case 2:
-        message = "You haven't completed any applications";
+        message = localizations.jobCartNoCompletedApplications;
+        subtitle = localizations.jobCartMoveJobsToStage;
         icon = Icons.check_circle_outline;
         break;
       default:
-        message = "No jobs found";
+        message = localizations.jobCartNoJobsFound;
+        subtitle = localizations.jobCartMoveJobsToStage;
         icon = Icons.work_outline;
     }
     
     return FadeTransition(
       opacity: _fadeAnimation,
-      child: Center(
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               icon,
               size: 64,
               color: Colors.grey.shade300,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Text(
               message,
               style: TextStyle(
@@ -328,16 +342,21 @@ class JobCartScreenState extends State<JobCartScreen> with SingleTickerProviderS
                 color: Colors.grey.shade600,
                 fontWeight: FontWeight.w500,
               ),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             Text(
-              _selectedIndex == 0 
-                ? "Start browsing jobs to build your collection"
-                : "Move jobs to this stage to see them here",
+              subtitle,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey.shade500,
+                height: 1.4,
               ),
+              textAlign: TextAlign.center,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

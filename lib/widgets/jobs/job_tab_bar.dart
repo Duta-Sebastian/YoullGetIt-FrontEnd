@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class JobTabBar extends StatefulWidget {
   final Function(int) onTabSelected;
@@ -48,6 +49,8 @@ class _JobTabBarState extends State<JobTabBar> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Container(
       height: 56,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -82,9 +85,9 @@ class _JobTabBarState extends State<JobTabBar> with SingleTickerProviderStateMix
         dividerColor: Colors.transparent,
         indicatorSize: TabBarIndicatorSize.tab,
         tabs: [
-          _buildTab(0, Icons.thumb_up_outlined, 'Liked'),
-          _buildTab(1, Icons.edit_document, 'To Apply'),
-          _buildTab(2, Icons.check_circle_outline, 'Applied'),
+          _buildTab(0, Icons.thumb_up_outlined, l10n.jobCartTabLiked),
+          _buildTab(1, Icons.edit_document, l10n.jobCartTabToApply),
+          _buildTab(2, Icons.check_circle_outline, l10n.jobCartTabApplied),
         ],
       ),
     );

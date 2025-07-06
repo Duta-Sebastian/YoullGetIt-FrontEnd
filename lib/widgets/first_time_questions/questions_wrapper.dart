@@ -1,14 +1,18 @@
-import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
 
 class QuestionWrapper extends StatefulWidget {
   final int currentQuestionIndex;
   final int totalQuestions;
-  final Function(int) onQuestionIndexChanged;
+  final Function(int, String) onQuestionIndexChanged;
   final Function(String) onQuestionTextUpdated;
   final Function(Map<String, List<String>>)? onFinish;
+  final Function(QuestionWrapperState)? onStateReady;
+  final bool isShortQuestionnaire; // NEW: Add this parameter
 
   const QuestionWrapper({
     super.key,
@@ -17,6 +21,8 @@ class QuestionWrapper extends StatefulWidget {
     required this.onQuestionIndexChanged,
     required this.onQuestionTextUpdated,
     this.onFinish,
+    this.onStateReady,
+    required this.isShortQuestionnaire, // NEW: Make it required
   });
 
   @override
@@ -26,12 +32,20 @@ class QuestionWrapper extends StatefulWidget {
 class QuestionWrapperState extends State<QuestionWrapper> {
   List<String> _navigationStack = [];
   int _navigationStackIndex = 0;
-  Map<String, List<String>> answersMap = {}; // Now question text → answers
+  Map<String, List<String>> answersMap = {};
+  bool _isLoading = false;
+
+  // NEW: Helper property for cleaner code
+  bool get isShortQuestionnaire => widget.isShortQuestionnaire;
 
   @override
   void initState() {
     super.initState();
     _initNavigationStack();
+    // Expose this state to parent after next frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.onStateReady?.call(this);
+    });
   }
 
   void _initNavigationStack() {
@@ -44,9 +58,10 @@ class QuestionWrapperState extends State<QuestionWrapper> {
     return QuestionRepository.getQuestionById(id);
   }
 
+  // UPDATED: Add path filtering to route computation
   List<String> _computeRouteForRoot(Question root) {
     List<String> route = [];
-    final selectedBranches = answersMap[root.text] ?? []; // Use text instead of ID
+    final selectedBranches = answersMap[root.text] ?? [];
     
     for (final branch in selectedBranches) {
       if (root.nextQuestionMap != null && root.nextQuestionMap!.containsKey(branch)) {
@@ -57,21 +72,29 @@ class QuestionWrapperState extends State<QuestionWrapper> {
           
           if (question == null) break;
           
-          if (question.rootQuestionId == root.id) {
-            route.add(question.id);
-            currentId = question.nextQuestionId;
+          // NEW: Check if question should be included in current path
+          if (QuestionRepository.shouldIncludeInPath(currentId, isShortQuestionnaire)) {
+            if (question.rootQuestionId == root.id) {
+              route.add(question.id);
+              // NEW: Use path-aware next question lookup
+              currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
+            } else {
+              break;
+            }
           } else {
-            break;
+            // NEW: Skip this question and continue to next
+            currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
           }
         }
       }
     }
     
+    // NEW: Use path-aware next question lookup for main flow
     if (root.nextQuestionId != null) {
-      final nextQ = _getQuestionById(root.nextQuestionId!);
+      final nextId = QuestionRepository.getNextQuestionId(root, isShortQuestionnaire);
       
-      if (nextQ != null && (route.isEmpty || route.last != root.nextQuestionId)) {
-        route.add(root.nextQuestionId!);
+      if (nextId != null && (route.isEmpty || route.last != nextId)) {
+        route.add(nextId);
       }
     }
     
@@ -98,28 +121,72 @@ class QuestionWrapperState extends State<QuestionWrapper> {
 
   bool _validateCurrentAnswer() {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
-    if ((answersMap[currentQuestion.text] ?? []).isEmpty && // Use text instead of ID
-        currentQuestion.answerType != AnswerType.text) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    if ((answersMap[currentQuestion.text] ?? []).isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please select at least one option"))
+        SnackBar(
+          content: Text(
+            l10n.pleaseSelectAtLeastOneOption,
+            style: TextStyle(color: Colors.black)
+          ),
+          backgroundColor: const Color(0xFFFFDE15),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       );
       return false;
     }
     return true;
   }
 
-  void _handleQuestionnaireCompletion() {
+  Future<void> _handleQuestionnaireCompletion() async {
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Add a small delay for better UX
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) return;
+
     if (widget.onFinish != null) {
       widget.onFinish!(answersMap);
     } else {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("You've completed the questionnaire!"))
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.celebration, color: Colors.white),
+              const SizedBox(width: 8),
+              Text(l10n.questionnaireCompleted),
+            ],
+          ),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       );
+    }
+
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-  void _goToNextQuestion() {
+  Future<void> _goToNextQuestion() async {
     if (!_validateCurrentAnswer()) return;
+
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
 
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
     
@@ -127,35 +194,54 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       _recomputeNavigationStackFromRoot(currentQuestion.id);
     }
 
+    // Add small delay for smooth transition
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    if (!mounted) return;
+
     if (_navigationStackIndex < _navigationStack.length - 1) {
       _navigationStackIndex++;
       final nextQuestionId = _navigationStack[_navigationStackIndex];
       final newIndex = QuestionRepository.questions.indexWhere((q) => q.id == nextQuestionId);
+      final newQuestionId = QuestionRepository.questions[newIndex].id;
       
       if (newIndex != -1) {
         setState(() {
-          widget.onQuestionIndexChanged(newIndex);
+          widget.onQuestionIndexChanged(newIndex, newQuestionId);
+          _isLoading = false;
         });
       }
     } else {
-      _handleQuestionnaireCompletion();
+      await _handleQuestionnaireCompletion();
     }
   }
 
-  void _goToPreviousQuestion() {
+  Future<void> _goToPreviousQuestion() async {
     if (_navigationStackIndex > 0) {
+      if (!mounted) return;
+      
+      setState(() {
+        _isLoading = true;
+      });
+
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      if (!mounted) return;
+
       _navigationStackIndex--;
       final prevQuestionId = _navigationStack[_navigationStackIndex];
       final prevIndex = QuestionRepository.questions.indexWhere((q) => q.id == prevQuestionId);
-      
+      final newQuestionId = QuestionRepository.questions[prevIndex].id;
       if (prevIndex != -1) {
         setState(() {
-          widget.onQuestionIndexChanged(prevIndex);
+          widget.onQuestionIndexChanged(prevIndex, newQuestionId);
+          _isLoading = false;
         });
       }
     }
   }
 
+  // UPDATED: Use path filtering when removing branch answers
   List<String> _getBranchQuestionTexts(String rootId, String branch) {
     final branchQuestionTexts = <String>[];
     final rootQuestion = _getQuestionById(rootId);
@@ -172,8 +258,9 @@ class QuestionWrapperState extends State<QuestionWrapper> {
       final question = _getQuestionById(currentId);
       if (question == null) break;
       
-      branchQuestionTexts.add(question.text); // Store text instead of ID
-      currentId = question.nextQuestionId;
+      branchQuestionTexts.add(question.text);
+      // NEW: Use path-aware next question lookup
+      currentId = QuestionRepository.getNextQuestionId(question, isShortQuestionnaire);
     }
     
     return branchQuestionTexts;
@@ -182,13 +269,13 @@ class QuestionWrapperState extends State<QuestionWrapper> {
   void _removeBranchAnswers(String rootId, String branch) {
     final branchQuestionTexts = _getBranchQuestionTexts(rootId, branch);
     for (final questionText in branchQuestionTexts) {
-      answersMap.remove(questionText); // Remove by text instead of ID
+      answersMap.remove(questionText);
     }
   }
 
   void _updateSelectedChoices(List<String> choices) {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
-    final questionText = currentQuestion.text; // Use text instead of ID
+    final questionText = currentQuestion.text;
     
     if (currentQuestion.rootQuestionId == currentQuestion.id) {
       final prevBranches = answersMap[questionText] ?? [];
@@ -212,100 +299,55 @@ class QuestionWrapperState extends State<QuestionWrapper> {
 
   void _updateOtherText(String text) {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
-    final questionText = currentQuestion.text; // Use text instead of ID
+    final questionText = currentQuestion.text;
 
-    if (currentQuestion.answerType == AnswerType.text) {
-      setState(() {
-        if (text.isNotEmpty) {
-          answersMap[questionText] = [text];
-        } else {
-          answersMap.remove(questionText);
-        }
-      });
-    } else {
-      setState(() {
-        final currentAnswers = answersMap[questionText] ?? [];
-        final filteredAnswers = currentAnswers.where(
-          (answer) => (currentQuestion.options ?? []).contains(answer)
-        ).toList();
-        
-        if (text.isNotEmpty) {
-          filteredAnswers.add(text);
-        }
-        
-        answersMap[questionText] = filteredAnswers;
-      });
+    setState(() {
+      final currentAnswers = answersMap[questionText] ?? [];
+      final filteredAnswers = currentAnswers.where(
+        (answer) => (currentQuestion.options ?? []).contains(answer)
+      ).toList();
+      
+      if (text.isNotEmpty) {
+        filteredAnswers.add(text);
+      }
+      
+      answersMap[questionText] = filteredAnswers;
+    });
+  }
+
+  // Public getters for parent to access state
+  bool get canGoBack => _navigationStackIndex > 0;
+  bool get isLoading => _isLoading;
+  
+  // UPDATED: Dynamically determine if this is the last question based on available path
+  bool get isLastQuestion {
+    // Check if we're at the end of our navigation stack
+    if (_navigationStackIndex >= _navigationStack.length - 1) {
+      return true;
     }
+    
+    // Check if the current question has no valid next question in this path
+    final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    final nextQuestionId = QuestionRepository.getNextQuestionId(currentQuestion, isShortQuestionnaire);
+    
+    return nextQuestionId == null;
   }
 
-  bool _isLastQuestion() {
-    return _navigationStackIndex == _navigationStack.length - 1 && 
-           widget.currentQuestionIndex == QuestionRepository.questions.length - 1;
-  }
-
-  Widget _buildNavigationButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _navigationStackIndex > 0
-            ? _buildPreviousButton()
-            : const SizedBox.shrink(),
-        _buildNextButton(),
-      ],
-    );
-  }
-
-  Widget _buildPreviousButton() {
-    return NeumorphicButton(
-      onPressed: _goToPreviousQuestion,
-      style: NeumorphicStyle(
-        color: Colors.amber.shade600,
-        depth: 5,
-        intensity: 0.5,
-        boxShape: NeumorphicBoxShape.roundRect(
-          BorderRadius.circular(8),
-        ),
-      ),
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-        child: Text(
-          "Previous",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNextButton() {
-    return NeumorphicButton(
-      onPressed: _goToNextQuestion,
-      style: NeumorphicStyle(
-        color: Colors.amber.shade600,
-        depth: 5,
-        intensity: 0.5,
-        boxShape: NeumorphicBoxShape.roundRect(
-          BorderRadius.circular(8),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-        child: Text(
-          _isLastQuestion() ? "Finish" : "Next",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
+  // Public methods for parent to control navigation
+  Future<void> goToNextQuestion() => _goToNextQuestion();
+  Future<void> goToPreviousQuestion() => _goToPreviousQuestion();
 
   @override
   Widget build(BuildContext context) {
     final currentQuestion = QuestionRepository.questions[widget.currentQuestionIndex];
+    final l10n = AppLocalizations.of(context)!;
+    final translatedQuestionText = QuestionTranslationService.getTranslatedQuestionText(
+      currentQuestion.id, 
+      l10n
+    );
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onQuestionTextUpdated(currentQuestion.text);
+      widget.onQuestionTextUpdated(translatedQuestionText);
       
       if (currentQuestion.rootQuestionId == currentQuestion.id) {
         _recomputeNavigationStackFromRoot(currentQuestion.id);
@@ -319,21 +361,11 @@ class QuestionWrapperState extends State<QuestionWrapper> {
           _goToPreviousQuestion();
         }
       },
-      child: Column(
-        children: [
-          Expanded(
-            child: GenericQuestionWidget(
-              question: currentQuestion,
-              selectedChoices: answersMap[currentQuestion.text] ?? [],
-              onChoicesUpdated: _updateSelectedChoices,
-              onTextUpdated: _updateOtherText,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: _buildNavigationButtons(),
-          ),
-        ],
+      child: GenericQuestionWidget(
+        question: currentQuestion,
+        selectedChoices: answersMap[currentQuestion.text] ?? [],
+        onChoicesUpdated: _updateSelectedChoices,
+        onTextUpdated: _updateOtherText,
       ),
     );
   }

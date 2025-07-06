@@ -1,5 +1,8 @@
-import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class CheckboxWidget extends StatefulWidget {
   final Question question;
@@ -25,6 +28,12 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
   void initState() {
     super.initState();
     _otherController = TextEditingController();
+    _initializeController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _initializeController();
   }
 
@@ -70,17 +79,16 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
   }
 
   void _toggleChoice(String option) {
-    setState(() {
-      List<String> updatedChoices = List.from(widget.selectedChoices);
-      
-      if (updatedChoices.contains(option)) {
-        updatedChoices.remove(option);
-      } else {
-        updatedChoices.add(option);
-      }
-      
-      widget.onChoicesUpdated(updatedChoices);
-    });
+    List<String> updatedChoices = List.from(widget.selectedChoices);
+    
+    if (updatedChoices.contains(option)) {
+      updatedChoices.remove(option);
+    } else {
+      updatedChoices.add(option);
+    }
+    
+    widget.onChoicesUpdated(updatedChoices);
+    HapticFeedback.selectionClick();
   }
 
   void _handleOtherTextChange(String text) {
@@ -101,104 +109,131 @@ class CheckboxWidgetState extends State<CheckboxWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        if (widget.question.options != null && widget.question.options!.length > 1)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              'Select all that apply',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-                fontStyle: FontStyle.italic,
+    final l10n = AppLocalizations.of(context);
+    final translatedOptions = l10n != null 
+        ? QuestionTranslationService.getTranslatedOptions(
+            widget.question.id, 
+            widget.question.options ?? [], 
+            l10n
+          )
+        : widget.question.options ?? [];
+    
+    final hintText = l10n != null 
+        ? QuestionTranslationService.getTranslatedHintText(widget.question.id, l10n)
+        : l10n?.hintSelectMultiple ?? 'Select all that apply';
+    
+    final otherHint = l10n != null 
+        ? QuestionTranslationService.getOtherFieldHint(widget.question.id, l10n)
+        : l10n?.hintOtherSpecify ?? 'Other, specify';
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Hint text
+          if (widget.question.options != null && widget.question.options!.length > 1)
+            Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: Text(
+                hintText,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-        ...(widget.question.options ?? []).map(
-          (option) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: NeumorphicButton(
-                onPressed: () {
-                  _toggleChoice(option);
-                },
-                style: NeumorphicStyle(
-                  color: widget.selectedChoices.contains(option)
-                      ? Colors.amber.shade600
-                      : Colors.white,
-                  depth: 5,
-                  intensity: 0.5,
-                  boxShape: NeumorphicBoxShape.roundRect(
-                    BorderRadius.circular(8),
-                  ),
+
+          // Options list
+          ...List.generate(translatedOptions.length, (index) {
+            if (index >= widget.question.options!.length) return SizedBox.shrink();
+            
+            final originalOption = widget.question.options![index];
+            final translatedOption = translatedOptions[index];
+            final isSelected = widget.selectedChoices.contains(originalOption);
+            
+            return Container(
+              margin: EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: isSelected ? Color(0xFFFFDE15).withValues(alpha: 0.1) : Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isSelected ? Color(0xFFFFDE15) : Colors.grey.shade300,
+                  width: isSelected ? 2 : 1,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        widget.selectedChoices.contains(option)
-                            ? Icons.check_box
-                            : Icons.check_box_outline_blank,
-                        color: widget.selectedChoices.contains(option)
-                            ? Colors.white
-                            : Colors.grey[600],
-                        size: 20,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          option,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: widget.selectedChoices.contains(option)
-                                ? Colors.white
-                                : Colors.black,
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => _toggleChoice(originalOption),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: isSelected ? Color(0xFFFFDE15) : Colors.transparent,
+                            border: Border.all(
+                              color: isSelected ? Color(0xFFFFDE15) : Colors.grey,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: isSelected
+                              ? Icon(
+                                  Icons.check,
+                                  size: 16,
+                                  color: Colors.black,
+                                )
+                              : null,
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            translatedOption,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                              color: Colors.black87,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        if (widget.question.hasOtherField)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: FractionallySizedBox(
-              widthFactor: 0.9,
-              child: Neumorphic(
-                style: NeumorphicStyle(
-                  depth: 5,
-                  intensity: 0.5,
-                  boxShape: NeumorphicBoxShape.roundRect(
-                    BorderRadius.circular(8),
-                  ),
-                ),
-                child: TextField(
-                  controller: _otherController,
-                  textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                    hintText: 'Other, specify',
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 12.0,
-                      horizontal: 10.0,
+                      ],
                     ),
                   ),
-                  onChanged: _handleOtherTextChange,
                 ),
               ),
+            );
+          }),
+
+          // Other field
+          if (widget.question.hasOtherField)
+            Container(
+              margin: EdgeInsets.only(top: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: TextField(
+                controller: _otherController,
+                decoration: InputDecoration(
+                  hintText: otherHint,
+                  hintStyle: TextStyle(color: Colors.grey[600]),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(16),
+                ),
+                style: TextStyle(fontSize: 16),
+                onChanged: _handleOtherTextChange,
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }

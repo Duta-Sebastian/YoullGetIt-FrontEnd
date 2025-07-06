@@ -8,6 +8,39 @@ class QuestionRepository {
   static Map<String, Question>? _textToQuestionCache;
   static Map<String, Question>? _idToQuestionCache;
 
+    static const Set<String> _shortPathSkips = {
+    'q2_yes_1',
+    'q2_yes_2',
+    'q3',
+    'q4_eng',
+    'q4_it',
+    'q5',
+    'q7',
+    'q15',
+  };
+
+  static bool shouldIncludeInPath(String questionId, bool isShortQuestionnaire) {
+    if (!isShortQuestionnaire) return true;
+    return !_shortPathSkips.contains(questionId);
+  }
+
+  static String? getNextQuestionId(Question question, bool isShortQuestionnaire) {
+    String? nextId = question.nextQuestionId;
+    
+    while (nextId != null && !shouldIncludeInPath(nextId, isShortQuestionnaire)) {
+      final nextQuestion = getQuestionById(nextId);
+      nextId = nextQuestion?.nextQuestionId;
+    }
+    
+    return nextId;
+  }
+
+  static int getQuestionsCount(bool isShortQuestionnaire) {
+    if (!isShortQuestionnaire) return _questionsCount;
+    
+    return _questions.where((q) => shouldIncludeInPath(q.id, isShortQuestionnaire)).length;
+  }
+
   static Future<void> initialize() async {
     final softSkills = await SkillsRepository.getSoftSkills();
     final hardSkills = await SkillsRepository.getHardSkills();
@@ -75,7 +108,7 @@ class QuestionRepository {
         options: ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
                   'Political Science & Public Administration', 'Sales & Business Administration', 
                   'Arts & Culture', 'Biology, Chemistry, & Life Sciences'],
-        hasOtherField: true,
+        hasOtherField: false,
         nextQuestionId: 'q5',
         rootQuestionId: 'q4',
         nextQuestionMap: {
@@ -98,12 +131,12 @@ class QuestionRepository {
       Question(
         id: 'q4_it',
         text: 'What area of IT & Data Science?',
-        answerType: AnswerType.chips,
+        answerType: AnswerType.restrictedChips,
         options: ['Software Development & Debugging', 'Full-stack Development', 
                   'Cloud Computing (AWS, Azure, GCP)', 'DevOps & CI/CD',
                   'IT Support & System Administration', 'Product Management',
                   'Machine Learning & AI', 'Data Analysis'],
-        hasOtherField: true,
+        hasOtherField: false,
         nextQuestionId: 'q5',
         previousQuestionId: 'q4',
         rootQuestionId: 'q4',
@@ -116,7 +149,7 @@ class QuestionRepository {
         options: ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
             'Political Science & Public Administration', 'Sales & Business Administration', 
             'Arts & Culture', 'Biology, Chemistry, & Life Sciences', 'None'],
-        hasOtherField: true,
+        hasOtherField: false,
         nextQuestionId: 'q6',
         previousQuestionId: 'q4',
         rootQuestionId: 'q5',
@@ -136,7 +169,7 @@ class QuestionRepository {
       Question(
         id: 'q7',
         text: 'What other fields have you worked in before?',
-        answerType: AnswerType.chips,
+        answerType: AnswerType.checkbox,
         options: ['Engineering', 'IT & Data Science', 'Marketing & Communication', 'Finance & Economics', 
             'Political Science & Public Administration', 'Sales & Business Administration', 
             'Arts & Culture', 'Biology, Chemistry, & Life Sciences', 'None'],
@@ -149,7 +182,7 @@ class QuestionRepository {
       Question(
         id: 'q8',
         text: 'What soft skills do you master?',
-        answerType: AnswerType.restrictedChips,
+        answerType: AnswerType.groupedRestrictedChips,
         options: softSkills,
         hasOtherField: false,
         nextQuestionId: 'q9',
@@ -160,7 +193,7 @@ class QuestionRepository {
       Question(
         id: 'q9',
         text: 'What hard skills do you master?',
-        answerType: AnswerType.restrictedChips,
+        answerType: AnswerType.groupedRestrictedChips,
         options: hardSkills,
         hasOtherField: false,
         nextQuestionId: 'q10',

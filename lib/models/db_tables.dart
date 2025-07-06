@@ -4,4 +4,5 @@ enum DbTables {
   cv,
   auth_user,
   job_cart,
+  questions,
 }

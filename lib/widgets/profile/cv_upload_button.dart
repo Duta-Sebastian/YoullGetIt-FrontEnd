@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class CVUploadButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,6 +14,8 @@ class CVUploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -54,7 +57,7 @@ class CVUploadButton extends StatelessWidget {
                 ),
                 SizedBox(width: 8),
                 Text(
-                  'Upload CV',
+                  localizations.uploadCvButtonText,
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontWeight: FontWeight.normal,

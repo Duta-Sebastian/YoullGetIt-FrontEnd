@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_deadline_model.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_details_page.dart';
@@ -16,6 +17,8 @@ class SearchJobListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Slidable(
       endActionPane: ActionPane(
         extentRatio: 0.25,
@@ -25,31 +28,24 @@ class SearchJobListItem extends StatelessWidget {
             onPressed: (context) {
               if (onAddToLiked != null) {
                 onAddToLiked!(job);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${job.roleName} added to favorites'),
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color(0xFF22C55E),
-                  ),
-                );
               }
             },
             backgroundColor: const Color(0xFF22C55E),
             foregroundColor: Colors.white,
             icon: Icons.favorite_rounded,
-            label: 'Save',
+            label: localizations.jobListItemSave,
             borderRadius: const BorderRadius.horizontal(right: Radius.circular(20)),
           ),
         ],
       ),
       child: GestureDetector(
         onTap: () => _navigateToJobDetailPage(context, job),
-        child: _buildJobCard(context),
+        child: _buildJobCard(context, localizations),
       ),
     );
   }
 
-  Widget _buildJobCard(BuildContext context) {
+  Widget _buildJobCard(BuildContext context, AppLocalizations localizations) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -130,17 +126,17 @@ class SearchJobListItem extends StatelessWidget {
                   if (job.matchScore != null)
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _getMatchScoreColor(job.matchScore!),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: _getMatchScoreColor(job.matchScore!).withAlpha(77),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
+                      // decoration: BoxDecoration(
+                      //   color: _getMatchScoreColor(job.matchScore!),
+                      //   borderRadius: BorderRadius.circular(15),
+                      //   boxShadow: [
+                      //     BoxShadow(
+                      //       color: _getMatchScoreColor(job.matchScore!).withAlpha(77),
+                      //       blurRadius: 4,
+                      //       offset: const Offset(0, 2),
+                      //     ),
+                      //   ],
+                      // ),
                       child: Text(
                         '${(job.matchScore! * 100).round()}%',
                         style: const TextStyle(
@@ -168,7 +164,7 @@ class SearchJobListItem extends StatelessWidget {
                     ),
                   if (job.deadline != null) ...[
                     const SizedBox(width: 12),
-                    _buildDeadlineChip(job.deadline!),
+                    _buildDeadlineChip(job.deadline!, localizations),
                   ],
                 ],
               ),
@@ -186,7 +182,7 @@ class SearchJobListItem extends StatelessWidget {
                       if (job.workMode.isNotEmpty)
                         _buildInfoChip(
                           Icons.work_rounded,
-                          job.workMode,
+                          _localizeWorkMode(job.workMode, localizations),
                           const Color(0xFFA5B4FC),
                           const Color(0xFF1F2937),
                         ),
@@ -200,7 +196,7 @@ class SearchJobListItem extends StatelessWidget {
                       if (job.durationInMonths > 0)
                         _buildInfoChip(
                           Icons.timer_rounded,
-                          '${job.durationInMonths} months',
+                          '${job.durationInMonths} ${localizations.jobCardMonths}',
                           const Color(0xFF86EFAC),
                           const Color(0xFF1F2937),
                         ),
@@ -229,7 +225,7 @@ class SearchJobListItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Key Skills:',
+                      localizations.jobCardRelatedFields,
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -245,7 +241,7 @@ class SearchJobListItem extends StatelessWidget {
                       spacing: 6,
                       runSpacing: 4,
                       clipBehavior: Clip.none,
-                      children: job.hardSkills.take(4).map((skill) => _buildSkillChip(skill)).toList(),
+                      children: job.relatedFields.take(3).map((field) => _buildSkillChip(_localizeField(field, localizations))).toList(),
                     );
                   },
                 ),
@@ -263,7 +259,7 @@ class SearchJobListItem extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'Related Fields:',
+                      localizations.jobListItemRelatedFields,
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -279,7 +275,7 @@ class SearchJobListItem extends StatelessWidget {
                       spacing: 6,
                       runSpacing: 4,
                       clipBehavior: Clip.none,
-                      children: job.relatedFields.take(3).map((field) => _buildSkillChip(field)).toList(),
+                      children: job.relatedFields.take(3).map((field) => _buildSkillChip(_localizeField(field, localizations))).toList(),
                     );
                   },
                 ),
@@ -298,7 +294,7 @@ class SearchJobListItem extends StatelessWidget {
                     child: job.requiredSpokenLanguages.isNotEmpty
                         ? _buildLanguageInfo()
                         : job.requiredDegree.isNotEmpty
-                            ? _buildEducationInfo()
+                            ? _buildEducationInfo(localizations)
                             : job.visaHelp.isNotEmpty
                                 ? _buildVisaInfo()
                                 : const SizedBox.shrink(),
@@ -322,9 +318,9 @@ class SearchJobListItem extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () => _navigateToJobDetailPage(context, job),
                       icon: const Icon(Icons.visibility_rounded, size: 16, color: Colors.white),
-                      label: const Text(
-                        'View Details',
-                        style: TextStyle(
+                      label: Text(
+                        localizations.jobListItemViewDetails,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
@@ -346,6 +342,64 @@ class SearchJobListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _localizeWorkMode(String workMode, AppLocalizations localizations) {
+    switch (workMode.toLowerCase()) {
+      case 'remote':
+        return localizations.workModeRemote;
+      case 'hybrid':
+        return localizations.workModeHybrid;
+      case 'on-site':
+      case 'onsite':
+        return localizations.workModeOnSite;
+      case 'internship':
+        return localizations.optionYesInternship.replaceAll('Yes, ', '');
+      case 'part-time':
+        return localizations.optionYesPartTime.replaceAll('Yes, ', '');
+      default:
+        return workMode.isEmpty ? localizations.jobCardNotAvailable : workMode;
+    }
+  }
+
+  String _localizeField(String field, AppLocalizations localizations) {
+    switch (field.toLowerCase()) {
+      case 'engineering':
+        return localizations.optionEngineering;
+      case 'it & data science':
+      case 'it and data science':
+        return localizations.optionItDataScience;
+      case 'marketing & communication':
+      case 'marketing and communication':
+        return localizations.optionMarketingCommunication;
+      case 'finance & economics':
+      case 'finance and economics':
+        return localizations.optionFinanceEconomics;
+      case 'political science':
+      case 'political science & public administration':
+        return localizations.optionPoliticalScience;
+      case 'sales & business administration':
+      case 'sales and business administration':
+        return localizations.optionSalesBusiness;
+      case 'arts & culture':
+      case 'arts and culture':
+        return localizations.optionArtsCulture;
+      case 'biology, chemistry, & life sciences':
+      case 'biology chemistry life sciences':
+        return localizations.optionBiologyChemistry;
+      case 'mechanical':
+        return localizations.optionMechanical;
+      case 'electrical':
+        return localizations.optionElectrical;
+      case 'aerospace':
+        return localizations.optionAerospace;
+      case 'civil':
+        return localizations.optionCivil;
+      case 'chemical':
+        return localizations.optionChemical;
+      default:
+        return field;
+    }
   }
 
   Widget _buildInfoRow(IconData icon, String text, Color color) {
@@ -370,7 +424,7 @@ class SearchJobListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildDeadlineChip(JobDeadline deadline) {
+  Widget _buildDeadlineChip(JobDeadline deadline, AppLocalizations localizations) {
     final isUrgent = _isDeadlineSoon(deadline);
     final color = isUrgent ? const Color(0xFFEF4444) : const Color(0xFF6B7280);
     
@@ -387,7 +441,7 @@ class SearchJobListItem extends StatelessWidget {
           Icon(Icons.schedule_rounded, size: 12, color: color),
           const SizedBox(width: 4),
           Text(
-            _formatDeadline(deadline),
+            _formatDeadline(deadline, localizations),
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -490,8 +544,8 @@ class SearchJobListItem extends StatelessWidget {
     );
   }
 
-  Widget _buildEducationInfo() {
-    final education = job.requiredDegree.first;
+  Widget _buildEducationInfo(AppLocalizations localizations) {
+    final education = _localizeEducation(job.requiredDegree.first, localizations);
     return Row(
       children: [
         Icon(
@@ -514,6 +568,21 @@ class SearchJobListItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _localizeEducation(String education, AppLocalizations localizations) {
+    switch (education.toLowerCase()) {
+      case 'bachelor':
+        return localizations.optionBachelor;
+      case 'master':
+        return localizations.optionMaster;
+      case 'phd':
+        return localizations.optionPhd;
+      case 'highschool':
+        return localizations.optionHighschool;
+      default:
+        return education;
+    }
   }
 
   Widget _buildVisaInfo() {
@@ -541,10 +610,10 @@ class SearchJobListItem extends StatelessWidget {
     );
   }
 
-  String _formatDeadline(JobDeadline deadline) {
+  String _formatDeadline(JobDeadline deadline, AppLocalizations localizations) {
     // Handle empty or invalid dates
     if (deadline.month.isEmpty || deadline.day.isEmpty) {
-      return 'Not specified';
+      return localizations.jobListItemNotSpecified;
     }
     
     try {
@@ -564,19 +633,19 @@ class SearchJobListItem extends StatelessWidget {
       final difference = deadlineDate.difference(now).inDays;
       
       if (difference < 0) {
-        return 'Expired';
+        return localizations.jobListItemExpired;
       } else if (difference == 0) {
-        return 'Today';
+        return localizations.jobListItemToday;
       } else if (difference == 1) {
-        return 'Tomorrow';
+        return localizations.jobListItemTomorrow;
       } else if (difference < 7) {
-        return '${difference}d left';
+        return localizations.jobListItemDaysLeft(difference.toString());
       } else {
         // Format as Month/Day for compact display
         return '$month/$day';
       }
     } catch (e) {
-      return 'Invalid';
+      return localizations.jobListItemInvalid;
     }
   }
 
@@ -606,12 +675,12 @@ class SearchJobListItem extends StatelessWidget {
     }
   }
 
-  Color _getMatchScoreColor(double score) {
-    if (score >= 0.8) return const Color(0xFF22C55E);
-    if (score >= 0.6) return const Color(0xFF3B82F6);
-    if (score >= 0.4) return const Color(0xFFFBBF24);
-    return const Color(0xFFEF4444);
-  }
+  // Color _getMatchScoreColor(double score) {
+  //   if (score >= 0.8) return const Color(0xFF22C55E);
+  //   if (score >= 0.6) return const Color(0xFF3B82F6);
+  //   if (score >= 0.4) return const Color(0xFFFBBF24);
+  //   return const Color(0xFFEF4444);
+  // }
 
   void _navigateToJobDetailPage(BuildContext context, JobCardModel job) {
     Navigator.push(

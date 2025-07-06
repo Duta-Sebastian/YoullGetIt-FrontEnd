@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 class GDPRPage extends StatelessWidget {
   const GDPRPage({super.key});
 
@@ -26,11 +26,13 @@ class GDPRPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('GDPR Policy'),
+        title: Text(localizations.settingsGDPRPageTitle),
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -40,45 +42,29 @@ class GDPRPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'GDPR Compliance Statement',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
+            children: [              
+              _buildSectionTitle(localizations.settingsGDPRPageCommitment),
+              _buildParagraph(localizations.settingsGDPRPageCommitmentText),
               
-              _buildSectionTitle('Our Commitment to GDPR Compliance'),
-              _buildParagraph(
-                'At you\'ll get it, we are committed to ensuring the privacy and protection of your personal data in compliance with the General Data Protection Regulation (GDPR) and relevant Romanian data protection laws.'
-              ),
-              
-              // Rest of the content remains the same...
-              
-              _buildSectionTitle('Data Subject Rights'),
-              _buildParagraph(
-                'Under the GDPR, you have the following rights:'
-              ),
+              _buildSectionTitle(localizations.settingsGDPRPageDataSubjectRights),
+              _buildParagraph(localizations.settingsGDPRPageDataSubjectRightsText),
               _buildBulletPoints([
-                'Right to Information: Receive clear information about how we use your data.',
-                'Right of Access: Obtain confirmation that we are processing your data and access your personal data.',
-                'Right to Rectification: Have inaccurate personal data corrected or completed if incomplete.',
-                'Right to Erasure: Request deletion of your personal data in certain circumstances.',
-                'Right to Restriction of Processing: Request restriction of processing in certain circumstances.',
-                'Right to Data Portability: Receive your personal data in a structured, commonly used, machine-readable format.',
-                'Right to Object: Object to processing based on legitimate interests or direct marketing.',
-                'Rights Related to Automated Decision Making and Profiling: Not be subject to decisions based solely on automated processing that produce legal effects.',
+                localizations.settingsGDPRPageRightToInformation,
+                localizations.settingsGDPRPageRightOfAccess,
+                localizations.settingsGDPRPageRightToRectification,
+                localizations.settingsGDPRPageRightToErasure,
+                localizations.settingsGDPRPageRightToRestriction,
+                localizations.settingsGDPRPageRightToDataPortability,
+                localizations.settingsGDPRPageRightToObject,
+                localizations.settingsGDPRPageRightAutomatedDecision,
               ]),
               
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: RichText(
                   text: TextSpan(
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
                     children: [
-                      const TextSpan(text: 'To exercise these rights, please contact us at '),
+                      TextSpan(text: localizations.settingsGDPRPageExerciseRights),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: _launchEmail,
@@ -98,20 +84,18 @@ class GDPRPage extends StatelessWidget {
                 ),
               ),
               
-              _buildSectionTitle('Data Protection Officer'),
-              _buildParagraph('Contact us at:'),
-              _buildCompanyInfo(context),
+              _buildSectionTitle(localizations.settingsGDPRPageDataProtectionOfficer),
+              _buildParagraph(localizations.settingsGDPRPageContactUsAt),
+              _buildCompanyInfo(context, localizations),
               
-              // Continue with the rest of your content...
-              
-              _buildSectionTitle('Contact Information'),
+              _buildSectionTitle(localizations.settingsGDPRPageContactInformation),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: RichText(
                   text: TextSpan(
                     style: const TextStyle(fontSize: 16, color: Colors.black),
                     children: [
-                      const TextSpan(text: 'If you have any questions about our GDPR compliance, please contact: Email: '),
+                      TextSpan(text: localizations.settingsGDPRPageContactUsText),
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: _launchEmail,
@@ -132,7 +116,7 @@ class GDPRPage extends StatelessWidget {
               
               const SizedBox(height: 16),
               _buildParagraph(
-                'Last Updated: April 9, 2025',
+                localizations.settingsGDPRPageLastUpdated,
                 isItalic: true,
               ),
             ],
@@ -142,16 +126,16 @@ class GDPRPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCompanyInfo(BuildContext context) {
+  Widget _buildCompanyInfo(BuildContext context, AppLocalizations localizations) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('• YOU\'LL GET IT S.R.L.', style: TextStyle(fontSize: 16)),
-          const Text('• Reg. No: J2025027781008', style: TextStyle(fontSize: 16)),
-          const Text('• CUI: 51649682', style: TextStyle(fontSize: 16)),
-          const Text('• EUID: ROONRC.J2025027781008', style: TextStyle(fontSize: 16)),
+          Text('• ${localizations.settingsGDPRPageCompanyName}', style: const TextStyle(fontSize: 16)),
+          Text('• ${localizations.settingsGDPRPageRegNo}', style: const TextStyle(fontSize: 16)),
+          Text('• ${localizations.settingsGDPRPageCUI}', style: const TextStyle(fontSize: 16)),
+          Text('• ${localizations.settingsGDPRPageEUID}', style: const TextStyle(fontSize: 16)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

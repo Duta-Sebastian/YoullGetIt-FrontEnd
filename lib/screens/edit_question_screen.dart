@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/data/question_repository.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/screens/branch_question_screen.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/generic_question.dart';
 
 class EditQuestionScreen extends StatefulWidget {
   final Question question;
   final List<String> currentAnswers;
   final Map<String, List<String>> allCurrentAnswers;
+  final bool isShortQuestionnaire; // NEW: Add path awareness
 
   const EditQuestionScreen({
     super.key,
     required this.question,
     required this.currentAnswers,
     required this.allCurrentAnswers,
+    required this.isShortQuestionnaire, // NEW: Required parameter
   });
 
   @override
@@ -23,6 +27,9 @@ class EditQuestionScreen extends StatefulWidget {
 class EditQuestionScreenState extends State<EditQuestionScreen> {
   late List<String> _selectedAnswers;
   late Map<String, List<String>> _updatedAnswersMap;
+
+  // NEW: Helper property for cleaner code
+  bool get isShortQuestionnaire => widget.isShortQuestionnaire;
 
   @override
   void initState() {
@@ -49,10 +56,11 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
 
   bool _validateAnswers() {
     if (_selectedAnswers.isEmpty) {
+      final localizations = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please provide at least one answer"),
-          backgroundColor: Colors.red,
+        SnackBar(
+          content: Text(localizations.pleaseSelectAtLeastOneOption),
+          backgroundColor: Color(0xFFFFDE15),
         ),
       );
       return false;
@@ -67,26 +75,28 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
     
     if (addedBranches.isEmpty || widget.question.nextQuestionMap == null) return false;
     
-    // Check if any of the added branches actually have questions
+    // Check if any of the added branches actually have questions that should be included in current path
     for (final branch in addedBranches) {
       if (widget.question.nextQuestionMap!.containsKey(branch)) {
         final branchQuestionId = widget.question.nextQuestionMap![branch];
         if (branchQuestionId != null && branchQuestionId.isNotEmpty) {
-          // Check if the branch question exists
-          final branchQuestion = QuestionRepository.questions.firstWhere(
-            (q) => q.id == branchQuestionId,
-            orElse: () => Question(id: '', text: '', answerType: AnswerType.text),
-          );
-          if (branchQuestion.id.isNotEmpty) {
-            return true; // Found at least one valid branch with questions
+          // NEW: Check if the branch question should be included in current path
+          if (QuestionRepository.shouldIncludeInPath(branchQuestionId, isShortQuestionnaire)) {
+            final branchQuestion = QuestionRepository.questions.firstWhere(
+              (q) => q.id == branchQuestionId,
+            );
+            if (branchQuestion.id.isNotEmpty) {
+              return true; // Found at least one valid branch with questions in current path
+            }
           }
         }
       }
     }
     
-    return false; // No valid branches with questions found
+    return false; // No valid branches with questions found in current path
   }
 
+  // UPDATED: Use path-aware navigation for branch questions
   List<String> _getBranchQuestionTexts(String rootQuestionText, String branch) {
     final branchQuestionTexts = <String>[];
     final rootQuestion = _getQuestionByText(rootQuestionText);
@@ -101,10 +111,14 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
       final currentQuestion = _getQuestionById(currentId);
       if (currentQuestion == null) break;
       
-      branchQuestionTexts.add(currentQuestion.text);
+      // NEW: Only include questions that should be in current path
+      if (QuestionRepository.shouldIncludeInPath(currentId, isShortQuestionnaire)) {
+        branchQuestionTexts.add(currentQuestion.text);
+      }
       
       if (currentQuestion.rootQuestionId == rootQuestion.id) {
-        currentId = currentQuestion.nextQuestionId;
+        // NEW: Use path-aware navigation
+        currentId = QuestionRepository.getNextQuestionId(currentQuestion, isShortQuestionnaire);
       } else {
         break;
       }
@@ -171,8 +185,12 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
     String? firstBranchQuestionId;
     for (final branch in addedBranches) {
       if (widget.question.nextQuestionMap!.containsKey(branch)) {
-        firstBranchQuestionId = widget.question.nextQuestionMap![branch];
-        break;
+        final branchId = widget.question.nextQuestionMap![branch];
+        // NEW: Only use branches that should be included in current path
+        if (branchId != null && QuestionRepository.shouldIncludeInPath(branchId, isShortQuestionnaire)) {
+          firstBranchQuestionId = branchId;
+          break;
+        }
       }
     }
     
@@ -192,6 +210,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
           startingQuestionIndex: branchQuestionIndex,
           initialAnswers: _updatedAnswersMap,
           rootQuestionId: widget.question.id,
+          isShortQuestionnaire: isShortQuestionnaire, // NEW: Pass path info
         ),
       ),
     );
@@ -204,6 +223,12 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final translatedQuestionText = QuestionTranslationService.getTranslatedQuestionText(
+      widget.question.id, 
+      localizations
+    );
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -214,21 +239,8 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Edit Answer'),
+        title: Text(localizations.editAnswerTitle),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: _saveChanges,
-            child: Text(
-              _hasNewBranches ? 'Next' : 'Save',
-              style: const TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -245,7 +257,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                   border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: Text(
-                  widget.question.text,
+                  translatedQuestionText,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -271,7 +283,7 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                 child: ElevatedButton(
                   onPressed: _saveChanges,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber.shade600,
+                    backgroundColor: const Color(0xFFFFDE15), // Yellow button
                     foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -279,7 +291,9 @@ class EditQuestionScreenState extends State<EditQuestionScreen> {
                     ),
                   ),
                   child: Text(
-                    _hasNewBranches ? 'Next' : 'Save Changes',
+                    _hasNewBranches 
+                        ? localizations.questionsNext 
+                        : localizations.questionSave,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

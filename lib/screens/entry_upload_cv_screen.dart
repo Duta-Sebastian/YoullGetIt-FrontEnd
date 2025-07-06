@@ -6,15 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/screens/recommendation_processing_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
 class EntryUploadCvScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> answers;
+  final bool isShortQuestionnaire;
+
   const EntryUploadCvScreen({
     super.key,
     required this.answers,
+    required this.isShortQuestionnaire,
   });
 
   @override
@@ -74,26 +78,35 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
         
         await sourceFile.copy(filePath);
 
-        setState(() {
-          _tempCvFile = tempFile;
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _tempCvFile = tempFile;
+            _isLoading = false;
+          });
+        }
       } else {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        final localizations = AppLocalizations.of(context)!;
+        _showSnackBar(localizations.uploadCvFailedToPick);
         setState(() {
           _isLoading = false;
         });
       }
-    } catch (e) {
-      _showSnackBar('Failed to pick CV file');
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   Future<void> _saveAndContinue() async {
+    if (!mounted) return;
+    final localizations = AppLocalizations.of(context)!;
     if (_tempCvFile == null) {
-      _showSnackBar('Please upload your CV first');
+      _showSnackBar(localizations.uploadCvPleaseUploadFirst);
       return;
     }
 
@@ -120,15 +133,19 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
       
       await savedCvFile.writeAsBytes(cvBytes);
       
-      _showSnackBar('CV successfully saved');
-      
-      await _deleteTempFile();
-      _navigateToProcessingScreen(withCv: false);
+      if (mounted) {
+        _showSnackBar(localizations.uploadCvSuccessfullySaved);
+        
+        await _deleteTempFile();
+        _navigateToProcessingScreen(withCv: false);
+      }
     } catch (e) {
-      _showSnackBar('Failed to save CV');
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        _showSnackBar(localizations.uploadCvFailedToSave);
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -143,7 +160,8 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
       MaterialPageRoute(
         builder: (context) => RecommendationProcessingScreen(
           withCv: true,
-          answers: _answers
+          answers: _answers,
+          isShortQuestionnaire: widget.isShortQuestionnaire,
         ),
       ),
     );
@@ -157,11 +175,12 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          'Add Your CV',
+        title: Text(
+          localizations.uploadCvTitle,
           style: TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
@@ -182,7 +201,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'One last step',
+                        localizations.uploadCvOneLastStep,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -191,7 +210,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Upload your CV to help us match you with relevant internships',
+                        localizations.uploadCvDescription,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[600],
@@ -222,7 +241,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                'This helps us understand your skills and experience better',
+                                localizations.uploadCvHelpInfo,
                                 style: TextStyle(
                                   color: Colors.yellow.shade800,
                                 ),
@@ -263,7 +282,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                         ),
                       ),
                       child: Text(
-                        'Skip it for now',
+                        localizations.uploadCvSkipForNow,
                         style: TextStyle(
                           color: Colors.grey[700],
                           fontWeight: FontWeight.w500,
@@ -284,8 +303,8 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
-                        'Let\'s Get It',
+                      child: Text(
+                        localizations.uploadCvLetsGetIt,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -303,6 +322,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
   }
 
   Widget _buildUploadButton() {
+    final localizations = AppLocalizations.of(context)!;
     return Center(
       child: GestureDetector(
         onTap: _pickCV,
@@ -343,7 +363,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                   ),
                   SizedBox(height: 12),
                   Text(
-                    'Upload your CV (PDF)',
+                    localizations.uploadCvUploadPdf,
                     style: TextStyle(
                       color: Colors.grey[600],
                       fontWeight: FontWeight.normal,
@@ -360,6 +380,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
   }
 
   Widget _buildPreviewSection() {
+    final localizations = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -376,7 +397,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
                 Icon(Icons.check_circle, color: Colors.blue),
                 SizedBox(width: 8),
                 Text(
-                  'CV ready to upload',
+                  localizations.uploadCvReadyToUpload,
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.w500,
@@ -406,7 +427,7 @@ class StandaloneCVScreenState extends ConsumerState<EntryUploadCvScreen> {
         TextButton.icon(
           onPressed: _pickCV,
           icon: Icon(Icons.refresh, size: 18),
-          label: Text('Choose a different file'),
+          label: Text(localizations.uploadCvChooseDifferentFile),
           style: TextButton.styleFrom(
             foregroundColor: Colors.blue,
           ),

@@ -46,12 +46,13 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.4.5
-  flutter_neumorphic_plus: ^3.4.0
   flutter_riverpod: ^2.6.1
   flutter_secure_storage: ^9.2.4
   flutter_slidable: ^4.0.0
+  flutter_svg: ^2.2.0
   http: ^1.3.0
   in_app_review: ^2.0.10
+  intl: any
   intro_slider: ^4.2.1
   path: ^1.9.1
   path_provider: ^2.1.5
@@ -74,16 +75,16 @@ dev_dependencies:
     sdk: flutter
 
 flutter_native_splash:
-  color: "#ffffff"
-  image: ./assets/splash-screen.png
+  color: "#FFDE15"
+  image: ./assets/splash_screen.png
   android_12:
-    color: "#ffffff"
-    image: ./assets/splash-screen.png
+    color: "#FFDE15"
+    image: ./assets/android_splash_screen.png
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo.png"
+  image_path: "assets/logo.png"  
   min_sdk_android: 21
   remove_alpha_ios: true
 
@@ -95,10 +96,18 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/soft_skills.csv
     - assets/hard_skills.csv
+    - assets/logo.png
+    - assets/pufferfish_wave_1.png
+    - assets/pufferfish_wave_2.png
+    - assets/pufferfish_wave_3.png
+    - assets/pufferfish_wave_4.png
+    - assets/pufferfish_wave_5.png
+    - assets/splash_screen.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

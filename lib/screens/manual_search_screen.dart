@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
@@ -62,6 +63,8 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   }
 
   Future<void> _fetchJobs({bool reset = false, bool? isConnected}) async {
+    final localizations = AppLocalizations.of(context)!;
+    
     if (_isLoading) {
       debugPrint('Already loading, skipping fetch');
       return;
@@ -88,8 +91,8 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No internet connection. Please check your network and try again.'),
+              SnackBar(
+                content: Text(localizations.jobSearchNoInternetSnackbar),
                 backgroundColor: Colors.orange,
               ),
             );
@@ -151,7 +154,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted && context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error loading jobs: $e')),
+                SnackBar(content: Text(localizations.jobSearchErrorLoading(e.toString()))),
               );
             }
           });
@@ -234,6 +237,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     final connectivityStatus = ref.watch(isConnectedProvider);
     final bool isConnected = connectivityStatus.when(
       data: (value) => value,
@@ -249,9 +253,9 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Job Search',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        title: Text(
+          localizations.jobSearchTitle,
+          style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
@@ -276,7 +280,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      "You're offline. Search functionality is limited.",
+                      localizations.jobSearchOfflineNotice,
                       style: TextStyle(fontSize: 12, color: Colors.amber.shade800),
                     ),
                   ),
@@ -284,29 +288,34 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
               ),
             ),
           
-          _buildResultInfo(),
+          _buildResultInfo(localizations),
           Expanded(
             child: _jobs.isEmpty && !_isLoading
-                ? _buildEmptyState(isConnected)
-                : _buildJobsList(isConnected),
+                ? _buildEmptyState(isConnected, localizations)
+                : _buildJobsList(isConnected, localizations),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildResultInfo() {
+  Widget _buildResultInfo(AppLocalizations localizations) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: Colors.grey.shade50,
+      color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Scroll to discover more jobs',
-            style: TextStyle(
-              color: Colors.grey.shade700,
-              fontWeight: FontWeight.bold,
+          Flexible(
+            child: Text(
+              localizations.jobSearchScrollToDiscover,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontWeight: FontWeight.bold,
+                backgroundColor: Colors.white
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
           ),
           if (_isLoading)
@@ -323,7 +332,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     );
   }
 
-  Widget _buildJobsList(bool isConnected) {
+  Widget _buildJobsList(bool isConnected, AppLocalizations localizations) {
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         if (scrollInfo is ScrollEndNotification && 
@@ -354,7 +363,13 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
             onAddToLiked: (JobCardModel job) {
               DatabaseManager.insertJobCard(job);
               ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
-              //ref.read(jobCoordinatorProvider).handleManualSearchAdd(job);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(localizations.jobSearchAddedToFavorites(job.roleName)),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: const Color(0xFF22C55E),
+                ),
+              );
             },
           );
         },
@@ -362,7 +377,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
     );
   }
 
-  Widget _buildEmptyState(bool isConnected) {
+  Widget _buildEmptyState(bool isConnected, AppLocalizations localizations) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -374,7 +389,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            !isConnected ? 'No internet connection' : 'No jobs found',
+            !isConnected ? localizations.jobSearchNoInternetConnection : localizations.jobSearchNoJobsFound,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -384,8 +399,8 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           const SizedBox(height: 8),
           Text(
             !isConnected 
-                ? 'Please check your connection and try again'
-                : 'Try adjusting your filters or search query',
+                ? localizations.jobSearchCheckConnection
+                : localizations.jobSearchTryAdjustingFilters,
             style: TextStyle(
               color: Colors.grey.shade600,
             ),
@@ -405,7 +420,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                 _fetchJobs(reset: true, isConnected: isConnected);
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(localizations.jobSearchRetry),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,
@@ -438,7 +453,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                 _fetchJobs(reset: true, isConnected: isConnected);
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Reset Filters'),
+              label: Text(localizations.jobSearchResetFilters),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,

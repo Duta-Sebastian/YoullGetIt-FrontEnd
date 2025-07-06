@@ -12,6 +12,7 @@ class NotificationManager {
   static const String userUpdated = 'user_updated';
   static const String cvUpdated = 'cv_updated';
   static const String jobCartUpdated = 'job_cart_updated';
+  static const String answersUpdated = 'answers_updated';
   
   static const String backgroundSignalPort = 'background_signal_port';
   
@@ -22,10 +23,12 @@ class NotificationManager {
   final _userUpdatedController = StreamController<void>.broadcast();
   final _cvUpdatedController = StreamController<void>.broadcast();
   final _jobCartUpdatedController = StreamController<void>.broadcast();
+  final _answersUpdatedController = StreamController<void>.broadcast();
   
   Stream<void> get onUserUpdated => _userUpdatedController.stream;
   Stream<void> get onCvUpdated => _cvUpdatedController.stream;
   Stream<void> get onJobCartUpdated => _jobCartUpdatedController.stream;
+  Stream<void> get onAnswersUpdated => _answersUpdatedController.stream;
   
   Future<void> initialize() async {
     if (_isInitialized) {
@@ -82,6 +85,9 @@ class NotificationManager {
           case jobCartUpdated:
             _jobCartUpdatedController.add(null);
             break;
+          case answersUpdated:
+            _answersUpdatedController.add(null);
+            break;
           default:
             debugPrint('NotificationManager: Unknown message: $message');
         }
@@ -108,6 +114,10 @@ class NotificationManager {
         _jobCartUpdatedController.add(null);
         break;
         
+      case answersUpdated:
+        _answersUpdatedController.add(null);
+        break;
+        
       default:
         debugPrint('NotificationManager: Unknown notification payload: $payload');
     }
@@ -117,6 +127,7 @@ class NotificationManager {
     _userUpdatedController.close();
     _cvUpdatedController.close();
     _jobCartUpdatedController.close();
+    _answersUpdatedController.close();
     
     if (_receivePort != null) {
       IsolateNameServer.removePortNameMapping(backgroundSignalPort);
@@ -143,6 +154,11 @@ class NotificationManager {
   static Future<void> sendJobCartUpdatedSignal() async {
     await _sendSignal(jobCartUpdated, 'Job Cart Updated', 'Your job cart has been synchronized');
     _sendIsolateMessage(jobCartUpdated);
+  }
+  
+  static Future<void> sendAnswersUpdatedSignal() async {
+    await _sendSignal(answersUpdated, 'Answers Updated', 'Your questionnaire answers have been synchronized');
+    _sendIsolateMessage(answersUpdated);
   }
   
   static void _sendIsolateMessage(String message) {
