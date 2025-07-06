@@ -54,7 +54,7 @@ class QuestionnairePathScreen extends StatelessWidget {
                 subtitle: l10n.choiceScreenHigherAccuracyDesc,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => QuestionnaireScreen(isShortQuestionnaire: true),
+                    builder: (context) => QuestionnaireScreen(isShortQuestionnaire: false),
                   ));
                 },
               ),

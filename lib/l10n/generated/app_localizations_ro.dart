@@ -1782,4 +1782,403 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get shortQuestionnaireMode => 'Modul chestionar rapid';
+
+  @override
+  String get softSkillsGroupLeadershipManagement => 'Leadership și Management';
+
+  @override
+  String get softSkillsGroupCommunicationInterpersonal => 'Comunicare și Interpersonal';
+
+  @override
+  String get softSkillsGroupTeamworkCollaboration => 'Muncă în Echipă și Colaborare';
+
+  @override
+  String get softSkillsGroupCognitiveAnalytical => 'Cognitiv și Analitic';
+
+  @override
+  String get softSkillsGroupPersonalEffectiveness => 'Eficiență Personală';
+
+  @override
+  String get softSkillsGroupAdaptabilityGrowth => 'Adaptabilitate și Creștere';
+
+  @override
+  String get softSkillsGroupIndependenceSpecialized => 'Independență și Specializat';
+
+  @override
+  String get softSkillLeadership => 'Leadership';
+
+  @override
+  String get softSkillDecisionMaking => 'Luarea Deciziilor';
+
+  @override
+  String get softSkillMentoring => 'Mentoring';
+
+  @override
+  String get softSkillAccountability => 'Responsabilitate';
+
+  @override
+  String get softSkillCommunicationSkills => 'Abilități de Comunicare';
+
+  @override
+  String get softSkillPublicSpeaking => 'Vorbire în Public';
+
+  @override
+  String get softSkillInterpersonalSkills => 'Abilități Interpersonale';
+
+  @override
+  String get softSkillNetworking => 'Networking';
+
+  @override
+  String get softSkillCollaboration => 'Colaborare';
+
+  @override
+  String get softSkillTeamwork => 'Muncă în Echipă';
+
+  @override
+  String get softSkillRelationshipManagement => 'Managementul Relațiilor';
+
+  @override
+  String get softSkillCustomerService => 'Serviciu Clienți';
+
+  @override
+  String get softSkillCriticalThinking => 'Gândire Critică';
+
+  @override
+  String get softSkillProblemSolvingSkills => 'Abilități de Rezolvare a Problemelor';
+
+  @override
+  String get softSkillInnovation => 'Inovație';
+
+  @override
+  String get softSkillCommercialUnderstanding => 'Înțelegere Comercială';
+
+  @override
+  String get softSkillTimeManagement => 'Managementul Timpului';
+
+  @override
+  String get softSkillOrganizationalSkills => 'Abilități Organizaționale';
+
+  @override
+  String get softSkillAttentionToDetail => 'Atenție la Detalii';
+
+  @override
+  String get softSkillDetailOriented => 'Orientat pe Detalii';
+
+  @override
+  String get softSkillFlexibility => 'Flexibilitate';
+
+  @override
+  String get softSkillAdaptability => 'Adaptabilitate';
+
+  @override
+  String get softSkillLearning => 'Învățare';
+
+  @override
+  String get softSkillContinuousLearning => 'Învățare Continuă';
+
+  @override
+  String get softSkillEnthusiasmForLearning => 'Entuziasm pentru Învățare';
+
+  @override
+  String get softSkillIndependence => 'Independență';
+
+  @override
+  String get softSkillSelfReliance => 'Autonomie';
+
+  @override
+  String get softSkillEnthusiasmForPolitics => 'Entuziasm pentru Politică';
+
+  @override
+  String get softSkillEnthusiasmForPublicService => 'Entuziasm pentru Serviciul Public';
+
+  @override
+  String get hardSkillsGroupAnalysisResearch => 'Analiză și Cercetare';
+
+  @override
+  String get hardSkillsGroupProgrammingDevelopment => 'Programare și Dezvoltare';
+
+  @override
+  String get hardSkillsGroupDataScienceMl => 'Data Science și Machine Learning';
+
+  @override
+  String get hardSkillsGroupCloudInfrastructure => 'Cloud și Infrastructură';
+
+  @override
+  String get hardSkillsGroupDatabaseDataManagement => 'Baze de Date și Management Date';
+
+  @override
+  String get hardSkillsGroupDesignEngineeringTools => 'Instrumente Design și Inginerie';
+
+  @override
+  String get hardSkillsGroupBusinessIntelligence => 'Business Intelligence și Vizualizare';
+
+  @override
+  String get hardSkillsGroupProductivityProjectManagement => 'Productivitate și Management Proiecte';
+
+  @override
+  String get hardSkillsGroupMarketingDigitalTools => 'Marketing și Instrumente Digitale';
+
+  @override
+  String get hardSkillsGroupDesignCreativeTools => 'Instrumente Design și Creative';
+
+  @override
+  String get hardSkillsGroupAiAutomationTools => 'IA și Instrumente Automatizare';
+
+  @override
+  String get hardSkillsGroupSpecializedProfessional => 'Abilități Profesionale Specializate';
+
+  @override
+  String get hardSkillsGroupLegalCompliance => 'Legal și Conformitate';
+
+  @override
+  String get hardSkillsGroupEngineeringSpecializations => 'Specializări Inginerie';
+
+  @override
+  String get hardSkillsGroupCommunicationDocumentation => 'Comunicare și Documentare';
+
+  @override
+  String get hardSkillsGroupSpecializedManagement => 'Management Specializat';
+
+  @override
+  String get hardSkillGeneralAnalysis => 'Analiză Generală';
+
+  @override
+  String get hardSkillFinancialAnalysis => 'Analiză Financiară';
+
+  @override
+  String get hardSkillMarketAnalysis => 'Analiză de Piață';
+
+  @override
+  String get hardSkillLegalAnalysis => 'Analiză Juridică';
+
+  @override
+  String get hardSkillDataAnalysis => 'Analiză Date';
+
+  @override
+  String get hardSkillFinancialModeling => 'Modelare Financiară';
+
+  @override
+  String get hardSkillSocialScienceResearch => 'Cercetare în Științe Sociale';
+
+  @override
+  String get hardSkillMarketResearch => 'Cercetare de Piață';
+
+  @override
+  String get hardSkillStatisticalSkills => 'Abilități Statistice';
+
+  @override
+  String get hardSkillMathematicalSkills => 'Abilități Matematice';
+
+  @override
+  String get hardSkillStatistics => 'Statistică';
+
+  @override
+  String get hardSkillCalculus => 'Analiză Matematică';
+
+  @override
+  String get hardSkillLinearAlgebra => 'Algebră Liniară';
+
+  @override
+  String get hardSkillSupplyChainManagement => 'Management Lanț de Aprovizionare';
+
+  @override
+  String get hardSkillResearchMethods => 'Metode de Cercetare';
+
+  @override
+  String get hardSkillLegalResearch => 'Cercetare Juridică';
+
+  @override
+  String get hardSkillPolicyResearch => 'Cercetare de Politici';
+
+  @override
+  String get hardSkillArtsResearch => 'Cercetare Artistică';
+
+  @override
+  String get hardSkillPollingDataAnalysis => 'Analiză Date Sondaj';
+
+  @override
+  String get hardSkillProgramming => 'Programare';
+
+  @override
+  String get hardSkillSoftwareDevelopment => 'Dezvoltare Software';
+
+  @override
+  String get hardSkillWebDevelopment => 'Dezvoltare Web';
+
+  @override
+  String get hardSkillMobileDevelopment => 'Dezvoltare Mobile';
+
+  @override
+  String get hardSkillFullStackDevelopment => 'Dezvoltare Full-Stack';
+
+  @override
+  String get hardSkillFrontendDevelopment => 'Dezvoltare Frontend';
+
+  @override
+  String get hardSkillBackendDevelopment => 'Dezvoltare Backend';
+
+  @override
+  String get hardSkillApiDevelopment => 'Dezvoltare API';
+
+  @override
+  String get hardSkillMachineLearning => 'Învățare Automată';
+
+  @override
+  String get hardSkillDeepLearning => 'Învățare Profundă';
+
+  @override
+  String get hardSkillDataScience => 'Știința Datelor';
+
+  @override
+  String get hardSkillBigData => 'Big Data';
+
+  @override
+  String get hardSkillMachineLearningBasics => 'Noțiuni de Bază Machine Learning';
+
+  @override
+  String get hardSkillCloudComputing => 'Cloud Computing';
+
+  @override
+  String get hardSkillInfrastructureManagement => 'Management Infrastructură';
+
+  @override
+  String get hardSkillSystemAdministration => 'Administrare Sistem';
+
+  @override
+  String get hardSkillNetworkAdministration => 'Administrare Rețea';
+
+  @override
+  String get hardSkillDatabaseAdministration => 'Administrare Baze de Date';
+
+  @override
+  String get hardSkillDatabaseManagement => 'Management Baze de Date';
+
+  @override
+  String get hardSkillDatabaseKnowledge => 'Cunoștințe Baze de Date';
+
+  @override
+  String get hardSkillDataWarehousing => 'Depozitare Date';
+
+  @override
+  String get hardSkillDataMining => 'Minerit Date';
+
+  @override
+  String get hardSkillEtlProcesses => 'Procese ETL';
+
+  @override
+  String get hardSkillEngineeringDesign => 'Design Inginerie';
+
+  @override
+  String get hardSkillTechnicalDrawing => 'Desen Tehnic';
+
+  @override
+  String get hardSkill3dModeling => 'Modelare 3D';
+
+  @override
+  String get hardSkillProductDesign => 'Design Produs';
+
+  @override
+  String get hardSkillBusinessIntelligence => 'Business Intelligence';
+
+  @override
+  String get hardSkillDataVisualization => 'Vizualizare Date';
+
+  @override
+  String get hardSkillDashboardCreation => 'Creare Dashboard';
+
+  @override
+  String get hardSkillReporting => 'Raportare';
+
+  @override
+  String get hardSkillAnalytics => 'Analiză';
+
+  @override
+  String get hardSkillProjectManagement => 'Management Proiecte';
+
+  @override
+  String get hardSkillMicrosoftOffice => 'Microsoft Office';
+
+  @override
+  String get hardSkillSpreadsheetAnalysis => 'Analiză Foi de Calcul';
+
+  @override
+  String get hardSkillPivotTables => 'Tabele Pivot';
+
+  @override
+  String get hardSkillFinancialFunctions => 'Funcții Financiare';
+
+  @override
+  String get hardSkillTaskManagement => 'Management Sarcini';
+
+  @override
+  String get hardSkillWorkflowManagement => 'Management Flux de Lucru';
+
+  @override
+  String get hardSkillDigitalMarketing => 'Marketing Digital';
+
+  @override
+  String get hardSkillSocialMediaManagement => 'Management Social Media';
+
+  @override
+  String get hardSkillContentCreation => 'Creare Conținut';
+
+  @override
+  String get hardSkillContentMarketing => 'Content Marketing';
+
+  @override
+  String get hardSkillCrmSystems => 'Sisteme CRM';
+
+  @override
+  String get hardSkillEmailMarketing => 'Email Marketing';
+
+  @override
+  String get hardSkillMarketingAutomation => 'Automatizare Marketing';
+
+  @override
+  String get hardSkillCampaignManagement => 'Management Campanii';
+
+  @override
+  String get hardSkillGraphicDesign => 'Design Grafic';
+
+  @override
+  String get hardSkillVisualDesign => 'Design Vizual';
+
+  @override
+  String get hardSkillVisualCommunication => 'Comunicare Vizuală';
+
+  @override
+  String get hardSkillBrandDesign => 'Design Brand';
+
+  @override
+  String get hardSkillUiUxDesign => 'Design UI/UX';
+
+  @override
+  String get hardSkillWebDesign => 'Design Web';
+
+  @override
+  String get hardSkillLogoDesign => 'Design Logo';
+
+  @override
+  String get hardSkillPrintDesign => 'Design Print';
+
+  @override
+  String get hardSkillArtificialIntelligence => 'Inteligență Artificială';
+
+  @override
+  String get hardSkillPromptEngineering => 'Prompt Engineering';
+
+  @override
+  String get hardSkillAiTools => 'Instrumente IA';
+
+  @override
+  String get hardSkillAutomation => 'Automatizare';
+
+  @override
+  String get hardSkillProcessAutomation => 'Automatizare Procese';
+
+  @override
+  String get expandAll => 'Extinde Tot';
+
+  @override
+  String get collapseAll => 'Restrânge Tot';
 }

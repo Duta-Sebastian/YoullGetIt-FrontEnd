@@ -1781,4 +1781,403 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get shortQuestionnaireMode => 'Mode questionnaire rapide';
+
+  @override
+  String get softSkillsGroupLeadershipManagement => 'Leadership et Gestion';
+
+  @override
+  String get softSkillsGroupCommunicationInterpersonal => 'Communication et Interpersonnel';
+
+  @override
+  String get softSkillsGroupTeamworkCollaboration => 'Travail d\'équipe et Collaboration';
+
+  @override
+  String get softSkillsGroupCognitiveAnalytical => 'Cognitif et Analytique';
+
+  @override
+  String get softSkillsGroupPersonalEffectiveness => 'Efficacité Personnelle';
+
+  @override
+  String get softSkillsGroupAdaptabilityGrowth => 'Adaptabilité et Croissance';
+
+  @override
+  String get softSkillsGroupIndependenceSpecialized => 'Indépendance et Spécialisé';
+
+  @override
+  String get softSkillLeadership => 'Leadership';
+
+  @override
+  String get softSkillDecisionMaking => 'Prise de Décision';
+
+  @override
+  String get softSkillMentoring => 'Mentorat';
+
+  @override
+  String get softSkillAccountability => 'Responsabilité';
+
+  @override
+  String get softSkillCommunicationSkills => 'Compétences en Communication';
+
+  @override
+  String get softSkillPublicSpeaking => 'Prise de Parole en Public';
+
+  @override
+  String get softSkillInterpersonalSkills => 'Compétences Interpersonnelles';
+
+  @override
+  String get softSkillNetworking => 'Réseautage';
+
+  @override
+  String get softSkillCollaboration => 'Collaboration';
+
+  @override
+  String get softSkillTeamwork => 'Travail d\'équipe';
+
+  @override
+  String get softSkillRelationshipManagement => 'Gestion des Relations';
+
+  @override
+  String get softSkillCustomerService => 'Service Client';
+
+  @override
+  String get softSkillCriticalThinking => 'Pensée Critique';
+
+  @override
+  String get softSkillProblemSolvingSkills => 'Compétences en Résolution de Problèmes';
+
+  @override
+  String get softSkillInnovation => 'Innovation';
+
+  @override
+  String get softSkillCommercialUnderstanding => 'Compréhension Commerciale';
+
+  @override
+  String get softSkillTimeManagement => 'Gestion du Temps';
+
+  @override
+  String get softSkillOrganizationalSkills => 'Compétences Organisationnelles';
+
+  @override
+  String get softSkillAttentionToDetail => 'Attention aux Détails';
+
+  @override
+  String get softSkillDetailOriented => 'Orienté Détails';
+
+  @override
+  String get softSkillFlexibility => 'Flexibilité';
+
+  @override
+  String get softSkillAdaptability => 'Adaptabilité';
+
+  @override
+  String get softSkillLearning => 'Apprentissage';
+
+  @override
+  String get softSkillContinuousLearning => 'Apprentissage Continu';
+
+  @override
+  String get softSkillEnthusiasmForLearning => 'Enthousiasme pour l\'Apprentissage';
+
+  @override
+  String get softSkillIndependence => 'Indépendance';
+
+  @override
+  String get softSkillSelfReliance => 'Autonomie';
+
+  @override
+  String get softSkillEnthusiasmForPolitics => 'Enthousiasme pour la Politique';
+
+  @override
+  String get softSkillEnthusiasmForPublicService => 'Enthousiasme pour le Service Public';
+
+  @override
+  String get hardSkillsGroupAnalysisResearch => 'Analyse et Recherche';
+
+  @override
+  String get hardSkillsGroupProgrammingDevelopment => 'Programmation et Développement';
+
+  @override
+  String get hardSkillsGroupDataScienceMl => 'Science des Données et Machine Learning';
+
+  @override
+  String get hardSkillsGroupCloudInfrastructure => 'Cloud et Infrastructure';
+
+  @override
+  String get hardSkillsGroupDatabaseDataManagement => 'Base de Données et Gestion des Données';
+
+  @override
+  String get hardSkillsGroupDesignEngineeringTools => 'Outils de Conception et d\'Ingénierie';
+
+  @override
+  String get hardSkillsGroupBusinessIntelligence => 'Intelligence d\'Affaires et Visualisation';
+
+  @override
+  String get hardSkillsGroupProductivityProjectManagement => 'Productivité et Gestion de Projet';
+
+  @override
+  String get hardSkillsGroupMarketingDigitalTools => 'Marketing et Outils Numériques';
+
+  @override
+  String get hardSkillsGroupDesignCreativeTools => 'Outils de Conception et Créatifs';
+
+  @override
+  String get hardSkillsGroupAiAutomationTools => 'IA et Outils d\'Automatisation';
+
+  @override
+  String get hardSkillsGroupSpecializedProfessional => 'Compétences Professionnelles Spécialisées';
+
+  @override
+  String get hardSkillsGroupLegalCompliance => 'Juridique et Conformité';
+
+  @override
+  String get hardSkillsGroupEngineeringSpecializations => 'Spécialisations en Ingénierie';
+
+  @override
+  String get hardSkillsGroupCommunicationDocumentation => 'Communication et Documentation';
+
+  @override
+  String get hardSkillsGroupSpecializedManagement => 'Gestion Spécialisée';
+
+  @override
+  String get hardSkillGeneralAnalysis => 'Analyse Générale';
+
+  @override
+  String get hardSkillFinancialAnalysis => 'Analyse Financière';
+
+  @override
+  String get hardSkillMarketAnalysis => 'Analyse de Marché';
+
+  @override
+  String get hardSkillLegalAnalysis => 'Analyse Juridique';
+
+  @override
+  String get hardSkillDataAnalysis => 'Analyse de Données';
+
+  @override
+  String get hardSkillFinancialModeling => 'Modélisation Financière';
+
+  @override
+  String get hardSkillSocialScienceResearch => 'Recherche en Sciences Sociales';
+
+  @override
+  String get hardSkillMarketResearch => 'Études de Marché';
+
+  @override
+  String get hardSkillStatisticalSkills => 'Compétences Statistiques';
+
+  @override
+  String get hardSkillMathematicalSkills => 'Compétences Mathématiques';
+
+  @override
+  String get hardSkillStatistics => 'Statistiques';
+
+  @override
+  String get hardSkillCalculus => 'Calcul';
+
+  @override
+  String get hardSkillLinearAlgebra => 'Algèbre Linéaire';
+
+  @override
+  String get hardSkillSupplyChainManagement => 'Gestion de la Chaîne d\'Approvisionnement';
+
+  @override
+  String get hardSkillResearchMethods => 'Méthodes de Recherche';
+
+  @override
+  String get hardSkillLegalResearch => 'Recherche Juridique';
+
+  @override
+  String get hardSkillPolicyResearch => 'Recherche en Politique';
+
+  @override
+  String get hardSkillArtsResearch => 'Recherche Artistique';
+
+  @override
+  String get hardSkillPollingDataAnalysis => 'Analyse de Données de Sondage';
+
+  @override
+  String get hardSkillProgramming => 'Programmation';
+
+  @override
+  String get hardSkillSoftwareDevelopment => 'Développement Logiciel';
+
+  @override
+  String get hardSkillWebDevelopment => 'Développement Web';
+
+  @override
+  String get hardSkillMobileDevelopment => 'Développement Mobile';
+
+  @override
+  String get hardSkillFullStackDevelopment => 'Développement Full-Stack';
+
+  @override
+  String get hardSkillFrontendDevelopment => 'Développement Frontend';
+
+  @override
+  String get hardSkillBackendDevelopment => 'Développement Backend';
+
+  @override
+  String get hardSkillApiDevelopment => 'Développement d\'API';
+
+  @override
+  String get hardSkillMachineLearning => 'Apprentissage Automatique';
+
+  @override
+  String get hardSkillDeepLearning => 'Apprentissage Profond';
+
+  @override
+  String get hardSkillDataScience => 'Science des Données';
+
+  @override
+  String get hardSkillBigData => 'Big Data';
+
+  @override
+  String get hardSkillMachineLearningBasics => 'Bases du Machine Learning';
+
+  @override
+  String get hardSkillCloudComputing => 'Informatique en Nuage';
+
+  @override
+  String get hardSkillInfrastructureManagement => 'Gestion d\'Infrastructure';
+
+  @override
+  String get hardSkillSystemAdministration => 'Administration Système';
+
+  @override
+  String get hardSkillNetworkAdministration => 'Administration Réseau';
+
+  @override
+  String get hardSkillDatabaseAdministration => 'Administration de Base de Données';
+
+  @override
+  String get hardSkillDatabaseManagement => 'Gestion de Base de Données';
+
+  @override
+  String get hardSkillDatabaseKnowledge => 'Connaissance des Bases de Données';
+
+  @override
+  String get hardSkillDataWarehousing => 'Entrepôt de Données';
+
+  @override
+  String get hardSkillDataMining => 'Exploration de Données';
+
+  @override
+  String get hardSkillEtlProcesses => 'Processus ETL';
+
+  @override
+  String get hardSkillEngineeringDesign => 'Conception d\'Ingénierie';
+
+  @override
+  String get hardSkillTechnicalDrawing => 'Dessin Technique';
+
+  @override
+  String get hardSkill3dModeling => 'Modélisation 3D';
+
+  @override
+  String get hardSkillProductDesign => 'Conception de Produit';
+
+  @override
+  String get hardSkillBusinessIntelligence => 'Intelligence d\'Affaires';
+
+  @override
+  String get hardSkillDataVisualization => 'Visualisation de Données';
+
+  @override
+  String get hardSkillDashboardCreation => 'Création de Tableaux de Bord';
+
+  @override
+  String get hardSkillReporting => 'Rapports';
+
+  @override
+  String get hardSkillAnalytics => 'Analytique';
+
+  @override
+  String get hardSkillProjectManagement => 'Gestion de Projet';
+
+  @override
+  String get hardSkillMicrosoftOffice => 'Microsoft Office';
+
+  @override
+  String get hardSkillSpreadsheetAnalysis => 'Analyse de Feuilles de Calcul';
+
+  @override
+  String get hardSkillPivotTables => 'Tableaux Croisés Dynamiques';
+
+  @override
+  String get hardSkillFinancialFunctions => 'Fonctions Financières';
+
+  @override
+  String get hardSkillTaskManagement => 'Gestion des Tâches';
+
+  @override
+  String get hardSkillWorkflowManagement => 'Gestion de Flux de Travail';
+
+  @override
+  String get hardSkillDigitalMarketing => 'Marketing Numérique';
+
+  @override
+  String get hardSkillSocialMediaManagement => 'Gestion des Médias Sociaux';
+
+  @override
+  String get hardSkillContentCreation => 'Création de Contenu';
+
+  @override
+  String get hardSkillContentMarketing => 'Marketing de Contenu';
+
+  @override
+  String get hardSkillCrmSystems => 'Systèmes CRM';
+
+  @override
+  String get hardSkillEmailMarketing => 'Email Marketing';
+
+  @override
+  String get hardSkillMarketingAutomation => 'Automatisation Marketing';
+
+  @override
+  String get hardSkillCampaignManagement => 'Gestion de Campagne';
+
+  @override
+  String get hardSkillGraphicDesign => 'Design Graphique';
+
+  @override
+  String get hardSkillVisualDesign => 'Design Visuel';
+
+  @override
+  String get hardSkillVisualCommunication => 'Communication Visuelle';
+
+  @override
+  String get hardSkillBrandDesign => 'Design de Marque';
+
+  @override
+  String get hardSkillUiUxDesign => 'Design UI/UX';
+
+  @override
+  String get hardSkillWebDesign => 'Design Web';
+
+  @override
+  String get hardSkillLogoDesign => 'Design de Logo';
+
+  @override
+  String get hardSkillPrintDesign => 'Design d\'Impression';
+
+  @override
+  String get hardSkillArtificialIntelligence => 'Intelligence Artificielle';
+
+  @override
+  String get hardSkillPromptEngineering => 'Ingénierie de Prompts';
+
+  @override
+  String get hardSkillAiTools => 'Outils IA';
+
+  @override
+  String get hardSkillAutomation => 'Automatisation';
+
+  @override
+  String get hardSkillProcessAutomation => 'Automatisation de Processus';
+
+  @override
+  String get expandAll => 'Tout Développer';
+
+  @override
+  String get collapseAll => 'Tout Réduire';
 }

@@ -31,6 +31,7 @@ class QuestionnaireScreenState extends State<QuestionnaireScreen> {
   void initState() {
     super.initState();
     _currentlyShort = widget.isShortQuestionnaire; // Initialize with passed value
+    debugPrint('Questionnaire initialized in ${_currentlyShort ? "Short" : "Long"} mode');
   }
   
   void _updateQuestionIndex(int newIndex, String questionId) {

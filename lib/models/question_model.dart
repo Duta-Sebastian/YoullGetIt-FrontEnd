@@ -3,6 +3,7 @@ enum AnswerType {
   radio,
   languages,
   restrictedChips,
+  groupedRestrictedChips,
 }
 
 class Question {

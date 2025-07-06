@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:youllgetit_flutter/models/question_model.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/checkbox_question.dart';
+import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/grouped_restricted_chips_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/languages_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/radio_question.dart';
 import 'package:youllgetit_flutter/widgets/first_time_questions/question_types/restricted_chips_question.dart';
@@ -28,7 +29,6 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
   @override
   Widget build(BuildContext context) {
     Widget answerWidget;
-
     switch (widget.question.answerType) {
       case AnswerType.checkbox:
         answerWidget = CheckboxWidget(
@@ -56,6 +56,14 @@ class GenericQuestionWidgetState extends State<GenericQuestionWidget> {
 
       case AnswerType.restrictedChips:
         answerWidget = RestrictedChipsWidget(
+          question: widget.question,
+          selectedChoices: widget.selectedChoices,
+          onChoicesUpdated: widget.onChoicesUpdated,
+        );
+        break;
+
+      case AnswerType.groupedRestrictedChips:
+        answerWidget = GroupedRestrictedChipsWidget(
           question: widget.question,
           selectedChoices: widget.selectedChoices,
           onChoicesUpdated: widget.onChoicesUpdated,

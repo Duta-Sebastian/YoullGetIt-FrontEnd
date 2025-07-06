@@ -126,6 +126,12 @@ class QuestionTranslationService {
           }
         }).toList();
 
+      case 'q8': // Soft skills - NOW TRANSLATED
+        return originalOptions.map<String>((option) => translateSoftSkill(option, l10n)).toList();
+
+      case 'q9': // Hard skills - NOW TRANSLATED  
+        return originalOptions.map<String>((option) => translateHardSkill(option, l10n)).toList();
+
       case 'q10': // Languages
         return originalOptions.map<String>((option) => _translateLanguage(option, l10n)).toList();
 
@@ -166,11 +172,290 @@ class QuestionTranslationService {
           }
         }).toList();
 
-      // For dynamic content that comes from repositories
-      case 'q8': // Soft skills - keep original (already localized in SkillsRepository)
-      case 'q9': // Hard skills - keep original (already localized in SkillsRepository)
       default:
         return originalOptions; // Return original for unhandled cases
+    }
+  }
+
+  // NEW: Soft Skills Translation
+  static String translateSoftSkill(String skill, AppLocalizations l10n) {
+    switch (skill) {
+      // Leadership & Management
+      case 'Leadership': return l10n.softSkillLeadership;
+      case 'Decision-Making': return l10n.softSkillDecisionMaking;
+      case 'Mentoring': return l10n.softSkillMentoring;
+      case 'Accountability': return l10n.softSkillAccountability;
+      
+      // Communication & Interpersonal
+      case 'Communication Skills': return l10n.softSkillCommunicationSkills;
+      case 'Public Speaking': return l10n.softSkillPublicSpeaking;
+      case 'Interpersonal Skills': return l10n.softSkillInterpersonalSkills;
+      case 'Networking': return l10n.softSkillNetworking;
+      
+      // Teamwork & Collaboration
+      case 'Collaboration': return l10n.softSkillCollaboration;
+      case 'Teamwork': return l10n.softSkillTeamwork;
+      case 'Relationship Management': return l10n.softSkillRelationshipManagement;
+      case 'Customer Service': return l10n.softSkillCustomerService;
+      
+      // Cognitive & Analytical
+      case 'Critical Thinking': return l10n.softSkillCriticalThinking;
+      case 'Problem-Solving Skills': return l10n.softSkillProblemSolvingSkills;
+      case 'Innovation': return l10n.softSkillInnovation;
+      case 'Commercial Understanding': return l10n.softSkillCommercialUnderstanding;
+      
+      // Personal Effectiveness
+      case 'Time Management': return l10n.softSkillTimeManagement;
+      case 'Organizational Skills': return l10n.softSkillOrganizationalSkills;
+      case 'Attention to Detail': return l10n.softSkillAttentionToDetail;
+      case 'Detail Oriented': return l10n.softSkillDetailOriented;
+      
+      // Adaptability & Growth
+      case 'Flexibility': return l10n.softSkillFlexibility;
+      case 'Adaptability': return l10n.softSkillAdaptability;
+      case 'Learning': return l10n.softSkillLearning;
+      case 'Continuous Learning': return l10n.softSkillContinuousLearning;
+      case 'Enthusiasm for Learning': return l10n.softSkillEnthusiasmForLearning;
+      
+      // Independence & Specialized
+      case 'Independence': return l10n.softSkillIndependence;
+      case 'Self-Reliance': return l10n.softSkillSelfReliance;
+      case 'Enthusiasm for Politics': return l10n.softSkillEnthusiasmForPolitics;
+      case 'Enthusiasm for Public Service': return l10n.softSkillEnthusiasmForPublicService;
+      
+      default: return skill;
+    }
+  }
+
+  // NEW: Hard Skills Translation
+  static String translateHardSkill(String skill, AppLocalizations l10n) {
+    switch (skill) {
+      // Analysis & Research
+      case 'General Analysis': return l10n.hardSkillGeneralAnalysis;
+      case 'Financial Analysis': return l10n.hardSkillFinancialAnalysis;
+      case 'Market Analysis': return l10n.hardSkillMarketAnalysis;
+      case 'Legal Analysis': return l10n.hardSkillLegalAnalysis;
+      case 'Data Analysis': return l10n.hardSkillDataAnalysis;
+      case 'Financial Modeling': return l10n.hardSkillFinancialModeling;
+      case 'Social Science Research': return l10n.hardSkillSocialScienceResearch;
+      case 'Market Research': return l10n.hardSkillMarketResearch;
+      case 'Statistical Skills': return l10n.hardSkillStatisticalSkills;
+      case 'Mathematical Skills': return l10n.hardSkillMathematicalSkills;
+      case 'Statistics': return l10n.hardSkillStatistics;
+      case 'Calculus': return l10n.hardSkillCalculus;
+      case 'Linear Algebra': return l10n.hardSkillLinearAlgebra;
+      case 'Supply Chain Management': return l10n.hardSkillSupplyChainManagement;
+      case 'Research Methods': return l10n.hardSkillResearchMethods;
+      case 'Legal Research': return l10n.hardSkillLegalResearch;
+      case 'Policy Research': return l10n.hardSkillPolicyResearch;
+      case 'Arts Research': return l10n.hardSkillArtsResearch;
+      case 'Polling Data Analysis': return l10n.hardSkillPollingDataAnalysis;
+      
+      // Programming & Development
+      case 'Programming': return l10n.hardSkillProgramming;
+      case 'Software Development': return l10n.hardSkillSoftwareDevelopment;
+      case 'Web Development': return l10n.hardSkillWebDevelopment;
+      case 'Mobile Development': return l10n.hardSkillMobileDevelopment;
+      case 'Full-stack Development': return l10n.hardSkillFullStackDevelopment;
+      case 'Frontend Development': return l10n.hardSkillFrontendDevelopment;
+      case 'Backend Development': return l10n.hardSkillBackendDevelopment;
+      case 'API Development': return l10n.hardSkillApiDevelopment;
+      
+      // Data Science & Machine Learning
+      case 'Machine Learning': return l10n.hardSkillMachineLearning;
+      case 'Deep Learning': return l10n.hardSkillDeepLearning;
+      case 'Data Science': return l10n.hardSkillDataScience;
+      case 'Big Data': return l10n.hardSkillBigData;
+      case 'Machine Learning Basics': return l10n.hardSkillMachineLearningBasics;
+      
+      // Cloud & Infrastructure
+      case 'Cloud Computing': return l10n.hardSkillCloudComputing;
+      case 'Infrastructure Management': return l10n.hardSkillInfrastructureManagement;
+      case 'System Administration': return l10n.hardSkillSystemAdministration;
+      case 'Network Administration': return l10n.hardSkillNetworkAdministration;
+      case 'Database Administration': return l10n.hardSkillDatabaseAdministration;
+      
+      // Database & Data Management
+      case 'Database Management': return l10n.hardSkillDatabaseManagement;
+      case 'Database Knowledge': return l10n.hardSkillDatabaseKnowledge;
+      case 'Data Warehousing': return l10n.hardSkillDataWarehousing;
+      case 'Data Mining': return l10n.hardSkillDataMining;
+      case 'ETL Processes': return l10n.hardSkillEtlProcesses;
+      
+      // Design & Engineering Tools
+      case 'Engineering Design': return l10n.hardSkillEngineeringDesign;
+      case 'Technical Drawing': return l10n.hardSkillTechnicalDrawing;
+      case '3D Modeling': return l10n.hardSkill3dModeling;
+      case 'Product Design': return l10n.hardSkillProductDesign;
+      
+      // Business Intelligence & Visualization
+      case 'Business Intelligence': return l10n.hardSkillBusinessIntelligence;
+      case 'Data Visualization': return l10n.hardSkillDataVisualization;
+      case 'Dashboard Creation': return l10n.hardSkillDashboardCreation;
+      case 'Reporting': return l10n.hardSkillReporting;
+      case 'Analytics': return l10n.hardSkillAnalytics;
+      
+      // Productivity & Project Management
+      case 'Project Management': return l10n.hardSkillProjectManagement;
+      case 'Microsoft Office': return l10n.hardSkillMicrosoftOffice;
+      case 'Spreadsheet Analysis': return l10n.hardSkillSpreadsheetAnalysis;
+      case 'Pivot Tables': return l10n.hardSkillPivotTables;
+      case 'Financial Functions': return l10n.hardSkillFinancialFunctions;
+      case 'Task Management': return l10n.hardSkillTaskManagement;
+      case 'Workflow Management': return l10n.hardSkillWorkflowManagement;
+      
+      // Marketing & Digital Tools
+      case 'Digital Marketing': return l10n.hardSkillDigitalMarketing;
+      case 'Social Media Management': return l10n.hardSkillSocialMediaManagement;
+      case 'Content Creation': return l10n.hardSkillContentCreation;
+      case 'Content Marketing': return l10n.hardSkillContentMarketing;
+      case 'CRM Systems': return l10n.hardSkillCrmSystems;
+      case 'Email Marketing': return l10n.hardSkillEmailMarketing;
+      case 'Marketing Automation': return l10n.hardSkillMarketingAutomation;
+      case 'Campaign Management': return l10n.hardSkillCampaignManagement;
+      
+      // Design & Creative Tools
+      case 'Graphic Design': return l10n.hardSkillGraphicDesign;
+      case 'Visual Design': return l10n.hardSkillVisualDesign;
+      case 'Visual Communication': return l10n.hardSkillVisualCommunication;
+      case 'Brand Design': return l10n.hardSkillBrandDesign;
+      case 'UI/UX Design': return l10n.hardSkillUiUxDesign;
+      case 'Web Design': return l10n.hardSkillWebDesign;
+      case 'Logo Design': return l10n.hardSkillLogoDesign;
+      case 'Print Design': return l10n.hardSkillPrintDesign;
+      
+      // AI & Automation Tools
+      case 'Artificial Intelligence': return l10n.hardSkillArtificialIntelligence;
+      case 'Prompt Engineering': return l10n.hardSkillPromptEngineering;
+      case 'AI Tools': return l10n.hardSkillAiTools;
+      case 'Automation': return l10n.hardSkillAutomation;
+      case 'Process Automation': return l10n.hardSkillProcessAutomation;
+      
+      // Keep proper names unchanged (no translation needed)
+      case 'Python':
+      case 'R Programming':
+      case 'SQL':
+      case 'JavaScript':
+      case 'Java':
+      case 'C++':
+      case 'C#':
+      case 'TypeScript':
+      case 'PHP':
+      case 'Ruby':
+      case 'Go':
+      case 'Rust':
+      case 'Swift':
+      case 'Kotlin':
+      case 'Dart':
+      case 'MATLAB':
+      case 'pandas':
+      case 'NumPy':
+      case 'scikit-learn':
+      case 'matplotlib':
+      case 'Seaborn':
+      case 'ggplot2':
+      case 'Hadoop':
+      case 'Spark':
+      case 'PySpark':
+      case 'AWS':
+      case 'AWS SageMaker':
+      case 'Azure':
+      case 'Azure ML':
+      case 'Google Cloud Platform':
+      case 'Google Vertex AI':
+      case 'Docker':
+      case 'Kubernetes':
+      case 'MongoDB':
+      case 'PostgreSQL':
+      case 'MySQL':
+      case 'Redis':
+      case 'Firebase':
+      case 'CAD':
+      case 'SolidWorks':
+      case 'AutoCAD':
+      case 'SketchUp':
+      case 'Blender':
+      case 'Tableau':
+      case 'Power BI':
+      case 'Looker':
+      case 'Excel':
+      case 'Word':
+      case 'PowerPoint':
+      case 'Google Sheets':
+      case 'VLOOKUP':
+      case 'Trello':
+      case 'Asana':
+      case 'Notion':
+      case 'ClickUp':
+      case 'SEO':
+      case 'SEM':
+      case 'Google Analytics':
+      case 'Adobe Analytics':
+      case 'HubSpot':
+      case 'Mailchimp':
+      case 'Ubersuggest':
+      case 'Ahrefs':
+      case 'SEMrush':
+      case 'Adobe Photoshop':
+      case 'Adobe Illustrator':
+      case 'Adobe InDesign':
+      case 'Adobe Premiere Pro':
+      case 'Adobe Creative Suite':
+      case 'Figma':
+      case 'Canva':
+      case 'ChatGPT':
+      case 'Claude':
+      case 'Gemini':
+      case 'DALL-E':
+      case 'Notion AI':
+      case 'Jasper':
+      case 'Westlaw':
+      case 'LexisNexis':
+      case 'Kubeflow':
+      case 'MLflow':
+      case 'Weights & Biases':
+      case 'Prefect':
+      case 'Dagster':
+        return skill; // Keep proper names as-is
+      
+      default: return skill;
+    }
+  }
+
+  // NEW: Soft Skills Group Translation
+  static String translateSoftSkillGroup(String groupName, AppLocalizations l10n) {
+    switch (groupName) {
+      case 'Leadership & Management': return l10n.softSkillsGroupLeadershipManagement;
+      case 'Communication & Interpersonal': return l10n.softSkillsGroupCommunicationInterpersonal;
+      case 'Teamwork & Collaboration': return l10n.softSkillsGroupTeamworkCollaboration;
+      case 'Cognitive & Analytical': return l10n.softSkillsGroupCognitiveAnalytical;
+      case 'Personal Effectiveness': return l10n.softSkillsGroupPersonalEffectiveness;
+      case 'Adaptability & Growth': return l10n.softSkillsGroupAdaptabilityGrowth;
+      case 'Independence & Specialized': return l10n.softSkillsGroupIndependenceSpecialized;
+      default: return groupName;
+    }
+  }
+
+  // NEW: Hard Skills Group Translation
+  static String translateHardSkillGroup(String groupName, AppLocalizations l10n) {
+    switch (groupName) {
+      case 'Analysis & Research': return l10n.hardSkillsGroupAnalysisResearch;
+      case 'Programming & Development': return l10n.hardSkillsGroupProgrammingDevelopment;
+      case 'Data Science & Machine Learning': return l10n.hardSkillsGroupDataScienceMl;
+      case 'Cloud & Infrastructure': return l10n.hardSkillsGroupCloudInfrastructure;
+      case 'Database & Data Management': return l10n.hardSkillsGroupDatabaseDataManagement;
+      case 'Design & Engineering Tools': return l10n.hardSkillsGroupDesignEngineeringTools;
+      case 'Business Intelligence & Visualization': return l10n.hardSkillsGroupBusinessIntelligence;
+      case 'Productivity & Project Management': return l10n.hardSkillsGroupProductivityProjectManagement;
+      case 'Marketing & Digital Tools': return l10n.hardSkillsGroupMarketingDigitalTools;
+      case 'Design & Creative Tools': return l10n.hardSkillsGroupDesignCreativeTools;
+      case 'AI & Automation Tools': return l10n.hardSkillsGroupAiAutomationTools;
+      case 'Specialized Professional Skills': return l10n.hardSkillsGroupSpecializedProfessional;
+      case 'Legal & Compliance': return l10n.hardSkillsGroupLegalCompliance;
+      case 'Engineering Specializations': return l10n.hardSkillsGroupEngineeringSpecializations;
+      case 'Communication & Documentation': return l10n.hardSkillsGroupCommunicationDocumentation;
+      case 'Specialized Management': return l10n.hardSkillsGroupSpecializedManagement;
+      default: return groupName;
     }
   }
 

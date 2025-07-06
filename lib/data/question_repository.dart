@@ -182,7 +182,7 @@ class QuestionRepository {
       Question(
         id: 'q8',
         text: 'What soft skills do you master?',
-        answerType: AnswerType.restrictedChips,
+        answerType: AnswerType.groupedRestrictedChips,
         options: softSkills,
         hasOtherField: false,
         nextQuestionId: 'q9',
@@ -193,7 +193,7 @@ class QuestionRepository {
       Question(
         id: 'q9',
         text: 'What hard skills do you master?',
-        answerType: AnswerType.restrictedChips,
+        answerType: AnswerType.groupedRestrictedChips,
         options: hardSkills,
         hasOtherField: false,
         nextQuestionId: 'q10',
