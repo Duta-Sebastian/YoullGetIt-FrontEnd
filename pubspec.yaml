@@ -79,12 +79,12 @@ flutter_native_splash:
   image: ./assets/splash_screen.png
   android_12:
     color: "#FFDE15"
-    image: ./assets/splash_screen.png
+    image: ./assets/android_splash_screen.png
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo.png"
+  image_path: "assets/logo.png"  
   min_sdk_android: 21
   remove_alpha_ios: true
 
@@ -102,7 +102,11 @@ flutter:
     - assets/soft_skills.csv
     - assets/hard_skills.csv
     - assets/logo.png
-    - assets/pufferfish_wave.gif
+    - assets/pufferfish_wave_1.png
+    - assets/pufferfish_wave_2.png
+    - assets/pufferfish_wave_3.png
+    - assets/pufferfish_wave_4.png
+    - assets/pufferfish_wave_5.png
     - assets/splash_screen.png
   # To add assets to your application, add an assets section, like this:
   # assets:

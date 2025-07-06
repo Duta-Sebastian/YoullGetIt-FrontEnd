@@ -185,6 +185,9 @@ void callbackDispatcher() {
                   case DbTables.job_cart:
                     await NotificationManager.sendJobCartUpdatedSignal();
                     break;
+                  case DbTables.questions:
+                    await NotificationManager.sendAnswersUpdatedSignal();
+                    break;
                 }
                 int pushResult = await SyncApi.syncPush(accessToken, aesKey, table);
                 debugPrint('SyncProcessor: Sync push result: $pushResult');

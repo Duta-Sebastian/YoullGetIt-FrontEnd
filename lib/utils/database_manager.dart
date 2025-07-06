@@ -5,6 +5,7 @@ import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
 import 'package:youllgetit_flutter/models/job_status.dart';
+import 'package:youllgetit_flutter/models/question_sync_model.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/secure_storage_manager.dart';
 
@@ -159,6 +160,43 @@ class DatabaseManager {
       return UserModel(
         username: results.first['username'] as String,
         lastChanged: DateTime.parse(results.first['last_changed'] as String)
+      );
+    });
+  }
+
+  static Future<int> updateQuestions(QuestionSyncModel currentQuestions) async {
+    final QuestionSyncModel? oldQuestions = await _database.query('question_answers').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return QuestionSyncModel.fromJson(results);
+    });
+
+    if (oldQuestions == null) {
+      return _database.insert('question_answers', {
+        'answers_json': currentQuestions.questionJson,
+        'last_changed': currentQuestions.lastChanged!.toUtc().toIso8601String(),
+        'is_short_questionnaire': currentQuestions.isShortQuestionnaire ? 1 : 0
+      });
+    } else if (currentQuestions.lastChanged!.isAfter(oldQuestions.lastChanged!)) {
+      return _database.update('question_answers', {
+        'answers_json': currentQuestions.questionJson,
+        'last_changed': currentQuestions.lastChanged!.toUtc().toIso8601String(),
+        'is_short_questionnaire': currentQuestions.isShortQuestionnaire ? 1 : 0
+      });
+    }
+    return 0;
+  }
+
+  static Future<QuestionSyncModel?> getQuestions() async {
+    return await _database.query('question_answers').then((results) {
+      if (results.isEmpty) {
+        return null;
+      }
+      return QuestionSyncModel(
+        questionJson: results.first['answers_json'] as String?,
+        lastChanged: DateTime.parse(results.first['last_changed'] as String),
+        isShortQuestionnaire: results.first['is_short_questionnaire'] == 1
       );
     });
   }

@@ -7,6 +7,7 @@ import 'package:youllgetit_flutter/screens/questionnaire_path_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
+import 'package:youllgetit_flutter/widgets/animations/animated_pufferfish.dart';
 
 class EntryScreen extends ConsumerStatefulWidget {
   const EntryScreen({super.key});
@@ -126,8 +127,8 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
                         children: [
                           const SizedBox(height: 60),
                           
-                          // Logo
-                          _buildLogo(),
+                          // Animated Pufferfish Logo
+                          _buildAnimatedLogo(),
                           
                           const SizedBox(height: 48),
                           
@@ -205,18 +206,9 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
     );
   }
 
-  Widget _buildLogo() {
-    return Container(
-      width: 140,
-      height: 140,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(70), // Circular background
-      ),
-      child: Image.asset(
-        'assets/pufferfish_wave.gif',
-        fit: BoxFit.contain,
-      ),
+  Widget _buildAnimatedLogo() {
+    return const AnimatedPufferfish(
+      rotation: 0.0, // No rotation for the entry screen
     );
   }
 
@@ -325,32 +317,29 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
 
   Widget _buildGdprCheckbox(AppLocalizations l10n) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center, // Changed from start to center
       children: [
-        Container(
-          margin: const EdgeInsets.only(top: 2),
-          child: Transform.scale(
-            scale: 1.2,
-            child: Checkbox(
-              value: _gdprChecked,
-              activeColor: primaryYellow,
-              checkColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-              side: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1.5,
-              ),
-              onChanged: (bool? value) {
-                setState(() {
-                  _gdprChecked = value ?? false;
-                });
-              },
+        Transform.scale(
+          scale: 1.2,
+          child: Checkbox(
+            value: _gdprChecked,
+            activeColor: primaryYellow,
+            checkColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
             ),
+            side: BorderSide(
+              color: Colors.grey[300]!,
+              width: 1.5,
+            ),
+            onChanged: (bool? value) {
+              setState(() {
+                _gdprChecked = value ?? false;
+              });
+            },
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8), // Reduced from 12 to 8
         Expanded(
           child: GestureDetector(
             onTap: () {
@@ -358,37 +347,34 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
                 _gdprChecked = !_gdprChecked;
               });
             },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: RichText(
-                text: TextSpan(
-                  text: l10n.entryScreenIAgreeToThe,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                    height: 1.4,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: l10n.entryScreenGdprPrivacyPolicy,
-                      style: const TextStyle(
-                        color: darkYellow,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline,
-                        decorationColor: darkYellow,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const GDPRPage(),
-                            ),
-                          );
-                        },
-                    ),
-                  ],
+            child: RichText(
+              text: TextSpan(
+                text: l10n.entryScreenIAgreeToThe,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                  height: 1.4,
+                  fontWeight: FontWeight.w400,
                 ),
+                children: [
+                  TextSpan(
+                    text: l10n.entryScreenGdprPrivacyPolicy,
+                    style: const TextStyle(
+                      color: darkYellow,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.underline,
+                      decorationColor: darkYellow,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const GDPRPage(),
+                          ),
+                        );
+                      },
+                  ),
+                ],
               ),
             ),
           ),

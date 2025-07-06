@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
-class XyzFormulaWidget extends StatefulWidget {
-  const XyzFormulaWidget({super.key});
+class CVFormulaWidget extends StatefulWidget {
+  const CVFormulaWidget({super.key});
 
   @override
-  State<XyzFormulaWidget> createState() => _XyzFormulaWidgetState();
+  State<CVFormulaWidget> createState() => _CVFormulaWidgetState();
 }
 
-class _XyzFormulaWidgetState extends State<XyzFormulaWidget> with SingleTickerProviderStateMixin {
+class _CVFormulaWidgetState extends State<CVFormulaWidget> with SingleTickerProviderStateMixin {
   static const String _minimizedKey = 'xyz_formula_minimized';
   bool _isMinimized = false; // Default to false for first app open
   late AnimationController _controller;

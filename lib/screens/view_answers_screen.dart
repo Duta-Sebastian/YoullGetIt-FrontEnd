@@ -4,9 +4,11 @@ import 'package:youllgetit_flutter/data/question_repository.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
 import 'package:youllgetit_flutter/services/job_api.dart';
+import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/screens/questionnaire_screen.dart';
 import 'package:youllgetit_flutter/widgets/answers_review_widget.dart';
+import 'dart:async';
 
 class ViewAnswersScreen extends ConsumerStatefulWidget {
   const ViewAnswersScreen({
@@ -23,16 +25,43 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
   late final JobCoordinator _jobCoordinator;
   bool _currentlyShort = false;
   bool _isLoading = true;
+  StreamSubscription<void>? _answersUpdatedSubscription;
 
   @override
   void initState() {
     super.initState();
     _jobCoordinator = ref.read(jobCoordinatorProvider);
+    _setupNotificationListeners();
     _loadQuestionsAnswers();
+  }
+
+  @override
+  void dispose() {
+    _answersUpdatedSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _setupNotificationListeners() {
+    // Listen for answers updates from background sync or other screens
+    _answersUpdatedSubscription = NotificationManager.instance.onAnswersUpdated.listen((_) {
+      debugPrint('ViewAnswersScreen: Received answers updated notification');
+      _refreshAnswers();
+    });
+  }
+
+  void _refreshAnswers() {
+    if (mounted) {
+      debugPrint('ViewAnswersScreen: Refreshing answers from notification');
+      _loadQuestionsAnswers();
+    }
   }
 
   void _loadQuestionsAnswers() async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
+
       final isShort = await DatabaseManager.isShortQuestionnaire();
       final answers = await DatabaseManager.getQuestionAnswers();
       
@@ -75,16 +104,50 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
       for (var entry in updatedAnswers.entries)
         entry.key: entry.value
     };
-    await DatabaseManager.saveQuestionAnswers(answersToSave, _currentlyShort);
+    
+    try {
+      await DatabaseManager.saveQuestionAnswers(answersToSave, _currentlyShort);
+      debugPrint('ViewAnswersScreen: Saved answers locally');
+      
+    } catch (e) {
+      debugPrint('Error saving answers: $e');
+    }
   }
 
   Future<void> _handleExit() async {
     if (hasUpdatedAnswers) {
       try {
+        // Show loading indicator for background operations
+        if (mounted) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(color: Colors.amber),
+            ),
+          );
+        }
+
         await JobApi.uploadUserInformation(null, null);
         await _jobCoordinator.resetJobState();
+        debugPrint('ViewAnswersScreen: Completed exit sync operations');
+
+        if (mounted) {
+          Navigator.of(context).pop(); // Close loading dialog
+        }
+        
       } catch (e) {
         debugPrint('Error in exit operations: $e');
+        if (mounted) {
+          Navigator.of(context).pop(); // Close loading dialog
+          // Show error notification
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Sync failed: ${e.toString()}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       }
     }
   }
@@ -138,8 +201,8 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
     );
   }
 
-  void _switchToFullQuestionnaire() {
-    Navigator.of(context).push(
+  void _switchToFullQuestionnaire() async {
+    final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => QuestionnaireScreen(
           isShortQuestionnaire: false,
@@ -147,6 +210,12 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
         ),
       ),
     );
+
+    // If questionnaire was completed, refresh the answers
+    if (result == true && mounted) {
+      debugPrint('ViewAnswersScreen: Questionnaire completed, refreshing answers');
+      _loadQuestionsAnswers();
+    }
   }
 
   Map<String, List<String>> _convertEntriesToAnswers() {
@@ -159,6 +228,37 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
       }
     }
     return answers;
+  }
+
+  Widget _buildSyncStatus() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+      decoration: BoxDecoration(
+        color: Colors.green.withAlpha(25),
+        borderRadius: BorderRadius.circular(6.0),
+        border: Border.all(color: Colors.green.withAlpha(77)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.sync,
+            size: 14,
+            color: Colors.green[700],
+          ),
+          const SizedBox(width: 6),
+          Text(
+            'Synced',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.green[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -183,6 +283,14 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
           scrolledUnderElevation: 0,
           title: Text(localizations.reviewAnswersTitle),
           centerTitle: true,
+          actions: [
+            if (hasUpdatedAnswers) _buildSyncStatus(),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _loadQuestionsAnswers,
+              tooltip: 'Refresh answers',
+            ),
+          ],
         ),
         body: SafeArea(
           child: Padding(
@@ -195,9 +303,25 @@ class _ViewAnswersScreenState extends ConsumerState<ViewAnswersScreen> {
                   )
                 : entries.isEmpty 
                     ? Center(
-                        child: Text(
-                          localizations.reviewNoAnswersToDisplay,
-                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.quiz_outlined,
+                              size: 64,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              localizations.reviewNoAnswersToDisplay,
+                              style: const TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                            const SizedBox(height: 8),
+                            TextButton(
+                              onPressed: _loadQuestionsAnswers,
+                              child: const Text('Retry'),
+                            ),
+                          ],
                         ),
                       )
                     : Column(

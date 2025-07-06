@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
-import 'package:youllgetit_flutter/widgets/profile/XYZ_formula.dart';
+import 'package:youllgetit_flutter/widgets/profile/cv_formula.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_section.dart';
 import 'package:youllgetit_flutter/widgets/profile/profile_header.dart';
 
@@ -125,7 +125,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 CVUploadSection(),
                                 SizedBox(height: 24),
-                                XyzFormulaWidget()
+                                CVFormulaWidget()
                               ]
                             ),
                           ),

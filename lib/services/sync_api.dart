@@ -11,6 +11,7 @@ import 'package:pointycastle/random/fortuna_random.dart';
 import 'package:youllgetit_flutter/models/cv_model.dart';
 import 'package:youllgetit_flutter/models/db_tables.dart';
 import 'package:youllgetit_flutter/models/job_card_status_model.dart';
+import 'package:youllgetit_flutter/models/question_sync_model.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 
@@ -132,6 +133,14 @@ class SyncApi {
             debugPrint('SyncLogger: Sync pull ( ${dbTable.name} ) response: ${jobCart.toString()}');
             var result = DatabaseManager.syncPullJobs(jobCart);
             return await result;
+        case DbTables.questions:
+            var questionsJson = QuestionSyncModel.fromJson(json.decode(response.body));
+            if (questionsJson.lastChanged == null ) {
+              return 1;
+            }
+            var result = DatabaseManager.updateQuestions(questionsJson);
+            debugPrint('SyncProcessor: Sync pull ( ${dbTable.name} ) response: ${questionsJson.toString()}');
+            return await result;
       }
     }
     catch (e) {
@@ -178,6 +187,19 @@ class SyncApi {
             return 0;
           }
           requestBody = JobCardStatusModel.encodeJobCartToJson(jobCart);
+        case DbTables.questions:
+          final questionsModel = await DatabaseManager.getQuestions();
+
+          if (questionsModel == null || questionsModel.lastChanged == null) {
+            debugPrint("SyncProcessor: No questions data to push");
+            return 0;
+          }
+
+          requestBody = json.encode([{
+            "question_json": questionsModel.questionJson,
+            "last_changed": questionsModel.lastChanged!.toIso8601String(),
+            "is_short_questionnaire": questionsModel.isShortQuestionnaire ? 1 : 0
+          }]);
       }
       
       final response = await http.post(

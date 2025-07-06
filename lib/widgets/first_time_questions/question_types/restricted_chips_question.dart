@@ -133,6 +133,9 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
               children: widget.selectedChoices.map((choice) {
                 final displayText = _getDisplayText(choice);
                 return Container(
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width - 64, // Account for padding
+                  ),
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: Color(0xFFFFDE15),
@@ -141,12 +144,16 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        displayText,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                      Flexible(
+                        child: Text(
+                          displayText,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                       SizedBox(width: 6),
@@ -205,6 +212,8 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
                             ? FontWeight.w500 
                             : FontWeight.normal,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ),
                   if (_persistentSearchText.isNotEmpty) ...[
@@ -599,6 +608,8 @@ class _SelectionBottomSheetState extends State<_SelectionBottomSheet> {
                               fontSize: 16,
                               fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                           trailing: AnimatedContainer(
                             duration: Duration(milliseconds: 200),
