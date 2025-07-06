@@ -116,7 +116,7 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Selected chips display
+          // Selected chips display with overflow prevention
           if (widget.selectedChoices.isNotEmpty) ...[
             Text(
               l10n?.selectedCount(widget.selectedChoices.length) ?? '${widget.selectedChoices.length} selected',
@@ -127,51 +127,59 @@ class RestrictedChipsWidgetState extends State<RestrictedChipsWidget> {
               ),
             ),
             SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: widget.selectedChoices.map((choice) {
-                final displayText = _getDisplayText(choice);
-                return Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width - 64, // Account for padding
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFDE15),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          displayText,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
+            // Constrain height and make scrollable to prevent overflow
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 120, // Limit to about 3-4 rows of chips
+              ),
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: widget.selectedChoices.map((choice) {
+                    final displayText = _getDisplayText(choice);
+                    return Container(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width - 64, // Account for padding
                       ),
-                      SizedBox(width: 6),
-                      GestureDetector(
-                        onTap: () => _removeChip(choice),
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          child: Icon(
-                            Icons.close,
-                            size: 14,
-                            color: Colors.black87,
-                          ),
-                        ),
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFFDE15),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ],
-                  ),
-                );
-              }).toList(),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              displayText,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                          SizedBox(width: 6),
+                          GestureDetector(
+                            onTap: () => _removeChip(choice),
+                            child: Container(
+                              padding: EdgeInsets.all(2),
+                              child: Icon(
+                                Icons.close,
+                                size: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
             SizedBox(height: 16),
           ],
