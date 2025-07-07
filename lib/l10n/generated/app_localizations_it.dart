@@ -2186,4 +2186,19 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get mergers_acquisitions => 'M&A (Fusioni e Acquisizioni)';
+
+  @override
+  String get hardSkills => 'Competenze Tecniche';
+
+  @override
+  String get skillsSelected => 'selezionate';
+
+  @override
+  String get noSkillsFound => 'Nessuna competenza trovata';
+
+  @override
+  String get clearAll => 'Cancella tutto';
+
+  @override
+  String get searchSkills => 'Cerca competenze...';
 }

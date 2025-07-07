@@ -748,5 +748,11 @@
   "collapseAll": "Contraer Todo",
 
   "creativity": "Creatividad",
-  "mergers_acquisitions": "M&A (Fusiones y Adquisiciones)"
+  "mergers_acquisitions": "M&A (Fusiones y Adquisiciones)",
+
+  "hardSkills": "Habilidades Técnicas",
+  "skillsSelected": "seleccionadas",
+  "noSkillsFound": "No se encontraron habilidades",
+  "clearAll": "Limpiar todo",
+  "searchSkills": "Buscar habilidades..."
 }

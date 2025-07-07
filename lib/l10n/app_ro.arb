@@ -750,5 +750,11 @@
   "collapseAll": "Restrânge Tot",
 
   "creativity": "Creativitate",
-  "mergers_acquisitions": "M&A (Fuziuni și Achiziții)"
+  "mergers_acquisitions": "M&A (Fuziuni și Achiziții)",
+
+  "hardSkills": "Abilități Tehnice",
+  "skillsSelected": "selectate",
+  "noSkillsFound": "Nu au fost găsite abilități",
+  "clearAll": "Șterge tot",
+  "searchSkills": "Caută abilități..."
 }

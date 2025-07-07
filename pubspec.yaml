@@ -108,6 +108,10 @@ flutter:
     - assets/pufferfish_wave_4.png
     - assets/pufferfish_wave_5.png
     - assets/splash_screen.png
+    - assets/1-3months.png
+    - assets/3-6months.png
+    - assets/6-12months.png
+    - assets/12months.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

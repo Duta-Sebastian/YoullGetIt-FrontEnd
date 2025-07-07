@@ -749,5 +749,11 @@
   "collapseAll": "Alles Inklappen",
 
   "creativity": "Creativiteit",
-  "mergers_acquisitions": "M&A (Fusies en Overnames)"
+  "mergers_acquisitions": "M&A (Fusies en Overnames)",
+
+  "hardSkills": "Technische Vaardigheden",
+  "skillsSelected": "geselecteerd",
+  "noSkillsFound": "Geen vaardigheden gevonden",
+  "clearAll": "Alles wissen",
+  "searchSkills": "Zoek vaardigheden..."
 }

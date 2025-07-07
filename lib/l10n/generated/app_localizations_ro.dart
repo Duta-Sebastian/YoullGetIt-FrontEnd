@@ -2187,4 +2187,19 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get mergers_acquisitions => 'M&A (Fuziuni și Achiziții)';
+
+  @override
+  String get hardSkills => 'Abilități Tehnice';
+
+  @override
+  String get skillsSelected => 'selectate';
+
+  @override
+  String get noSkillsFound => 'Nu au fost găsite abilități';
+
+  @override
+  String get clearAll => 'Șterge tot';
+
+  @override
+  String get searchSkills => 'Caută abilități...';
 }

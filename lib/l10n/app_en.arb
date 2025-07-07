@@ -941,5 +941,11 @@
   "collapseAll": "Collapse All",
 
   "creativity": "Creativity",
-  "mergers_acquisitions": "M&A (Mergers and Acquisitions)"
+  "mergers_acquisitions": "M&A (Mergers and Acquisitions)",
+
+  "hardSkills": "Hard Skills",
+  "skillsSelected": "selected",
+  "noSkillsFound": "No skills found",
+  "clearAll": "Clear All",
+  "searchSkills": "Search skills..."
 }

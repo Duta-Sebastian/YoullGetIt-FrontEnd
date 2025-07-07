@@ -2186,4 +2186,19 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get mergers_acquisitions => 'M&A (Fusies en Overnames)';
+
+  @override
+  String get hardSkills => 'Technische Vaardigheden';
+
+  @override
+  String get skillsSelected => 'geselecteerd';
+
+  @override
+  String get noSkillsFound => 'Geen vaardigheden gevonden';
+
+  @override
+  String get clearAll => 'Alles wissen';
+
+  @override
+  String get searchSkills => 'Zoek vaardigheden...';
 }

@@ -4346,6 +4346,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'M&A (Mergers and Acquisitions)'**
   String get mergers_acquisitions;
+
+  /// No description provided for @hardSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard Skills'**
+  String get hardSkills;
+
+  /// No description provided for @skillsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get skillsSelected;
+
+  /// No description provided for @noSkillsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No skills found'**
+  String get noSkillsFound;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
+  /// No description provided for @searchSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Search skills...'**
+  String get searchSkills;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

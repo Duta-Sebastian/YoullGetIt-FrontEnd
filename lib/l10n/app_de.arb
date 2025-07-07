@@ -750,5 +750,11 @@
   "collapseAll": "Alle Einklappen",
 
   "creativity": "Kreativität",
-  "mergers_acquisitions": "M&A (Fusionen und Übernahmen)"
+  "mergers_acquisitions": "M&A (Fusionen und Übernahmen)",
+
+  "hardSkills": "Fachkompetenzen",
+  "skillsSelected": "ausgewählt",
+  "noSkillsFound": "Keine Fähigkeiten gefunden",
+  "clearAll": "Alle löschen",
+  "searchSkills": "Fähigkeiten suchen..."
 }
