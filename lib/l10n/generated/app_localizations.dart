@@ -3468,7 +3468,7 @@ abstract class AppLocalizations {
   /// No description provided for @choiceScreenFastAccessDesc.
   ///
   /// In en, this message translates to:
-  /// **'1 minute, 5 questions'**
+  /// **'1 minute, 6 questions'**
   String get choiceScreenFastAccessDesc;
 
   /// No description provided for @choiceScreenHigherAccuracy.
@@ -4334,6 +4334,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collapse All'**
   String get collapseAll;
+
+  /// No description provided for @creativity.
+  ///
+  /// In en, this message translates to:
+  /// **'Creativity'**
+  String get creativity;
+
+  /// No description provided for @mergers_acquisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'M&A (Mergers and Acquisitions)'**
+  String get mergers_acquisitions;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

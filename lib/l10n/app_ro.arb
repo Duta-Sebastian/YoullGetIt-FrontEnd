@@ -596,7 +596,7 @@
 
   "choiceScreenTitle": "Dar mai întâi, alege opțiunea care ți se potrivește cel mai bine",
   "choiceScreenFastAccess": "Obține Acces Rapid",
-  "choiceScreenFastAccessDesc": "1 minut, 5 întrebări",
+  "choiceScreenFastAccessDesc": "1 minut, 6 întrebări",
   "choiceScreenHigherAccuracy": "Obține Precizie Mai Mare",
   "choiceScreenHigherAccuracyDesc": "3-5 minute, 15 întrebări",
 
@@ -747,5 +747,8 @@
   "hardSkillProcessAutomation": "Automatizare Procese",
 
   "expandAll": "Extinde Tot",
-  "collapseAll": "Restrânge Tot"
+  "collapseAll": "Restrânge Tot",
+
+  "creativity": "Creativitate",
+  "mergers_acquisitions": "M&A (Fuziuni și Achiziții)"
 }

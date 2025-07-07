@@ -1,7 +1,6 @@
 class HardSkillsData {
   static const Map<String, List<String>> hardSkillsGroups = {
     'Analysis & Research': [
-      'General Analysis',
       'Financial Analysis',
       'Market Analysis',
       'Legal Analysis',
@@ -9,13 +8,11 @@ class HardSkillsData {
       'Financial Modeling',
       'Social Science Research',
       'Market Research',
-      'Statistical Skills',
       'Mathematical Skills',
       'Statistics',
       'Calculus',
       'Linear Algebra',
       'Critical Thinking',
-      'Supply Chain Management',
       'Research Methods',
       'Legal Research',
       'Policy Research',
@@ -210,6 +207,8 @@ class HardSkillsData {
       'Administrative Law',
       'Policy Development',
       'Program Development',
+      'Supply Chain Management',
+      'M&A (mergers and acquisitions)'
     ],
     'Legal & Compliance': [
       'Legal Research',

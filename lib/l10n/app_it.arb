@@ -595,7 +595,7 @@
 
   "choiceScreenTitle": "Ma prima, scegli l'opzione che fa per te",
   "choiceScreenFastAccess": "Accesso Veloce",
-  "choiceScreenFastAccessDesc": "1 minuto, 5 domande",
+  "choiceScreenFastAccessDesc": "1 minuto, 6 domande",
   "choiceScreenHigherAccuracy": "Maggiore Precisione",
   "choiceScreenHigherAccuracyDesc": "3-5 minuti, 15 domande",
 
@@ -746,5 +746,8 @@
   "hardSkillProcessAutomation": "Automazione Processi",
 
   "expandAll": "Espandi Tutto",
-  "collapseAll": "Comprimi Tutto"
+  "collapseAll": "Comprimi Tutto",
+
+  "creativity": "Creatività",
+  "mergers_acquisitions": "M&A (Fusioni e Acquisizioni)"
 }

@@ -595,7 +595,7 @@
 
   "choiceScreenTitle": "Maar kies eerst de optie die het beste bij je past",
   "choiceScreenFastAccess": "Snelle Toegang",
-  "choiceScreenFastAccessDesc": "1 minuut, 5 vragen",
+  "choiceScreenFastAccessDesc": "1 minuut, 6 vragen",
   "choiceScreenHigherAccuracy": "Hogere Nauwkeurigheid",
   "choiceScreenHigherAccuracyDesc": "3-5 minuten, 15 vragen",
 
@@ -746,5 +746,8 @@
   "hardSkillUiUxDesign": "UI/UX Design",
 
   "expandAll": "Alles Uitklappen",
-  "collapseAll": "Alles Inklappen"
+  "collapseAll": "Alles Inklappen",
+
+  "creativity": "Creativiteit",
+  "mergers_acquisitions": "M&A (Fusies en Overnames)"
 }

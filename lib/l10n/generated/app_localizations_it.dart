@@ -1739,7 +1739,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get choiceScreenFastAccess => 'Accesso Veloce';
 
   @override
-  String get choiceScreenFastAccessDesc => '1 minuto, 5 domande';
+  String get choiceScreenFastAccessDesc => '1 minuto, 6 domande';
 
   @override
   String get choiceScreenHigherAccuracy => 'Maggiore Precisione';
@@ -2180,4 +2180,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get collapseAll => 'Comprimi Tutto';
+
+  @override
+  String get creativity => 'Creatività';
+
+  @override
+  String get mergers_acquisitions => 'M&A (Fusioni e Acquisizioni)';
 }

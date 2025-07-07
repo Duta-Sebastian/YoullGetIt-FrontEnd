@@ -14,8 +14,13 @@ class QuestionRepository {
     'q3',
     'q4_eng',
     'q4_it',
-    'q5',
+    'q6',
     'q7',
+    'q8',
+    'q9',
+    'q12',
+    'q13',
+    'q14',
     'q15',
   };
 
