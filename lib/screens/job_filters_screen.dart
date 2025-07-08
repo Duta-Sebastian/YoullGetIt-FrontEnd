@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/widgets/skills_filter_widget.dart';
 
@@ -75,22 +76,22 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     return [
       {
         'label': localizations.optionOneToThreeMonths, 
-        'iconPath': 'assets/1-3months.png',
+        'iconPath': 'assets/1-3months.svg',
         'value': '1-3'
       },
       {
         'label': localizations.optionThreeToSixMonths, 
-        'iconPath': 'assets/3-6months.png',
+        'iconPath': 'assets/3-6months.svg',
         'value': '3-6'
       },
       {
         'label': localizations.optionSixToTwelveMonths, 
-        'iconPath': 'assets/6-12months.png',
+        'iconPath': 'assets/6-12months.svg',
         'value': '6-12'
       },
       {
         'label': localizations.optionMoreThanTwelveMonths, 
-        'iconPath': 'assets/12months.png',
+        'iconPath': 'assets/12months.svg',
         'value': '12+'
       },
     ];
@@ -214,54 +215,76 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
               ],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isSelected 
-                  ? selectedColor 
-                  : Colors.grey.shade300,
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                duration['iconPath'], // Use your custom PNG
-                width: 24,
-                height: 24,
-                color: isSelected ? Colors.black87 : Colors.grey.shade600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Flexible(
-              child: Text(
-                duration['label'],
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                  color: isSelected ? Colors.black87 : Colors.grey.shade700,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (isSelected)
-              Container(
-                margin: const EdgeInsets.only(top: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: selectedColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  localizations.jobFiltersSelected,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+            // Fixed icon container - always takes same space
+            SizedBox(
+              height: 48, // Fixed height for icon area
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isSelected 
+                      ? selectedColor 
+                      : Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    duration['iconPath'],
+                    width: 24,
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                      isSelected ? Colors.black87 : Colors.grey.shade600,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
+            ),
+            
+            const SizedBox(height: 8), // Fixed spacing
+            
+            // Flexible text area - expands to fill remaining space
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    duration['label'],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                      color: isSelected ? Colors.black87 : Colors.grey.shade700,
+                      height: 1.2, // Control line height for consistency
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  
+                  // Selected indicator at bottom
+                  if (isSelected) ...[
+                    const Spacer(), // Push to bottom
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: selectedColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        localizations.jobFiltersSelected,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    const Spacer(), // Maintain consistent spacing even when not selected
+                  ],
+                ],
+              ),
+            ),
           ],
         ),
       ),
