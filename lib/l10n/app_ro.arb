@@ -756,5 +756,30 @@
   "skillsSelected": "selectate",
   "noSkillsFound": "Nu au fost găsite abilități",
   "clearAll": "Șterge tot",
-  "searchSkills": "Caută abilități..."
+  "searchSkills": "Caută abilități...",
+
+  "reportJob": "Raportează jobul",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Ești sigur că vrei să raportezi acest job?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Anulează",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Raportează",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Job raportat cu succes",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Eroare la raportarea jobului",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

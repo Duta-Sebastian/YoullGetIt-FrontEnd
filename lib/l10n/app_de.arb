@@ -756,5 +756,30 @@
   "skillsSelected": "ausgewählt",
   "noSkillsFound": "Keine Fähigkeiten gefunden",
   "clearAll": "Alle löschen",
-  "searchSkills": "Fähigkeiten suchen..."
+  "searchSkills": "Fähigkeiten suchen...",
+
+  "reportJob": "Job melden",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Sind Sie sicher, dass Sie diesen Job melden möchten?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Abbrechen",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Melden",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Job erfolgreich gemeldet",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Fehler beim Melden des Jobs",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

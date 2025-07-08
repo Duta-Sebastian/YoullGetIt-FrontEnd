@@ -2201,4 +2201,22 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get searchSkills => 'Zoek vaardigheden...';
+
+  @override
+  String get reportJob => 'Baan rapporteren';
+
+  @override
+  String get reportJobConfirmation => 'Weet je zeker dat je deze baan wilt rapporteren?';
+
+  @override
+  String get cancel => 'Annuleren';
+
+  @override
+  String get report => 'Rapporteren';
+
+  @override
+  String get reportSuccess => 'Baan succesvol gerapporteerd';
+
+  @override
+  String get reportError => 'Fout bij het rapporteren van de baan';
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_feedback.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
@@ -176,6 +177,29 @@ class JobApi {
       debugPrint('Feedback posted successfully');
     } catch (e) {
       debugPrint('Error posting feedback: $e');
+    }
+  }
+
+  static Future<bool> markJobWithResult(String jobId) async {
+    try {
+      final String baseUrl = 'https://api2.youllgetit.eu/mark_by_user';
+      
+      final Uri uri = Uri.parse(baseUrl).replace(queryParameters: {
+        'job_id': jobId,
+      });
+      
+      final response = await http.get(uri);
+      
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        debugPrint('Failed to mark job: ${response.statusCode}');
+        return false;
+      }
+      
+    } catch (e) {
+      debugPrint('Error marking job: $e');
+      return false;
     }
   }
 

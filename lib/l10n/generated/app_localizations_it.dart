@@ -2201,4 +2201,22 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get searchSkills => 'Cerca competenze...';
+
+  @override
+  String get reportJob => 'Segnala lavoro';
+
+  @override
+  String get reportJobConfirmation => 'Sei sicuro di voler segnalare questo lavoro?';
+
+  @override
+  String get cancel => 'Annulla';
+
+  @override
+  String get report => 'Segnala';
+
+  @override
+  String get reportSuccess => 'Lavoro segnalato con successo';
+
+  @override
+  String get reportError => 'Errore nella segnalazione del lavoro';
 }

@@ -29,29 +29,7 @@ class ProfileHeader extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Settings icon
-          Positioned(
-            top: 16,
-            right: 16,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SettingsPage(
-                      currentUsername: username,
-                      onUsernameChanged: onUsernameChanged,
-                    ),
-                  ),
-                );
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(12),
-                child: Icon(Icons.settings, color: Colors.black87, size: 24),
-              ),
-            ),
-          ),
-
-          // Main content
+          // Main content (lowest layer)
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 24, 120, 24),
             child: Column(
@@ -85,12 +63,51 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
 
-          // Animated Pufferfish with rotation parameter
+          // Settings icon (middle layer)
+          Positioned(
+            top: 16,
+            right: 16,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(
+                      currentUsername: username,
+                      onUsernameChanged: onUsernameChanged,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withAlpha((0.1 * 255).toInt()),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Icon(Icons.settings, color: Colors.black87, size: 24),
+              ),
+            ),
+          ),
+
+          // Animated Pufferfish (highest layer - always on top)
           Positioned(
             right: -30,
             bottom: -40,
-            child: const AnimatedPufferfish(
-              rotation: -0.2, // Pass rotation as parameter
+            child: Container(
+              // Add a semi-transparent background to ensure visibility
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFFFFDE15).withAlpha((0.3 * 255).toInt()),
+                    blurRadius: 10,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: const AnimatedPufferfish(
+                rotation: -0.2,
+              ),
             ),
           ),
         ],

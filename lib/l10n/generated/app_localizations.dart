@@ -4376,6 +4376,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search skills...'**
   String get searchSkills;
+
+  /// Title for the report job dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Report Job'**
+  String get reportJob;
+
+  /// Confirmation message for reporting a job
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to report this job?'**
+  String get reportJobConfirmation;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Report button text
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// Success message when job is reported
+  ///
+  /// In en, this message translates to:
+  /// **'Job reported successfully'**
+  String get reportSuccess;
+
+  /// Error message when job reporting fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to report job'**
+  String get reportError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -239,6 +239,7 @@ class _UserSettingsState extends State<UserSettings> {
               );
               
               try {
+                
                 await DatabaseManager.deleteAllDataWithTransaction();
                 await resetFirstTimeOpening();
                 navigator.pushAndRemoveUntil(

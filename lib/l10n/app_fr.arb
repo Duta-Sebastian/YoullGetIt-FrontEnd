@@ -756,5 +756,30 @@
   "skillsSelected": "sélectionnées",
   "noSkillsFound": "Aucune compétence trouvée",
   "clearAll": "Tout effacer",
-  "searchSkills": "Rechercher des compétences..."
+  "searchSkills": "Rechercher des compétences...",
+
+  "reportJob": "Signaler l'emploi",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Êtes-vous sûr de vouloir signaler cet emploi?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Signaler",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Emploi signalé avec succès",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Échec du signalement de l'emploi",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

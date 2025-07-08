@@ -755,5 +755,30 @@
   "skillsSelected": "geselecteerd",
   "noSkillsFound": "Geen vaardigheden gevonden",
   "clearAll": "Alles wissen",
-  "searchSkills": "Zoek vaardigheden..."
+  "searchSkills": "Zoek vaardigheden...",
+
+  "reportJob": "Baan rapporteren",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Weet je zeker dat je deze baan wilt rapporteren?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Annuleren",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Rapporteren",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Baan succesvol gerapporteerd",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Fout bij het rapporteren van de baan",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

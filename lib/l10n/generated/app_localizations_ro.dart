@@ -2202,4 +2202,22 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get searchSkills => 'Caută abilități...';
+
+  @override
+  String get reportJob => 'Raportează jobul';
+
+  @override
+  String get reportJobConfirmation => 'Ești sigur că vrei să raportezi acest job?';
+
+  @override
+  String get cancel => 'Anulează';
+
+  @override
+  String get report => 'Raportează';
+
+  @override
+  String get reportSuccess => 'Job raportat cu succes';
+
+  @override
+  String get reportError => 'Eroare la raportarea jobului';
 }
