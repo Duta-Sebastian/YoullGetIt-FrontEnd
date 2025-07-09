@@ -12,9 +12,16 @@
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
-		<key>CFBundleURLSchemes</key>
+		<key>CFBundleURLTypes</key>
 		<array>
-			<string>youllgetit.app</string>
+			<dict>
+				<key>CFBundleURLName</key>
+				<string>auth0</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>youllgetit.app</string>
+				</array>
+			</dict>
 		</array>
 		<key>CFBundleName</key>
 		<string>youllgetit.app</string>

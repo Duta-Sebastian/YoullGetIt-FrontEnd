@@ -106,31 +106,46 @@ class ProfileScreenState extends State<ProfileScreen> {
       body: SafeArea(
         child: _isLoading
             ? Center(child: CircularProgressIndicator())
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            : Stack(
+                clipBehavior: Clip.none,
                 children: [
-                  // Full-width header with no padding
-                  ProfileHeader(
-                    username: _username ?? 'Guest',
-                    onUsernameChanged: refreshProfile,
-                  ),
-                  // Content with padding
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView(
+                  // Main content layout
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Content with padding - leave space for header
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 180), // Adjust based on header height
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
                               children: [
-                                CVUploadSection(),
-                                SizedBox(height: 24),
-                                CVFormulaWidget()
-                              ]
+                                Expanded(
+                                  child: ListView(
+                                    children: [
+                                      CVUploadSection(),
+                                      SizedBox(height: 24),
+                                      CVFormulaWidget()
+                                    ]
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
+                    ],
+                  ),
+                  
+                  // Header positioned on top
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: ProfileHeader(
+                      username: _username ?? 'Guest',
+                      onUsernameChanged: refreshProfile,
                     ),
                   ),
                 ],

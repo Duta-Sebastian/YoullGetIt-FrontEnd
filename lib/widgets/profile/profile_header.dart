@@ -89,22 +89,13 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
 
-          // Animated Pufferfish (highest layer - always on top)
+          // Animated Pufferfish (highest layer with overflow)
           Positioned(
             right: -30,
-            bottom: -40,
+            bottom: -40, // Increased negative value to make it overflow more
             child: Container(
-              // Add a semi-transparent background to ensure visibility
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0xFFFFDE15).withAlpha((0.3 * 255).toInt()),
-                    blurRadius: 10,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
+              // Use Transform to ensure it renders on top
+              transform: Matrix4.translationValues(0, 0, 1000), // High z-index equivalent
               child: const AnimatedPufferfish(
                 rotation: -0.2,
               ),
