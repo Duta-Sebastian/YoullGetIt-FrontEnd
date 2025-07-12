@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
+import 'package:youllgetit_flutter/widgets/skills_filter_widget.dart';
 
 class JobFiltersScreen extends StatefulWidget {
   final String? initialQuery;
@@ -35,19 +37,6 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   List<String> _selectedWorkModes = [];
   List<String> _selectedSkills = [];
 
-  // TODO : Add more skills when we know what skills we will use in the questionnaire
-  // For now, we will use a test list of skills
-  final List<String> _skillOptions = [
-    'Flutter',
-    'Dart',
-    'React',
-    'Node.js', 
-    'Python',
-    'AWS',
-    'Firebase',
-    'JavaScript',
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -56,14 +45,13 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _locationController.text = widget.initialLocation ?? '';
     _companyController.text = widget.initialCompany ?? '';
     _selectedFields = widget.initialField != null ? List.from(widget.initialField!) : [];
-    _selectedDurations = widget.initialDurations != null ? List.from(widget.initialDurations!) : [];
     _selectedSkills = widget.initialSkills != null? List.from(widget.initialSkills!) : [];
     _selectedWorkModes = widget.initialWorkMode != null? List.from(widget.initialWorkMode!) : [];
 
+    // Initialize durations
     _selectedDurations = [];
     if (widget.initialDurations != null) {
       for (String durationValue in widget.initialDurations!) {
-        // Find the label that corresponds to this value
         final matchingOption = _getDurationOptions().firstWhere(
           (option) => option['value'] == durationValue,
           orElse: () => {},
@@ -86,10 +74,26 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   List<Map<String, dynamic>> _getDurationOptions() {
     final localizations = AppLocalizations.of(context)!;
     return [
-      {'label': localizations.optionOneToThreeMonths, 'icon': Icons.schedule, 'value': '1-3'},
-      {'label': localizations.optionThreeToSixMonths, 'icon': Icons.timer, 'value': '3-6'},
-      {'label': localizations.optionSixToTwelveMonths, 'icon': Icons.timer_10, 'value': '6-12'},
-      {'label': localizations.optionMoreThanTwelveMonths, 'icon': Icons.timelapse, 'value': '12+'},
+      {
+        'label': localizations.optionOneToThreeMonths, 
+        'iconPath': 'assets/1-3months.svg',
+        'value': '1-3'
+      },
+      {
+        'label': localizations.optionThreeToSixMonths, 
+        'iconPath': 'assets/3-6months.svg',
+        'value': '3-6'
+      },
+      {
+        'label': localizations.optionSixToTwelveMonths, 
+        'iconPath': 'assets/6-12months.svg',
+        'value': '6-12'
+      },
+      {
+        'label': localizations.optionMoreThanTwelveMonths, 
+        'iconPath': 'assets/12months.svg',
+        'value': '12+'
+      },
     ];
   }
 
@@ -128,16 +132,6 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
         _selectedFields.remove(field);
       } else {
         _selectedFields.add(field);
-      }
-    });
-  }
-
-  void _toggleSkill(String skill) {
-    setState(() {
-      if (_selectedSkills.contains(skill)) {
-        _selectedSkills.remove(skill);
-      } else {
-        _selectedSkills.add(skill);
       }
     });
   }
@@ -221,53 +215,76 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
               ],
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: isSelected 
-                  ? selectedColor 
-                  : Colors.grey.shade300,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                duration['icon'],
-                color: isSelected ? Colors.black87 : Colors.grey.shade600,
-                size: 24,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Flexible(
-              child: Text(
-                duration['label'],
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                  color: isSelected ? Colors.black87 : Colors.grey.shade700,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (isSelected)
-              Container(
-                margin: const EdgeInsets.only(top: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: selectedColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  localizations.jobFiltersSelected,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+            // Fixed icon container - always takes same space
+            SizedBox(
+              height: 48, // Fixed height for icon area
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isSelected 
+                      ? selectedColor 
+                      : Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                  child: SvgPicture.asset(
+                    duration['iconPath'],
+                    width: 24,
+                    height: 24,
+                    colorFilter: ColorFilter.mode(
+                      isSelected ? Colors.black87 : Colors.grey.shade600,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ),
+            ),
+            
+            const SizedBox(height: 8), // Fixed spacing
+            
+            // Flexible text area - expands to fill remaining space
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    duration['label'],
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                      color: isSelected ? Colors.black87 : Colors.grey.shade700,
+                      height: 1.2, // Control line height for consistency
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  
+                  // Selected indicator at bottom
+                  if (isSelected) ...[
+                    const Spacer(), // Push to bottom
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: selectedColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        localizations.jobFiltersSelected,
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ] else ...[
+                    const Spacer(), // Maintain consistent spacing even when not selected
+                  ],
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -391,6 +408,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   
                   const SizedBox(height: 24),
                   
+                  // Duration filter with custom PNG icons
                   Text(
                     localizations.jobFiltersDuration,
                     style: const TextStyle(
@@ -488,38 +506,13 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                   
                   const SizedBox(height: 24),
                   
-                  // Skills filter
-                  Text(
-                    localizations.jobFiltersSkills,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: _skillOptions.map((skill) {
-                      final bool isSelected = _selectedSkills.contains(skill);
-                      return FilterChip(
-                        label: Text(skill),
-                        selected: isSelected,
-                        onSelected: (selected) => _toggleSkill(skill),
-                        backgroundColor: Colors.grey.shade100,
-                        selectedColor: Color(0xFFFFDE15).withAlpha(51),
-                        labelStyle: TextStyle(
-                          color: isSelected ? Colors.black87 : Colors.grey.shade700,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                        showCheckmark: true,
-                        checkmarkColor: Colors.black87,
-                        side: BorderSide(
-                          color: isSelected ? Color(0xFFFFDE15) : Colors.grey.shade300,
-                          width: isSelected ? 2 : 1,
-                        ),
-                      );
-                    }).toList(),
+                  SkillsFilterWidget(
+                    selectedSkills: _selectedSkills,
+                    onSkillsChanged: (skills) {
+                      setState(() {
+                        _selectedSkills = skills;
+                      });
+                    },
                   ),
                   
                   const SizedBox(height: 40),

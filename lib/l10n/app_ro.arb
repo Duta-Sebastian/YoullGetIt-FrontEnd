@@ -596,7 +596,7 @@
 
   "choiceScreenTitle": "Dar mai întâi, alege opțiunea care ți se potrivește cel mai bine",
   "choiceScreenFastAccess": "Obține Acces Rapid",
-  "choiceScreenFastAccessDesc": "1 minut, 5 întrebări",
+  "choiceScreenFastAccessDesc": "1 minut, 6 întrebări",
   "choiceScreenHigherAccuracy": "Obține Precizie Mai Mare",
   "choiceScreenHigherAccuracyDesc": "3-5 minute, 15 întrebări",
 
@@ -747,5 +747,39 @@
   "hardSkillProcessAutomation": "Automatizare Procese",
 
   "expandAll": "Extinde Tot",
-  "collapseAll": "Restrânge Tot"
+  "collapseAll": "Restrânge Tot",
+
+  "creativity": "Creativitate",
+  "mergers_acquisitions": "M&A (Fuziuni și Achiziții)",
+
+  "hardSkills": "Abilități Tehnice",
+  "skillsSelected": "selectate",
+  "noSkillsFound": "Nu au fost găsite abilități",
+  "clearAll": "Șterge tot",
+  "searchSkills": "Caută abilități...",
+
+  "reportJob": "Raportează jobul",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Ești sigur că vrei să raportezi acest job?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Anulează",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Raportează",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Job raportat cu succes",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Eroare la raportarea jobului",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

@@ -1739,7 +1739,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get choiceScreenFastAccess => 'Snelle Toegang';
 
   @override
-  String get choiceScreenFastAccessDesc => '1 minuut, 5 vragen';
+  String get choiceScreenFastAccessDesc => '1 minuut, 6 vragen';
 
   @override
   String get choiceScreenHigherAccuracy => 'Hogere Nauwkeurigheid';
@@ -2180,4 +2180,43 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get collapseAll => 'Alles Inklappen';
+
+  @override
+  String get creativity => 'Creativiteit';
+
+  @override
+  String get mergers_acquisitions => 'M&A (Fusies en Overnames)';
+
+  @override
+  String get hardSkills => 'Technische Vaardigheden';
+
+  @override
+  String get skillsSelected => 'geselecteerd';
+
+  @override
+  String get noSkillsFound => 'Geen vaardigheden gevonden';
+
+  @override
+  String get clearAll => 'Alles wissen';
+
+  @override
+  String get searchSkills => 'Zoek vaardigheden...';
+
+  @override
+  String get reportJob => 'Baan rapporteren';
+
+  @override
+  String get reportJobConfirmation => 'Weet je zeker dat je deze baan wilt rapporteren?';
+
+  @override
+  String get cancel => 'Annuleren';
+
+  @override
+  String get report => 'Rapporteren';
+
+  @override
+  String get reportSuccess => 'Baan succesvol gerapporteerd';
+
+  @override
+  String get reportError => 'Fout bij het rapporteren van de baan';
 }

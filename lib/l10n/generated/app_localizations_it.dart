@@ -1739,7 +1739,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get choiceScreenFastAccess => 'Accesso Veloce';
 
   @override
-  String get choiceScreenFastAccessDesc => '1 minuto, 5 domande';
+  String get choiceScreenFastAccessDesc => '1 minuto, 6 domande';
 
   @override
   String get choiceScreenHigherAccuracy => 'Maggiore Precisione';
@@ -2180,4 +2180,43 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get collapseAll => 'Comprimi Tutto';
+
+  @override
+  String get creativity => 'Creatività';
+
+  @override
+  String get mergers_acquisitions => 'M&A (Fusioni e Acquisizioni)';
+
+  @override
+  String get hardSkills => 'Competenze Tecniche';
+
+  @override
+  String get skillsSelected => 'selezionate';
+
+  @override
+  String get noSkillsFound => 'Nessuna competenza trovata';
+
+  @override
+  String get clearAll => 'Cancella tutto';
+
+  @override
+  String get searchSkills => 'Cerca competenze...';
+
+  @override
+  String get reportJob => 'Segnala lavoro';
+
+  @override
+  String get reportJobConfirmation => 'Sei sicuro di voler segnalare questo lavoro?';
+
+  @override
+  String get cancel => 'Annulla';
+
+  @override
+  String get report => 'Segnala';
+
+  @override
+  String get reportSuccess => 'Lavoro segnalato con successo';
+
+  @override
+  String get reportError => 'Errore nella segnalazione del lavoro';
 }

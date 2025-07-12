@@ -3468,7 +3468,7 @@ abstract class AppLocalizations {
   /// No description provided for @choiceScreenFastAccessDesc.
   ///
   /// In en, this message translates to:
-  /// **'1 minute, 5 questions'**
+  /// **'1 minute, 6 questions'**
   String get choiceScreenFastAccessDesc;
 
   /// No description provided for @choiceScreenHigherAccuracy.
@@ -4334,6 +4334,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collapse All'**
   String get collapseAll;
+
+  /// No description provided for @creativity.
+  ///
+  /// In en, this message translates to:
+  /// **'Creativity'**
+  String get creativity;
+
+  /// No description provided for @mergers_acquisitions.
+  ///
+  /// In en, this message translates to:
+  /// **'M&A (Mergers and Acquisitions)'**
+  String get mergers_acquisitions;
+
+  /// No description provided for @hardSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard Skills'**
+  String get hardSkills;
+
+  /// No description provided for @skillsSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get skillsSelected;
+
+  /// No description provided for @noSkillsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No skills found'**
+  String get noSkillsFound;
+
+  /// No description provided for @clearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
+  /// No description provided for @searchSkills.
+  ///
+  /// In en, this message translates to:
+  /// **'Search skills...'**
+  String get searchSkills;
+
+  /// Title for the report job dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Report Job'**
+  String get reportJob;
+
+  /// Confirmation message for reporting a job
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to report this job?'**
+  String get reportJobConfirmation;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Report button text
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// Success message when job is reported
+  ///
+  /// In en, this message translates to:
+  /// **'Job reported successfully'**
+  String get reportSuccess;
+
+  /// Error message when job reporting fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to report job'**
+  String get reportError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

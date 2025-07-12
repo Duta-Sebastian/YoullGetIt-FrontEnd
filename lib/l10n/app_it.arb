@@ -595,7 +595,7 @@
 
   "choiceScreenTitle": "Ma prima, scegli l'opzione che fa per te",
   "choiceScreenFastAccess": "Accesso Veloce",
-  "choiceScreenFastAccessDesc": "1 minuto, 5 domande",
+  "choiceScreenFastAccessDesc": "1 minuto, 6 domande",
   "choiceScreenHigherAccuracy": "Maggiore Precisione",
   "choiceScreenHigherAccuracyDesc": "3-5 minuti, 15 domande",
 
@@ -746,5 +746,39 @@
   "hardSkillProcessAutomation": "Automazione Processi",
 
   "expandAll": "Espandi Tutto",
-  "collapseAll": "Comprimi Tutto"
+  "collapseAll": "Comprimi Tutto",
+
+  "creativity": "Creatività",
+  "mergers_acquisitions": "M&A (Fusioni e Acquisizioni)",
+
+  "hardSkills": "Competenze Tecniche",
+  "skillsSelected": "selezionate",
+  "noSkillsFound": "Nessuna competenza trovata",
+  "clearAll": "Cancella tutto",
+  "searchSkills": "Cerca competenze...",
+
+  "reportJob": "Segnala lavoro",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Sei sicuro di voler segnalare questo lavoro?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Annulla",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Segnala",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Lavoro segnalato con successo",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Errore nella segnalazione del lavoro",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

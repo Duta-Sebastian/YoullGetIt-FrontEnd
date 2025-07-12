@@ -1740,7 +1740,7 @@ class AppLocalizationsRo extends AppLocalizations {
   String get choiceScreenFastAccess => 'Obține Acces Rapid';
 
   @override
-  String get choiceScreenFastAccessDesc => '1 minut, 5 întrebări';
+  String get choiceScreenFastAccessDesc => '1 minut, 6 întrebări';
 
   @override
   String get choiceScreenHigherAccuracy => 'Obține Precizie Mai Mare';
@@ -2181,4 +2181,43 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get collapseAll => 'Restrânge Tot';
+
+  @override
+  String get creativity => 'Creativitate';
+
+  @override
+  String get mergers_acquisitions => 'M&A (Fuziuni și Achiziții)';
+
+  @override
+  String get hardSkills => 'Abilități Tehnice';
+
+  @override
+  String get skillsSelected => 'selectate';
+
+  @override
+  String get noSkillsFound => 'Nu au fost găsite abilități';
+
+  @override
+  String get clearAll => 'Șterge tot';
+
+  @override
+  String get searchSkills => 'Caută abilități...';
+
+  @override
+  String get reportJob => 'Raportează jobul';
+
+  @override
+  String get reportJobConfirmation => 'Ești sigur că vrei să raportezi acest job?';
+
+  @override
+  String get cancel => 'Anulează';
+
+  @override
+  String get report => 'Raportează';
+
+  @override
+  String get reportSuccess => 'Job raportat cu succes';
+
+  @override
+  String get reportError => 'Eroare la raportarea jobului';
 }

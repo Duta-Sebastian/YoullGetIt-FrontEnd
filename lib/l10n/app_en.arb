@@ -756,7 +756,7 @@
 
   "choiceScreenTitle": "But first, choose the option that suits you best",
   "choiceScreenFastAccess": "Get Fast Access",
-  "choiceScreenFastAccessDesc": "1 minute, 5 questions",
+  "choiceScreenFastAccessDesc": "1 minute, 6 questions",
   "choiceScreenHigherAccuracy": "Get Higher Accuracy",
   "choiceScreenHigherAccuracyDesc": "3-5 minutes, 15 questions",
 
@@ -938,5 +938,39 @@
   "hardSkillProcessAutomation": "Process Automation",
 
   "expandAll": "Expand All",
-  "collapseAll": "Collapse All"
+  "collapseAll": "Collapse All",
+
+  "creativity": "Creativity",
+  "mergers_acquisitions": "M&A (Mergers and Acquisitions)",
+
+  "hardSkills": "Hard Skills",
+  "skillsSelected": "selected",
+  "noSkillsFound": "No skills found",
+  "clearAll": "Clear All",
+  "searchSkills": "Search skills...",
+
+  "reportJob": "Report Job",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Are you sure you want to report this job?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Report",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Job reported successfully",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Failed to report job",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

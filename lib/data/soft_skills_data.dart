@@ -22,20 +22,18 @@ class SoftSkillsData {
       'Critical Thinking',
       'Problem-Solving Skills',
       'Innovation',
-      'Commercial Understanding',
+      'Creativity',
     ],
     'Personal Effectiveness': [
       'Time Management',
       'Organizational Skills',
       'Attention to Detail',
-      'Detail Oriented',
     ],
     'Adaptability & Growth': [
       'Flexibility',
       'Adaptability',
       'Learning',
       'Continuous Learning',
-      'Enthusiasm for Learning',
     ],
     'Independence & Specialized': [
       'Independence',

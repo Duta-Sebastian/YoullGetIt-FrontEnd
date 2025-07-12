@@ -12,10 +12,10 @@ jobs:
     strategy:
       matrix:
         build-type: 
-          - { name: "appbundle", command: "flutter build appbundle --release", path: "build/app/outputs/bundle/release/app-release.aab", artifact: "android-aab" }
-          - { name: "arm64-v8a", command: "flutter build apk --release --target-platform=android-arm64", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-arm64-v8a" }
-          - { name: "armeabi-v7a", command: "flutter build apk --release --target-platform=android-arm", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-armeabi-v7a" }
-          - { name: "x86_64", command: "flutter build apk --release --target-platform=android-x64", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-x86_64" }
+          - { name: "appbundle", command: "flutter build appbundle --release --split-debug-info=build/android/symbols", path: "build/app/outputs/bundle/release/app-release.aab", artifact: "android-aab", symbols_path: "build/android/symbols" }
+          - { name: "arm64-v8a", command: "flutter build apk --release --target-platform=android-arm64 --split-debug-info=build/android/symbols", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-arm64-v8a", symbols_path: "build/android/symbols" }
+          - { name: "armeabi-v7a", command: "flutter build apk --release --target-platform=android-arm --split-debug-info=build/android/symbols", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-armeabi-v7a", symbols_path: "build/android/symbols" }
+          - { name: "x86_64", command: "flutter build apk --release --target-platform=android-x64 --split-debug-info=build/android/symbols", path: "build/app/outputs/flutter-apk/app-release.apk", artifact: "android-x86_64", symbols_path: "build/android/symbols" }
     
     steps:
     - name: Checkout code
@@ -66,9 +66,16 @@ jobs:
     - name: Build ${{ matrix.build-type.name }}
       run: ${{ matrix.build-type.command }}
       
-    - name: Upload ${{ matrix.build-type.name }}
+    - name: Upload ${{ matrix.build-type.name }} build
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.build-type.artifact }}-signed-${{ github.sha }}
         path: ${{ matrix.build-type.path }}
+        retention-days: 30
+        
+    - name: Upload ${{ matrix.build-type.name }} debug symbols
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.build-type.artifact }}-symbols-${{ github.sha }}
+        path: ${{ matrix.build-type.symbols_path }}
         retention-days: 30

@@ -222,6 +222,8 @@ class QuestionTranslationService {
       case 'Self-Reliance': return l10n.softSkillSelfReliance;
       case 'Enthusiasm for Politics': return l10n.softSkillEnthusiasmForPolitics;
       case 'Enthusiasm for Public Service': return l10n.softSkillEnthusiasmForPublicService;
+
+      case 'Creativity': return l10n.creativity;
       
       default: return skill;
     }
@@ -330,6 +332,8 @@ class QuestionTranslationService {
       case 'AI Tools': return l10n.hardSkillAiTools;
       case 'Automation': return l10n.hardSkillAutomation;
       case 'Process Automation': return l10n.hardSkillProcessAutomation;
+
+      case 'M&A (mergers and acquisitions)': return l10n.mergers_acquisitions;
       
       // Keep proper names unchanged (no translation needed)
       case 'Python':

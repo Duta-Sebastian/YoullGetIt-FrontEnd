@@ -5,6 +5,7 @@ import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/providers/connectivity_provider.dart';
 import 'package:youllgetit_flutter/providers/navbar_animation_provider.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/jobs/job_card.dart';
 import 'package:youllgetit_flutter/providers/job_provider.dart';
@@ -18,6 +19,67 @@ class JobCardSwiper extends ConsumerStatefulWidget {
 class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
   double? screenWidth;
   double? screenHeight;
+  
+  // Function to handle job reporting
+  Future<void> _reportJob(JobCardModel job) async {
+    final localizations = AppLocalizations.of(context)!;
+    
+    // Show confirmation dialog
+    final bool? shouldReport = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(localizations.reportJob),
+          content: Text(localizations.reportJobConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(localizations.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(localizations.report),
+            ),
+          ],
+        );
+      },
+    );
+    
+    if (shouldReport == true) {
+      try {
+        JobApi.markJobWithResult(job.feedbackId).then((success) {
+          if (success) {
+            // Optionally, you can remove the job from the list or update UI
+            ref.read(activeJobsProvider.notifier).removeJob(0);
+          } else {
+            throw Exception('Failed to report job');
+          }
+        });
+        debugPrint('Reporting job with ID: ${job.feedbackId}');
+        
+        // Show success message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.reportSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.reportError),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -124,9 +186,34 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
                     bool isTopCard = index == 0;
                     return IgnorePointer(
                       ignoring: !isTopCard,
-                      child: JobCard(
-                        jobData: activeJobs[index],
-                        percentThresholdx: percentThresholdx.toDouble(),
+                      child: Stack(
+                        children: [
+                          JobCard(
+                            jobData: activeJobs[index],
+                            percentThresholdx: percentThresholdx.toDouble(),
+                          ),
+                          // Report button positioned at top-right corner
+                          if (isTopCard)
+                            Positioned(
+                              top: 16,
+                              right: 16,
+                              child: GestureDetector(
+                                onTap: () => _reportJob(activeJobs[index]),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withAlpha((0.6 * 255).toInt()),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Icon(
+                                    Icons.flag_outlined,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     );
                   },

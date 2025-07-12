@@ -595,7 +595,7 @@
 
   "choiceScreenTitle": "Maar kies eerst de optie die het beste bij je past",
   "choiceScreenFastAccess": "Snelle Toegang",
-  "choiceScreenFastAccessDesc": "1 minuut, 5 vragen",
+  "choiceScreenFastAccessDesc": "1 minuut, 6 vragen",
   "choiceScreenHigherAccuracy": "Hogere Nauwkeurigheid",
   "choiceScreenHigherAccuracyDesc": "3-5 minuten, 15 vragen",
 
@@ -746,5 +746,39 @@
   "hardSkillUiUxDesign": "UI/UX Design",
 
   "expandAll": "Alles Uitklappen",
-  "collapseAll": "Alles Inklappen"
+  "collapseAll": "Alles Inklappen",
+
+  "creativity": "Creativiteit",
+  "mergers_acquisitions": "M&A (Fusies en Overnames)",
+
+  "hardSkills": "Technische Vaardigheden",
+  "skillsSelected": "geselecteerd",
+  "noSkillsFound": "Geen vaardigheden gevonden",
+  "clearAll": "Alles wissen",
+  "searchSkills": "Zoek vaardigheden...",
+
+  "reportJob": "Baan rapporteren",
+  "@reportJob": {
+    "description": "Title for the report job dialog"
+  },
+  "reportJobConfirmation": "Weet je zeker dat je deze baan wilt rapporteren?",
+  "@reportJobConfirmation": {
+    "description": "Confirmation message for reporting a job"
+  },
+  "cancel": "Annuleren",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "report": "Rapporteren",
+  "@report": {
+    "description": "Report button text"
+  },
+  "reportSuccess": "Baan succesvol gerapporteerd",
+  "@reportSuccess": {
+    "description": "Success message when job is reported"
+  },
+  "reportError": "Fout bij het rapporteren van de baan",
+  "@reportError": {
+    "description": "Error message when job reporting fails"
+  }
 }

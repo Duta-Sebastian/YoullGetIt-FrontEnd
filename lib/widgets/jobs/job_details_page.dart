@@ -1,13 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/job_card/job_card_model.dart';
 import 'package:youllgetit_flutter/models/job_card/job_deadline_model.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class JobDetailPage extends StatelessWidget {
+class JobDetailPage extends ConsumerStatefulWidget {
   final JobCardModel job;
 
   const JobDetailPage({super.key, required this.job});
+
+  @override
+  ConsumerState<JobDetailPage> createState() => _JobDetailPageState();
+}
+
+class _JobDetailPageState extends ConsumerState<JobDetailPage> {
+  
+  // Function to handle job reporting
+  Future<void> _reportJob(JobCardModel job) async {
+    final localizations = AppLocalizations.of(context)!;
+    
+    // Show confirmation dialog
+    final bool? shouldReport = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(localizations.reportJob),
+          content: Text(localizations.reportJobConfirmation),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(localizations.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: Text(localizations.report),
+            ),
+          ],
+        );
+      },
+    );
+    
+    if (shouldReport == true) {
+      try {
+        JobApi.markJobWithResult(job.feedbackId).then((success) {
+          if (success && mounted) {
+            Navigator.of(context).pop();
+          } else {
+            throw Exception('Failed to report job');
+          }
+        });
+        debugPrint('Reporting job with ID: ${job.feedbackId}');
+        
+        // Show success message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.reportSuccess),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.reportError),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +94,15 @@ class JobDetailPage extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Color(0xFF1F2937)),
         actions: [
+          // Report button
+          IconButton(
+            icon: const Icon(Icons.flag_outlined, color: Colors.red),
+            onPressed: () => _reportJob(widget.job),
+            tooltip: localizations.reportJob,
+          ),
           IconButton(
             icon: const Icon(Icons.open_in_new_rounded),
-            onPressed: () => _launchJobUrl(job.url),
+            onPressed: () => _launchJobUrl(widget.job.url),
             tooltip: localizations.openInBrowser,
           ),
         ],
@@ -70,9 +144,9 @@ class JobDetailPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildDescriptionCard(context),
                   const SizedBox(height: 16),
-                  if (job.requirements.isNotEmpty && !_isNotFound(job.requirements))
+                  if (widget.job.requirements.isNotEmpty && !_isNotFound(widget.job.requirements))
                     _buildRequirementsCard(context),
-                  if (job.requirements.isNotEmpty && !_isNotFound(job.requirements))
+                  if (widget.job.requirements.isNotEmpty && !_isNotFound(widget.job.requirements))
                     const SizedBox(height: 16),
                   _buildApplyButton(context),
                   const SizedBox(height: 40),
@@ -99,7 +173,7 @@ class JobDetailPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    job.roleName,
+                    widget.job.roleName,
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -118,7 +192,7 @@ class JobDetailPage extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          job.companyName,
+                          widget.job.companyName,
                           style: const TextStyle(
                             fontSize: 18,
                             color: Color(0xFF374151),
@@ -134,25 +208,25 @@ class JobDetailPage extends StatelessWidget {
           ],
         ),
         
-        if (job.jobLocation.isNotEmpty || job.deadline != null) ...[
+        if (widget.job.jobLocation.isNotEmpty || widget.job.deadline != null) ...[
           const SizedBox(height: 16),
           const Divider(),
           const SizedBox(height: 16),
           
           // Location and Deadline
-          if (job.jobLocation.isNotEmpty && !_isLocationNotFound(job.jobLocation))
+          if (widget.job.jobLocation.isNotEmpty && !_isLocationNotFound(widget.job.jobLocation))
             _buildHeaderInfoRow(
               Icons.location_on_rounded,
               localizations.location,
-              job.jobLocation.map((loc) => '${loc.jobCity}, ${loc.jobCountry}').join(' • '),
+              widget.job.jobLocation.map((loc) => '${loc.jobCity}, ${loc.jobCountry}').join(' • '),
             ),
           
-          if (job.deadline != null)
+          if (widget.job.deadline != null)
             _buildHeaderInfoRow(
               Icons.schedule_rounded,
               localizations.deadline,
-              _formatDeadline(job.deadline!, context),
-              isUrgent: _isDeadlineSoon(job.deadline!),
+              _formatDeadline(widget.job.deadline!, context),
+              isUrgent: _isDeadlineSoon(widget.job.deadline!),
             ),
         ],
       ],
@@ -195,20 +269,20 @@ class JobDetailPage extends StatelessWidget {
 
   Widget _buildJobDetailsCard(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    debugPrint(job.internshipSeason);
+    debugPrint(widget.job.internshipSeason);
     final details = [
-      if (job.workMode.isNotEmpty && !_isNotFoundString(job.workMode)) 
-        _DetailItem(Icons.work_rounded, localizations.workMode, job.workMode),
-      if (job.expectedSalary.isNotEmpty && !_isNotFoundString(job.expectedSalary))
-        _DetailItem(Icons.payments_rounded, localizations.salary, job.expectedSalary),
-      if (job.durationInMonths > 0)
-        _DetailItem(Icons.timer_rounded, localizations.duration, localizations.monthsCount(job.durationInMonths.toInt())),
-      if (job.timeSpent.isNotEmpty && !_isNotFoundString(job.timeSpent))
-        _DetailItem(Icons.schedule_rounded, localizations.timeCommitment, job.timeSpent),
-      if (job.internshipSeason.isNotEmpty && !_isNotFoundString(job.internshipSeason))
-        _DetailItem(Icons.calendar_today_rounded, localizations.season, job.internshipSeason),
-      if (job.visaHelp.isNotEmpty && !_isNotFoundString(job.visaHelp))
-        _DetailItem(Icons.flight_rounded, localizations.visaHelp, job.visaHelp),
+      if (widget.job.workMode.isNotEmpty && !_isNotFoundString(widget.job.workMode)) 
+        _DetailItem(Icons.work_rounded, localizations.workMode, widget.job.workMode),
+      if (widget.job.expectedSalary.isNotEmpty && !_isNotFoundString(widget.job.expectedSalary))
+        _DetailItem(Icons.payments_rounded, localizations.salary, widget.job.expectedSalary),
+      if (widget.job.durationInMonths > 0)
+        _DetailItem(Icons.timer_rounded, localizations.duration, localizations.monthsCount(widget.job.durationInMonths.toInt())),
+      if (widget.job.timeSpent.isNotEmpty && !_isNotFoundString(widget.job.timeSpent))
+        _DetailItem(Icons.schedule_rounded, localizations.timeCommitment, widget.job.timeSpent),
+      if (widget.job.internshipSeason.isNotEmpty && !_isNotFoundString(widget.job.internshipSeason))
+        _DetailItem(Icons.calendar_today_rounded, localizations.season, widget.job.internshipSeason),
+      if (widget.job.visaHelp.isNotEmpty && !_isNotFoundString(widget.job.visaHelp))
+        _DetailItem(Icons.flight_rounded, localizations.visaHelp, widget.job.visaHelp),
     ];
 
     if (details.isEmpty) return const SizedBox.shrink();
@@ -226,10 +300,10 @@ class JobDetailPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     final educationItems = <Widget>[];
 
-    debugPrint('Required degrees is not empty: ${job.requiredDegree.isNotEmpty}');
-    if (job.requiredDegree.isNotEmpty && !_isNotFound(job.requiredDegree)) {
+    debugPrint('Required degrees is not empty: ${widget.job.requiredDegree.isNotEmpty}');
+    if (widget.job.requiredDegree.isNotEmpty && !_isNotFound(widget.job.requiredDegree)) {
       // Filter out "Not Found" values and localize the required degrees
-      final filteredDegrees = job.requiredDegree
+      final filteredDegrees = widget.job.requiredDegree
           .where((degree) => !_isNotFoundString(degree))
           .toList();
       
@@ -246,10 +320,10 @@ class JobDetailPage extends StatelessWidget {
       }
     }
     
-    debugPrint('Allowed graduation years: ${job.allowedGraduationYears}');
-    if (job.allowedGraduationYears.isNotEmpty && !_isNotFound(job.allowedGraduationYears)) {
+    debugPrint('Allowed graduation years: ${widget.job.allowedGraduationYears}');
+    if (widget.job.allowedGraduationYears.isNotEmpty && !_isNotFound(widget.job.allowedGraduationYears)) {
       // Filter out "Not Found" values
-      final filteredYears = job.allowedGraduationYears
+      final filteredYears = widget.job.allowedGraduationYears
           .where((year) => !_isNotFoundString(year))
           .toList();
       
@@ -276,8 +350,8 @@ class JobDetailPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     final skillSections = <Widget>[];
     
-    if (job.hardSkills.isNotEmpty && !_isNotFound(job.hardSkills)) {
-      final filteredHardSkills = job.hardSkills
+    if (widget.job.hardSkills.isNotEmpty && !_isNotFound(widget.job.hardSkills)) {
+      final filteredHardSkills = widget.job.hardSkills
           .where((skill) => !_isNotFoundString(skill))
           .toList();
       
@@ -288,8 +362,8 @@ class JobDetailPage extends StatelessWidget {
       }
     }
     
-    if (job.softSkills.isNotEmpty && !_isNotFound(job.softSkills)) {
-      final filteredSoftSkills = job.softSkills
+    if (widget.job.softSkills.isNotEmpty && !_isNotFound(widget.job.softSkills)) {
+      final filteredSoftSkills = widget.job.softSkills
           .where((skill) => !_isNotFoundString(skill))
           .toList();
       
@@ -301,8 +375,8 @@ class JobDetailPage extends StatelessWidget {
       }
     }
     
-    if (job.requiredSpokenLanguages.isNotEmpty && !_isNotFound(job.requiredSpokenLanguages)) {
-      final filteredLanguages = job.requiredSpokenLanguages
+    if (widget.job.requiredSpokenLanguages.isNotEmpty && !_isNotFound(widget.job.requiredSpokenLanguages)) {
+      final filteredLanguages = widget.job.requiredSpokenLanguages
           .where((lang) => !_isNotFoundString(lang))
           .toList();
       
@@ -314,8 +388,8 @@ class JobDetailPage extends StatelessWidget {
       }
     }
     
-    if (job.niceToHaves.isNotEmpty && !_isNotFound(job.niceToHaves)) {
-      final filteredNiceToHaves = job.niceToHaves
+    if (widget.job.niceToHaves.isNotEmpty && !_isNotFound(widget.job.niceToHaves)) {
+      final filteredNiceToHaves = widget.job.niceToHaves
           .where((item) => !_isNotFoundString(item))
           .toList();
       
@@ -363,13 +437,13 @@ class JobDetailPage extends StatelessWidget {
   Widget _buildDescriptionCard(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     
-    if (job.description.isEmpty || _isNotFoundString(job.description)) return const SizedBox.shrink();
+    if (widget.job.description.isEmpty || _isNotFoundString(widget.job.description)) return const SizedBox.shrink();
     
     return _buildSectionCard(
       localizations.jobDescription,
       Icons.description_rounded,
       Text(
-        job.description,
+        widget.job.description,
         style: const TextStyle(
           color: Color(0xFF374151),
           height: 1.6,
@@ -383,7 +457,7 @@ class JobDetailPage extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     
     // Filter out "Not Found" requirements
-    final filteredRequirements = job.requirements
+    final filteredRequirements = widget.job.requirements
         .where((req) => !_isNotFoundString(req))
         .toList();
     
@@ -450,7 +524,7 @@ class JobDetailPage extends StatelessWidget {
         ],
       ),
       child: ElevatedButton(
-        onPressed: () => _launchJobUrl(job.url),
+        onPressed: () => _launchJobUrl(widget.job.url),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,

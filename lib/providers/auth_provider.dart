@@ -51,7 +51,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         scopes: const {'openid', 'profile', 'email', 'offline_access', 'sync:read', 'sync:pull', 'sync:push'},
         
         audience: 'https://api.youllgetit.com/user_db', 
-        useHTTPS: true,
+        useHTTPS: false,
       );
       await auth0.credentialsManager.storeCredentials(credentials);
       debugPrint('Login successful: ${credentials.user.customClaims?['aes_key'] as String?}');
@@ -71,7 +71,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     try {
-      await auth0.webAuthentication().logout(useHTTPS: true);
+      await auth0.webAuthentication().logout(useHTTPS: false);
       await auth0.credentialsManager.clearCredentials();
       state = AuthState(isLoggedIn: false);
     } catch (e) {
