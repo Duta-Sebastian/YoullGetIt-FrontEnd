@@ -2429,4 +2429,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reportError => 'Error al reportar el trabajo';
+
+  @override
+  String get swipe => 'Deslizar';
+
+  @override
+  String get search => 'Buscar';
+
+  @override
+  String get saved => 'Guardados';
+
+  @override
+  String get profile => 'Perfil';
 }

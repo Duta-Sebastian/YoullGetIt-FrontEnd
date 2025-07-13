@@ -4832,6 +4832,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to report job'**
   String get reportError;
+
+  /// Label for swipe tab in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe'**
+  String get swipe;
+
+  /// Label for search tab in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// Label for saved tab in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get saved;
+
+  /// Label for profile tab in bottom navigation
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

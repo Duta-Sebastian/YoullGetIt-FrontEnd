@@ -2430,4 +2430,16 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get reportError => 'Eroare la raportarea jobului';
+
+  @override
+  String get swipe => 'Glisare';
+
+  @override
+  String get search => 'Căutare';
+
+  @override
+  String get saved => 'Salvate';
+
+  @override
+  String get profile => 'Profil';
 }

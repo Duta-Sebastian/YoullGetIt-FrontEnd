@@ -1043,5 +1043,22 @@
   "reportError": "Failed to report job",
   "@reportError": {
     "description": "Error message when job reporting fails"
+  },
+
+  "swipe": "Swipe",
+  "@swipe": {
+    "description": "Label for swipe tab in bottom navigation"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Label for search tab in bottom navigation"
+  },
+  "saved": "Saved",
+  "@saved": {
+    "description": "Label for saved tab in bottom navigation"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Label for profile tab in bottom navigation"
   }
 }

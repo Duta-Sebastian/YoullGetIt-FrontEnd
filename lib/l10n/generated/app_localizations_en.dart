@@ -2429,4 +2429,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportError => 'Failed to report job';
+
+  @override
+  String get swipe => 'Swipe';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get saved => 'Saved';
+
+  @override
+  String get profile => 'Profile';
 }

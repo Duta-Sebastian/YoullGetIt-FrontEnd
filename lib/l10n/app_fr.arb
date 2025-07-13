@@ -851,5 +851,10 @@
   "reportError": "Échec du signalement de l'emploi",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+
+  "swipe": "Balayer",
+  "search": "Rechercher",
+  "saved": "Sauvegardés",
+  "profile": "Profil"
 }

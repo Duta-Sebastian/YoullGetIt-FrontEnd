@@ -278,7 +278,7 @@ class QuestionRepository {
         id: 'q15',
         text: 'Would you also consider traineeships?',
         answerType: AnswerType.radio,
-        options: ['Yes', 'No', 'Maybe'],
+        options: ['Yes', 'No'],
         nextQuestionId: null,
         previousQuestionId: 'q14',
         rootQuestionId: 'q15',

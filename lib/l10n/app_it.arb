@@ -850,5 +850,10 @@
   "reportError": "Errore nella segnalazione del lavoro",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+
+  "swipe": "Scorri",
+  "search": "Cerca",
+  "saved": "Salvati",
+  "profile": "Profilo"
 }

@@ -2429,4 +2429,16 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get reportError => 'Fout bij het rapporteren van de baan';
+
+  @override
+  String get swipe => 'Vegen';
+
+  @override
+  String get search => 'Zoeken';
+
+  @override
+  String get saved => 'Opgeslagen';
+
+  @override
+  String get profile => 'Profiel';
 }

@@ -849,5 +849,10 @@
   "reportError": "Error al reportar el trabajo",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+
+  "swipe": "Deslizar",
+  "search": "Buscar",
+  "saved": "Guardados",
+  "profile": "Perfil"
 }

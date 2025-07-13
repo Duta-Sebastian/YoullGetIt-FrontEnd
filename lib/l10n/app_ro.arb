@@ -852,5 +852,10 @@
   "reportError": "Eroare la raportarea jobului",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+
+  "swipe": "Glisare",
+  "search": "Căutare",
+  "saved": "Salvate",
+  "profile": "Profil"
 }

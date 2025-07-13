@@ -7,8 +7,14 @@ import 'package:youllgetit_flutter/models/job_card/job_deadline_model.dart';
 class JobCard extends StatefulWidget {
   final JobCardModel jobData;
   final double percentThresholdx;
+  final VoidCallback? onReport; // Add callback for report functionality
 
-  const JobCard({super.key, required this.jobData, required this.percentThresholdx});
+  const JobCard({
+    super.key, 
+    required this.jobData, 
+    required this.percentThresholdx,
+    this.onReport, // Optional callback
+  });
 
   @override
   JobCardState createState() => JobCardState();
@@ -123,169 +129,311 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
     );
   }
 
+  Widget _buildReportButton(AppLocalizations localizations) {
+    return Positioned(
+      top: 16,
+      right: 16,
+      child: GestureDetector(
+        onTap: widget.onReport,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.black.withAlpha((0.6 * 255).toInt()),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Icon(
+            Icons.flag_outlined,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildFront(AppLocalizations localizations) {
     return _buildCard(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
+      child: Stack(
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header section with consistent spacing for report button
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50), // Reserved space for report button
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(widget.jobData.roleName, style: _titleStyle),
+                                const SizedBox(height: 4),
+                                Text(widget.jobData.companyName, style: _subtitleStyle),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 12),
+                    
+                    // Location and deadline
+                    if (widget.jobData.jobLocation.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          children: [
+                            Icon(Icons.location_on_rounded, color: const Color(0xFF6B7280), size: 16),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                widget.jobData.jobLocation.map((loc) => '${loc.jobCity}, ${loc.jobCountry}').join(' • '),
+                                style: _infoStyle,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    
+                    if (widget.jobData.deadline != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          children: [
+                            Icon(Icons.schedule_rounded, color: const Color(0xFF6B7280), size: 16),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${localizations.jobCardDeadline} ${_formatDeadline(widget.jobData.deadline!, localizations)}',
+                              style: _infoStyle.copyWith(
+                                color: _isDeadlineSoon(widget.jobData.deadline!) ? const Color(0xFFEF4444) : const Color(0xFF6B7280),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    
+                    const Divider(height: 24, thickness: 1),
+                    
+                    // Job Details
+                    Text(localizations.jobCardJobDetails, style: _sectionStyle),
+                    const SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _buildChipWithIcon(
+                          _localizeWorkMode(widget.jobData.workMode, localizations),
+                          Icons.work_rounded,
+                          const Color(0xFFA5B4FC), // Light blue
+                          const Color(0xFF1F2937),
+                        ),
+                        _buildChipWithIcon(
+                          widget.jobData.expectedSalary.isEmpty ? localizations.jobCardNotAvailable : widget.jobData.expectedSalary,
+                          Icons.payments_rounded,
+                          const Color(0xFFFBBF24), // Golden yellow
+                          const Color(0xFF1F2937),
+                        ),
+                        _buildChipWithIcon(
+                          '${widget.jobData.durationInMonths} ${localizations.jobCardMonths}',
+                          Icons.timer_rounded,
+                          const Color(0xFF86EFAC), // Light green
+                          const Color(0xFF1F2937),
+                        ),
+                        if (widget.jobData.internshipSeason.isNotEmpty)
+                          _buildChipWithIcon(
+                            widget.jobData.internshipSeason,
+                            Icons.calendar_today_rounded,
+                            const Color(0xFF86EFAC), // Light green for season
+                            const Color(0xFF1F2937),
+                          ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 16),
+                    
+                    // Education Requirements
+                    if (widget.jobData.requiredDegree.isNotEmpty) ...[
+                      Text(localizations.jobCardEducationRequirements, style: _sectionStyle),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: widget.jobData.requiredDegree.map((degree) => 
+                          _buildSimpleChip(_localizeEducation(degree, localizations), const Color(0xFFE879F9), const Color(0xFF1F2937)) // Light purple
+                        ).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    
+                    // Languages
+                    if (widget.jobData.requiredSpokenLanguages.isNotEmpty) ...[
+                      Text(localizations.jobCardRequiredLanguages, style: _sectionStyle),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: widget.jobData.requiredSpokenLanguages.map((lang) => 
+                          _buildChipWithIcon(lang, Icons.language_rounded, const Color(0xFF7DD3FC), const Color(0xFF1F2937)) // Light cyan
+                        ).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    
+                    // Visa Help
+                    if (widget.jobData.visaHelp.isNotEmpty) ...[
+                      Text(localizations.jobCardVisaSupport, style: _sectionStyle),
+                      const SizedBox(height: 8),
+                      _buildChipWithIcon(
+                        widget.jobData.visaHelp == "Not found" ? localizations.jobCardNotFound : widget.jobData.visaHelp,
+                        Icons.flight_rounded,
+                        widget.jobData.visaHelp != "Not found"? const Color(0xFF86EFAC) : const Color(0xFFFCA5A5),
+                        const Color(0xFF1F2937),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                    
+                    // Related Fields
+                    if (widget.jobData.relatedFields.isNotEmpty) ...[
+                      Text(localizations.jobCardRelatedFields, style: _sectionStyle),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 6,
+                        children: widget.jobData.relatedFields.map((field) => 
+                          _buildSimpleChip(_localizeField(field, localizations), const Color(0xFFD1D5DB), const Color(0xFF1F2937)) // Light gray
+                        ).toList(),
+                      ),
+                    ],
+                    
+                    // Flip indicator
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF81DCC4).withAlpha((0.1*225).toInt()),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.flip_rounded, size: 16, color: const Color(0xFF6B7280)),
+                            const SizedBox(width: 4),
+                            Text(
+                              localizations.jobCardTapToSeeSkills,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: const Color(0xFF6B7280),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          ),
+          // Report button positioned on the front side
+          if (widget.onReport != null) _buildReportButton(localizations),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBack(AppLocalizations localizations) {
+    return _buildCard(
+      child: Stack(
+        children: [
+          SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header section with match score
+                // Header with space for report button - matching front side spacing
+                Padding(
+                  padding: const EdgeInsets.only(right: 50), // Same padding as front side
+                  child: Row(
+                    children: [
+                      Icon(Icons.psychology_rounded, color: const Color(0xFF0D6B80), size: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          localizations.jobCardSkillsRequirements, 
+                          style: _headerStyle.copyWith(color: const Color(0xFF0D6B80))
+                        )
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
+                // Hard Skills
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.jobData.roleName, style: _titleStyle),
-                          const SizedBox(height: 4),
-                          Text(widget.jobData.companyName, style: _subtitleStyle),
-                        ],
-                      ),
-                    ),
+                    Icon(Icons.build_rounded, color: const Color(0xFF0D6B80), size: 20),
+                    const SizedBox(width: 8),
+                    Text(localizations.jobCardTechnicalSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
                   ],
                 ),
-                
-                const SizedBox(height: 12),
-                
-                // Location and deadline
-                if (widget.jobData.jobLocation.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Row(
-                      children: [
-                        Icon(Icons.location_on_rounded, color: const Color(0xFF6B7280), size: 16),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            widget.jobData.jobLocation.map((loc) => '${loc.jobCity}, ${loc.jobCountry}').join(' • '),
-                            style: _infoStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                
-                if (widget.jobData.deadline != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      children: [
-                        Icon(Icons.schedule_rounded, color: const Color(0xFF6B7280), size: 16),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${localizations.jobCardDeadline} ${_formatDeadline(widget.jobData.deadline!, localizations)}',
-                          style: _infoStyle.copyWith(
-                            color: _isDeadlineSoon(widget.jobData.deadline!) ? const Color(0xFFEF4444) : const Color(0xFF6B7280),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                
-                const Divider(height: 24, thickness: 1),
-                
-                // Job Details
-                Text(localizations.jobCardJobDetails, style: _sectionStyle),
                 const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _buildChipWithIcon(
-                      _localizeWorkMode(widget.jobData.workMode, localizations),
-                      Icons.work_rounded,
-                      const Color(0xFFA5B4FC), // Light blue
-                      const Color(0xFF1F2937),
-                    ),
-                    _buildChipWithIcon(
-                      widget.jobData.expectedSalary.isEmpty ? localizations.jobCardNotAvailable : widget.jobData.expectedSalary,
-                      Icons.payments_rounded,
-                      const Color(0xFFFBBF24), // Golden yellow
-                      const Color(0xFF1F2937),
-                    ),
-                    _buildChipWithIcon(
-                      '${widget.jobData.durationInMonths} ${localizations.jobCardMonths}',
-                      Icons.timer_rounded,
-                      const Color(0xFF86EFAC), // Light green
-                      const Color(0xFF1F2937),
-                    ),
-                    if (widget.jobData.internshipSeason.isNotEmpty)
-                      _buildChipWithIcon(
-                        widget.jobData.internshipSeason,
-                        Icons.calendar_today_rounded,
-                        const Color(0xFF86EFAC), // Light green for season
-                        const Color(0xFF1F2937),
-                      ),
-                  ],
+                _buildWrappedChips(
+                  widget.jobData.hardSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.hardSkills,
+                  const Color(0xFF81DCC4),
+                  const Color(0xFF0D6B80),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 
-                // Education Requirements
-                if (widget.jobData.requiredDegree.isNotEmpty) ...[
-                  Text(localizations.jobCardEducationRequirements, style: _sectionStyle),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: widget.jobData.requiredDegree.map((degree) => 
-                      _buildSimpleChip(_localizeEducation(degree, localizations), const Color(0xFFE879F9), const Color(0xFF1F2937)) // Light purple
-                    ).toList(),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+                // Soft Skills
+                Row(
+                  children: [
+                    Icon(Icons.people_rounded, color: const Color(0xFF0D6B80), size: 20),
+                    const SizedBox(width: 8),
+                    Text(localizations.jobCardSoftSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                _buildWrappedChips(
+                  widget.jobData.softSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.softSkills,
+                  const Color(0xFFB0E1EC),
+                  const Color(0xFF0D6B80),
+                ),
                 
-                // Languages
-                if (widget.jobData.requiredSpokenLanguages.isNotEmpty) ...[
-                  Text(localizations.jobCardRequiredLanguages, style: _sectionStyle),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: widget.jobData.requiredSpokenLanguages.map((lang) => 
-                      _buildChipWithIcon(lang, Icons.language_rounded, const Color(0xFF7DD3FC), const Color(0xFF1F2937)) // Light cyan
-                    ).toList(),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+                const SizedBox(height: 20),
                 
-                // Visa Help
-                if (widget.jobData.visaHelp.isNotEmpty) ...[
-                  Text(localizations.jobCardVisaSupport, style: _sectionStyle),
-                  const SizedBox(height: 8),
-                  _buildChipWithIcon(
-                    widget.jobData.visaHelp == "Not found" ? localizations.jobCardNotFound : widget.jobData.visaHelp,
-                    Icons.flight_rounded,
-                    widget.jobData.visaHelp != "Not found"? const Color(0xFF86EFAC) : const Color(0xFFFCA5A5),
-                    const Color(0xFF1F2937),
-                  ),
-                  const SizedBox(height: 16),
-                ],
+                // Nice-to-Haves
+                Row(
+                  children: [
+                    Icon(Icons.star_rounded, color: const Color(0xFF0D6B80), size: 20),
+                    const SizedBox(width: 8),
+                    Text(localizations.jobCardNiceToHave, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                _buildWrappedChips(
+                  widget.jobData.niceToHaves.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.niceToHaves,
+                  const Color(0xFF81DCC4).withAlpha((0.6*225).toInt()),
+                  const Color(0xFF0D6B80),
+                ),
                 
-                // Related Fields
-                if (widget.jobData.relatedFields.isNotEmpty) ...[
-                  Text(localizations.jobCardRelatedFields, style: _sectionStyle),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: widget.jobData.relatedFields.map((field) => 
-                      _buildSimpleChip(_localizeField(field, localizations), const Color(0xFFD1D5DB), const Color(0xFF1F2937)) // Light gray
-                    ).toList(),
-                  ),
-                ],
-                
-                // Flip indicator
+                // Back flip indicator
                 const SizedBox(height: 20),
                 Center(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF81DCC4).withAlpha((0.1*225).toInt()),
+                      color: const Color(0xFFF3F4F6),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -294,7 +442,7 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                         Icon(Icons.flip_rounded, size: 16, color: const Color(0xFF6B7280)),
                         const SizedBox(width: 4),
                         Text(
-                          localizations.jobCardTapToSeeSkills,
+                          localizations.jobCardTapToSeeDetails,
                           style: TextStyle(
                             fontSize: 12,
                             color: const Color(0xFF6B7280),
@@ -307,111 +455,15 @@ class JobCardState extends State<JobCard> with SingleTickerProviderStateMixin {
                 ),
               ],
             ),
-          );
-        }
+          ),
+          // Report button positioned on the back side as well
+          if (widget.onReport != null) _buildReportButton(localizations),
+        ],
       ),
     );
   }
 
-  Widget _buildBack(AppLocalizations localizations) {
-    return _buildCard(
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              children: [
-                Icon(Icons.psychology_rounded, color: const Color(0xFF0D6B80), size: 24),
-                const SizedBox(width: 8),
-                Text(localizations.jobCardSkillsRequirements, style: _headerStyle.copyWith(color: const Color(0xFF0D6B80))),
-              ],
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Hard Skills
-            Row(
-              children: [
-                Icon(Icons.build_rounded, color: const Color(0xFF0D6B80), size: 20),
-                const SizedBox(width: 8),
-                Text(localizations.jobCardTechnicalSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
-              ],
-            ),
-            const SizedBox(height: 8),
-            _buildWrappedChips(
-              widget.jobData.hardSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.hardSkills,
-              const Color(0xFF81DCC4),
-              const Color(0xFF0D6B80),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Soft Skills
-            Row(
-              children: [
-                Icon(Icons.people_rounded, color: const Color(0xFF0D6B80), size: 20),
-                const SizedBox(width: 8),
-                Text(localizations.jobCardSoftSkills, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
-              ],
-            ),
-            const SizedBox(height: 8),
-            _buildWrappedChips(
-              widget.jobData.softSkills.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.softSkills,
-              const Color(0xFFB0E1EC),
-              const Color(0xFF0D6B80),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Nice-to-Haves
-            Row(
-              children: [
-                Icon(Icons.star_rounded, color: const Color(0xFF0D6B80), size: 20),
-                const SizedBox(width: 8),
-                Text(localizations.jobCardNiceToHave, style: _skillHeaderStyle.copyWith(color: const Color(0xFF0D6B80))),
-              ],
-            ),
-            const SizedBox(height: 8),
-            _buildWrappedChips(
-              widget.jobData.niceToHaves.isEmpty ? [localizations.jobCardNotAvailable] : widget.jobData.niceToHaves,
-              const Color(0xFF81DCC4).withAlpha((0.6*225).toInt()),
-              const Color(0xFF0D6B80),
-            ),
-            
-            // Back flip indicator
-            const SizedBox(height: 20),
-            Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.flip_rounded, size: 16, color: const Color(0xFF6B7280)),
-                    const SizedBox(width: 4),
-                    Text(
-                      localizations.jobCardTapToSeeDetails,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: const Color(0xFF6B7280),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+  // ... (rest of the helper methods remain the same)
   String _localizeWorkMode(String workMode, AppLocalizations localizations) {
     switch (workMode.toLowerCase()) {
       case 'remote':

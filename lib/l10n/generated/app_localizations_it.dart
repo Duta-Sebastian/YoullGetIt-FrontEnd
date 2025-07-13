@@ -2429,4 +2429,16 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get reportError => 'Errore nella segnalazione del lavoro';
+
+  @override
+  String get swipe => 'Scorri';
+
+  @override
+  String get search => 'Cerca';
+
+  @override
+  String get saved => 'Salvati';
+
+  @override
+  String get profile => 'Profilo';
 }

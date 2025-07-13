@@ -850,5 +850,10 @@
   "reportError": "Fout bij het rapporteren van de baan",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+
+  "swipe": "Vegen",
+  "search": "Zoeken",
+  "saved": "Opgeslagen",
+  "profile": "Profiel"
 }

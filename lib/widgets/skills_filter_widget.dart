@@ -539,7 +539,7 @@ class _SkillChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected 
-              ? const Color(0xFFFFDE15).withOpacity(0.2)
+              ? const Color(0xFFFFDE15).withAlpha((0.2 * 255).toInt())
               : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(

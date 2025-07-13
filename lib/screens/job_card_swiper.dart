@@ -175,75 +175,51 @@ class JobCardSwiperState extends ConsumerState<JobCardSwiper> {
               ),
             ),
           
-          Expanded(
-            child: Center(
-              child: SizedBox(
-                width: screenWidth,
-                height: screenHeight! * 0.7,
-                child: CardSwiper(
-                  cardsCount: activeJobs.length,
-                  cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
-                    bool isTopCard = index == 0;
-                    return IgnorePointer(
-                      ignoring: !isTopCard,
-                      child: Stack(
-                        children: [
-                          JobCard(
-                            jobData: activeJobs[index],
-                            percentThresholdx: percentThresholdx.toDouble(),
-                          ),
-                          // Report button positioned at top-right corner
-                          if (isTopCard)
-                            Positioned(
-                              top: 16,
-                              right: 16,
-                              child: GestureDetector(
-                                onTap: () => _reportJob(activeJobs[index]),
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black.withAlpha((0.6 * 255).toInt()),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Icon(
-                                    Icons.flag_outlined,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                  numberOfCardsDisplayed: activeJobs.length > 1 ? 2 : 1,
-                  backCardOffset: const Offset(0, 40),
-                  padding: const EdgeInsets.all(24.0),
-                  isLoop: false,
-                  allowedSwipeDirection: AllowedSwipeDirection.only(
-                    right: true,
-                    left: true,
-                  ),
-                  onSwipe: (previousIndex, currentIndex, direction) async {
-                    if (previousIndex < 0 || previousIndex >= activeJobs.length) {
+            Expanded(
+              child: Center(
+                child: SizedBox(
+                  width: screenWidth,
+                  height: screenHeight! * 0.7,
+                  child: CardSwiper(
+                    cardsCount: activeJobs.length,
+                    cardBuilder: (context, index, percentThresholdx, percentThresholdy) {
+                      bool isTopCard = index == 0;
+                      return IgnorePointer(
+                        ignoring: !isTopCard,
+                        child: JobCard(
+                          jobData: activeJobs[index],
+                          percentThresholdx: percentThresholdx.toDouble(),
+                          onReport: isTopCard ? () => _reportJob(activeJobs[index]) : null, // Only add callback for top card
+                        ),
+                      );
+                    },
+                    numberOfCardsDisplayed: activeJobs.length > 1 ? 2 : 1,
+                    backCardOffset: const Offset(0, 40),
+                    padding: const EdgeInsets.all(24.0),
+                    isLoop: false,
+                    allowedSwipeDirection: AllowedSwipeDirection.only(
+                      right: true,
+                      left: true,
+                    ),
+                    onSwipe: (previousIndex, currentIndex, direction) async {
+                      if (previousIndex < 0 || previousIndex >= activeJobs.length) {
+                        return false;
+                      }
+                      
+                      final liked = direction == CardSwiperDirection.right;
+                      
+                      if (liked) {
+                        DatabaseManager.insertJobCard(activeJobs[previousIndex]);
+                        ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
+                      }
+                      ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
+                      
                       return false;
-                    }
-                    
-                    final liked = direction == CardSwiperDirection.right;
-                    
-                    if (liked) {
-                      DatabaseManager.insertJobCard(activeJobs[previousIndex]);
-                      ref.read(bookmarkAnimationProvider.notifier).triggerAnimation();
-                    }
-                    ref.read(jobCoordinatorProvider).handleSwipe(previousIndex, liked);
-                    
-                    return false;
-                  },
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

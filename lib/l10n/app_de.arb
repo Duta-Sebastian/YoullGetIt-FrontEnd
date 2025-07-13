@@ -851,5 +851,9 @@
   "reportError": "Fehler beim Melden des Jobs",
   "@reportError": {
     "description": "Error message when job reporting fails"
-  }
+  },
+  "swipe": "Wischen",
+  "search": "Suchen",
+  "saved": "Gespeicherte",
+  "profile": "Profil"
 }
