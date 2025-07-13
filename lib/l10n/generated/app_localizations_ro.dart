@@ -2177,6 +2177,216 @@ class AppLocalizationsRo extends AppLocalizations {
   String get hardSkillProcessAutomation => 'Automatizare Procese';
 
   @override
+  String get hardSkillFinancialPrinciples => 'Principii Financiare';
+
+  @override
+  String get hardSkillBudgeting => 'Bugetare';
+
+  @override
+  String get hardSkillForecasting => 'Prognoză';
+
+  @override
+  String get hardSkillFinancialStatements => 'Situații Financiare';
+
+  @override
+  String get hardSkillRoiAnalysis => 'Analiză ROI';
+
+  @override
+  String get hardSkillEbitda => 'EBITDA';
+
+  @override
+  String get hardSkillProfitMargins => 'Marje de Profit';
+
+  @override
+  String get hardSkillMarketUnderstanding => 'Înțelegerea Pieței';
+
+  @override
+  String get hardSkillConsumerBehavior => 'Comportamentul Consumatorului';
+
+  @override
+  String get hardSkillMarketSegmentation => 'Segmentarea Pieței';
+
+  @override
+  String get hardSkillBrandPositioning => 'Poziționarea Brandului';
+
+  @override
+  String get hardSkillBrandManagement => 'Managementul Brandului';
+
+  @override
+  String get hardSkillEventPlanning => 'Planificarea Evenimentelor';
+
+  @override
+  String get hardSkillEventCoordination => 'Coordonarea Evenimentelor';
+
+  @override
+  String get hardSkillPublicRelations => 'Relații Publice';
+
+  @override
+  String get hardSkillGrassrootsOrganizing => 'Organizare la Nivel de Bază';
+
+  @override
+  String get hardSkillGovernmentProcedures => 'Proceduri Guvernamentale';
+
+  @override
+  String get hardSkillPoliticalSystems => 'Sisteme Politice';
+
+  @override
+  String get hardSkillAdministrativeLaw => 'Drept Administrativ';
+
+  @override
+  String get hardSkillPolicyDevelopment => 'Dezvoltarea Politicilor';
+
+  @override
+  String get hardSkillProgramDevelopment => 'Dezvoltarea Programelor';
+
+  @override
+  String get hardSkillDevOps => 'DevOps';
+
+  @override
+  String get hardSkillCiCd => 'CI/CD';
+
+  @override
+  String get hardSkillEDiscovery => 'E-Discovery';
+
+  @override
+  String get hardSkillLegalWriting => 'Redactare Juridică';
+
+  @override
+  String get hardSkillDocumentDrafting => 'Redactarea Documentelor';
+
+  @override
+  String get hardSkillBriefWriting => 'Redactarea Memoriilor';
+
+  @override
+  String get hardSkillLetterWriting => 'Redactarea Scrisorilor';
+
+  @override
+  String get hardSkillLitigation => 'Litigii';
+
+  @override
+  String get hardSkillCompliance => 'Conformitate';
+
+  @override
+  String get hardSkillImmigrationLaw => 'Drept de Imigrare';
+
+  @override
+  String get hardSkillContractReview => 'Revizuirea Contractelor';
+
+  @override
+  String get hardSkillRegulatoryCompliance => 'Conformitate Regulatorie';
+
+  @override
+  String get hardSkillAerospaceEngineering => 'Inginerie Aerospațială';
+
+  @override
+  String get hardSkillMechanicalEngineering => 'Inginerie Mecanică';
+
+  @override
+  String get hardSkillCivilEngineering => 'Inginerie Civilă';
+
+  @override
+  String get hardSkillChemicalEngineering => 'Inginerie Chimică';
+
+  @override
+  String get hardSkillComputerEngineering => 'Inginerie Informatică';
+
+  @override
+  String get hardSkillEnvironmentalEngineering => 'Inginerie de Mediu';
+
+  @override
+  String get hardSkillGeotechnicalEngineering => 'Inginerie Geotehnică';
+
+  @override
+  String get hardSkillHydraulicEngineering => 'Inginerie Hidraulică';
+
+  @override
+  String get hardSkillMaterialsEngineering => 'Ingineria Materialelor';
+
+  @override
+  String get hardSkillMiningEngineering => 'Inginerie Minieră';
+
+  @override
+  String get hardSkillPetroleumEngineering => 'Inginerie Petrolieră';
+
+  @override
+  String get hardSkillSafetyEngineering => 'Ingineria Securității';
+
+  @override
+  String get hardSkillStructuralEngineering => 'Inginerie Structurală';
+
+  @override
+  String get hardSkillElectricalEngineering => 'Inginerie Electrică';
+
+  @override
+  String get hardSkillElectronics => 'Electronică';
+
+  @override
+  String get hardSkillTechnicalWriting => 'Redactare Tehnică';
+
+  @override
+  String get hardSkillDocumentation => 'Documentare';
+
+  @override
+  String get hardSkillSpeechwriting => 'Redactarea Discursurilor';
+
+  @override
+  String get hardSkillExecutiveCommunications => 'Comunicări Executive';
+
+  @override
+  String get hardSkillInternalCommunications => 'Comunicări Interne';
+
+  @override
+  String get hardSkillContentWriting => 'Redactare de Conținut';
+
+  @override
+  String get hardSkillCopywriting => 'Copywriting';
+
+  @override
+  String get hardSkillEditing => 'Editare';
+
+  @override
+  String get hardSkillProofreading => 'Corectură';
+
+  @override
+  String get hardSkillBlogging => 'Blogging';
+
+  @override
+  String get hardSkillNewsletterWriting => 'Redactarea Newsletterelor';
+
+  @override
+  String get hardSkillGrantWriting => 'Redactarea Granturilor';
+
+  @override
+  String get hardSkillDigitalCataloguing => 'Catalogare Digitală';
+
+  @override
+  String get hardSkillCollectionManagement => 'Managementul Colecțiilor';
+
+  @override
+  String get hardSkillEventCurating => 'Curatoriat de Evenimente';
+
+  @override
+  String get hardSkillExhibitionDesign => 'Design de Expoziții';
+
+  @override
+  String get hardSkillPortfolioManagement => 'Managementul Portofoliului';
+
+  @override
+  String get hardSkillInventoryManagement => 'Managementul Inventarului';
+
+  @override
+  String get hardSkillQualityAssurance => 'Asigurarea Calității';
+
+  @override
+  String get hardSkillTesting => 'Testare';
+
+  @override
+  String get hardSkillProcessImprovement => 'Îmbunătățirea Proceselor';
+
+  @override
+  String get hardSkillCommercialUnderstanding => 'Înțelegere comercială';
+
+  @override
   String get expandAll => 'Extinde Tot';
 
   @override

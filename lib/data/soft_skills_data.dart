@@ -9,11 +9,9 @@ class SoftSkillsData {
     'Communication & Interpersonal': [
       'Communication Skills',
       'Public Speaking',
-      'Interpersonal Skills',
       'Networking',
     ],
     'Teamwork & Collaboration': [
-      'Collaboration',
       'Teamwork',
       'Relationship Management',
       'Customer Service',

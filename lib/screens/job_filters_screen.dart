@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/widgets/skills_filter_widget.dart';
+import 'package:youllgetit_flutter/services/question_translation_service.dart';
 
 class JobFiltersScreen extends StatefulWidget {
   final String? initialQuery;
@@ -44,9 +45,11 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _searchController.text = widget.initialQuery ?? '';
     _locationController.text = widget.initialLocation ?? '';
     _companyController.text = widget.initialCompany ?? '';
+    
+    // Initialize with English values directly (like skills do)
     _selectedFields = widget.initialField != null ? List.from(widget.initialField!) : [];
-    _selectedSkills = widget.initialSkills != null? List.from(widget.initialSkills!) : [];
-    _selectedWorkModes = widget.initialWorkMode != null? List.from(widget.initialWorkMode!) : [];
+    _selectedSkills = widget.initialSkills != null ? List.from(widget.initialSkills!) : [];
+    _selectedWorkModes = widget.initialWorkMode != null ? List.from(widget.initialWorkMode!) : [];
 
     // Initialize durations
     _selectedDurations = [];
@@ -98,21 +101,21 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   }
 
   List<String> _getWorkModeOptions() {
-    final localizations = AppLocalizations.of(context)!;
-    return [localizations.workModeRemote, localizations.workModeHybrid, localizations.workModeOnSite];
+    // Return English values (like skills do)
+    return ['Remote', 'Hybrid', 'On-site'];
   }
 
   List<String> _getFieldOptions() {
-    final localizations = AppLocalizations.of(context)!;
+    // Return English values (like skills do)
     return [
-      localizations.optionEngineering, 
-      localizations.optionItDataScience, 
-      localizations.optionMarketingCommunication, 
-      localizations.optionFinanceEconomics, 
-      localizations.optionPoliticalScience, 
-      localizations.optionSalesBusiness, 
-      localizations.optionArtsCulture, 
-      localizations.optionBiologyChemistry
+      'Engineering',
+      'IT & Data Science',
+      'Marketing & Communication',
+      'Finance & Economics',
+      'Political Science & Public Administration',
+      'Sales & Business Administration',
+      'Arts & Culture',
+      'Biology, Chemistry, & Life Sciences',
     ];
   }
 
@@ -171,6 +174,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
       }
     }
 
+    // Send English values directly (like skills do)
     Navigator.pop(context, {
       'query': _searchController.text.trim().isEmpty ? null : _searchController.text.trim(),
       'location': _locationController.text.trim().isEmpty ? null : _locationController.text.trim(),
@@ -448,8 +452,10 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                     runSpacing: 8,
                     children: _getFieldOptions().map((field) {
                       final bool isSelected = _selectedFields.contains(field);
+                      // Translate English value for display
+                      final translatedField = QuestionTranslationService.getTranslatedOptions('q4', [field], localizations)[0];
                       return FilterChip(
-                        label: Text(field),
+                        label: Text(translatedField),
                         selected: isSelected,
                         onSelected: (selected) => _toggleField(field),
                         backgroundColor: Colors.grey.shade100,
@@ -484,8 +490,16 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                     runSpacing: 8,
                     children: _getWorkModeOptions().map((mode) {
                       final bool isSelected = _selectedWorkModes.contains(mode);
+                      // Translate English value for display
+                      String translatedMode;
+                      switch (mode) {
+                        case 'Remote': translatedMode = localizations.workModeRemote; break;
+                        case 'Hybrid': translatedMode = localizations.workModeHybrid; break;
+                        case 'On-site': translatedMode = localizations.workModeOnSite; break;
+                        default: translatedMode = mode;
+                      }
                       return FilterChip(
-                        label: Text(mode),
+                        label: Text(translatedMode),
                         selected: isSelected,
                         onSelected: (selected) => _toggleWorkMode(mode),
                         backgroundColor: Colors.grey.shade100,

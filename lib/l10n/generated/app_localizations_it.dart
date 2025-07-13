@@ -2176,6 +2176,216 @@ class AppLocalizationsIt extends AppLocalizations {
   String get hardSkillProcessAutomation => 'Automazione Processi';
 
   @override
+  String get hardSkillFinancialPrinciples => 'Principi Finanziari';
+
+  @override
+  String get hardSkillBudgeting => 'Budgeting';
+
+  @override
+  String get hardSkillForecasting => 'Previsioni';
+
+  @override
+  String get hardSkillFinancialStatements => 'Bilanci Finanziari';
+
+  @override
+  String get hardSkillRoiAnalysis => 'Analisi ROI';
+
+  @override
+  String get hardSkillEbitda => 'EBITDA';
+
+  @override
+  String get hardSkillProfitMargins => 'Margini di Profitto';
+
+  @override
+  String get hardSkillMarketUnderstanding => 'Comprensione del Mercato';
+
+  @override
+  String get hardSkillConsumerBehavior => 'Comportamento del Consumatore';
+
+  @override
+  String get hardSkillMarketSegmentation => 'Segmentazione del Mercato';
+
+  @override
+  String get hardSkillBrandPositioning => 'Posizionamento del Brand';
+
+  @override
+  String get hardSkillBrandManagement => 'Gestione del Brand';
+
+  @override
+  String get hardSkillEventPlanning => 'Pianificazione Eventi';
+
+  @override
+  String get hardSkillEventCoordination => 'Coordinamento Eventi';
+
+  @override
+  String get hardSkillPublicRelations => 'Relazioni Pubbliche';
+
+  @override
+  String get hardSkillGrassrootsOrganizing => 'Organizzazione di Base';
+
+  @override
+  String get hardSkillGovernmentProcedures => 'Procedure Governative';
+
+  @override
+  String get hardSkillPoliticalSystems => 'Sistemi Politici';
+
+  @override
+  String get hardSkillAdministrativeLaw => 'Diritto Amministrativo';
+
+  @override
+  String get hardSkillPolicyDevelopment => 'Sviluppo Politiche';
+
+  @override
+  String get hardSkillProgramDevelopment => 'Sviluppo Programmi';
+
+  @override
+  String get hardSkillDevOps => 'DevOps';
+
+  @override
+  String get hardSkillCiCd => 'CI/CD';
+
+  @override
+  String get hardSkillEDiscovery => 'E-Discovery';
+
+  @override
+  String get hardSkillLegalWriting => 'Scrittura Legale';
+
+  @override
+  String get hardSkillDocumentDrafting => 'Redazione Documenti';
+
+  @override
+  String get hardSkillBriefWriting => 'Redazione Atti';
+
+  @override
+  String get hardSkillLetterWriting => 'Scrittura Lettere';
+
+  @override
+  String get hardSkillLitigation => 'Contenzioso';
+
+  @override
+  String get hardSkillCompliance => 'Conformità';
+
+  @override
+  String get hardSkillImmigrationLaw => 'Diritto dell\'Immigrazione';
+
+  @override
+  String get hardSkillContractReview => 'Revisione Contratti';
+
+  @override
+  String get hardSkillRegulatoryCompliance => 'Conformità Normativa';
+
+  @override
+  String get hardSkillAerospaceEngineering => 'Ingegneria Aerospaziale';
+
+  @override
+  String get hardSkillMechanicalEngineering => 'Ingegneria Meccanica';
+
+  @override
+  String get hardSkillCivilEngineering => 'Ingegneria Civile';
+
+  @override
+  String get hardSkillChemicalEngineering => 'Ingegneria Chimica';
+
+  @override
+  String get hardSkillComputerEngineering => 'Ingegneria Informatica';
+
+  @override
+  String get hardSkillEnvironmentalEngineering => 'Ingegneria Ambientale';
+
+  @override
+  String get hardSkillGeotechnicalEngineering => 'Ingegneria Geotecnica';
+
+  @override
+  String get hardSkillHydraulicEngineering => 'Ingegneria Idraulica';
+
+  @override
+  String get hardSkillMaterialsEngineering => 'Ingegneria dei Materiali';
+
+  @override
+  String get hardSkillMiningEngineering => 'Ingegneria Mineraria';
+
+  @override
+  String get hardSkillPetroleumEngineering => 'Ingegneria Petrolifera';
+
+  @override
+  String get hardSkillSafetyEngineering => 'Ingegneria della Sicurezza';
+
+  @override
+  String get hardSkillStructuralEngineering => 'Ingegneria Strutturale';
+
+  @override
+  String get hardSkillElectricalEngineering => 'Ingegneria Elettrica';
+
+  @override
+  String get hardSkillElectronics => 'Elettronica';
+
+  @override
+  String get hardSkillTechnicalWriting => 'Scrittura Tecnica';
+
+  @override
+  String get hardSkillDocumentation => 'Documentazione';
+
+  @override
+  String get hardSkillSpeechwriting => 'Scrittura Discorsi';
+
+  @override
+  String get hardSkillExecutiveCommunications => 'Comunicazioni Executive';
+
+  @override
+  String get hardSkillInternalCommunications => 'Comunicazioni Interne';
+
+  @override
+  String get hardSkillContentWriting => 'Scrittura Contenuti';
+
+  @override
+  String get hardSkillCopywriting => 'Copywriting';
+
+  @override
+  String get hardSkillEditing => 'Editing';
+
+  @override
+  String get hardSkillProofreading => 'Correzione Bozze';
+
+  @override
+  String get hardSkillBlogging => 'Blogging';
+
+  @override
+  String get hardSkillNewsletterWriting => 'Scrittura Newsletter';
+
+  @override
+  String get hardSkillGrantWriting => 'Scrittura Grant';
+
+  @override
+  String get hardSkillDigitalCataloguing => 'Catalogazione Digitale';
+
+  @override
+  String get hardSkillCollectionManagement => 'Gestione Collezioni';
+
+  @override
+  String get hardSkillEventCurating => 'Curatela Eventi';
+
+  @override
+  String get hardSkillExhibitionDesign => 'Design Esposizioni';
+
+  @override
+  String get hardSkillPortfolioManagement => 'Gestione Portafoglio';
+
+  @override
+  String get hardSkillInventoryManagement => 'Gestione Inventario';
+
+  @override
+  String get hardSkillQualityAssurance => 'Garanzia di Qualità';
+
+  @override
+  String get hardSkillTesting => 'Testing';
+
+  @override
+  String get hardSkillProcessImprovement => 'Miglioramento Processi';
+
+  @override
+  String get hardSkillCommercialUnderstanding => 'Comprensione commerciale';
+
+  @override
   String get expandAll => 'Espandi Tutto';
 
   @override

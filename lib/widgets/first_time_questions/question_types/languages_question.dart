@@ -42,11 +42,17 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
   void _addLanguage(String language, String level) {
     List<String> updatedChoices = List.from(widget.selectedChoices);
     
-    // Remove any existing entry for this language
-    updatedChoices.removeWhere((choice) => choice.startsWith("$language:"));
+    // Find the index of the existing entry for this language
+    int existingIndex = updatedChoices.indexWhere((choice) => choice.startsWith("$language:"));
     
-    // Add the new language with level
-    updatedChoices.add("$language:$level");
+    if (existingIndex != -1) {
+      // Update the existing entry in place
+      updatedChoices[existingIndex] = "$language:$level";
+    } else {
+      // Add new language
+      updatedChoices.add("$language:$level");
+    }
+    
     widget.onChoicesUpdated(updatedChoices);
     HapticFeedback.selectionClick();
   }
@@ -74,6 +80,8 @@ class LanguagesWidgetState extends State<LanguagesWidget> {
         languages.add(choice.split(":")[0]);
       }
     }
+    // Sort alphabetically to maintain consistent order
+    languages.sort();
     return languages;
   }
 
@@ -392,10 +400,16 @@ class _LanguageSelectionBottomSheetState extends State<_LanguageSelectionBottomS
 
   void _addLanguage(String language) {
     setState(() {
-      // Remove any existing entry for this language
-      _currentSelections.removeWhere((choice) => choice.startsWith("$language:"));
-      // Add with default A1 level
-      _currentSelections.add("$language:A1");
+      // Find the index of the existing entry for this language
+      int existingIndex = _currentSelections.indexWhere((choice) => choice.startsWith("$language:"));
+      
+      if (existingIndex != -1) {
+        // Language already exists, don't add again
+        return;
+      } else {
+        // Add with default A1 level
+        _currentSelections.add("$language:A1");
+      }
     });
     HapticFeedback.selectionClick();
   }
@@ -414,6 +428,8 @@ class _LanguageSelectionBottomSheetState extends State<_LanguageSelectionBottomS
         languages.add(choice.split(":")[0]);
       }
     }
+    // Sort alphabetically to maintain consistent order
+    languages.sort();
     return languages;
   }
 

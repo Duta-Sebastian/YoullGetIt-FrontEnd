@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 
 class QuestionTranslationService {
@@ -276,6 +277,8 @@ class QuestionTranslationService {
       case 'System Administration': return l10n.hardSkillSystemAdministration;
       case 'Network Administration': return l10n.hardSkillNetworkAdministration;
       case 'Database Administration': return l10n.hardSkillDatabaseAdministration;
+      case 'DevOps': return l10n.hardSkillDevOps;
+      case 'CI/CD': return l10n.hardSkillCiCd;
       
       // Database & Data Management
       case 'Database Management': return l10n.hardSkillDatabaseManagement;
@@ -283,6 +286,7 @@ class QuestionTranslationService {
       case 'Data Warehousing': return l10n.hardSkillDataWarehousing;
       case 'Data Mining': return l10n.hardSkillDataMining;
       case 'ETL Processes': return l10n.hardSkillEtlProcesses;
+      case 'E-Discovery': return l10n.hardSkillEDiscovery;
       
       // Design & Engineering Tools
       case 'Engineering Design': return l10n.hardSkillEngineeringDesign;
@@ -333,7 +337,84 @@ class QuestionTranslationService {
       case 'Automation': return l10n.hardSkillAutomation;
       case 'Process Automation': return l10n.hardSkillProcessAutomation;
 
+      // Specialized Professional Skills
+      case 'Financial Principles': return l10n.hardSkillFinancialPrinciples;
+      case 'Budgeting': return l10n.hardSkillBudgeting;
+      case 'Forecasting': return l10n.hardSkillForecasting;
+      case 'Financial Statements': return l10n.hardSkillFinancialStatements;
+      case 'ROI Analysis': return l10n.hardSkillRoiAnalysis;
+      case 'EBITDA': return l10n.hardSkillEbitda;
+      case 'Profit Margins': return l10n.hardSkillProfitMargins;
+      case 'Commercial Understanding': return l10n.hardSkillCommercialUnderstanding;
+      case 'Market Understanding': return l10n.hardSkillMarketUnderstanding;
+      case 'Consumer Behavior': return l10n.hardSkillConsumerBehavior;
+      case 'Market Segmentation': return l10n.hardSkillMarketSegmentation;
+      case 'Brand Positioning': return l10n.hardSkillBrandPositioning;
+      case 'Brand Management': return l10n.hardSkillBrandManagement;
+      case 'Event Planning': return l10n.hardSkillEventPlanning;
+      case 'Event Coordination': return l10n.hardSkillEventCoordination;
+      case 'Public Relations': return l10n.hardSkillPublicRelations;
+      case 'Grassroots Organizing': return l10n.hardSkillGrassrootsOrganizing;
+      case 'Government Procedures': return l10n.hardSkillGovernmentProcedures;
+      case 'Political Systems': return l10n.hardSkillPoliticalSystems;
+      case 'Administrative Law': return l10n.hardSkillAdministrativeLaw;
+      case 'Policy Development': return l10n.hardSkillPolicyDevelopment;
+      case 'Program Development': return l10n.hardSkillProgramDevelopment;
       case 'M&A (mergers and acquisitions)': return l10n.mergers_acquisitions;
+
+      // Legal & Compliance
+      case 'Legal Writing': return l10n.hardSkillLegalWriting;
+      case 'Document Drafting': return l10n.hardSkillDocumentDrafting;
+      case 'Brief Writing': return l10n.hardSkillBriefWriting;
+      case 'Letter Writing': return l10n.hardSkillLetterWriting;
+      case 'Litigation': return l10n.hardSkillLitigation;
+      case 'Compliance': return l10n.hardSkillCompliance;
+      case 'Immigration Law': return l10n.hardSkillImmigrationLaw;
+      case 'Contract Review': return l10n.hardSkillContractReview;
+      case 'Regulatory Compliance': return l10n.hardSkillRegulatoryCompliance;
+
+      // Engineering Specializations
+      case 'Aerospace Engineering': return l10n.hardSkillAerospaceEngineering;
+      case 'Mechanical Engineering': return l10n.hardSkillMechanicalEngineering;
+      case 'Civil Engineering': return l10n.hardSkillCivilEngineering;
+      case 'Chemical Engineering': return l10n.hardSkillChemicalEngineering;
+      case 'Computer Engineering': return l10n.hardSkillComputerEngineering;
+      case 'Environmental Engineering': return l10n.hardSkillEnvironmentalEngineering;
+      case 'Geotechnical Engineering': return l10n.hardSkillGeotechnicalEngineering;
+      case 'Hydraulic Engineering': return l10n.hardSkillHydraulicEngineering;
+      case 'Materials Engineering': return l10n.hardSkillMaterialsEngineering;
+      case 'Mining Engineering': return l10n.hardSkillMiningEngineering;
+      case 'Petroleum Engineering': return l10n.hardSkillPetroleumEngineering;
+      case 'Safety Engineering': return l10n.hardSkillSafetyEngineering;
+      case 'Structural Engineering': return l10n.hardSkillStructuralEngineering;
+      case 'Electrical Engineering': return l10n.hardSkillElectricalEngineering;
+      case 'Electronics': return l10n.hardSkillElectronics;
+
+      // Communication & Documentation
+      case 'Technical Writing': return l10n.hardSkillTechnicalWriting;
+      case 'Documentation': return l10n.hardSkillDocumentation;
+      case 'Speechwriting': return l10n.hardSkillSpeechwriting;
+      case 'Executive Communications': return l10n.hardSkillExecutiveCommunications;
+      case 'Internal Communications': return l10n.hardSkillInternalCommunications;
+      case 'Content Writing': return l10n.hardSkillContentWriting;
+      case 'Copywriting': return l10n.hardSkillCopywriting;
+      case 'Editing': return l10n.hardSkillEditing;
+      case 'Proofreading': return l10n.hardSkillProofreading;
+      case 'Blogging': return l10n.hardSkillBlogging;
+      case 'Newsletter Writing': return l10n.hardSkillNewsletterWriting;
+      case 'Grant Writing': return l10n.hardSkillGrantWriting;
+
+      // Specialized Management
+      case 'Digital Cataloguing': return l10n.hardSkillDigitalCataloguing;
+      case 'Collection Management': return l10n.hardSkillCollectionManagement;
+      case 'Event Curating': return l10n.hardSkillEventCurating;
+      case 'Exhibition Design': return l10n.hardSkillExhibitionDesign;
+      case 'Portfolio Management': return l10n.hardSkillPortfolioManagement;
+      case 'Inventory Management': return l10n.hardSkillInventoryManagement;
+      case 'Quality Assurance': return l10n.hardSkillQualityAssurance;
+      case 'Testing': return l10n.hardSkillTesting;
+      case 'Process Improvement': return l10n.hardSkillProcessImprovement;
+    
       
       // Keep proper names unchanged (no translation needed)
       case 'Python':
@@ -422,7 +503,11 @@ class QuestionTranslationService {
       case 'Dagster':
         return skill; // Keep proper names as-is
       
-      default: return skill;
+      default: 
+      {
+        debugPrint('Unknown hard skill: $skill');
+        return skill;
+      }
     }
   }
 

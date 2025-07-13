@@ -24,11 +24,22 @@ class _SkillsFilterWidgetState extends State<SkillsFilterWidget>
   late TabController _tabController;
   
   String _searchQuery = '';
+  
+  late Set<String> _selectedSkillsSet;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _selectedSkillsSet = widget.selectedSkills.toSet();
+  }
+
+  @override
+  void didUpdateWidget(SkillsFilterWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedSkills != widget.selectedSkills) {
+      _selectedSkillsSet = widget.selectedSkills.toSet();
+    }
   }
 
   @override
@@ -52,195 +63,7 @@ class _SkillsFilterWidgetState extends State<SkillsFilterWidget>
     widget.onSkillsChanged([]);
   }
 
-  Map<String, List<String>> _getFilteredHardSkillsGroups(AppLocalizations localizations) {
-    if (_searchQuery.isEmpty) return HardSkillsData.hardSkillsGroups;
-    
-    Map<String, List<String>> filteredGroups = {};
-    for (final entry in HardSkillsData.hardSkillsGroups.entries) {
-      final filteredSkills = entry.value.where((skill) {
-        final translatedSkill = QuestionTranslationService.translateHardSkill(skill, localizations);
-        return skill.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-               translatedSkill.toLowerCase().contains(_searchQuery.toLowerCase());
-      }).toList();
-      
-      if (filteredSkills.isNotEmpty) {
-        filteredGroups[entry.key] = filteredSkills;
-      }
-    }
-    return filteredGroups;
-  }
 
-  Map<String, List<String>> _getFilteredSoftSkillsGroups(AppLocalizations localizations) {
-    if (_searchQuery.isEmpty) return SoftSkillsData.softSkillsGroups;
-    
-    Map<String, List<String>> filteredGroups = {};
-    for (final entry in SoftSkillsData.softSkillsGroups.entries) {
-      final filteredSkills = entry.value.where((skill) {
-        final translatedSkill = QuestionTranslationService.translateSoftSkill(skill, localizations);
-        return skill.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-               translatedSkill.toLowerCase().contains(_searchQuery.toLowerCase());
-      }).toList();
-      
-      if (filteredSkills.isNotEmpty) {
-        filteredGroups[entry.key] = filteredSkills;
-      }
-    }
-    return filteredGroups;
-  }
-
-  Widget _buildSkillChip(String skill, AppLocalizations localizations, bool isHardSkill) {
-    final isSelected = widget.selectedSkills.contains(skill);
-    final translatedSkill = isHardSkill 
-        ? QuestionTranslationService.translateHardSkill(skill, localizations)
-        : QuestionTranslationService.translateSoftSkill(skill, localizations);
-    
-    return Container(
-      margin: const EdgeInsets.only(right: 8, bottom: 8),
-      child: FilterChip(
-        label: Text(translatedSkill),
-        selected: isSelected,
-        onSelected: (selected) => _toggleSkill(skill),
-        backgroundColor: Colors.grey.shade50,
-        selectedColor: const Color(0xFFFFDE15).withAlpha(51),
-        labelStyle: TextStyle(
-          color: isSelected ? Colors.black87 : Colors.grey.shade700,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-          fontSize: 13,
-        ),
-        showCheckmark: false,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        side: BorderSide(
-          color: isSelected ? const Color(0xFFFFDE15) : Colors.grey.shade300,
-          width: isSelected ? 2 : 1,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSkillsGroupSection(String groupKey, List<String> skills, AppLocalizations localizations, bool isHardSkill) {
-    final translatedGroupName = isHardSkill 
-        ? QuestionTranslationService.translateHardSkillGroup(groupKey, localizations)
-        : QuestionTranslationService.translateSoftSkillGroup(groupKey, localizations);
-    
-    final selectedInGroup = skills.where((skill) => widget.selectedSkills.contains(skill)).length;
-    
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(13),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Group header
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isHardSkill ? Colors.blue.shade50 : Colors.green.shade50,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-              border: Border(
-                bottom: BorderSide(
-                  color: isHardSkill ? Colors.blue.shade100 : Colors.green.shade100,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  isHardSkill ? Icons.engineering : Icons.psychology,
-                  color: isHardSkill ? Colors.blue.shade700 : Colors.green.shade700,
-                  size: 20,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    translatedGroupName,
-                    style: TextStyle(
-                      color: isHardSkill ? Colors.blue.shade700 : Colors.green.shade700,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-                if (selectedInGroup > 0)
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFDE15),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      '$selectedInGroup/${skills.length}',
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          // Skills chips
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Wrap(
-              children: skills.map((skill) => _buildSkillChip(skill, localizations, isHardSkill)).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSkillsTab(bool isHardSkill, AppLocalizations localizations) {
-    final filteredGroups = isHardSkill 
-        ? _getFilteredHardSkillsGroups(localizations)
-        : _getFilteredSoftSkillsGroups(localizations);
-    
-    if (filteredGroups.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off, size: 48, color: Colors.grey.shade400),
-            const SizedBox(height: 16),
-            Text(
-              localizations.noSkillsFound,
-              style: TextStyle(
-                color: Colors.grey.shade600,
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: filteredGroups.entries.map((entry) {
-          return _buildSkillsGroupSection(entry.key, entry.value, localizations, isHardSkill);
-        }).toList(),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -380,59 +203,79 @@ class _SkillsFilterWidgetState extends State<SkillsFilterWidget>
             padding: const EdgeInsets.all(4),
             tabs: [
               Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.engineering, size: 18),
-                    const SizedBox(width: 8),
-                    Text(localizations.hardSkills),
-                    if (hardSkillsSelected > 0) ...[
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.engineering, size: 16),
                       const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFDE15),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      Flexible(
                         child: Text(
-                          '$hardSkillsSelected',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
+                          localizations.hardSkills,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
+                      if (hardSkillsSelected > 0) ...[
+                        const SizedBox(width: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFDE15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '$hardSkillsSelected',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
               Tab(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.psychology, size: 18),
-                    const SizedBox(width: 8),
-                    Text(localizations.softSkills),
-                    if (softSkillsSelected > 0) ...[
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.psychology, size: 16),
                       const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFDE15),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      Flexible(
                         child: Text(
-                          '$softSkillsSelected',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
+                          localizations.softSkills,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
+                      if (softSkillsSelected > 0) ...[
+                        const SizedBox(width: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFDE15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '$softSkillsSelected',
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -447,12 +290,272 @@ class _SkillsFilterWidgetState extends State<SkillsFilterWidget>
           child: TabBarView(
             controller: _tabController,
             children: [
-              _buildSkillsTab(true, localizations),  // Hard Skills
-              _buildSkillsTab(false, localizations), // Soft Skills
+              _SkillsTabView(
+                isHardSkill: true,
+                searchQuery: _searchQuery,
+                selectedSkillsSet: _selectedSkillsSet,
+                onToggleSkill: _toggleSkill,
+                localizations: localizations,
+              ),
+              _SkillsTabView(
+                isHardSkill: false,
+                searchQuery: _searchQuery,
+                selectedSkillsSet: _selectedSkillsSet,
+                onToggleSkill: _toggleSkill,
+                localizations: localizations,
+              ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SkillsTabView extends StatelessWidget {
+  final bool isHardSkill;
+  final String searchQuery;
+  final Set<String> selectedSkillsSet;
+  final Function(String) onToggleSkill;
+  final AppLocalizations localizations;
+
+  const _SkillsTabView({
+    required this.isHardSkill,
+    required this.searchQuery,
+    required this.selectedSkillsSet,
+    required this.onToggleSkill,
+    required this.localizations,
+  });
+
+  Map<String, List<String>> _getFilteredGroups() {
+    final allGroups = isHardSkill 
+        ? HardSkillsData.hardSkillsGroups
+        : SoftSkillsData.softSkillsGroups;
+        
+    if (searchQuery.isEmpty) return allGroups;
+    
+    Map<String, List<String>> filteredGroups = {};
+    for (final entry in allGroups.entries) {
+      final filteredSkills = entry.value.where((skill) {
+        final translatedSkill = isHardSkill
+            ? QuestionTranslationService.translateHardSkill(skill, localizations)
+            : QuestionTranslationService.translateSoftSkill(skill, localizations);
+        return skill.toLowerCase().contains(searchQuery.toLowerCase()) ||
+               translatedSkill.toLowerCase().contains(searchQuery.toLowerCase());
+      }).toList();
+      
+      if (filteredSkills.isNotEmpty) {
+        filteredGroups[entry.key] = filteredSkills;
+      }
+    }
+    return filteredGroups;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredGroups = _getFilteredGroups();
+    
+    if (filteredGroups.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.search_off, size: 48, color: Colors.grey.shade400),
+            const SizedBox(height: 16),
+            Text(
+              localizations.noSkillsFound,
+              style: TextStyle(
+                color: Colors.grey.shade600,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final groupEntries = filteredGroups.entries.toList();
+
+    // KEY OPTIMIZATION: Use ListView.builder for better scroll performance
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      // Add physics for better scroll feel
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: groupEntries.length,
+      itemBuilder: (context, index) {
+        final entry = groupEntries[index];
+        return _SkillsGroupSection(
+          groupKey: entry.key,
+          skills: entry.value,
+          isHardSkill: isHardSkill,
+          selectedSkillsSet: selectedSkillsSet,
+          onToggleSkill: onToggleSkill,
+          localizations: localizations,
+        );
+      },
+    );
+  }
+}
+
+class _SkillsGroupSection extends StatelessWidget {
+  final String groupKey;
+  final List<String> skills;
+  final bool isHardSkill;
+  final Set<String> selectedSkillsSet;
+  final Function(String) onToggleSkill;
+  final AppLocalizations localizations;
+
+  const _SkillsGroupSection({
+    required this.groupKey,
+    required this.skills,
+    required this.isHardSkill,
+    required this.selectedSkillsSet,
+    required this.onToggleSkill,
+    required this.localizations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final translatedGroupName = isHardSkill 
+        ? QuestionTranslationService.translateHardSkillGroup(groupKey, localizations)
+        : QuestionTranslationService.translateSoftSkillGroup(groupKey, localizations);
+    
+    final selectedInGroup = skills.where((skill) => selectedSkillsSet.contains(skill)).length;
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(13),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Group header
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isHardSkill ? Colors.blue.shade50 : Colors.green.shade50,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              border: Border(
+                bottom: BorderSide(
+                  color: isHardSkill ? Colors.blue.shade100 : Colors.green.shade100,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  isHardSkill ? Icons.engineering : Icons.psychology,
+                  color: isHardSkill ? Colors.blue.shade700 : Colors.green.shade700,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    translatedGroupName,
+                    style: TextStyle(
+                      color: isHardSkill ? Colors.blue.shade700 : Colors.green.shade700,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+                if (selectedInGroup > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFDE15),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      '$selectedInGroup/${skills.length}',
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          // Skills chips - Use simple Wrap, no complex layouts
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: skills.map((skill) => _SkillChip(
+                skill: skill,
+                isSelected: selectedSkillsSet.contains(skill),
+                isHardSkill: isHardSkill,
+                onTap: () => onToggleSkill(skill),
+                localizations: localizations,
+              )).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkillChip extends StatelessWidget {
+  final String skill;
+  final bool isSelected;
+  final bool isHardSkill;
+  final VoidCallback onTap;
+  final AppLocalizations localizations;
+
+  const _SkillChip({
+    required this.skill,
+    required this.isSelected,
+    required this.isHardSkill,
+    required this.onTap,
+    required this.localizations,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final translatedSkill = isHardSkill 
+        ? QuestionTranslationService.translateHardSkill(skill, localizations)
+        : QuestionTranslationService.translateSoftSkill(skill, localizations);
+    
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected 
+              ? const Color(0xFFFFDE15).withOpacity(0.2)
+              : Colors.grey.shade50,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? const Color(0xFFFFDE15) : Colors.grey.shade300,
+            width: 1.5,
+          ),
+        ),
+        child: Text(
+          translatedSkill,
+          style: TextStyle(
+            color: isSelected ? Colors.black87 : Colors.grey.shade700,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+            fontSize: 13,
+          ),
+        ),
+      ),
     );
   }
 }

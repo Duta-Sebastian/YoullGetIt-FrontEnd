@@ -12,7 +12,6 @@ class HardSkillsData {
       'Statistics',
       'Calculus',
       'Linear Algebra',
-      'Critical Thinking',
       'Research Methods',
       'Legal Research',
       'Policy Research',

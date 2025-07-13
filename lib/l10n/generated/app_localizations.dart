@@ -4323,6 +4323,426 @@ abstract class AppLocalizations {
   /// **'Process Automation'**
   String get hardSkillProcessAutomation;
 
+  /// No description provided for @hardSkillFinancialPrinciples.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Principles'**
+  String get hardSkillFinancialPrinciples;
+
+  /// No description provided for @hardSkillBudgeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Budgeting'**
+  String get hardSkillBudgeting;
+
+  /// No description provided for @hardSkillForecasting.
+  ///
+  /// In en, this message translates to:
+  /// **'Forecasting'**
+  String get hardSkillForecasting;
+
+  /// No description provided for @hardSkillFinancialStatements.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial Statements'**
+  String get hardSkillFinancialStatements;
+
+  /// No description provided for @hardSkillRoiAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'ROI Analysis'**
+  String get hardSkillRoiAnalysis;
+
+  /// No description provided for @hardSkillEbitda.
+  ///
+  /// In en, this message translates to:
+  /// **'EBITDA'**
+  String get hardSkillEbitda;
+
+  /// No description provided for @hardSkillProfitMargins.
+  ///
+  /// In en, this message translates to:
+  /// **'Profit Margins'**
+  String get hardSkillProfitMargins;
+
+  /// No description provided for @hardSkillMarketUnderstanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Market Understanding'**
+  String get hardSkillMarketUnderstanding;
+
+  /// No description provided for @hardSkillConsumerBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Behavior'**
+  String get hardSkillConsumerBehavior;
+
+  /// No description provided for @hardSkillMarketSegmentation.
+  ///
+  /// In en, this message translates to:
+  /// **'Market Segmentation'**
+  String get hardSkillMarketSegmentation;
+
+  /// No description provided for @hardSkillBrandPositioning.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand Positioning'**
+  String get hardSkillBrandPositioning;
+
+  /// No description provided for @hardSkillBrandManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand Management'**
+  String get hardSkillBrandManagement;
+
+  /// No description provided for @hardSkillEventPlanning.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Planning'**
+  String get hardSkillEventPlanning;
+
+  /// No description provided for @hardSkillEventCoordination.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Coordination'**
+  String get hardSkillEventCoordination;
+
+  /// No description provided for @hardSkillPublicRelations.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Relations'**
+  String get hardSkillPublicRelations;
+
+  /// No description provided for @hardSkillGrassrootsOrganizing.
+  ///
+  /// In en, this message translates to:
+  /// **'Grassroots Organizing'**
+  String get hardSkillGrassrootsOrganizing;
+
+  /// No description provided for @hardSkillGovernmentProcedures.
+  ///
+  /// In en, this message translates to:
+  /// **'Government Procedures'**
+  String get hardSkillGovernmentProcedures;
+
+  /// No description provided for @hardSkillPoliticalSystems.
+  ///
+  /// In en, this message translates to:
+  /// **'Political Systems'**
+  String get hardSkillPoliticalSystems;
+
+  /// No description provided for @hardSkillAdministrativeLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative Law'**
+  String get hardSkillAdministrativeLaw;
+
+  /// No description provided for @hardSkillPolicyDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Policy Development'**
+  String get hardSkillPolicyDevelopment;
+
+  /// No description provided for @hardSkillProgramDevelopment.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Development'**
+  String get hardSkillProgramDevelopment;
+
+  /// No description provided for @hardSkillDevOps.
+  ///
+  /// In en, this message translates to:
+  /// **'DevOps'**
+  String get hardSkillDevOps;
+
+  /// No description provided for @hardSkillCiCd.
+  ///
+  /// In en, this message translates to:
+  /// **'CI/CD'**
+  String get hardSkillCiCd;
+
+  /// No description provided for @hardSkillEDiscovery.
+  ///
+  /// In en, this message translates to:
+  /// **'E-Discovery'**
+  String get hardSkillEDiscovery;
+
+  /// No description provided for @hardSkillLegalWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Writing'**
+  String get hardSkillLegalWriting;
+
+  /// No description provided for @hardSkillDocumentDrafting.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Drafting'**
+  String get hardSkillDocumentDrafting;
+
+  /// No description provided for @hardSkillBriefWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Brief Writing'**
+  String get hardSkillBriefWriting;
+
+  /// No description provided for @hardSkillLetterWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Letter Writing'**
+  String get hardSkillLetterWriting;
+
+  /// No description provided for @hardSkillLitigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Litigation'**
+  String get hardSkillLitigation;
+
+  /// No description provided for @hardSkillCompliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Compliance'**
+  String get hardSkillCompliance;
+
+  /// No description provided for @hardSkillImmigrationLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'Immigration Law'**
+  String get hardSkillImmigrationLaw;
+
+  /// No description provided for @hardSkillContractReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Review'**
+  String get hardSkillContractReview;
+
+  /// No description provided for @hardSkillRegulatoryCompliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Regulatory Compliance'**
+  String get hardSkillRegulatoryCompliance;
+
+  /// No description provided for @hardSkillAerospaceEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Aerospace Engineering'**
+  String get hardSkillAerospaceEngineering;
+
+  /// No description provided for @hardSkillMechanicalEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Mechanical Engineering'**
+  String get hardSkillMechanicalEngineering;
+
+  /// No description provided for @hardSkillCivilEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil Engineering'**
+  String get hardSkillCivilEngineering;
+
+  /// No description provided for @hardSkillChemicalEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Chemical Engineering'**
+  String get hardSkillChemicalEngineering;
+
+  /// No description provided for @hardSkillComputerEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Computer Engineering'**
+  String get hardSkillComputerEngineering;
+
+  /// No description provided for @hardSkillEnvironmentalEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Environmental Engineering'**
+  String get hardSkillEnvironmentalEngineering;
+
+  /// No description provided for @hardSkillGeotechnicalEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Geotechnical Engineering'**
+  String get hardSkillGeotechnicalEngineering;
+
+  /// No description provided for @hardSkillHydraulicEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Hydraulic Engineering'**
+  String get hardSkillHydraulicEngineering;
+
+  /// No description provided for @hardSkillMaterialsEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials Engineering'**
+  String get hardSkillMaterialsEngineering;
+
+  /// No description provided for @hardSkillMiningEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Mining Engineering'**
+  String get hardSkillMiningEngineering;
+
+  /// No description provided for @hardSkillPetroleumEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Petroleum Engineering'**
+  String get hardSkillPetroleumEngineering;
+
+  /// No description provided for @hardSkillSafetyEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety Engineering'**
+  String get hardSkillSafetyEngineering;
+
+  /// No description provided for @hardSkillStructuralEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Structural Engineering'**
+  String get hardSkillStructuralEngineering;
+
+  /// No description provided for @hardSkillElectricalEngineering.
+  ///
+  /// In en, this message translates to:
+  /// **'Electrical Engineering'**
+  String get hardSkillElectricalEngineering;
+
+  /// No description provided for @hardSkillElectronics.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronics'**
+  String get hardSkillElectronics;
+
+  /// No description provided for @hardSkillTechnicalWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical Writing'**
+  String get hardSkillTechnicalWriting;
+
+  /// No description provided for @hardSkillDocumentation.
+  ///
+  /// In en, this message translates to:
+  /// **'Documentation'**
+  String get hardSkillDocumentation;
+
+  /// No description provided for @hardSkillSpeechwriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Speechwriting'**
+  String get hardSkillSpeechwriting;
+
+  /// No description provided for @hardSkillExecutiveCommunications.
+  ///
+  /// In en, this message translates to:
+  /// **'Executive Communications'**
+  String get hardSkillExecutiveCommunications;
+
+  /// No description provided for @hardSkillInternalCommunications.
+  ///
+  /// In en, this message translates to:
+  /// **'Internal Communications'**
+  String get hardSkillInternalCommunications;
+
+  /// No description provided for @hardSkillContentWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Content Writing'**
+  String get hardSkillContentWriting;
+
+  /// No description provided for @hardSkillCopywriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Copywriting'**
+  String get hardSkillCopywriting;
+
+  /// No description provided for @hardSkillEditing.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing'**
+  String get hardSkillEditing;
+
+  /// No description provided for @hardSkillProofreading.
+  ///
+  /// In en, this message translates to:
+  /// **'Proofreading'**
+  String get hardSkillProofreading;
+
+  /// No description provided for @hardSkillBlogging.
+  ///
+  /// In en, this message translates to:
+  /// **'Blogging'**
+  String get hardSkillBlogging;
+
+  /// No description provided for @hardSkillNewsletterWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Newsletter Writing'**
+  String get hardSkillNewsletterWriting;
+
+  /// No description provided for @hardSkillGrantWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Writing'**
+  String get hardSkillGrantWriting;
+
+  /// No description provided for @hardSkillDigitalCataloguing.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital Cataloguing'**
+  String get hardSkillDigitalCataloguing;
+
+  /// No description provided for @hardSkillCollectionManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection Management'**
+  String get hardSkillCollectionManagement;
+
+  /// No description provided for @hardSkillEventCurating.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Curating'**
+  String get hardSkillEventCurating;
+
+  /// No description provided for @hardSkillExhibitionDesign.
+  ///
+  /// In en, this message translates to:
+  /// **'Exhibition Design'**
+  String get hardSkillExhibitionDesign;
+
+  /// No description provided for @hardSkillPortfolioManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Portfolio Management'**
+  String get hardSkillPortfolioManagement;
+
+  /// No description provided for @hardSkillInventoryManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory Management'**
+  String get hardSkillInventoryManagement;
+
+  /// No description provided for @hardSkillQualityAssurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Quality Assurance'**
+  String get hardSkillQualityAssurance;
+
+  /// No description provided for @hardSkillTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing'**
+  String get hardSkillTesting;
+
+  /// No description provided for @hardSkillProcessImprovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Improvement'**
+  String get hardSkillProcessImprovement;
+
+  /// No description provided for @hardSkillCommercialUnderstanding.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial Understanding'**
+  String get hardSkillCommercialUnderstanding;
+
   /// No description provided for @expandAll.
   ///
   /// In en, this message translates to:
