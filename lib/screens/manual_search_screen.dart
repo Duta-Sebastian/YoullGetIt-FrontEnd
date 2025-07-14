@@ -25,6 +25,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
   List<String>_field = [];
   List<String>_selectedSkills = [];
   List<String>_durations = [];
+  bool _isPaidInternship = false;
   
   List<JobCardModel> _jobs = [];
   int _currentPage = 1;
@@ -122,6 +123,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         skills: _selectedSkills.isEmpty ? null : _selectedSkills,
         fields: _field.isEmpty ? null : _field,
         durations: _durations.isEmpty ? null : _durations,
+        isPaidInternship: _isPaidInternship,
         company: _company,
         page: _currentPage,
         pageSize: 10,
@@ -209,6 +211,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
           initialField: _field,
           initialSkills: _selectedSkills,
           initialDurations: _durations,
+          initialIsPaidInternship: _isPaidInternship,
         ),
       ),
     );
@@ -222,6 +225,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
         _field = List<String>.from(result['fields'] ?? []);
         _durations = List<String>.from(result['durations'] ?? []);
         _selectedSkills = List<String>.from(result['skills'] ?? []);
+        _isPaidInternship = result['isPaidInternship'] ?? false;
       });
       
       // Pass current connectivity status
@@ -441,6 +445,7 @@ class _JobSearchScreenState extends ConsumerState<JobSearchScreen> {
                   _field = [];
                   _selectedSkills = [];
                   _durations = [];
+                  _isPaidInternship = false;
                 });
                 
                 // Get current connectivity and reset

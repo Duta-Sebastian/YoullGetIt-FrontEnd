@@ -856,5 +856,9 @@
   "swipe": "Balayer",
   "search": "Rechercher",
   "saved": "Sauvegardés",
-  "profile": "Profil"
+  "profile": "Profil",
+
+  "jobFiltersInternshipType": "Rémunération",
+  "jobFiltersPaidInternship": "Stages Rémunérés Uniquement",
+  "jobFiltersPaidInternshipDescription": "Afficher uniquement les stages qui offrent une rémunération"
 }

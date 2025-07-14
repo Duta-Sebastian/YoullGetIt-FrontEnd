@@ -4856,6 +4856,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get profile;
+
+  /// No description provided for @jobFiltersInternshipType.
+  ///
+  /// In en, this message translates to:
+  /// **'Compensation'**
+  String get jobFiltersInternshipType;
+
+  /// No description provided for @jobFiltersPaidInternship.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid Internships Only'**
+  String get jobFiltersPaidInternship;
+
+  /// No description provided for @jobFiltersPaidInternshipDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show only internships that offer compensation'**
+  String get jobFiltersPaidInternshipDescription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

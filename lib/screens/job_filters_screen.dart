@@ -12,6 +12,7 @@ class JobFiltersScreen extends StatefulWidget {
   final List<String>? initialField;
   final List<String>? initialSkills;
   final List<String>? initialDurations;
+  final bool? initialIsPaidInternship;
 
   const JobFiltersScreen({
     super.key, 
@@ -22,6 +23,7 @@ class JobFiltersScreen extends StatefulWidget {
     this.initialField,
     this.initialSkills,
     this.initialDurations,
+    this.initialIsPaidInternship,
   });
 
   @override
@@ -37,6 +39,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
   List<String> _selectedFields = [];
   List<String> _selectedWorkModes = [];
   List<String> _selectedSkills = [];
+  bool _isPaidInternship = false;
 
   @override
   void initState() {
@@ -50,6 +53,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
     _selectedFields = widget.initialField != null ? List.from(widget.initialField!) : [];
     _selectedSkills = widget.initialSkills != null ? List.from(widget.initialSkills!) : [];
     _selectedWorkModes = widget.initialWorkMode != null ? List.from(widget.initialWorkMode!) : [];
+    _isPaidInternship = widget.initialIsPaidInternship ?? false;
 
     // Initialize durations
     _selectedDurations = [];
@@ -158,6 +162,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
       _selectedFields = [];
       _selectedDurations = [];
       _selectedSkills = [];
+      _isPaidInternship = false;
     });
   }
 
@@ -183,6 +188,7 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
       'fields': _selectedFields.isEmpty ? null : _selectedFields,
       'durations': durationValues.isEmpty ? null : durationValues,
       'skills': _selectedSkills.isEmpty ? null : _selectedSkills,
+      'isPaidInternship': _isPaidInternship,
     });
   }
 
@@ -291,6 +297,99 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPaidInternshipToggle(AppLocalizations localizations) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _isPaidInternship ? Color(0xFFFFDE15).withAlpha(51) : Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: _isPaidInternship ? Color(0xFFFFDE15) : Colors.grey.shade200,
+          width: _isPaidInternship ? 2 : 1,
+        ),
+        boxShadow: _isPaidInternship 
+          ? [
+              BoxShadow(
+                color: Color(0xFFFFDE15).withAlpha(51),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ]
+          : [
+              BoxShadow(
+                color: Colors.black.withAlpha(13),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+      ),
+      child: Row(
+        children: [
+          // Icon container
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: _isPaidInternship 
+                ? Color(0xFFFFDE15) 
+                : Colors.grey.shade300,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.payments_outlined,
+              size: 28,
+              color: _isPaidInternship ? Colors.black87 : Colors.grey.shade600,
+            ),
+          ),
+          
+          const SizedBox(width: 24),
+          
+          // Text content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  localizations.jobFiltersPaidInternship,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: _isPaidInternship ? Colors.black87 : Colors.grey.shade700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  localizations.jobFiltersPaidInternshipDescription,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _isPaidInternship ? Colors.black87 : Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Toggle switch
+          Transform.scale(
+            scale: 1.2,
+            child: Switch.adaptive(
+              value: _isPaidInternship,
+              onChanged: (value) {
+                setState(() {
+                  _isPaidInternship = value;
+                });
+              },
+              activeColor: Color(0xFFFFDE15),
+              activeTrackColor: Color(0xFFFFDE15).withAlpha(102),
+              inactiveThumbColor: Colors.grey.shade400,
+              inactiveTrackColor: Colors.grey.shade300,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -409,6 +508,19 @@ class _JobFiltersScreenState extends State<JobFiltersScreen> {
                       contentPadding: const EdgeInsets.symmetric(vertical: 0),
                     ),
                   ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Paid Internship Toggle
+                  Text(
+                    localizations.jobFiltersInternshipType,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildPaidInternshipToggle(localizations),
                   
                   const SizedBox(height: 24),
                   

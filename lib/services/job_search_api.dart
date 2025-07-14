@@ -16,6 +16,7 @@ class JobSearchAPI {
     List<String>? skills,
     List<String>? fields,
     List<String>? durations,
+    bool? isPaidInternship,
     int page = 1,
     int pageSize = 10,
   }) async {
@@ -51,6 +52,11 @@ class JobSearchAPI {
     if (skills != null && skills.isNotEmpty) {
       queryParams['skills'] = skills.join(',');
     }
+
+    if (isPaidInternship != null) {
+      queryParams['is_paid_internship'] = isPaidInternship.toString();
+    }
+
     debugPrint('JobSearchAPI: Searching with query params: $queryParams');
     
     final uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);

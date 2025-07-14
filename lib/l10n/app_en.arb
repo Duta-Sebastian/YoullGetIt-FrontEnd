@@ -1060,5 +1060,9 @@
   "profile": "Profile",
   "@profile": {
     "description": "Label for profile tab in bottom navigation"
-  }
+  },
+
+  "jobFiltersInternshipType": "Compensation",
+  "jobFiltersPaidInternship": "Paid Internships Only",
+  "jobFiltersPaidInternshipDescription": "Show only internships that offer compensation"
 }

@@ -854,5 +854,9 @@
   "swipe": "Deslizar",
   "search": "Buscar",
   "saved": "Guardados",
-  "profile": "Perfil"
+  "profile": "Perfil",
+
+  "jobFiltersInternshipType": "Compensación",
+  "jobFiltersPaidInternship": "Solo Prácticas Remuneradas",
+  "jobFiltersPaidInternshipDescription": "Mostrar solo prácticas que ofrecen compensación"
 }

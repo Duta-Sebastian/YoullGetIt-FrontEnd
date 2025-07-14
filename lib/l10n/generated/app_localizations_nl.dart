@@ -2441,4 +2441,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get profile => 'Profiel';
+
+  @override
+  String get jobFiltersInternshipType => 'Vergoeding';
+
+  @override
+  String get jobFiltersPaidInternship => 'Alleen Betaalde Stages';
+
+  @override
+  String get jobFiltersPaidInternshipDescription => 'Toon alleen stages die compensatie bieden';
 }

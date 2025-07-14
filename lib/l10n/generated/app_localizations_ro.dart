@@ -2442,4 +2442,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get profile => 'Profil';
+
+  @override
+  String get jobFiltersInternshipType => 'Compensație';
+
+  @override
+  String get jobFiltersPaidInternship => 'Doar Stagii Plătite';
+
+  @override
+  String get jobFiltersPaidInternshipDescription => 'Afișează doar stagiile care oferă compensație';
 }

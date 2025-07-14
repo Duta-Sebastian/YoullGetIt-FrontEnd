@@ -855,5 +855,9 @@
   "swipe": "Scorri",
   "search": "Cerca",
   "saved": "Salvati",
-  "profile": "Profilo"
+  "profile": "Profilo",
+
+  "jobFiltersInternshipType": "Compenso",
+  "jobFiltersPaidInternship": "Solo Tirocini Retribuiti",
+  "jobFiltersPaidInternshipDescription": "Mostra solo i tirocini che offrono compenso"
 }

@@ -855,5 +855,9 @@
   "swipe": "Wischen",
   "search": "Suchen",
   "saved": "Gespeicherte",
-  "profile": "Profil"
+  "profile": "Profil",
+
+  "jobFiltersInternshipType": "Vergütung",
+  "jobFiltersPaidInternship": "Nur bezahlte Praktika",
+  "jobFiltersPaidInternshipDescription": "Nur Praktika anzeigen, die eine Vergütung bieten"
 }

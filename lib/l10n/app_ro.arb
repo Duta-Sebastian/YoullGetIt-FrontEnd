@@ -857,5 +857,9 @@
   "swipe": "Glisare",
   "search": "Căutare",
   "saved": "Salvate",
-  "profile": "Profil"
+  "profile": "Profil",
+
+  "jobFiltersInternshipType": "Compensație",
+  "jobFiltersPaidInternship": "Doar Stagii Plătite",
+  "jobFiltersPaidInternshipDescription": "Afișează doar stagiile care oferă compensație"
 }

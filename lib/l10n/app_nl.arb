@@ -855,5 +855,9 @@
   "swipe": "Vegen",
   "search": "Zoeken",
   "saved": "Opgeslagen",
-  "profile": "Profiel"
+  "profile": "Profiel",
+
+  "jobFiltersInternshipType": "Vergoeding",
+  "jobFiltersPaidInternship": "Alleen Betaalde Stages",
+  "jobFiltersPaidInternshipDescription": "Toon alleen stages die compensatie bieden"
 }

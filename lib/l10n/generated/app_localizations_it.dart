@@ -2441,4 +2441,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get profile => 'Profilo';
+
+  @override
+  String get jobFiltersInternshipType => 'Compenso';
+
+  @override
+  String get jobFiltersPaidInternship => 'Solo Tirocini Retribuiti';
+
+  @override
+  String get jobFiltersPaidInternshipDescription => 'Mostra solo i tirocini che offrono compenso';
 }

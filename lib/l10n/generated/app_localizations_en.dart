@@ -2441,4 +2441,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile => 'Profile';
+
+  @override
+  String get jobFiltersInternshipType => 'Compensation';
+
+  @override
+  String get jobFiltersPaidInternship => 'Paid Internships Only';
+
+  @override
+  String get jobFiltersPaidInternshipDescription => 'Show only internships that offer compensation';
 }

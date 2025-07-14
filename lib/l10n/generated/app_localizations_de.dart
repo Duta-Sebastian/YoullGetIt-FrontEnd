@@ -2441,4 +2441,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profile => 'Profil';
+
+  @override
+  String get jobFiltersInternshipType => 'Vergütung';
+
+  @override
+  String get jobFiltersPaidInternship => 'Nur bezahlte Praktika';
+
+  @override
+  String get jobFiltersPaidInternshipDescription => 'Nur Praktika anzeigen, die eine Vergütung bieten';
 }

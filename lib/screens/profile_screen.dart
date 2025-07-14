@@ -19,6 +19,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   bool _isLoading = true;
   String? _errorMessage;
   StreamSubscription? _userUpdateSubscription;
+  final GlobalKey _headerKey = GlobalKey();
 
   @override
   void initState() {
@@ -87,6 +88,11 @@ class ProfileScreenState extends State<ProfileScreen> {
     _fetchUsername();
   }
 
+  double _getHeaderHeight() {
+    final RenderBox? renderBox = _headerKey.currentContext?.findRenderObject() as RenderBox?;
+    return renderBox?.size.height ?? 200.0; // Fallback to 200 if height can't be determined
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_errorMessage != null) {
@@ -103,54 +109,52 @@ class ProfileScreenState extends State<ProfileScreen> {
     
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  // Main content layout
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return Stack(
                     children: [
-                      // Content with padding - leave space for header
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 180), // Adjust based on header height
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: ListView(
-                                    children: [
-                                      CVUploadSection(),
-                                      SizedBox(height: 24),
-                                      CVFormulaWidget()
-                                    ]
-                                  ),
-                                ),
-                              ],
-                            ),
+                      // Main content with dynamic top padding
+                      Positioned.fill(
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (scrollNotification) {
+                            // Force rebuild to recalculate header height if needed
+                            if (scrollNotification is ScrollEndNotification) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (mounted) setState(() {});
+                              });
+                            }
+                            return false;
+                          },
+                          child: ListView(
+                            padding: EdgeInsets.fromLTRB(16.0, _getHeaderHeight() + 16.0, 16.0, 16.0),
+                            children: [
+                              CVUploadSection(),
+                              SizedBox(height: 24),
+                              CVFormulaWidget(),
+                            ],
                           ),
                         ),
                       ),
+                      
+                      // Header positioned on top of everything
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: ProfileHeader(
+                          key: _headerKey,
+                          username: _username ?? 'Guest',
+                          onUsernameChanged: refreshProfile,
+                        ),
+                      ),
                     ],
-                  ),
-                  
-                  // Header positioned on top
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: ProfileHeader(
-                      username: _username ?? 'Guest',
-                      onUsernameChanged: refreshProfile,
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-      ),
+            ),
     );
   }
 }
