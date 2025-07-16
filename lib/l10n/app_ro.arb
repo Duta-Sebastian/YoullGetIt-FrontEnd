@@ -861,5 +861,16 @@
 
   "jobFiltersInternshipType": "Compensație",
   "jobFiltersPaidInternship": "Doar Stagii Plătite",
-  "jobFiltersPaidInternshipDescription": "Afișează doar stagiile care oferă compensație"
+  "jobFiltersPaidInternshipDescription": "Afișează doar stagiile care oferă compensație",
+
+  "profilePopupTitle": "Creează un Cont",
+  "profilePopupDescription": "Creează un cont pentru a sincroniza datele tale pe mai multe dispozitive și să nu îți pierzi niciodată progresul.",
+  "profilePopupCreateAccount": "Creează Cont",
+  "profilePopupNotNow": "Nu Acum",
+
+  "entryScreenAlreadyHaveAccount": "Ai folosit deja aplicația noastră și ai un cont?",
+  "entryScreenLogIn": "CONECTEAZĂ-TE",
+  "entryScreenLoggingIn": "Se conectează...",
+  "entryScreenLoginFailed": "Conectarea a eșuat. Te rugăm să încerci din nou.",
+  "entryScreenOr": "SAU"
 }

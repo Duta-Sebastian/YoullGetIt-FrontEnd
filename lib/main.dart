@@ -137,8 +137,14 @@ class MyApp extends ConsumerWidget {
         Locale('es'), // Spanish
         Locale('nl'), // Dutch
       ],
-      
-      home: isFirstTimeOpening ? EntryScreen() : HomeScreen(),
+      home: Builder(
+        builder: (context) {
+          final auth = ref.watch(authProvider);
+          return (isFirstTimeOpening == true && !auth.isLoggedIn)
+              ? EntryScreen()
+              : HomeScreen();
+        },
+      ),
     );
   }
 }

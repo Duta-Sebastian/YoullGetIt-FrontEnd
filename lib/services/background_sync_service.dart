@@ -185,7 +185,7 @@ void callbackDispatcher() {
                   case DbTables.job_cart:
                     await NotificationManager.sendJobCartUpdatedSignal();
                     break;
-                  case DbTables.questions:
+                  case DbTables.question:
                     await NotificationManager.sendAnswersUpdatedSignal();
                     break;
                 }

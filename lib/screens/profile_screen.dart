@@ -1,20 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/services/notification_manager.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_formula.dart';
 import 'package:youllgetit_flutter/widgets/profile/cv_section.dart';
 import 'package:youllgetit_flutter/widgets/profile/profile_header.dart';
+import 'package:youllgetit_flutter/widgets/profile/account_sync_popup.dart';
+import 'package:youllgetit_flutter/providers/auth_provider.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
   ProfileScreenState createState() => ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> {
+class ProfileScreenState extends ConsumerState<ProfileScreen> {
   String? _username;
   bool _isLoading = true;
   String? _errorMessage;
@@ -30,6 +33,9 @@ class ProfileScreenState extends State<ProfileScreen> {
         statusBarColor: Color(0xFFFFDE15),
         statusBarIconBrightness: Brightness.dark,
       ));
+
+      // Show account sync popup if user is not logged in
+      _showAccountSyncPopupIfNeeded();
     });
 
     _fetchUsername();
@@ -38,6 +44,29 @@ class ProfileScreenState extends State<ProfileScreen> {
       debugPrint('ProfileScreen: Received user update notification, refreshing profile');
       refreshProfile();
     });
+  }
+
+  void _showAccountSyncPopupIfNeeded() {
+    final authState = ref.read(authProvider);
+    
+    // Only show popup if user is not logged in
+    if (!authState.isLoggedIn) {
+      AccountSyncPopup.showIfNeeded(
+        context,
+        onCreateAccount: () async {
+          // Trigger the login flow through authProvider
+          final success = await ref.read(authProvider.notifier).login();
+          if (success) {
+            debugPrint('User successfully logged in from popup');
+            // Refresh profile after successful login
+            refreshProfile();
+          }
+        },
+        onDismiss: () {
+          debugPrint('User dismissed account sync popup');
+        },
+      );
+    }
   }
 
   @override
@@ -94,7 +123,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     if (_errorMessage != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(

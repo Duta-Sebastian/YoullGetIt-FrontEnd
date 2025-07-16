@@ -2450,4 +2450,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get jobFiltersPaidInternshipDescription => 'Nur Praktika anzeigen, die eine Vergütung bieten';
+
+  @override
+  String get profilePopupTitle => 'Konto erstellen';
+
+  @override
+  String get profilePopupDescription => 'Erstellen Sie ein Konto, um Ihre Daten auf mehreren Geräten zu synchronisieren und niemals zu verlieren.';
+
+  @override
+  String get profilePopupCreateAccount => 'Konto erstellen';
+
+  @override
+  String get profilePopupNotNow => 'Nicht jetzt';
+
+  @override
+  String get entryScreenAlreadyHaveAccount => 'Haben Sie bereits unsere App verwendet und ein Konto?';
+
+  @override
+  String get entryScreenLogIn => 'ANMELDEN';
+
+  @override
+  String get entryScreenLoggingIn => 'Anmeldung...';
+
+  @override
+  String get entryScreenLoginFailed => 'Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get entryScreenOr => 'ODER';
 }

@@ -2450,4 +2450,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jobFiltersPaidInternshipDescription => 'Show only internships that offer compensation';
+
+  @override
+  String get profilePopupTitle => 'Create an Account';
+
+  @override
+  String get profilePopupDescription => 'Create an account to sync your data across multiple devices and never lose your progress.';
+
+  @override
+  String get profilePopupCreateAccount => 'Create Account';
+
+  @override
+  String get profilePopupNotNow => 'Not Now';
+
+  @override
+  String get entryScreenAlreadyHaveAccount => 'Already used our app and have an account?';
+
+  @override
+  String get entryScreenLogIn => 'LOG IN';
+
+  @override
+  String get entryScreenLoggingIn => 'Logging in...';
+
+  @override
+  String get entryScreenLoginFailed => 'Login failed. Please try again.';
+
+  @override
+  String get entryScreenOr => 'OR';
 }

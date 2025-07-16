@@ -860,5 +860,16 @@
 
   "jobFiltersInternshipType": "Rémunération",
   "jobFiltersPaidInternship": "Stages Rémunérés Uniquement",
-  "jobFiltersPaidInternshipDescription": "Afficher uniquement les stages qui offrent une rémunération"
+  "jobFiltersPaidInternshipDescription": "Afficher uniquement les stages qui offrent une rémunération",
+
+  "profilePopupTitle": "Créer un Compte",
+  "profilePopupDescription": "Créez un compte pour synchroniser vos données sur plusieurs appareils et ne jamais perdre votre progression.",
+  "profilePopupCreateAccount": "Créer un Compte",
+  "profilePopupNotNow": "Pas Maintenant",
+
+  "entryScreenAlreadyHaveAccount": "Vous avez déjà utilisé notre application et avez un compte?",
+  "entryScreenLogIn": "SE CONNECTER",
+  "entryScreenLoggingIn": "Connexion...",
+  "entryScreenLoginFailed": "Échec de la connexion. Veuillez réessayer.",
+  "entryScreenOr": "OU"
 }

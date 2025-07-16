@@ -21,7 +21,7 @@ class JobApi {
     _encryptionManager!.initialize();
   }
 
-  static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers) async {
+  static Future<int> uploadUserInformation(bool? withCv, Map<String, dynamic>? answers, {bool? skipCvAndAnswers}) async {
     Map<String, dynamic> finalAnswers = {};
     if (answers == null) {
       final savedAnswers = await DatabaseManager.getQuestionAnswersMap();
@@ -60,12 +60,24 @@ class JobApi {
     while (attempts <= 3)
     {
       try {
-        final Map<String, dynamic> userData = {
-          'cv_byte_str_repr': cvAsBase64 ?? '',
-          'answers_to_questions_str': answersJson ?? '',
-          'guest_id': uniqueId,
-          'auth_id': authId ?? '',
-        };
+        Map<String, dynamic> userData;
+        if (skipCvAndAnswers == false){
+          userData= {
+            'cv_byte_str_repr': cvAsBase64 ?? '',
+            'answers_to_questions_str': answersJson ?? '',
+            'guest_id': uniqueId,
+            'auth_id': authId ?? '',
+          };
+        }
+        else {
+          userData = {
+            'guest_id': uniqueId,
+            'auth_id': authId ?? '',
+            'cv_byte_str_repr': null,
+            'answers_to_questions_str': null,
+          };
+        }
+        debugPrint('JobAPI: Uploading user information with data: $userData');
 
         final String taskId = await _encryptionManager!.encryptedPost<String>(
           '/upload_cv_and_questions',

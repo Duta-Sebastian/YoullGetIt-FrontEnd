@@ -2450,4 +2450,31 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get jobFiltersPaidInternshipDescription => 'Mostra solo i tirocini che offrono compenso';
+
+  @override
+  String get profilePopupTitle => 'Crea un Account';
+
+  @override
+  String get profilePopupDescription => 'Crea un account per sincronizzare i tuoi dati su più dispositivi e non perdere mai i tuoi progressi.';
+
+  @override
+  String get profilePopupCreateAccount => 'Crea Account';
+
+  @override
+  String get profilePopupNotNow => 'Non Ora';
+
+  @override
+  String get entryScreenAlreadyHaveAccount => 'Hai già usato la nostra app e hai un account?';
+
+  @override
+  String get entryScreenLogIn => 'ACCEDI';
+
+  @override
+  String get entryScreenLoggingIn => 'Accesso...';
+
+  @override
+  String get entryScreenLoginFailed => 'Accesso fallito. Riprova.';
+
+  @override
+  String get entryScreenOr => 'O';
 }

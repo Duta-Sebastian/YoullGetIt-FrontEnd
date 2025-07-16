@@ -4874,6 +4874,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show only internships that offer compensation'**
   String get jobFiltersPaidInternshipDescription;
+
+  /// No description provided for @profilePopupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an Account'**
+  String get profilePopupTitle;
+
+  /// No description provided for @profilePopupDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to sync your data across multiple devices and never lose your progress.'**
+  String get profilePopupDescription;
+
+  /// No description provided for @profilePopupCreateAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get profilePopupCreateAccount;
+
+  /// No description provided for @profilePopupNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get profilePopupNotNow;
+
+  /// No description provided for @entryScreenAlreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already used our app and have an account?'**
+  String get entryScreenAlreadyHaveAccount;
+
+  /// No description provided for @entryScreenLogIn.
+  ///
+  /// In en, this message translates to:
+  /// **'LOG IN'**
+  String get entryScreenLogIn;
+
+  /// No description provided for @entryScreenLoggingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging in...'**
+  String get entryScreenLoggingIn;
+
+  /// No description provided for @entryScreenLoginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please try again.'**
+  String get entryScreenLoginFailed;
+
+  /// No description provided for @entryScreenOr.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get entryScreenOr;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

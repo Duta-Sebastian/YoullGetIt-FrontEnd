@@ -859,5 +859,16 @@
 
   "jobFiltersInternshipType": "Compenso",
   "jobFiltersPaidInternship": "Solo Tirocini Retribuiti",
-  "jobFiltersPaidInternshipDescription": "Mostra solo i tirocini che offrono compenso"
+  "jobFiltersPaidInternshipDescription": "Mostra solo i tirocini che offrono compenso",
+
+  "profilePopupTitle": "Crea un Account",
+  "profilePopupDescription": "Crea un account per sincronizzare i tuoi dati su più dispositivi e non perdere mai i tuoi progressi.",
+  "profilePopupCreateAccount": "Crea Account",
+  "profilePopupNotNow": "Non Ora",
+
+  "entryScreenAlreadyHaveAccount": "Hai già usato la nostra app e hai un account?",
+  "entryScreenLogIn": "ACCEDI",
+  "entryScreenLoggingIn": "Accesso...",
+  "entryScreenLoginFailed": "Accesso fallito. Riprova.",
+  "entryScreenOr": "O"
 }

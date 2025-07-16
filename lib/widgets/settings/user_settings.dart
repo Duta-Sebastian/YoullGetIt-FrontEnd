@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
+import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/view_answers_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
-class UserSettings extends StatefulWidget {
+class UserSettings extends ConsumerStatefulWidget {
   final VoidCallback onUsernameChanged;
   final String? currentUsername;
   const UserSettings({
@@ -16,10 +18,10 @@ class UserSettings extends StatefulWidget {
   });
 
   @override
-  State<UserSettings> createState() => _UserSettingsState();
+  ConsumerState<UserSettings> createState() => _UserSettingsState();
 }
 
-class _UserSettingsState extends State<UserSettings> {
+class _UserSettingsState extends ConsumerState<UserSettings> {
   static const _titleStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
   static const _dangerTitleStyle = TextStyle(
     fontSize: 18, 
@@ -230,7 +232,7 @@ class _UserSettingsState extends State<UserSettings> {
                         children: [
                           CircularProgressIndicator(),
                           SizedBox(height: 16),
-                          Text('Deleting data...'),
+                          Text('Deleting data and logging out...'),
                         ],
                       ),
                     ),
@@ -239,9 +241,15 @@ class _UserSettingsState extends State<UserSettings> {
               );
               
               try {
-                
+                // Delete all local data
                 await DatabaseManager.deleteAllDataWithTransaction();
                 await resetFirstTimeOpening();
+                
+                // Force logout
+                final authNotifier = ref.read(authProvider.notifier);
+                await authNotifier.logout();
+                
+                // Navigate to entry screen
                 navigator.pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const EntryScreen()),
                   (route) => false,

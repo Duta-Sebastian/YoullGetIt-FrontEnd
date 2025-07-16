@@ -859,5 +859,16 @@
 
   "jobFiltersInternshipType": "Vergütung",
   "jobFiltersPaidInternship": "Nur bezahlte Praktika",
-  "jobFiltersPaidInternshipDescription": "Nur Praktika anzeigen, die eine Vergütung bieten"
+  "jobFiltersPaidInternshipDescription": "Nur Praktika anzeigen, die eine Vergütung bieten",
+
+  "profilePopupTitle": "Konto erstellen",
+  "profilePopupDescription": "Erstellen Sie ein Konto, um Ihre Daten auf mehreren Geräten zu synchronisieren und niemals zu verlieren.",
+  "profilePopupCreateAccount": "Konto erstellen",
+  "profilePopupNotNow": "Nicht jetzt",
+
+  "entryScreenAlreadyHaveAccount": "Haben Sie bereits unsere App verwendet und ein Konto?",
+  "entryScreenLogIn": "ANMELDEN",
+  "entryScreenLoggingIn": "Anmeldung...",
+  "entryScreenLoginFailed": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "entryScreenOr": "ODER"
 }

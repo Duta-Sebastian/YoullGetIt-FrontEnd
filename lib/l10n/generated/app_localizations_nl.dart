@@ -2450,4 +2450,31 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get jobFiltersPaidInternshipDescription => 'Toon alleen stages die compensatie bieden';
+
+  @override
+  String get profilePopupTitle => 'Account Aanmaken';
+
+  @override
+  String get profilePopupDescription => 'Maak een account aan om je gegevens te synchroniseren tussen meerdere apparaten en je voortgang nooit te verliezen.';
+
+  @override
+  String get profilePopupCreateAccount => 'Account Aanmaken';
+
+  @override
+  String get profilePopupNotNow => 'Niet Nu';
+
+  @override
+  String get entryScreenAlreadyHaveAccount => 'Heb je onze app al gebruikt en heb je een account?';
+
+  @override
+  String get entryScreenLogIn => 'INLOGGEN';
+
+  @override
+  String get entryScreenLoggingIn => 'Inloggen...';
+
+  @override
+  String get entryScreenLoginFailed => 'Inloggen mislukt. Probeer het opnieuw.';
+
+  @override
+  String get entryScreenOr => 'OF';
 }

@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youllgetit_flutter/l10n/generated/app_localizations.dart';
 import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/screens/questionnaire_path_screen.dart';
+import 'package:youllgetit_flutter/screens/home_screen.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/widgets/settings/gdpr_page.dart';
 import 'package:youllgetit_flutter/widgets/settings/language_settings.dart';
 import 'package:youllgetit_flutter/widgets/animations/animated_pufferfish.dart';
+import 'package:youllgetit_flutter/providers/auth_provider.dart';
 
 class EntryScreen extends ConsumerStatefulWidget {
   const EntryScreen({super.key});
@@ -20,6 +22,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
   final TextEditingController _nameController = TextEditingController();
   bool _gdprChecked = false;
   bool _nameEntered = false;
+  bool _isLoggingIn = false;
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -93,6 +96,48 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
     );
   }
 
+  Future<void> _handleLoginPressed() async {
+    setState(() {
+      _isLoggingIn = true;
+    });
+
+    try {
+      final authNotifier = ref.read(authProvider.notifier);
+      final success = await authNotifier.login();
+      
+      if (success && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen()
+          )
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.entryScreenLoginFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.entryScreenLoginFailed),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoggingIn = false;
+        });
+      }
+    }
+  }
+
   void _showLanguageSelector() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -106,7 +151,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
     final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
-      backgroundColor: Colors.white, // Clean white background
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
@@ -139,6 +184,11 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
                           
                           // Form
                           _buildForm(l10n),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Login section
+                          _buildLoginSection(l10n),
                           
                           const SizedBox(height: 40),
                         ],
@@ -208,7 +258,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
 
   Widget _buildAnimatedLogo() {
     return const AnimatedPufferfish(
-      rotation: 0.0, // No rotation for the entry screen
+      rotation: 0.0,
     );
   }
 
@@ -317,7 +367,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
 
   Widget _buildGdprCheckbox(AppLocalizations l10n) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center, // Changed from start to center
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Transform.scale(
           scale: 1.2,
@@ -339,7 +389,7 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
             },
           ),
         ),
-        const SizedBox(width: 8), // Reduced from 12 to 8
+        const SizedBox(width: 8),
         Expanded(
           child: GestureDetector(
             onTap: () {
@@ -440,6 +490,104 @@ class _EntryScreenState extends ConsumerState<EntryScreen> with TickerProviderSt
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLoginSection(AppLocalizations l10n) {
+    return Column(
+      children: [
+        // Divider with "OR" text
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey[300],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                l10n.entryScreenOr,
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: Colors.grey[300],
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(height: 24),
+        
+        // Already have account text
+        Text(
+          l10n.entryScreenAlreadyHaveAccount,
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        
+        const SizedBox(height: 16),
+        
+        // Login button
+        Container(
+          height: 56,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: primaryYellow,
+              width: 2,
+            ),
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _isLoggingIn ? null : _handleLoginPressed,
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_isLoggingIn) ...[
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(primaryYellow),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                    Text(
+                      _isLoggingIn ? l10n.entryScreenLoggingIn : l10n.entryScreenLogIn,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                        color: primaryYellow,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

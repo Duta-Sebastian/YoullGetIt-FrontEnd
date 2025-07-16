@@ -2451,4 +2451,31 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get jobFiltersPaidInternshipDescription => 'Afișează doar stagiile care oferă compensație';
+
+  @override
+  String get profilePopupTitle => 'Creează un Cont';
+
+  @override
+  String get profilePopupDescription => 'Creează un cont pentru a sincroniza datele tale pe mai multe dispozitive și să nu îți pierzi niciodată progresul.';
+
+  @override
+  String get profilePopupCreateAccount => 'Creează Cont';
+
+  @override
+  String get profilePopupNotNow => 'Nu Acum';
+
+  @override
+  String get entryScreenAlreadyHaveAccount => 'Ai folosit deja aplicația noastră și ai un cont?';
+
+  @override
+  String get entryScreenLogIn => 'CONECTEAZĂ-TE';
+
+  @override
+  String get entryScreenLoggingIn => 'Se conectează...';
+
+  @override
+  String get entryScreenLoginFailed => 'Conectarea a eșuat. Te rugăm să încerci din nou.';
+
+  @override
+  String get entryScreenOr => 'SAU';
 }

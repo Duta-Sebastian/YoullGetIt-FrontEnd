@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 
 class AuthState {
   final bool isLoggedIn;
@@ -62,6 +63,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         credentials: credentials,
         aesKey: credentials.user.customClaims?['aes_key'] as String?
       );
+      JobApi.uploadUserInformation(null, null);
       return true;
     } catch (e) {
       debugPrint('Login failed: $e');

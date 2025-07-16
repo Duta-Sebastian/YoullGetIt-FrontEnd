@@ -24,7 +24,7 @@ class QuestionSyncModel {
         lastChanged = DateTime.parse(dateStr);
       }
     }
-    bool isShortQuestionnaire = json['is_short_questionnaire'] == 1;
+    bool isShortQuestionnaire = json['is_short_questionnaire'] ?? false;
 
     return QuestionSyncModel(
       questionJson: questionJson,

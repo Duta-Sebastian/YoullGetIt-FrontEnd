@@ -858,5 +858,16 @@
 
   "jobFiltersInternshipType": "Compensación",
   "jobFiltersPaidInternship": "Solo Prácticas Remuneradas",
-  "jobFiltersPaidInternshipDescription": "Mostrar solo prácticas que ofrecen compensación"
+  "jobFiltersPaidInternshipDescription": "Mostrar solo prácticas que ofrecen compensación",
+
+  "profilePopupTitle": "Crear una Cuenta",
+  "profilePopupDescription": "Crea una cuenta para sincronizar tus datos en múltiples dispositivos y nunca perder tu progreso.",
+  "profilePopupCreateAccount": "Crear Cuenta",
+  "profilePopupNotNow": "Ahora No",
+
+  "entryScreenAlreadyHaveAccount": "¿Ya has usado nuestra aplicación y tienes una cuenta?",
+  "entryScreenLogIn": "INICIAR SESIÓN",
+  "entryScreenLoggingIn": "Iniciando sesión...",
+  "entryScreenLoginFailed": "Error al iniciar sesión. Por favor, inténtalo de nuevo.",
+  "entryScreenOr": "O"
 }

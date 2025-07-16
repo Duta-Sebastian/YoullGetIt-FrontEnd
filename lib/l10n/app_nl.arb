@@ -859,5 +859,16 @@
 
   "jobFiltersInternshipType": "Vergoeding",
   "jobFiltersPaidInternship": "Alleen Betaalde Stages",
-  "jobFiltersPaidInternshipDescription": "Toon alleen stages die compensatie bieden"
+  "jobFiltersPaidInternshipDescription": "Toon alleen stages die compensatie bieden",
+
+  "profilePopupTitle": "Account Aanmaken",
+  "profilePopupDescription": "Maak een account aan om je gegevens te synchroniseren tussen meerdere apparaten en je voortgang nooit te verliezen.",
+  "profilePopupCreateAccount": "Account Aanmaken",
+  "profilePopupNotNow": "Niet Nu",
+
+  "entryScreenAlreadyHaveAccount": "Heb je onze app al gebruikt en heb je een account?",
+  "entryScreenLogIn": "INLOGGEN",
+  "entryScreenLoggingIn": "Inloggen...",
+  "entryScreenLoginFailed": "Inloggen mislukt. Probeer het opnieuw.",
+  "entryScreenOr": "OF"
 }

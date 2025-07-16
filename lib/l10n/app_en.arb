@@ -1064,5 +1064,16 @@
 
   "jobFiltersInternshipType": "Compensation",
   "jobFiltersPaidInternship": "Paid Internships Only",
-  "jobFiltersPaidInternshipDescription": "Show only internships that offer compensation"
+  "jobFiltersPaidInternshipDescription": "Show only internships that offer compensation",
+
+  "profilePopupTitle": "Create an Account",
+  "profilePopupDescription": "Create an account to sync your data across multiple devices and never lose your progress.",
+  "profilePopupCreateAccount": "Create Account",
+  "profilePopupNotNow": "Not Now",
+
+  "entryScreenAlreadyHaveAccount": "Already used our app and have an account?",
+  "entryScreenLogIn": "LOG IN",
+  "entryScreenLoggingIn": "Logging in...",
+  "entryScreenLoginFailed": "Login failed. Please try again.",
+  "entryScreenOr": "OR"
 }
