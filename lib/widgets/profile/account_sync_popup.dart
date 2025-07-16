@@ -98,38 +98,13 @@ class AccountSyncPopup extends StatelessWidget {
             
             const SizedBox(height: 32),
             
-            // Buttons
-            Row(
+            // Buttons - Column layout for better centering
+            Column(
               children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: () async {
-                      await markPopupAsShown();
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                      }
-                      onDismiss?.call();
-                    },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      _getLocalizedText(context, 'notNow'),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(width: 16),
-                
-                Expanded(
+                // Create Account Button - Primary action first
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
                   child: ElevatedButton(
                     onPressed: () async {
                       await markPopupAsShown();
@@ -141,7 +116,6 @@ class AccountSyncPopup extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFDE15),
                       foregroundColor: Colors.black87,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -152,6 +126,36 @@ class AccountSyncPopup extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Not Now Button - Secondary action
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: TextButton(
+                    onPressed: () async {
+                      await markPopupAsShown();
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                      onDismiss?.call();
+                    },
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      _getLocalizedText(context, 'notNow'),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
