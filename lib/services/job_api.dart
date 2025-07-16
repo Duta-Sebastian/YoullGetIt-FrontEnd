@@ -61,7 +61,7 @@ class JobApi {
     {
       try {
         Map<String, dynamic> userData;
-        if (skipCvAndAnswers == false){
+        if ((skipCvAndAnswers ?? false) == false){
           userData= {
             'cv_byte_str_repr': cvAsBase64 ?? '',
             'answers_to_questions_str': answersJson ?? '',
