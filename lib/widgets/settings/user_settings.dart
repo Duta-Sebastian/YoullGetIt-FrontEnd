@@ -5,6 +5,7 @@ import 'package:youllgetit_flutter/models/user_model.dart';
 import 'package:youllgetit_flutter/providers/auth_provider.dart';
 import 'package:youllgetit_flutter/screens/entry_screen.dart';
 import 'package:youllgetit_flutter/screens/view_answers_screen.dart';
+import 'package:youllgetit_flutter/services/job_api.dart';
 import 'package:youllgetit_flutter/utils/database_manager.dart';
 import 'package:youllgetit_flutter/utils/first_time_checker.dart';
 
@@ -244,10 +245,11 @@ class _UserSettingsState extends ConsumerState<UserSettings> {
                 // Delete all local data
                 await DatabaseManager.deleteAllDataWithTransaction();
                 await resetFirstTimeOpening();
+                await JobApi.deleteUserData();
                 
-                // Force logout
-                final authNotifier = ref.read(authProvider.notifier);
-                await authNotifier.logout();
+                if (ref.read(authProvider).isLoggedIn) {
+                  await ref.read(authProvider.notifier).logout();
+                }
                 
                 // Navigate to entry screen
                 navigator.pushAndRemoveUntil(

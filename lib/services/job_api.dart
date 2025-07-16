@@ -215,6 +215,28 @@ class JobApi {
     }
   }
 
+  static Future<void> deleteUserData() async {
+    try{
+      final AuthState authState = _container!.read(authProvider);
+      final String? authId = authState.isLoggedIn ? authState.credentials?.user.sub : null;
+      final String uniqueId = await getUniqueId();
+
+      final Map<String, dynamic> requestData = {
+        'guest_id': uniqueId,
+        'auth_id': authId ?? '',
+      };
+
+      await _encryptionManager!.encryptedPost<dynamic>(
+        '/delete_user_data',
+        requestData,
+        (responseJson) => null
+      );
+    }
+    catch (e) {
+      debugPrint('Error deleting user data: $e');
+    }
+  }
+
   static void dispose() {
     _encryptionManager?.dispose();
   }
